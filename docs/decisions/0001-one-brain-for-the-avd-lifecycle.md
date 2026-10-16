@@ -11,10 +11,11 @@ Three repositories grew separate second brains: avd-current-state a Markdown vau
 - Three layers by whose data they hold: **knowledge** (generalized; public here, organization in a private fork), **estate vaults** (one customer's tenant data, private), **operations memory** (in the tenant). Knowledge moves up only by a reviewed PR after it is generalized, and the guard checks every file.
 - The repos connect through seven contracts ([contracts.md](../contracts.md)), each with a schema or a test: evidence packages into the vault; vault harvest; engagement harvest; `avd-sizing-evidence/v1` into calibration; host pool attribution tags; reading the knowledge base at a pinned commit; searchable docs across repos with commit-pinned citations.
 - The operations brain's runtime (Bicep module, detections, playbooks, executor, kill switch) stays in avd-landing-zone, because it deploys into the landing zone.
-- The repo is public, like the repos it connects. Organizations fork it privately for their knowledge; customers keep their vaults in their own private repositories.
+- The repo is meant to be public, like the repos it connects, and starts **private** until its first release. Its `knowledge/` stays in the `public` scope throughout, so the guard keeps it publishable at any time. Organizations fork it privately for their knowledge; customers keep their vaults in their own private repositories.
 
 ## Consequences
 - One place to learn the concept, one guard, one set of schemas, and one search across all three repos.
 - Contract changes span two repos: the producer's change and this repo's schema and tests move together.
 - avd-current-state loses `avd_second_brain.ps1`; users run it from here (`vault/avd_second_brain.ps1`) with the same parameters.
 - The landing zone's spec now lives here, while its runtime is built there: links between the two must be kept in sync until the runtime exists.
+- While this repo is private, the public repos' links to it don't resolve for their readers. Their pointer changes (removing the vault from avd-current-state, the spec from avd-landing-zone) merge only when this repo goes public.
