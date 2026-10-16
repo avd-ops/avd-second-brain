@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engine rule",
+  "type": "object",
+  "required": ["id", "title", "status", "version", "values", "sources", "history"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["proposed", "active"] },
+    "version": { "type": "integer", "minimum": 1 },
+    "usedBy": { "type": "string", "description": "The factory stage that reads the rule" },
+    "values": { "type": "object" },
+    "sources": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["version", "date", "change", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "version": { "type": "integer", "minimum": 1 },
+          "date": { "type": "string", "format": "date" },
+          "change": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "ref": { "type": "string", "description": "A lesson path or an engagement ID" }
+        }
+      }
+    }
+  }
+}

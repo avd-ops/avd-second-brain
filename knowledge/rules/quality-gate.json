@@ -1,0 +1,20 @@
+{
+  "$schema": "../schemas/rule.schema.json",
+  "id": "quality-gate",
+  "title": "Data quality gate before analysis",
+  "status": "active",
+  "version": 1,
+  "usedBy": "Stage 3 quality gate",
+  "values": {
+    "minUserCoverage": 0.8,
+    "minActiveDaysPerUser": 10,
+    "minWindowDays": 14,
+    "windowMustIncludePeak": true,
+    "silentMachineHours": 72,
+    "maxUserCountDeltaVsGraph": 0.1
+  },
+  "sources": ["docs/factory-spec.md#5-stage-3-quality-gate"],
+  "history": [
+    { "version": 1, "date": "2026-10-16", "change": "Seeded from the factory spec §5.", "reason": "Phase 1 of the second brain" }
+  ]
+}

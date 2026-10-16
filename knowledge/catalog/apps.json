@@ -1,0 +1,77 @@
+{
+  "$schema": "../schemas/app-catalog.schema.json",
+  "entries": [
+    {
+      "id": "microsoft/m365-apps/16",
+      "vendor": "Microsoft",
+      "product": "Microsoft 365 Apps for enterprise",
+      "majorVersion": "16",
+      "match": ["Microsoft 365 Apps for enterprise*", "Microsoft Office 365 ProPlus*", "Microsoft 365 - *"],
+      "category": "m365",
+      "scope": "public-product",
+      "multiSession": "works",
+      "delivery": "image",
+      "notes": "Install with the Office Deployment Tool and shared computer activation. Multi-session supports Microsoft 365 Apps for enterprise, and Microsoft 365 Apps for business only with Business Premium.",
+      "source": "person",
+      "evidence": [
+        { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "works", "summary": "Shared computer activation; supported editions on multi-session", "date": "2026-10-16" }
+      ],
+      "reviewedBy": "nickprignano",
+      "lastVerified": "2026-10-16"
+    },
+    {
+      "id": "microsoft/teams/2",
+      "vendor": "Microsoft",
+      "product": "Microsoft Teams (new)",
+      "majorVersion": "2",
+      "match": ["Microsoft Teams (work or school)*", "Microsoft Teams (new)*", "MSTeams*"],
+      "category": "m365",
+      "scope": "public-product",
+      "multiSession": "works",
+      "delivery": "image",
+      "notes": "Install per machine on pooled hosts, set IsWVDEnvironment and add the WebRTC Redirector Service (or SlimCore) for media optimization. Check the About banner in the pilot.",
+      "source": "person",
+      "evidence": [
+        { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/teams-on-avd", "outcome": "works", "summary": "Per-machine install required on pooled hosts; media optimization", "date": "2026-10-16" }
+      ],
+      "reviewedBy": "nickprignano",
+      "lastVerified": "2026-10-16"
+    },
+    {
+      "id": "microsoft/onedrive/x",
+      "vendor": "Microsoft",
+      "product": "Microsoft OneDrive sync app",
+      "majorVersion": "x",
+      "match": ["Microsoft OneDrive*"],
+      "category": "m365",
+      "scope": "public-product",
+      "multiSession": "works",
+      "delivery": "image",
+      "notes": "Install per machine (OneDriveSetup.exe /allusers), not per user. Silent account configuration and Known Folder Move are the default profile path for cloud-native estates (factory spec §10.2).",
+      "source": "person",
+      "evidence": [
+        { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "works", "summary": "Per-machine install on the image", "date": "2026-10-16" }
+      ],
+      "reviewedBy": "nickprignano",
+      "lastVerified": "2026-10-16"
+    },
+    {
+      "id": "microsoft/skype-for-business/16",
+      "vendor": "Microsoft",
+      "product": "Skype for Business",
+      "majorVersion": "16",
+      "match": ["Skype for Business*", "Microsoft Lync*"],
+      "category": "legacy",
+      "scope": "public-product",
+      "multiSession": "blocked",
+      "delivery": "retire",
+      "notes": "Not supported on Azure Virtual Desktop. Users move to Teams; list remaining users as a remediation item.",
+      "source": "person",
+      "evidence": [
+        { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "blocked", "summary": "Azure Virtual Desktop doesn't support Skype for Business", "date": "2026-10-16" }
+      ],
+      "reviewedBy": "nickprignano",
+      "lastVerified": "2026-10-16"
+    }
+  ]
+}

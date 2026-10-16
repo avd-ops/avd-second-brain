@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engagement record (pseudonymous)",
+  "type": "object",
+  "required": [
+    "id",
+    "period",
+    "status",
+    "estate",
+    "harvest"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^eng-[0-9]{4}-[0-9]{2}-[a-z0-9]{4}$"
+    },
+    "period": {
+      "type": "object",
+      "required": [
+        "start"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}$"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}$"
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "assessing",
+        "designing",
+        "migrating",
+        "closed",
+        "abandoned"
+      ]
+    },
+    "estate": {
+      "type": "object",
+      "required": [
+        "usersBucket",
+        "currentPlatforms",
+        "sources"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "usersBucket": {
+          "enum": [
+            "<500",
+            "500-2k",
+            "2k-10k",
+            ">10k"
+          ]
+        },
+        "currentPlatforms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "physical",
+              "citrix",
+              "horizon",
+              "rds",
+              "avd",
+              "other"
+            ]
+          }
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "stratusphere-api",
+              "stratusphere-export",
+              "graph",
+              "ad-gpo",
+              "avd-current-state",
+              "questionnaire",
+              "citrix",
+              "horizon"
+            ]
+          }
+        },
+        "industry": {
+          "type": "string",
+          "description": "A broad sector, never something that narrows it to one customer"
+        },
+        "sessionHostsBucket": {
+          "enum": [
+            "1-10",
+            "11-50",
+            "51-200",
+            ">200"
+          ],
+          "description": "Existing AVD estates, from the vault harvest"
+        },
+        "vmFamilies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{1,3}$"
+          }
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identityLane": {
+          "enum": [
+            "EntraOnly",
+            "HybridADDS",
+            "EntraDS"
+          ]
+        },
+        "renderer": {
+          "enum": [
+            "lz-cloudnative",
+            "avd-lza",
+            "terraform",
+            "report"
+          ]
+        },
+        "personas": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hostPools": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "brainCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        }
+      }
+    },
+    "harvest": {
+      "type": "object",
+      "required": [
+        "done"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "done": {
+          "type": "boolean"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "by": {
+          "type": "string"
+        },
+        "catalogEntries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ruleChanges": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lessons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "calibrationObservations": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

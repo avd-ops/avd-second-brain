@@ -1,0 +1,39 @@
+{
+  "$schema": "./sources.schema.json",
+  "sources": [
+    {
+      "name": "avd-readiness-stratusphere",
+      "url": "https://github.com/nickprignano/avd-readiness-stratusphere",
+      "ref": "main",
+      "stage": "Assess and design: the Stratusphere instrument and the migration factory",
+      "index": ["docs"],
+      "feeds": [
+        "Engagement harvests: catalog evidence, rule changes, lessons, engagement records (.claude/skills/harvest)",
+        "avd-sizing-evidence/v1 from the factory's verify stage (contracts/sizing-evidence.md)"
+      ],
+      "reads": ["knowledge/catalog/apps.json", "knowledge/rules/*.json", "knowledge/calibration/sizing.json"]
+    },
+    {
+      "name": "avd-current-state",
+      "url": "https://github.com/nickprignano/avd-current-state",
+      "ref": "main",
+      "stage": "Inventory and validate: the collector and the deployment validator",
+      "index": ["README.md"],
+      "feeds": ["Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1)"],
+      "reads": []
+    },
+    {
+      "name": "avd-landing-zone",
+      "url": "https://github.com/nickprignano/avd-landing-zone",
+      "ref": "master",
+      "stage": "Deploy and operate: the cloud-native landing zone and its operations brain",
+      "index": ["docs/lessons", "docs/decisions", "docs/gotchas.md", "docs/operations.md"],
+      "feeds": [
+        "Lessons and decisions (searched in place)",
+        "avd-sizing-evidence/v1 from the operations brain's baselines (contracts/sizing-evidence.md)",
+        "Episodes that became lessons (docs/operations-spec.md §4.6)"
+      ],
+      "reads": ["knowledge/rules/workload-tiers.json", "knowledge/calibration/sizing.json", "knowledge/catalog/apps.json (image pipeline)"]
+    }
+  ]
+}

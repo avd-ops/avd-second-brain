@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "avd-sizing-evidence/v1: measured host pool utilization",
+  "description": "Produced by the factory's verify stage (avd-readiness-stratusphere) and the landing zone's operations brain (avd-landing-zone); read by scripts/Import-SizingEvidence.ps1. No host pool, host or resource names: the contract has no field for them.",
+  "type": "object",
+  "required": ["schema", "source", "period", "hostPools"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "avd-sizing-evidence/v1" },
+    "source": { "enum": ["factory-verify", "landing-zone-brain"] },
+    "engagement": { "type": "string", "pattern": "^eng-[0-9]{4}-[0-9]{2}-[a-z0-9]{4}$", "description": "Default for every host pool; from the avdbrain-engagement tag" },
+    "wave": { "type": "integer", "minimum": 0 },
+    "period": {
+      "type": "object",
+      "required": ["start", "end"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "end": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
+      }
+    },
+    "hostPools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["vmSize", "maxSessionLimit", "hosts", "peakSessionsPerHost", "p95CpuPercent", "p95MemoryPercent"],
+        "additionalProperties": false,
+        "properties": {
+          "engagement": { "type": "string", "pattern": "^eng-[0-9]{4}-[0-9]{2}-[a-z0-9]{4}$" },
+          "tier": { "enum": ["light", "medium", "heavy", "power", "gpu"], "description": "From the avdbrain-tier tag the factory's renderer sets" },
+          "vmSize": { "type": "string", "pattern": "^Standard_[A-Za-z0-9_]+$" },
+          "maxSessionLimit": { "type": "integer", "minimum": 1 },
+          "hosts": { "type": "integer", "minimum": 1 },
+          "predictedSessionsPerHost": { "type": "number", "exclusiveMinimum": 0, "description": "From the manifest the pool was designed with; defaults to maxSessionLimit" },
+          "peakSessionsPerHost": { "type": "number", "minimum": 0, "description": "Peak concurrent sessions per available host, working hours, over the period" },
+          "p95CpuPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "p95MemoryPercent": { "type": "number", "minimum": 0, "maximum": 100 }
+        }
+      }
+    }
+  }
+}
