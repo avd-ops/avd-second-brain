@@ -1,0 +1,4 @@
+{
+  "$schema": "../schemas/calibration.schema.json",
+  "observations": []
+}

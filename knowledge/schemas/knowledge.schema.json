@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Brain configuration",
+  "type": "object",
+  "required": ["scope"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "scope": { "enum": ["public", "organization"], "description": "public: this repo, no engagement trail. organization: a private fork." },
+    "staleAfterDays": { "type": "integer", "minimum": 30 }
+  }
+}

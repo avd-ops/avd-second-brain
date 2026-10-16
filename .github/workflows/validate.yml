@@ -1,0 +1,40 @@
+name: validate
+
+# Static checks on every PR and on main: the knowledge guard, script analysis and the offline
+# tests (including an end-to-end avd-current-state package -> vault -> harvest run).
+# Read-only; nothing here deploys, calls Azure or calls a model.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  brain:
+    name: Knowledge guard + analysis + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Knowledge guard
+        shell: pwsh
+        run: ./scripts/Test-Knowledge.ps1
+
+      - name: PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          foreach ($p in 'scripts', 'vault') {
+            Invoke-ScriptAnalyzer -Path $p -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -EnableExit
+          }
+
+      - name: Pester
+        shell: pwsh
+        run: |
+          Install-Module Pester -MinimumVersion 5.5.0 -Scope CurrentUser -Force -SkipPublisherCheck
+          Invoke-Pester -Path ./tests -CI -Output Detailed

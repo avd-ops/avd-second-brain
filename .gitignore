@@ -1,0 +1,16 @@
+# Connected repos checked out by scripts/Sync-BrainSources.ps1
+.sources/
+
+# Never commit customer data: vaults, evidence packages and harvest output live elsewhere
+avd-current-state-*/
+avd-validation-*/
+*.zip
+output/
+harvest*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
+testResults.xml

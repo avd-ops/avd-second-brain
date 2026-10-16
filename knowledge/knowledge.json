@@ -1,0 +1,5 @@
+{
+  "$schema": "./schemas/knowledge.schema.json",
+  "scope": "public",
+  "staleAfterDays": 365
+}
