@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     AVD Second Brain -- turns collector and validator evidence packages into a living,
     Markdown knowledge base for an Azure Virtual Desktop estate.
@@ -93,7 +93,7 @@ $script:TempDirs  = New-Object System.Collections.Generic.List[string]
 # region Core Helpers
 # ---------------------------------------------
 
-function Write-Log {
+function Write-VaultLog {
     param([string]$Message, [ValidateSet('INFO', 'WARN', 'ERROR')][string]$Level = 'INFO')
     $entry = "[{0}] [{1}] {2}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $Level, $Message
     if ($Level -eq 'ERROR')     { Write-Host $entry -ForegroundColor Red }
@@ -157,7 +157,7 @@ function Read-JsonFile {
         if ([string]::IsNullOrWhiteSpace($text)) { return $null }
         return ($text | ConvertFrom-Json)
     } catch {
-        Write-Log "Could not parse ${Path}: $($_.Exception.Message)" -Level WARN
+        Write-VaultLog "Could not parse ${Path}: $($_.Exception.Message)" -Level WARN
         return $null
     }
 }
@@ -197,6 +197,8 @@ function Set-GeneratedBlock {
         it exists without markers, the block is inserted after the first heading so a
         hand-written page is never clobbered.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Writes only generated notes inside -BrainPath; the script has no -WhatIf mode, and its output is reviewed in Git before it is committed.')]
+    [CmdletBinding()]
     param([string]$Path, [string]$Block, [string]$Header = '', [string]$Footer = '')
     $wrapped = "$script:GenStart`n$($Block.Trim())`n$script:GenEnd"
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -265,7 +267,8 @@ function Get-CountBy {
     #>
     param([object[]]$Rows, [string]$Property)
     $map = [ordered]@{}
-    foreach ($group in ($Rows | Group-Object -Property { $v = Get-Prop $_ $Property; if ($null -eq $v -or "$v" -eq '') { '(unknown)' } else { "$v" } } | Sort-Object Name)) {
+    $name = $Property
+    foreach ($group in ($Rows | Group-Object -Property { $v = Get-Prop $_ $name; if ($null -eq $v -or "$v" -eq '') { '(unknown)' } else { "$v" } } | Sort-Object Name)) {
         $map[$group.Name] = $group.Count
     }
     return $map
@@ -278,6 +281,7 @@ function Get-CountBy {
 # ---------------------------------------------
 
 function Initialize-Vault {
+    param([string]$TemplatePath, [string]$KnowledgePath)
     if (-not (Test-Path -LiteralPath $TemplatePath)) {
         throw "Vault template not found at '$TemplatePath'. Pass -TemplatePath."
     }
@@ -306,7 +310,7 @@ function Initialize-Vault {
             $shared++
         }
     }
-    Write-Log "Vault initialised at '$BrainPath' ($created new file(s), $shared shared runbook(s))."
+    Write-VaultLog "Vault initialised at '$BrainPath' ($created new file(s), $shared shared runbook(s))."
 }
 
 function Get-StatePath { Join-Path $BrainPath (Join-Path '.brain' 'state.json') }
@@ -379,7 +383,7 @@ function Add-Run {
 # region Package Discovery
 # ---------------------------------------------
 
-function Resolve-Packages {
+function Resolve-Package {
     <#
     .SYNOPSIS
         Expands -PackagePath into package folders that contain a manifest.json.
@@ -393,7 +397,7 @@ function Resolve-Packages {
     $byName = [ordered]@{}
     foreach ($path in $Paths) {
         if (-not (Test-Path -LiteralPath $path)) {
-            Write-Log "Package path not found: $path" -Level WARN
+            Write-VaultLog "Package path not found: $path" -Level WARN
             continue
         }
         $item = Get-Item -LiteralPath $path
@@ -401,7 +405,7 @@ function Resolve-Packages {
         $zips = @()
         if (-not $item.PSIsContainer) {
             if ($item.Extension -eq '.zip') { $zips = @($item) }
-            else { Write-Log "Not a package folder or ZIP: $path" -Level WARN; continue }
+            else { Write-VaultLog "Not a package folder or ZIP: $path" -Level WARN; continue }
         } elseif (Test-Path -LiteralPath (Join-Path $item.FullName 'manifest.json')) {
             $manifests = @(Join-Path $item.FullName 'manifest.json')
         } else {
@@ -419,7 +423,7 @@ function Resolve-Packages {
                 ForEach-Object { $_.FullName })
         }
         if ($manifests.Count -eq 0) {
-            Write-Log "No evidence package found in $path." -Level WARN
+            Write-VaultLog "No evidence package found in $path." -Level WARN
         }
         foreach ($manifestPath in $manifests) {
             $manifest = Read-JsonFile -Path $manifestPath
@@ -428,7 +432,7 @@ function Resolve-Packages {
             if ($null -ne (Get-Prop $manifest 'Verdict')) { $kind = 'validation' }
             elseif ($null -ne (Get-Prop $manifest 'SubscriptionDetails')) { $kind = 'inventory' }
             if (-not $kind) {
-                Write-Log "Unrecognised manifest: $manifestPath" -Level WARN
+                Write-VaultLog "Unrecognised manifest: $manifestPath" -Level WARN
                 continue
             }
             $packageName = "$(Get-Prop $manifest 'PackageName' (Split-Path -Leaf (Split-Path -Parent $manifestPath)))"
@@ -436,7 +440,7 @@ function Resolve-Packages {
             $generated = Get-Prop $manifest 'GeneratedUtc' ''
             if ($generated -is [datetime]) { $generated = $generated.ToUniversalTime().ToString('o') }
             if ([string]::IsNullOrWhiteSpace("$generated")) {
-                Write-Log "Manifest has no GeneratedUtc, skipped: $manifestPath" -Level WARN
+                Write-VaultLog "Manifest has no GeneratedUtc, skipped: $manifestPath" -Level WARN
                 continue
             }
             $byName[$packageName] = [pscustomobject]@{
@@ -457,7 +461,7 @@ function Resolve-Packages {
 # region Inventory Ingest
 # ---------------------------------------------
 
-function Get-InventoryFacts {
+function Get-InventoryFact {
     <#
     .SYNOPSIS
         Condenses one subscription folder of a collector package into the facts the vault
@@ -643,11 +647,11 @@ function Import-InventoryPackage {
         $folderName = $subName -replace '[^\w\-\.\s]', '_' -replace '\s+', '_'
         $subDir = Join-Path $Package.Directory $folderName
         if (-not (Test-Path -LiteralPath $subDir)) {
-            Write-Log "  Subscription folder '$folderName' missing from $($Package.Name)." -Level WARN
+            Write-VaultLog "  Subscription folder '$folderName' missing from $($Package.Name)." -Level WARN
             continue
         }
 
-        $facts = Get-InventoryFacts -Directory $subDir
+        $facts = Get-InventoryFact -Directory $subDir
         $snapshotBase = "$stamp-inventory"
         Write-JsonFile -Path (Join-Path $envDir "snapshots/$snapshotBase.json") -Data $facts
         Write-TextFile -Path (Join-Path $envDir "snapshots/$snapshotBase.md") `
@@ -660,7 +664,7 @@ function Import-InventoryPackage {
         Add-Run -Environment $environment -Utc $utc -Kind 'inventory' -Package $Package.Name `
             -Summary $summary -Link "snapshots/$snapshotBase.md"
         if ($utc -gt "$($environment['LastInventory'])") { $environment['LastInventory'] = $utc }
-        Write-Log "  $subName -- $summary"
+        Write-VaultLog "  $subName -- $summary"
     }
 }
 
@@ -748,7 +752,7 @@ function Import-ValidationPackage {
     if ($null -eq $previousVerdict -or $utc -ge $previousVerdict['Utc']) {
         $environment['Verdicts'][$mode] = [ordered]@{ Verdict = $verdict; Utc = $utc; Counts = $countText; Link = "snapshots/$snapshotBase.md" }
     }
-    Write-Log "  $($environment['SubscriptionName']) -- $mode $verdict"
+    Write-VaultLog "  $($environment['SubscriptionName']) -- $mode $verdict"
 }
 
 # endregion
@@ -764,6 +768,8 @@ function Update-Drift {
     <#
     .SYNOPSIS Rewrites drift/ from consecutive inventory snapshots. Returns snapshot link -> annotation.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Writes only generated notes inside -BrainPath; the script has no -WhatIf mode, and its output is reviewed in Git before it is committed.')]
+    [CmdletBinding()]
     param($Environment)
     $envDir = Get-EnvironmentDir $Environment
     $notes = @{}
@@ -807,7 +813,7 @@ function Get-FindingKey {
     return (@('Phase', 'Category', 'Check', 'Scope') | ForEach-Object { "$($Result[$_])".Trim().ToLowerInvariant() }) -join '|'
 }
 
-function Update-Findings {
+function Update-FindingRegister {
     <#
     .SYNOPSIS
         Rebuilds the findings register by replaying every validation snapshot in time order.
@@ -817,6 +823,8 @@ function Update-Findings {
         check on the same scope later reports PASS or INFO: a SKIP, or a check that did not
         run because its inputs were omitted, proves nothing and leaves it open.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Writes only generated notes inside -BrainPath; the script has no -WhatIf mode, and its output is reviewed in Git before it is committed.')]
+    [CmdletBinding()]
     param($Environment)
     $envDir = Get-EnvironmentDir $Environment
     $findings = [ordered]@{}
@@ -865,9 +873,11 @@ function Update-Findings {
 }
 
 function Update-DerivedKnowledge {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Writes only generated notes inside -BrainPath; the script has no -WhatIf mode, and its output is reviewed in Git before it is committed.')]
+    [CmdletBinding()]
     param($Environment)
     $notes = @{}
-    foreach ($table in @((Update-Drift $Environment), (Update-Findings $Environment))) {
+    foreach ($table in @((Update-Drift $Environment), (Update-FindingRegister $Environment))) {
         foreach ($k in $table.Keys) { $notes[$k] = $table[$k] }
     }
     foreach ($run in @($Environment['Runs'])) {
@@ -920,7 +930,7 @@ function Get-Age {
     } catch { return '' }
 }
 
-function Write-EnvironmentPages {
+function Write-EnvironmentPage {
     param($Environment, $RunbookIndex)
     $envDir = Get-EnvironmentDir $Environment
     $name = $Environment['SubscriptionName']
@@ -1046,7 +1056,7 @@ function Write-HomePage {
 # ---------------------------------------------
 
 try {
-    if ($Init) { Initialize-Vault }
+    if ($Init) { Initialize-Vault -TemplatePath $TemplatePath -KnowledgePath $KnowledgePath }
 
     if (-not (Test-Path -LiteralPath $BrainPath)) {
         throw "Vault '$BrainPath' does not exist. Run with -Init first."
@@ -1054,19 +1064,19 @@ try {
     $BrainPath = (Resolve-Path -LiteralPath $BrainPath).Path
 
     if ($PackagePath.Count -eq 0) {
-        if (-not $Init) { Write-Log 'Nothing to do: pass -PackagePath to ingest evidence, or -Init to scaffold the vault.' -Level WARN }
+        if (-not $Init) { Write-VaultLog 'Nothing to do: pass -PackagePath to ingest evidence, or -Init to scaffold the vault.' -Level WARN }
         return
     }
 
     $state = Read-State
-    $packages = Resolve-Packages -Paths $PackagePath
+    $packages = Resolve-Package -Paths $PackagePath
     $ingestedNames = @(@($state['Ingested']) | ForEach-Object { $_['Package'] })
     $processed = 0
     $newPackages = @()
 
     foreach ($package in $packages) {
         if (($ingestedNames -contains $package.Name) -and -not $Force) {
-            Write-Log "Skipping $($package.Name) -- already ingested (use -Force to re-ingest)."
+            Write-VaultLog "Skipping $($package.Name) -- already ingested (use -Force to re-ingest)."
             continue
         }
         if ($Force -and ($ingestedNames -contains $package.Name)) {
@@ -1076,7 +1086,7 @@ try {
             }
             $state['Ingested'] = @(@($state['Ingested']) | Where-Object { $_['Package'] -ne $package.Name })
         }
-        Write-Log "Ingesting $($package.Kind) package $($package.Name) ($(Format-Utc $package.GeneratedUtc))"
+        Write-VaultLog "Ingesting $($package.Kind) package $($package.Name) ($(Format-Utc $package.GeneratedUtc))"
         if ($package.Kind -eq 'inventory') { Import-InventoryPackage -State $state -Package $package }
         else { Import-ValidationPackage -State $state -Package $package }
         $state['Ingested'] = @(@($state['Ingested']) + [ordered]@{
@@ -1090,18 +1100,18 @@ try {
     $runbooks = Get-RunbookIndex
     foreach ($environment in $state['Environments'].Values) {
         Update-DerivedKnowledge -Environment $environment
-        Write-EnvironmentPages -Environment $environment -RunbookIndex $runbooks
+        Write-EnvironmentPage -Environment $environment -RunbookIndex $runbooks
     }
     Write-HomePage -State $state
     Save-State -State $state
 
-    Write-Log "Done. $processed package(s) ingested into '$BrainPath'."
+    Write-VaultLog "Done. $processed package(s) ingested into '$BrainPath'."
     foreach ($environment in $state['Environments'].Values) {
         foreach ($run in (@($environment['Runs']) | Where-Object { $newPackages -contains $_['Package'] } | Sort-Object { $_['Utc'] })) {
-            Write-Log "  $(Format-Utc $run['Utc']) · $($environment['SubscriptionName']) · $($run['Kind']): $((Get-RunSummary $run) -replace '\*\*', '')"
+            Write-VaultLog "  $(Format-Utc $run['Utc']) · $($environment['SubscriptionName']) · $($run['Kind']): $((Get-RunSummary $run) -replace '\*\*', '')"
         }
     }
-    if ($processed -gt 0) { Write-Log "Review the changes and commit them: git -C `"$BrainPath`" add -A; git -C `"$BrainPath`" commit -m `"Ingest evidence`"" }
+    if ($processed -gt 0) { Write-VaultLog "Review the changes and commit them: git -C `"$BrainPath`" add -A; git -C `"$BrainPath`" commit -m `"Ingest evidence`"" }
 } finally {
     foreach ($dir in $script:TempDirs) { Remove-Item -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue }
 }

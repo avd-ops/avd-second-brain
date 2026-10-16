@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Checks the organizational second brain's knowledge base (knowledge/): schemas, scope, cross-references and customer data.
   Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.

@@ -1,4 +1,4 @@
-# The organizational second brain (docs/knowledge-spec.md): checks on the knowledge in knowledge/,
+﻿# The organizational second brain (docs/knowledge-spec.md): checks on the knowledge in knowledge/,
 # app resolution, sizing calibration and search. Every check takes data already read from disk
 # and returns findings, so it is tested offline. PowerShell 7 (Test-Json), no modules.
 # Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.

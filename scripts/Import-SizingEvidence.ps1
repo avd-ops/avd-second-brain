@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations.
   Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.

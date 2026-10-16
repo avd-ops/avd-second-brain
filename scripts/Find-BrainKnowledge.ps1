@@ -36,7 +36,8 @@ param(
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'AvdBrain.psm1') -Force
 
-switch ($PSCmdlet.ParameterSetName) {
+$mode = if ($Calibration) { 'Calibration' } else { $PSCmdlet.ParameterSetName }
+switch ($mode) {
   'Query' {
     $hits = @(Search-BrainKnowledge -Path $Path -Query $Query -Top $Top -VaultPath $VaultPath -SourcesRoot $SourcesRoot)
     if (-not $hits.Count) { Write-Host "Nothing in the brain matches '$Query'."; return }
