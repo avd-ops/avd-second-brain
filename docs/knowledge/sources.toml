@@ -1,0 +1,176 @@
+# Sources the KB curator watches. See docs/knowledge/curation.md.
+# Add a source by appending a table below; no code change needed.
+#
+# kinds:
+#   github_releases  new releases of a repo
+#   github_commits   new commits on a repo's default branch (for repos that rarely tag releases);
+#                    add path = "..." to watch only one file or folder
+#   github_org_repos new or recently pushed repos in an org
+#   github_user_repos the same for a person's account (user = "..."); add keywords to narrow it
+#   github_issues    issues and PRs opened or updated in a repo
+#   github_search    new repositories matching a search query (prior art)
+#   feed             RSS/Atom feed, optionally filtered by keywords
+#   zendesk          a Zendesk help center's recently updated articles
+#
+# Every repo and path below was checked to exist on 2026-10-18, and every feed was fetched and
+# parsed. Expert feeds come with the experts study (experts.md). Not to be confused with
+# ../../sources/sources.json, which lists the connected repos Find-BrainKnowledge.ps1 searches.
+
+# --- Microsoft: AVD, Bicep and images ---------------------------------------
+
+[[source]]
+name = "AVD Landing Zone Accelerator: releases"
+kind = "github_releases"
+repo = "Azure/avdaccelerator"
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "AVD Landing Zone Accelerator: Bicep changes"
+kind = "github_commits"
+repo = "Azure/avdaccelerator"
+path = "workload/bicep"
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "Azure Verified Modules: desktop virtualization"
+kind = "github_commits"
+repo = "Azure/bicep-registry-modules"
+path = "avm/res/desktop-virtualization"
+# Host pool, application group, workspace and scaling plan modules.
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "Bicep: releases"
+kind = "github_releases"
+repo = "Azure/bicep"
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "Azure Image Builder: API release notes"
+kind = "github_commits"
+repo = "MicrosoftDocs/azure-compute-docs"
+path = "articles/virtual-machines/image-builder-api-update-release-notes.md"
+kb_page = "images/README.md"
+
+[[source]]
+name = "Windows Desktop Optimization Tool (WDOT): releases"
+kind = "github_releases"
+repo = "The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool"
+kb_page = "images/README.md"
+
+[[source]]
+name = "Microsoft Graph PowerShell SDK: releases"
+kind = "github_releases"
+repo = "microsoftgraph/msgraph-sdk-powershell"
+kb_page = "identity/README.md"
+
+[[source]]
+name = "Microsoft Azure Virtual Desktop blog"
+kind = "feed"
+url = "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=AzureVirtualDesktopBlog"
+kb_page = "operations/README.md"
+
+[[source]]
+name = "FSLogix blog"
+kind = "feed"
+url = "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=FSLogix-Blog"
+kb_page = "fslogix/README.md"
+
+[[source]]
+name = "Azure updates: Virtual Desktop, FSLogix, Image Builder, Kerberos"
+kind = "feed"
+url = "https://www.microsoft.com/releasecommunications/api/v2/azure/rss"
+keywords = ["Virtual Desktop", "AVD", "FSLogix", "Image Builder", "Azure Files", "Kerberos"]
+kb_page = "landing-zone/README.md"
+
+# --- Prior art ----------------------------------------------------------------
+
+[[source]]
+name = "Repos: azure virtual desktop bicep"
+kind = "github_search"
+query = "azure virtual desktop bicep"
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "Repos: fslogix entra kerberos"
+kind = "github_search"
+query = "fslogix kerberos"
+kb_page = "fslogix/README.md"
+
+# --- The connected AVD repos ----------------------------------------------------
+# Their lessons and decisions stay where they happened; the digest shows new ones so the topic
+# pages can link them. avd-readiness-ux (formerly avd-readiness-stratusphere) is private, so the
+# built-in token can't read it; its source is left out until it's public.
+
+[[source]]
+name = "avd-landing-zone: lessons"
+kind = "github_commits"
+repo = "nickprignano/avd-landing-zone"
+path = "docs/lessons"
+kb_page = "troubleshooting/README.md"
+
+[[source]]
+name = "avd-landing-zone: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-landing-zone"
+path = "docs/decisions"
+kb_page = "landing-zone/README.md"
+
+[[source]]
+name = "avd-swarm: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-swarm"
+path = "docs/decisions"
+kb_page = "operations/README.md"
+
+[[source]]
+name = "avd-current-state: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-current-state"
+kb_page = "assessment/README.md"
+
+# --- The family (family.yaml) ---------------------------------------------------
+# Two sources per sibling, required by validate.py: its decisions, and everything else in its KB.
+
+[[source]]
+name = "Nerdio HCL kit KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/nerdio-hcl"
+path = "docs/knowledge/decisions"
+kb_page = "curation.md"
+
+[[source]]
+name = "Nerdio HCL kit KB: changes"
+kind = "github_commits"
+repo = "nickprignano/nerdio-hcl"
+path = "docs/knowledge"
+kb_page = "curation.md"
+
+[[source]]
+name = "Liquidware KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge/decisions"
+# Quiet until the Liquidware KB exists at this path.
+kb_page = "curation.md"
+
+[[source]]
+name = "Liquidware KB: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge"
+kb_page = "curation.md"
+
+[[source]]
+name = "AI research KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/ai-brain"
+path = "docs/knowledge/decisions"
+kb_page = "curation.md"
+
+[[source]]
+name = "AI research KB: changes"
+kind = "github_commits"
+repo = "nickprignano/ai-brain"
+path = "docs/knowledge"
+kb_page = "curation.md"

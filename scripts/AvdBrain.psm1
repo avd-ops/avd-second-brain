@@ -26,9 +26,10 @@ function Get-BrainProperty {
 }
 
 function Get-BrainSensitiveText {
-  # Finds text that must not be in the brain (spec §5): email addresses and UPNs, IPv4 addresses
-  # outside the documentation ranges, non-placeholder GUIDs, UNC paths, default Windows machine
-  # names, and phrases whose SHA-256 is on the denylist. Matches are masked in the message.
+  # Finds text that must not be in the brain (spec §5): email addresses and UPNs other than the
+  # example.com, contoso.com and GitHub noreply placeholders, IPv4 addresses outside the
+  # documentation ranges, non-placeholder GUIDs, UNC paths, default Windows machine names, and
+  # phrases whose SHA-256 is on the denylist. Matches are masked in the message.
   [CmdletBinding()]
   param(
     [Parameter(Mandatory)] [AllowEmptyString()] [string] $Text,
@@ -44,7 +45,7 @@ function Get-BrainSensitiveText {
     $hits = @()
 
     foreach ($m in [regex]::Matches($line, '[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}')) {
-      if ($m.Value -notmatch '@example\.(com|org|net)$') { $hits += , @('email-or-upn', $m.Value) }
+      if ($m.Value -notmatch '@(example\.(com|org|net)|contoso\.com|users\.noreply\.github\.com)$') { $hits += , @('email-or-upn', $m.Value) }
     }
     foreach ($m in [regex]::Matches($line, '(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])')) {
       $octets = $m.Value -split '\.' | ForEach-Object { [int]$_ }

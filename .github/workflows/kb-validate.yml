@@ -1,0 +1,48 @@
+# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+name: kb-validate
+
+# Checks the knowledge base on every change to it: front matter and YAML against the JSON Schemas,
+# MADR decision records, links and anchors, leak patterns, generated files (indexes, tables,
+# llms.txt) in sync, the family checks, the KB scripts' unit tests, and the brain's leak guard over
+# the KB (scripts/Test-KbLeaks.ps1). Secrets are covered by gitleaks in secrets.yml.
+
+on:
+  pull_request:
+    paths:
+      - docs/knowledge/**
+      - scripts/kb/**
+      - scripts/Test-KbLeaks.ps1
+      - scripts/AvdBrain.psm1
+      - llms.txt
+      - .github/ISSUE_TEMPLATE/**
+      - .github/workflows/kb-*.yml
+  push:
+    branches: [main]
+    paths:
+      - docs/knowledge/**
+      - scripts/kb/**
+      - scripts/Test-KbLeaks.ps1
+      - scripts/AvdBrain.psm1
+      - llms.txt
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scripts/kb/requirements.txt
+      - name: Schema, links and leak patterns
+        run: python3 scripts/kb/validate.py
+      - name: Generated files in sync
+        run: python3 scripts/kb/build.py --check
+      - name: Unit tests
+        run: python3 -m unittest discover -s scripts/kb -v
+      - name: Brain leak guard (GUIDs, UNC paths, machine names, denylist)
+        shell: pwsh
+        run: ./scripts/Test-KbLeaks.ps1

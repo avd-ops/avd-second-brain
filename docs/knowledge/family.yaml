@@ -1,0 +1,35 @@
+# The family of sibling knowledge bases. They share the format (schemas, scripts, checks,
+# workflows, guardrails), not the content. Schema: schema/family.schema.json
+# build.py turns this into "Related knowledge bases" in README.md and llms.txt. validate.py checks
+# that sources.toml watches each set-up sibling, and kb-freshness flags a sibling on a different
+# format_version. Rows in <angle brackets> are placeholders until that sibling is set up.
+
+kbs:
+- name: AVD project
+  repo: nickprignano/avd-second-brain
+  path: docs/knowledge
+  focus: >-
+    Azure Virtual Desktop across its lifecycle (assess, inventory, deploy, operate) with Azure-native
+    tooling, and the intelligence layer behind avd-swarm
+  format_version: 1
+  visibility: public
+- name: Nerdio HCL kit
+  repo: nickprignano/nerdio-hcl
+  path: docs/knowledge
+  focus: Nerdio Manager on AVD, Terraform and Packer (the reference implementation)
+  format_version: 1
+  visibility: public
+- name: Liquidware project
+  # The repo is nickprignano/avd-liquidware, but its KB isn't set up yet. Drop the brackets once
+  # docs/knowledge/family.yaml exists there.
+  repo: <nickprignano>/<avd-liquidware>
+  path: docs/knowledge
+  focus: Liquidware ProfileUnity, FlexApp, CommandCTRL and Stratusphere as an optional AVD tier
+  format_version: 1
+  visibility: public
+- name: AI research
+  repo: nickprignano/ai-brain
+  path: docs/knowledge
+  focus: Claude API, agents and AI tooling used across the family and in personal apps
+  format_version: 1
+  visibility: public
