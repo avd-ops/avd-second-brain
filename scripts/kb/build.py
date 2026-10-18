@@ -6,7 +6,7 @@ Generated:
   - the index table in docs/knowledge/README.md (from page front matter)
   - the list in docs/knowledge/decisions/README.md (from decision records)
   - the tables in troubleshooting/README.md, microsoft/upstream-contributions.md and experts.md (from YAML)
-  - the "Related knowledge bases" list in docs/knowledge/README.md (from family.yaml)
+  - the "Related knowledge bases" table in docs/knowledge/README.md (from family.yaml)
   - llms.txt at the repo root (from all of the above)
 
     python3 scripts/kb/build.py           # rewrite files
@@ -164,26 +164,20 @@ def render_expert_balance() -> str:
             f"{by_status['nominated']} nominated and waiting to be scored.\n")
 
 
-def family_rows() -> list[str]:
-    """One line per KB in family.yaml, for the README and llms.txt."""
-    data = kblib.family()
-    out = []
-    for k in data.get("kbs", []):
-        if k.get("repo") == kblib.THIS_REPO:
-            continue
-        if str(k.get("repo", "")).startswith("<"):
-            out.append(f"- {k['name']}: not set up yet")
-            continue
-        url = f"https://github.com/{k['repo']}/tree/main/{k['path']}"
-        out.append(f"- [{k['name']}]({url}): {k['focus']} (format version {k['format_version']})")
-    return out
+def family_rows() -> list[dict]:
+    return [p for p in kblib.load_yaml(kblib.FAMILY)["projects"] if not p.get("self")]
+
+
+def family_link(p: dict) -> str:
+    if not p.get("repo"):
+        return f"{p['name']} (repo not linked yet)"
+    path = p.get("kb_path", "docs/knowledge").strip("/")
+    return f"[{p['name']}](https://github.com/{p['repo']}/tree/main/{path})"
 
 
 def render_family() -> str:
-    me = kblib.family_self()
-    head = (f"This KB follows family format version {me.get('format_version', '?')}. "
-            "Its siblings share the format, not the content:\n\n")
-    return head + "\n".join(family_rows()) + "\n"
+    rows = [[family_link(p), p.get("role", "member"), p["focus"], "; ".join(p["owns"])] for p in family_rows()]
+    return table(["Knowledge base", "Role", "Focus", "Source of truth for"], rows)
 
 
 def render_llms_txt() -> str:
@@ -220,7 +214,9 @@ def render_llms_txt() -> str:
     ]
     for p, fm, title in decisions():
         lines.append(f"- [{title}](docs/knowledge/decisions/{p.name}): {fm.get('status', '')}")
-    lines += ["", "## Related knowledge bases", ""] + family_rows()
+    lines += ["", "## Related knowledge bases", ""]
+    for p in family_rows():
+        lines.append(f"- {family_link(p)}: {p['focus']}. Source of truth for: {'; '.join(p['owns'])}")
     lines += [
         "",
         "## Optional",

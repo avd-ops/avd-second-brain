@@ -1,35 +1,38 @@
-# The family of sibling knowledge bases. They share the format (schemas, scripts, checks,
-# workflows, guardrails), not the content. Schema: schema/family.schema.json
-# build.py turns this into "Related knowledge bases" in README.md and llms.txt. validate.py checks
-# that sources.toml watches each set-up sibling, and kb-freshness flags a sibling on a different
-# format_version. Rows in <angle brackets> are placeholders until that sibling is set up.
+# The knowledge base family: sibling KBs that share this KB's format and know about each other.
+# Schema: schema/family.schema.json, the same in every KB. How it works:
+# curation.md#staying-aligned-with-the-family. Add a sibling's repo once it's known, then add
+# its two sources in sources.toml.
 
-kbs:
-- name: AVD project
+format_version: 1
+projects:
+- id: avd
+  name: AVD
+  self: true
   repo: nickprignano/avd-second-brain
-  path: docs/knowledge
-  focus: >-
-    Azure Virtual Desktop across its lifecycle (assess, inventory, deploy, operate) with Azure-native
-    tooling, and the intelligence layer behind avd-swarm
+  kb_path: docs/knowledge
+  role: member
+  focus: Azure Virtual Desktop itself, across its lifecycle (assess, inventory, deploy, operate), and the intelligence layer behind avd-swarm
+  owns: [Azure Virtual Desktop platform, FSLogix, session host images in general, the AVD landing zone and its operations]
   format_version: 1
-  visibility: public
-- name: Nerdio HCL kit
-  repo: nickprignano/nerdio-hcl
-  path: docs/knowledge
-  focus: Nerdio Manager on AVD, Terraform and Packer (the reference implementation)
-  format_version: 1
-  visibility: public
-- name: Liquidware project
-  # The repo is nickprignano/avd-liquidware, but its KB isn't set up yet. Drop the brackets once
-  # docs/knowledge/family.yaml exists there.
-  repo: <nickprignano>/<avd-liquidware>
-  path: docs/knowledge
-  focus: Liquidware ProfileUnity, FlexApp, CommandCTRL and Stratusphere as an optional AVD tier
-  format_version: 1
-  visibility: public
-- name: AI research
+- id: ai
+  name: AI
   repo: nickprignano/ai-brain
-  path: docs/knowledge
-  focus: Claude API, agents and AI tooling used across the family and in personal apps
+  kb_path: docs/knowledge
+  role: hub
+  focus: The AI research behind all four projects
+  owns: [Claude API and Microsoft Foundry use, model choices, keyless sign-in for AI APIs, prompts and evaluations,
+    AI tooling shared by the family]
   format_version: 1
-  visibility: public
+- id: nerdio-hcl
+  name: Nerdio HCL kit
+  repo: nickprignano/nerdio-hcl
+  kb_path: docs/knowledge
+  role: reference
+  focus: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer
+  owns: [Nerdio Manager, the nerdio/nme provider, this kit's Terraform and Packer]
+  format_version: 1
+- id: liquidware
+  name: Liquidware
+  role: member
+  focus: Liquidware products on virtual desktops
+  owns: [Liquidware products]

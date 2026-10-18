@@ -24,9 +24,6 @@ EXPERTS = KB_DIR / "experts.yaml"
 SOURCES = KB_DIR / "sources.toml"
 FAMILY = KB_DIR / "family.yaml"
 
-# This repo, as family.yaml names it.
-THIS_REPO = "nickprignano/avd-second-brain"
-
 # The experts study (experts.md): five scores of 0-3, plus pass/fail gates.
 TRACK_AT = 10
 WATCH_AT = 6
@@ -139,17 +136,14 @@ def family() -> dict:
     return load_yaml(FAMILY) or {}
 
 
-def family_self(data: dict | None = None) -> dict:
-    """This KB's own entry in family.yaml."""
-    data = data or family()
-    return next((k for k in data.get("kbs", []) if k.get("repo") == THIS_REPO), {})
-
-
 def siblings(data: dict | None = None) -> list[dict]:
-    """Sibling KBs that are set up: placeholder rows (repo in <angle brackets>) are skipped."""
-    data = data or family()
-    return [k for k in data.get("kbs", [])
-            if k.get("repo") != THIS_REPO and not str(k.get("repo", "")).startswith("<")]
+    """Sibling KBs whose repo is known; a row without a repo isn't linked yet."""
+    data = family() if data is None else data
+    return [p for p in data.get("projects", []) if not p.get("self") and p.get("repo")]
+
+
+def kb_path(project: dict) -> str:
+    return project.get("kb_path", "docs/knowledge").strip("/")
 
 
 def expert_total(e: dict) -> int:

@@ -110,13 +110,16 @@ text, `last_reviewed` and `status`. Run it locally with `python3 scripts/kb/fres
 
 ## Staying aligned with the family
 
-[family.yaml](family.yaml) lists every KB in the family, this one included, with its repo, KB path,
-focus and the family format version it follows. `build.py` turns it into the "Related knowledge
-bases" section of the [KB README](README.md#related-knowledge-bases) and of `llms.txt`.
+[family.yaml](family.yaml) lists every KB in the family, this one included (`self: true`): its
+repo, KB path, role, focus, what it's the source of truth for (`owns`) and the family format version.
+The AI KB is the hub: it owns the AI knowledge the others use. nerdio-hcl is the format's reference
+implementation. A sibling without a `repo` isn't linked yet. `build.py` turns the file into the
+"Related knowledge bases" table in the [KB README](README.md#related-knowledge-bases) and a section
+in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in every KB.
 
 - **Watch each other.** Each set-up sibling gets two `github_commits` sources in
   [sources.toml](sources.toml): one with `path` set to its decisions folder, and one with `path` set
-  to its KB folder. `validate.py` fails if either is missing. A private sibling can't be read with
+  to its KB folder. `validate.py` fails if either is missing for a sibling with a `repo`. A private sibling can't be read with
   the built-in token; its sources stay in and start working once the repo is public.
 - **Link instead of copying.** When a fact belongs to a sibling's topic, link to their page. When we
   learn something they need, open an issue or PR on their repo with the evidence. If two KBs

@@ -50,9 +50,9 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 
 ## Related knowledge bases
 
-- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on AVD, Terraform and Packer (the reference implementation) (format version 1)
-- Liquidware project: not set up yet
-- [AI research](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): Claude API, agents and AI tooling used across the family and in personal apps (format version 1)
+- [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): The AI research behind all four projects. Source of truth for: Claude API and Microsoft Foundry use; model choices; keyless sign-in for AI APIs; prompts and evaluations; AI tooling shared by the family
+- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer. Source of truth for: Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer
+- Liquidware (repo not linked yet): Liquidware products on virtual desktops. Source of truth for: Liquidware products
 
 ## Optional
 
