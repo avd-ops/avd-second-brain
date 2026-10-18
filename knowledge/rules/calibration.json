@@ -33,7 +33,7 @@
       "date": "2026-10-16",
       "change": "Added minPeakSessionsPerHost 3 and minBindingUtilization 0.4 for imported sizing evidence.",
       "reason": "Measured sessions per host are extrapolated linearly to the target utilization; a lightly loaded host pool would extrapolate too far to be evidence (P5).",
-      "ref": "docs/decisions/0001-one-brain-for-the-avd-lifecycle.md"
+      "ref": "docs/knowledge/decisions/0001-one-brain-for-the-avd-lifecycle.md"
     }
   ]
 }
