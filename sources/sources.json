@@ -34,6 +34,19 @@
         "Episodes that became lessons (docs/operations-spec.md §4.6)"
       ],
       "reads": ["knowledge/rules/workload-tiers.json", "knowledge/calibration/sizing.json", "knowledge/catalog/apps.json (image pipeline)"]
+    },
+    {
+      "name": "avd-swarm",
+      "url": "https://github.com/nickprignano/avd-swarm",
+      "ref": "main",
+      "stage": "Act and control: the agents, the approval path, the executor and the kill switch (decision 0003)",
+      "index": ["docs"],
+      "feeds": [
+        "avd-swarm-insights/v1: insights, incidents and grading scores (contracts C8)",
+        "Action outcomes and the kill switch position (contracts C10)",
+        "Lessons and decisions (searched in place)"
+      ],
+      "reads": ["Playbook run proposals (contracts C9)", "knowledge/ at a pinned commit (contracts C6)"]
     }
   ]
 }

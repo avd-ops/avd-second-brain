@@ -11,6 +11,11 @@ What each repo gives the brain and takes from it, in a form that can be tested. 
 | C5 | Host pool attribution tags | The factory's `lz-cloudnative` renderer | The operations brain, when it writes C4 | Tags on the host pool | Specified |
 | C6 | Reading the knowledge base | `knowledge/` at a commit | The factory engine; the landing zone's sizing and image pipeline | The knowledge schemas, pinned by commit | Specified |
 | C7 | Searchable docs | Every connected repo | `scripts/Find-BrainKnowledge.ps1` | Markdown under the paths in `sources/sources.json` | Built |
+| C8 | Swarm insights | avd-swarm's Improve workflow and judge auditor | The `harvest` skill, then `knowledge/` by PR | `avd-swarm-insights/v1`: counts and topics from a fixed vocabulary, no free text, no names or IDs | Specified |
+| C9 | Playbook run proposal | The brain (a playbook matched to an episode by signature) | avd-swarm's `propose_playbook_run`, then its gate and approval | Playbook ID and content hash, targets as resource IDs, parameters bound from the episode, evidence links, the Critic's dissent | Specified |
+| C10 | Action outcomes and switch position | avd-swarm | The brain's episodes and its own halts | Outcome per plan (verified, failed, rolled back, rejected with a reason category) and the kill switch position, as events | Specified |
+
+C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other.
 
 ## C1. Evidence packages → vault
 

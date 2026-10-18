@@ -43,6 +43,9 @@ They are the same idea at different points of one lifecycle: **assess → invent
 | Inventory and validate | avd-current-state | Evidence packages into a customer vault | — |
 | Deploy | avd-landing-zone | Lessons and decisions | Workload tiers and calibration for its sizing defaults; catalog for the image pipeline |
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
+| Act and control | [avd-swarm](https://github.com/nickprignano/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
+
+**The brain thinks, avd-swarm acts** ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
 
 ## 3. Layers and scopes
 
@@ -68,6 +71,8 @@ The factory's engagement folders (`output/engagements/` in avd-readiness-stratus
 | 4 | Factory engagement → knowledge | The `harvest` skill drafts catalog evidence, rule changes, lessons and the engagement record ([knowledge spec](knowledge-spec.md) §6) | Built (skill and guard); the engine's `avdmf learn` comes with the factory engine |
 | 5 | Measured utilization → calibration | `avd-sizing-evidence/v1` ([contracts](contracts.md) C4) from the factory's verify stage and from the operations brain, imported by `scripts/Import-SizingEvidence.ps1` | Importer built; producers specified |
 | 6 | Knowledge → factory and landing zone | They read `knowledge/` at a pinned commit ([contracts](contracts.md) C6) | Specified |
+| 8 | avd-swarm → brain | `avd-swarm-insights/v1` ([contracts](contracts.md) C8), action outcomes and the switch position (C10) | Specified |
+| 9 | Brain → avd-swarm | Playbook run proposals ([contracts](contracts.md) C9); the Concierge as a read tool | Specified |
 | 7 | Every repo's lessons and decisions → search | `scripts/Sync-BrainSources.ps1` checks out the repos in `sources/sources.json`; `scripts/Find-BrainKnowledge.ps1` searches them, the knowledge base and optionally a vault, and cites `<repo>@<commit>:<path>` | Built |
 
 Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's `lz-cloudnative` renderer tags each host pool with `avdbrain-engagement` and `avdbrain-tier` ([contracts](contracts.md) C5); a host pool without them yields no observation, because there is no prediction to compare with.
@@ -100,7 +105,7 @@ avd-second-brain/
 
 ## 7. Open questions
 
-- **Q1. Should the operations brain's runtime move here too?** Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would make avd-second-brain a second deployable. Recommendation: no, until a second landing-zone flavor (the `avd-lza` renderer's target) needs the same runtime.
+- **Q1. Should the operations brain's runtime move here too?** (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would make avd-second-brain a second deployable. Recommendation: no, until a second landing-zone flavor (the `avd-lza` renderer's target) needs the same runtime.
 - **Q2. One organization fork, or one per practice?** The knowledge spec recommends one per organization.
 - **Q3. Vault per customer, or one vault per organization with environments from many customers?** The vault keys environments by subscription, so both work; per customer keeps access simpler.
 - **Q4. Shared playbooks.** The operations brain's playbooks are generic by design. Should verified playbooks and their run statistics become shared knowledge like runbooks? Probably, once two adopters run the same playbook.
