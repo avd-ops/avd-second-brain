@@ -28,6 +28,7 @@ The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [
 | **Estate vault** (`vault/`) | One customer's estate as a Markdown vault: environments, drift, findings, decisions, runbooks, built from avd-current-state packages. Kept in the customer's private repo | [vault.md](docs/vault.md) | Built (moved from avd-current-state) |
 | **Operations brain** | Detections, playbooks with a person approving every change, episodes, the kill switch, for a running landing zone. The runtime deploys from avd-landing-zone | [operations-spec.md](docs/operations-spec.md), [red team](docs/operations-redteam.md) | Specified (moved from avd-landing-zone) |
 | **Docs consistency** | A deterministic check that keeps code comments, READMEs, changelogs, docs and a generated wiki consistent with the code and the brain's contracts and sources; avd-swarm's Scribe drafts the fixes | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Specified |
+| **Family knowledge base** (`docs/knowledge/`) | Topic pages, decision records (MADR 4), known errors, upstream asks, sources and experts, for people and agents. One of four sibling knowledge bases that share a format and link each other | [docs/knowledge/README.md](docs/knowledge/README.md), [guardrails](docs/guardrails.md) | Built; pages being seeded |
 
 ## Quick start
 
@@ -59,6 +60,7 @@ Set-Location avd-second-brain
 
 - **Tenant data stays with the tenant.** Vaults live in the customer's private repo; the knowledge base holds only generalized facts, and a guard (`scripts/Test-Knowledge.ps1`, in CI) fails on customer names, addresses, IDs, LOB apps and engagement trails in the public scope.
 - **Models propose, people approve.** Knowledge changes only by a PR a person merges. A model never sets a verdict, a rule or a plan on its own.
+- **The guardrails apply to everyone** ([docs/guardrails.md](docs/guardrails.md); AI assistants also read [AGENTS.md](AGENTS.md)): nothing in the repo identifies a tenant, customer or employer; secrets never go through chat, the repo or the knowledge base; changes land as pull requests and nothing touches a real environment without the owner's yes; code from unlicensed repos is reference only; Azure-native, GitHub, HashiCorp and open-source tooling first; everything runs from Azure Cloud Shell.
 - **Every number traces to evidence.** Rules carry a history with a reason per change; catalog verdicts cite a document, a pilot or an engagement; calibration factors are computed from observations when read.
 
 ## Validate
@@ -67,4 +69,8 @@ Set-Location avd-second-brain
 pwsh -c "./scripts/Test-Knowledge.ps1"
 pwsh -c "foreach (\$p in 'scripts','vault') { Invoke-ScriptAnalyzer -Path \$p -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -EnableExit }"
 pwsh -c "Invoke-Pester -Path ./tests -CI"
+
+# The family knowledge base (docs/knowledge/), as kb-validate runs it
+python3 scripts/kb/build.py --check && python3 scripts/kb/validate.py && python3 -m unittest discover -s scripts/kb
+pwsh -c "./scripts/Test-KbLeaks.ps1"
 ```
