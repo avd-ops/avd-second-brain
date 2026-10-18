@@ -1,4 +1,4 @@
-#requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.0.0' }
+﻿#requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.0.0' }
 # Offline tests for the connections between the source repos and the brain (docs/architecture.md):
 # avd-current-state packages -> vault -> harvest proposal, shared runbooks -> vault,
 # avd-sizing-evidence/v1 -> calibration observations, and search across connected repos.
@@ -219,11 +219,86 @@ Describe 'avd-sizing-evidence/v1 -> calibration' {
   }
 }
 
+Describe 'Fact register (C15) and target-state manifest (C14)' {
+  BeforeAll {
+    $script:contracts = Join-Path $script:root 'contracts'
+    $script:register = Get-Content (Join-Path $script:contracts 'fact-register.json') -Raw | ConvertFrom-Json
+    $script:c11 = Get-Content (Join-Path $script:contracts 'schemas/current-state-facts.schema.json') -Raw | ConvertFrom-Json
+    $script:manifestSchema = Join-Path $script:contracts 'schemas/target-state.schema.json'
+    $script:example = Join-Path $script:contracts 'examples/target-state.example.json'
+    $script:rules = Join-Path $script:root 'knowledge/rules'
+    function Write-Manifest {
+      param([scriptblock] $Change)
+      $m = Get-Content $script:example -Raw | ConvertFrom-Json
+      & $Change $m
+      $f = Join-Path $TestDrive "m-$([guid]::NewGuid().ToString('n').Substring(0, 6)).json"
+      $m | ConvertTo-Json -Depth 12 | Set-Content $f
+      $f
+    }
+    function Get-ManifestCheck { param([string] $File) @((Test-TargetState -File $File -SchemaFile $script:manifestSchema -Register $script:register -RulesPath $script:rules).Findings | ForEach-Object Check) }
+  }
+
+  It 'the register matches its schema and every built fact resolves in its contract' {
+    Test-Json -Path (Join-Path $script:contracts 'fact-register.json') -SchemaFile (Join-Path $script:contracts 'schemas/fact-register.schema.json') | Should -BeTrue
+    @(Test-FactRegister -Register $script:register -SchemaByContract @{ C11 = $script:c11 }) | Should -BeNullOrEmpty
+  }
+  It 'catches a built fact whose path the contract no longer has' {
+    $r = $script:register | ConvertTo-Json -Depth 8 | ConvertFrom-Json
+    ($r.facts | Where-Object id -eq 'c11.hostPool.type').path = '/subscriptions/*/hostPools/*/kind'
+    (Test-FactRegister -Register $r -SchemaByContract @{ C11 = $script:c11 }).Check | Should -Contain 'register:path-not-in-schema'
+  }
+  It 'every decision has an Azure-tier or a forensic-tier source, and the upsell split holds' {
+    $azure = @($script:register.decisions | Where-Object { 'azure' -in $_.decidableFrom }).id
+    $azure | Should -Be @('region', 'network', 'hostPool.type', 'hostPool.appGroup', 'hostPool.power')
+    foreach ($d in $script:register.decisions) {
+      @($script:register.facts | Where-Object { $d.id -in $_.evidences -and $_.status -ne 'proposed' }).Count | Should -BeGreaterThan 0 -Because "$($d.id) needs a fact that can support it"
+    }
+  }
+  It 'accepts the example manifest' {
+    $r = Test-TargetState -File $script:example -SchemaFile $script:manifestSchema -Register $script:register -RulesPath $script:rules
+    $r.Document | Should -Not -BeNullOrEmpty
+    $r.Findings | Should -BeNullOrEmpty
+  }
+  It 'the example approval pins the example manifest byte for byte' {
+    $a = Join-Path $script:contracts 'examples/target-approval.example.json'
+    Test-Json -Path $a -SchemaFile (Join-Path $script:contracts 'schemas/target-approval.schema.json') | Should -BeTrue
+    (Get-Content $a -Raw | ConvertFrom-Json).manifestSha256 | Should -Be (Get-FileHash $script:example -Algorithm SHA256).Hash.ToLowerInvariant()
+  }
+  It 'refuses <Why>' -ForEach @(
+    @{ Why = 'a fact that is not registered'; Check = 'manifest:unknown-fact'; Change = { param($m) $m.region.evidence = @('c11.hostPool.colour@hp-ac5fc5e3') } }
+    @{ Why = 'a fact that cannot support the decision'; Check = 'manifest:fact-cannot-support'; Change = { param($m) $m.hostPools[0].vmSize.evidence = @('c11.network.virtualNetworks') } }
+    @{ Why = 'a host pool fact without its subject'; Check = 'manifest:missing-subject'; Change = { param($m) $m.region.evidence = @('c11.hostPool.region') } }
+    @{ Why = 'a proposed Liquidware fact'; Check = 'manifest:proposed-fact'; Change = { param($m) $m.identity.evidence = @('liquidware.version@hp-ac5fc5e3') } }
+    @{ Why = 'a rule that does not exist'; Check = 'manifest:unknown-rule'; Change = { param($m) $m.hostPools[0].hosts | Add-Member rule 'spare-hosts@v1' } }
+    @{ Why = 'a rule version from the future'; Check = 'manifest:future-rule'; Change = { param($m) $m.hostPools[0].vmSize.rule = 'workload-tiers@v9' } }
+    @{ Why = 'too few hosts for the peak'; Check = 'manifest:capacity'; Change = { param($m) $m.hostPools[0].hosts.value = 6 } }
+    @{ Why = 'gaps for a renderer we own'; Check = 'manifest:gaps'; Change = { param($m) $m.target.gaps = @('hostPools/0/type.Personal') } }
+    @{ Why = 'another register version'; Check = 'manifest:register-version'; Change = { param($m) $m.pins.factRegister = 2 } }
+  ) {
+    Get-ManifestCheck (Write-Manifest $Change) | Should -Contain $Check
+  }
+  It 'has no field for <Why>' -ForEach @(
+    @{ Why = 'a subscription ID'; Change = { param($m) $m | Add-Member subscriptionId '00000000-0000-0000-0000-000000000001' } }
+    @{ Why = 'a group name'; Change = { param($m) $m.hostPools[0] | Add-Member usersGroup 'AVD Users' } }
+    @{ Why = 'an app by name'; Change = { param($m) $m.hostPools[0].apps.image = @('Contoso Ledger 7') } }
+    @{ Why = 'a URL in a note'; Change = { param($m) $m.region | Add-Member note 'see https://contoso.example/x' } }
+    @{ Why = 'an approval inside the manifest'; Change = { param($m) $m | Add-Member approval @{ state = 'approved' } } }
+  ) {
+    Get-ManifestCheck (Write-Manifest $Change) | Should -Be @('schema')
+  }
+  It 'keeps estate pseudonyms out of knowledge/' {
+    $k = Join-Path $TestDrive 'kb'
+    Copy-Item -Recurse (Join-Path $script:root 'knowledge') $k
+    Set-Content (Join-Path $k 'runbooks/leak.md') '# Seen on hp-ac5fc5e3 last week'
+    (Test-BrainKnowledge -Path $k).Check | Should -Contain 'sensitive:estate-pseudonym'
+  }
+}
+
 Describe 'Connected repositories' {
   It 'sources.json matches its schema and names the connected repos' {
     $file = Join-Path $script:root 'sources/sources.json'
     Test-Json -Json (Get-Content $file -Raw) -SchemaFile (Join-Path $script:root 'sources/sources.schema.json') | Should -BeTrue
-    (Get-BrainSource -Path $file).name | Should -Be @('avd-readiness-stratusphere', 'avd-current-state', 'avd-landing-zone', 'avd-swarm')
+    (Get-BrainSource -Path $file).name | Should -Be @('avd-readiness-stratusphere', 'avd-liquidware', 'avd-current-state', 'avd-landing-zone', 'avd-swarm')
   }
   It 'searches a checked-out source and cites it with its commit' {
     $sr = Join-Path $TestDrive 'sources'

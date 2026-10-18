@@ -1,0 +1,260 @@
+# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+"""Tests for the knowledge base scripts. Run: python3 -m unittest discover -s scripts/kb"""
+
+from __future__ import annotations
+
+import shutil
+import sys
+import tempfile
+import unittest
+from datetime import date
+from pathlib import Path
+from unittest import mock
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import build  # noqa: E402
+import feedback  # noqa: E402
+import freshness  # noqa: E402
+import kblib  # noqa: E402
+
+SAFE = "### Public-safe\n\n- [X] I removed tenant, subscription and resource IDs, names, domains, emails, IP addresses and secrets.\n"
+
+FEEDBACK_BODY = """### Outcome
+
+Broke or gave the wrong result
+
+### Page
+
+docs/knowledge/fslogix/README.md
+
+### What happened
+
+The SMB encryption fix needed a different setting name.
+
+### Versions
+
+_No response_
+
+### Evidence
+
+_No response_
+
+""" + SAFE
+
+KNOWN_ERROR_BODY = """### Symptom
+
+`Access is denied` mounting an Azure Files share
+
+### Cause
+
+Renamed in a module release.
+
+### Fix
+
+Use the new argument name.
+
+### Source
+
+https://example.com/changelog
+
+### Versions
+
+Az.Storage 7.4.0
+
+### Confidence
+
+Fix worked once; the cause is a guess
+
+""" + SAFE
+
+
+class TempData(unittest.TestCase):
+    """Point the data files at temporary copies so tests never touch the real KB."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.patches = []
+        for name in ("KNOWN_ERRORS", "FIELD_REPORTS", "EXPERTS"):
+            src = getattr(kblib, name)
+            dst = self.tmp / src.name
+            shutil.copy(src, dst)
+            p = mock.patch.object(kblib, name, dst)
+            p.start()
+            self.patches.append(p)
+
+    def tearDown(self):
+        for p in self.patches:
+            p.stop()
+        shutil.rmtree(self.tmp)
+
+
+class FeedbackTests(TempData):
+    def test_parse_form(self):
+        fields = feedback.parse_form(FEEDBACK_BODY)
+        self.assertEqual(fields["Outcome"], "Broke or gave the wrong result")
+        self.assertEqual(fields["Versions"], "")
+
+    def test_field_report(self):
+        issue = {"number": 7, "body": FEEDBACK_BODY, "labels": [{"name": "kb-feedback"}]}
+        title, _ = feedback.handle(issue, "2026-10-16")
+        self.assertIn("broke on fslogix/README.md", title)
+        report = kblib.load_yaml(kblib.FIELD_REPORTS)["reports"][-1]
+        self.assertEqual(report["page"], "fslogix/README.md")
+        self.assertNotIn("versions", report)
+        with self.assertRaises(feedback.FeedbackError):
+            feedback.handle(issue, "2026-10-16")  # same issue twice
+
+    def test_known_error(self):
+        issue = {"number": 8, "body": KNOWN_ERROR_BODY, "labels": [{"name": "kb-known-error"}]}
+        feedback.handle(issue, "2026-10-16")
+        entry = kblib.load_yaml(kblib.KNOWN_ERRORS)["errors"][-1]
+        self.assertEqual(entry["status"], "unverified")
+        self.assertEqual(entry["source"], "https://example.com/changelog")
+        self.assertTrue(kblib.KNOWN_ERRORS.read_text().startswith("# Known errors catalog"))
+
+    def test_rejects_unticked_and_missing_page(self):
+        unticked = FEEDBACK_BODY.replace("- [X]", "- [ ]")
+        with self.assertRaises(feedback.FeedbackError):
+            feedback.handle({"number": 9, "body": unticked, "labels": ["kb-feedback"]}, "2026-10-16")
+        bad_page = FEEDBACK_BODY.replace("fslogix/README.md", "../../etc/passwd")
+        with self.assertRaises(feedback.FeedbackError):
+            feedback.handle({"number": 10, "body": bad_page, "labels": ["kb-feedback"]}, "2026-10-16")
+
+
+NOMINATION_BODY = """### Name
+
+Example Person
+
+### Blog
+
+https://example.com/blog
+
+### YouTube channel
+
+_No response_
+
+### GitHub username
+
+@octocat
+
+### Why follow them
+
+Writes detailed posts on AVD image builds.
+
+""" + SAFE.replace("tenant, subscription and resource IDs, names, domains, emails, IP addresses and secrets",
+                   "only included public professional links")
+
+
+class NominationTests(TempData):
+    def test_nomination(self):
+        issue = {"number": 12, "body": NOMINATION_BODY, "labels": ["kb-source"]}
+        title, _ = feedback.handle(issue, "2026-10-17")
+        self.assertIn("Example Person", title)
+        entry = kblib.load_yaml(kblib.EXPERTS)["experts"][-1]
+        self.assertEqual(entry["status"], "nominated")
+        self.assertEqual(entry["links"], {"blog": "https://example.com/blog", "github": "octocat"})
+        with self.assertRaises(feedback.FeedbackError):
+            feedback.handle(issue, "2026-10-17")  # same issue twice
+
+    def test_rejects_bad_links(self):
+        bad = NOMINATION_BODY.replace("https://example.com/blog", "javascript:alert(1)")
+        with self.assertRaises(feedback.FeedbackError):
+            feedback.handle({"number": 13, "body": bad, "labels": ["kb-source"]}, "2026-10-17")
+
+
+class ExpertTierTests(unittest.TestCase):
+    def entry(self, total_scores, **gates):
+        g = {"original": True, "recent": True, "feed": True, "identity": True, **gates}
+        names = ["relevance", "depth", "recency", "track_record", "feedability"]
+        return {"gates": g, "scores": dict(zip(names, total_scores))}
+
+    def test_tiers(self):
+        self.assertEqual(kblib.expert_tier(self.entry([2, 2, 2, 2, 2])), "tracked")
+        self.assertEqual(kblib.expert_tier(self.entry([3, 3, 3, 3, 3], feed=False)), "watch")
+        self.assertEqual(kblib.expert_tier(self.entry([2, 1, 1, 1, 1])), "watch")
+        self.assertEqual(kblib.expert_tier(self.entry([1, 1, 1, 1, 1])), "declined")
+        self.assertEqual(kblib.expert_tier(self.entry([3, 3, 3, 3, 3], identity=False)), "declined")
+
+    def test_digest_yield(self):
+        body = "### Blog A → `docs/knowledge/x.md`\n- [x] [one](https://a/1)\n- [ ] [two](https://a/2)\n### Blog B\n- [ ] [b](https://b)\n"
+        counts = freshness.digest_yield([{"createdAt": "2026-10-12T13:00:00Z", "body": body},
+                                         {"createdAt": "2025-01-01T13:00:00Z", "body": body}], date(2026, 9, 1))
+        self.assertEqual(counts, {"Blog A": [1, 2], "Blog B": [0, 1]})
+
+
+class FreshnessTests(TempData):
+    def test_stale_and_reported(self):
+        issue = {"number": 11, "body": FEEDBACK_BODY, "labels": ["kb-feedback"]}
+        feedback.handle(issue, "2026-10-16")
+        sections = freshness.collect(90, date(2027, 6, 1))
+        self.assertTrue(any("fslogix/README.md" in i for i in sections["Reported broken or outdated"]))
+        self.assertTrue(sections["Stale"])
+        self.assertFalse(any("roadmap.md" in i for i in sections["Stale"]))  # plan pages skip
+
+
+class BuildTests(unittest.TestCase):
+    def test_generated_files_up_to_date(self):
+        stale = [p for p, c in build.targets().items() if p.read_text(encoding="utf-8") != c]
+        self.assertEqual(stale, [], "run python3 scripts/kb/build.py")
+
+    def test_link_from(self):
+        page_dir = kblib.KB_DIR / "troubleshooting"
+        self.assertEqual(build.link_from(page_dir, "fslogix/README.md#x"), "../fslogix/README.md#x")
+        self.assertEqual(build.link_from(page_dir, "https://example.com"), "https://example.com")
+
+
+class FamilyTests(unittest.TestCase):
+    FAMILY = {"kbs": [
+        {"name": "Us", "repo": kblib.THIS_REPO, "path": "docs/knowledge", "focus": "x", "format_version": 1},
+        {"name": "Sib", "repo": "octo/sib", "path": "kb", "focus": "y", "format_version": 1},
+        {"name": "Later", "repo": "<owner>/<repo>", "path": "<path>", "focus": "<one line>", "format_version": 1},
+    ]}
+
+    def setUp(self):
+        p = mock.patch.object(kblib, "family", lambda: self.FAMILY)
+        p.start()
+        self.addCleanup(p.stop)
+
+    def test_siblings_skip_self_and_placeholders(self):
+        self.assertEqual([k["name"] for k in kblib.siblings()], ["Sib"])
+        self.assertEqual(kblib.family_self()["name"], "Us")
+
+    def test_render_family(self):
+        rows = build.family_rows()
+        self.assertIn("- Later: not set up yet", rows)
+        self.assertTrue(any(r.startswith("- [Sib](https://github.com/octo/sib/tree/main/kb)") for r in rows))
+
+    def test_family_items(self):
+        same = lambda kb: {"kbs": [{"repo": kb["repo"], "format_version": 1}]}
+        newer = lambda kb: {"kbs": [{"repo": kb["repo"], "format_version": 2}]}
+
+        def private(kb):
+            raise OSError("404")
+
+        self.assertEqual(len(freshness.family_items(same)), 1)  # only the placeholder
+        self.assertTrue(any("format version 2" in i for i in freshness.family_items(newer)))
+        self.assertTrue(any("couldn't read" in i for i in freshness.family_items(private)))
+
+    def test_validate_wants_sibling_sources(self):
+        import validate
+        validate.errors.clear()
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp)
+        with mock.patch.object(kblib, "SOURCES", tmp / "sources.toml") as src, \
+                mock.patch.object(validate, "ROOT", Path("/")):
+            src.write_text('[[source]]\nname = "a"\nkind = "github_commits"\nrepo = "octo/sib"\npath = "kb"\n')
+            validate.check_family()
+        self.assertEqual(len(validate.errors), 1)
+        self.assertIn("kb/decisions", validate.errors[0])
+        validate.errors.clear()
+
+
+class AnchorTests(unittest.TestCase):
+    def test_github_slugs(self):
+        body = "# A\n## Post-deployment checks with Playwright\n## 8. Deployment troubleshooting\n## A\n"
+        self.assertEqual(kblib.anchors(body), {
+            "a", "post-deployment-checks-with-playwright", "8-deployment-troubleshooting", "a-1"})
+
+
+if __name__ == "__main__":
+    unittest.main()

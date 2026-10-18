@@ -1,0 +1,49 @@
+# avd-second-brain: Azure Virtual Desktop knowledge base
+
+> The organizational second brain for Azure Virtual Desktop: a living knowledge base of findings,
+> gotchas and decisions across the AVD lifecycle (assess, inventory, deploy, operate), shared by a
+> family of sibling knowledge bases that use the same format.
+
+The knowledge base is in docs/knowledge/. Every page starts with YAML front matter (title, summary,
+topic, status, last_reviewed) validated against docs/knowledge/schema/. Pages with status `plan`
+describe intended work, not facts, and claims marked *unverified* are not yet confirmed. To
+contribute, open a KB feedback or known-error issue; changes land only through reviewed pull requests.
+
+## Knowledge base
+
+- [Knowledge base](docs/knowledge/README.md): What this knowledge base is, how it's organised, and how to add to it safely (status: verified)
+- [Landing zone](docs/knowledge/landing-zone/README.md): Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell (status: plan)
+- [Identity and Entra](docs/knowledge/identity/README.md): Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities (status: plan)
+- [FSLogix profiles](docs/knowledge/fslogix/README.md): FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks (status: plan)
+- [Golden images](docs/knowledge/images/README.md): Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion (status: plan)
+- [Assessment and sizing](docs/knowledge/assessment/README.md): How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence (status: plan)
+- [Operating an estate](docs/knowledge/operations/README.md): Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate (status: plan)
+- [AI agents in the AVD repos](docs/knowledge/agents/README.md): How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities (status: plan)
+- [Cost and spend](docs/knowledge/cost/README.md): Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence (status: plan)
+- [Upstream asks for Microsoft](docs/knowledge/microsoft/upstream-contributions.md): Gaps, API asks and doc fixes we could raise with Microsoft, with evidence (status: verified)
+- [Known errors](docs/knowledge/troubleshooting/README.md): Errors hit deploying and running AVD: symptom, cause, fix and source (status: verified)
+- [Knowledge base roadmap](docs/knowledge/roadmap.md): How this KB is being moved onto the family format, step by step, and what's still to come (status: plan)
+- [Keeping the knowledge base current](docs/knowledge/curation.md): How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment (status: verified)
+- [Experts we follow](docs/knowledge/experts.md): How we choose which AVD, FSLogix and Entra experts the KB follows: the method, the scores and the list (status: verified)
+
+## Structured data
+
+- [Known errors](docs/knowledge/troubleshooting/known-errors.yaml): symptom, cause, fix and source for errors hit deploying and running AVD
+- [Upstream asks](docs/knowledge/microsoft/upstream.yaml): gaps and asks for Microsoft's AVD, Azure and Entra products and docs, with evidence and status
+- [Field reports](docs/knowledge/field-reports.yaml): what worked or broke when someone followed the KB
+- [Experts study](docs/knowledge/experts.yaml): people the KB follows, with scores, evidence and the feeds watched
+- [Family](docs/knowledge/family.yaml): the sibling knowledge bases and the format version each follows
+- [Schemas](docs/knowledge/schema/page.schema.json): JSON Schemas for page front matter and the YAML files above
+
+## Decisions
+
+
+## Related knowledge bases
+
+- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on AVD, Terraform and Packer (the reference implementation) (format version 1)
+- Liquidware project: not set up yet
+- [AI research](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): Claude API, agents and AI tooling used across the family and in personal apps (format version 1)
+
+## Optional
+
+- [Curator sources](docs/knowledge/sources.toml): the feeds and repos the weekly digest watches

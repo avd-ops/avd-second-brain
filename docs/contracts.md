@@ -13,12 +13,15 @@ What each repo gives the brain and takes from it, in a form that can be tested. 
 | C7 | Searchable docs | Every connected repo | `scripts/Find-BrainKnowledge.ps1` | Markdown under the paths in `sources/sources.json` | Built |
 | C8 | Swarm insights | avd-swarm's Improve workflow and judge auditor | The `harvest` skill, then `knowledge/` by PR | `avd-swarm-insights/v1`: counts and topics from a fixed vocabulary, no free text, no names or IDs | Specified |
 | C9 | Playbook run proposal | The brain (a playbook matched to an episode by signature) | avd-swarm's `propose_playbook_run`, then its gate and approval | Playbook ID and content hash, targets as resource IDs, parameters bound from the episode, evidence links, the Critic's dissent | Specified |
-| C10 | Action outcomes and switch position | avd-swarm | The brain's episodes and its own halts | Outcome per plan (verified, failed, rolled back, rejected with a reason category) and the kill switch position, as events | Specified |
+| C10 | Action outcomes and switch position | avd-swarm | The brain's episodes and its own halts | Outcome per plan (verified, failed, rolled back, rejected with a reason category), its compliance change per Defender for Cloud control (fixes, regressions and exemptions counted apart; Microsoft's public control and recommendation names, resource IDs only for regressions) and the kill switch position, as events | Specified |
 | C11 | Current-state facts | avd-current-state `avd_current_state_facts.ps1`, from the C1 packages | `scripts/Import-CurrentStateFacts.ps1`, then the brain's agents; avd-swarm only through the brain | `avd-current-state-facts/v1` (`contracts/schemas/current-state-facts.schema.json`): counts, booleans, public Azure values and keyed pseudonyms, no names, IDs, IPs, tags or free text | Built (producer and importer, offline) |
 | C12 | Forensic facts | avd-readiness-stratusphere's factory, from its pseudonymized estate model (Stratusphere telemetry) | The brain's agents, as C11; avd-swarm only through the brain | `avd-forensic-facts/v1`: per host pool or persona, aggregates over a measured window (concurrency, p95 demand per user and per host, logon, UX, profile, latency), at least 5 users per group, no user or machine at all | Specified |
 | C13 | Docs findings | `scripts/Test-DocConsistency.ps1`, nightly across the connected repos ([docs-spec.md](docs-spec.md)) | avd-swarm's Scribe, which drafts fixes as PRs | `avd-doc-findings/v1`: check ID, severity, repo, path, line, what the text says, the source of truth, the side to fix; quotes only the repos' own public text | Specified |
+| C14 | Target-state manifest | avd-readiness-stratusphere's factory (stage 5, design) | avd-landing-zone's `ConvertFrom-AvdTargetState.ps1`; avd-liquidware for its `liquidware` block, later; the harvest, as buckets only | `avd-target-state/v1` (`contracts/schemas/target-state.schema.json`) and its approval, `avd-target-approval/v1` (`target-approval.schema.json`); example pair in `contracts/examples/` | Schemas and checks built; producer waits on factory phase 1, reader built |
+| C15 | Fact register | This repo | Every producer and consumer of C11, C12 and C14; avd-current-state's manifest coverage | `avd-fact-register/v1` (`contracts/fact-register.json`, schema `fact-register.schema.json`) | Built |
+| C16 | Stratusphere instrument outputs | avd-liquidware (the Stratusphere instrument, moving there from avd-readiness-stratusphere) | avd-readiness-stratusphere's ingest and quality gate | `stratusphere-instrument/v1`: preflight, appliance and rollout reports, local only (they hold machine names) | Proposed: the schema lands with its producer |
 
-C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C13 is the same split for the repos' own text: the brain decides what is inconsistent, avd-swarm drafts the fix ([decision 0004](decisions/0004-docs-consistency.md)), and a change to it is a pair of PRs. C11 and C12 are the fact layer under both: C11 the Azure-side inventory every estate gets, C12 the forensic tier when a question needs measured performance. A change to either is three PRs: here, the producer (avd-current-state or avd-readiness-stratusphere) and avd-swarm (its gate rule).
+C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C13 is the same split for the repos' own text: the brain decides what is inconsistent, avd-swarm drafts the fix ([decision 0004](decisions/0004-docs-consistency.md)), and a change to it is a pair of PRs. C14 and C15 sit on top of the fact layer: a manifest is a design whose every decision cites C11, C12 or intake facts by their register ID, and the register is the one list of those IDs. C16 is between two producers and never reaches the brain; it is listed here because this repo is the one registry of cross-repo formats ([avd-readiness-stratusphere boundaries spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/boundaries-spec.md)). C11 and C12 are the fact layer under both: C11 the Azure-side inventory every estate gets, C12 the forensic tier when a question needs measured performance. A change to either is three PRs: here, the producer (avd-current-state or avd-readiness-stratusphere) and avd-swarm (its gate rule).
 
 ## C1. Evidence packages → vault
 
@@ -153,3 +156,36 @@ The forensic tier of the fact layer. C11 says what an estate is configured as, f
 ## C13. `avd-doc-findings/v1` (specified)
 
 What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in [docs-spec.md](docs-spec.md) §6 and §9. The schema (`contracts/schemas/doc-findings.schema.json`) and its test in `tests/Connectors.Tests.ps1` land with the check in phase D0.
+
+## C14. `avd-target-state/v1` and `avd-target-approval/v1`
+
+What the assessment produces and the landing zone deploys: one design, every deployed value a **decision** (`value`, `evidence`, `confidence`, optionally `rule`, `boundBy`, `override`). It replaces the factory spec's `factory.avd/v1`, which was never built. Design and reasons: avd-readiness-stratusphere's [boundaries spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/boundaries-spec.md) §3.
+
+```
+C11 snapshot ─┐
+C12 facts ────┼─► factory analysis ─► manifest.json ─► person reviews ─► approval.json (pins the manifest's SHA-256)
+intake ───────┘        (rules at pins.brainCommit)                          │
+                                                                            ▼
+                                     avd-landing-zone ConvertFrom-AvdTargetState.ps1 ─► preflight + deploy.sh commands
+```
+
+**Pseudonymous, not public.** Host pools by pseudonym (`hp-` existing, `tp-NN` target, `persona-N`), apps by catalog ID, regions and VM sizes by public name; no tenant, subscription, group or object ID, user, machine or address, and a `note` of at most 200 characters with no links. A manifest lives in the engagement folder and the customer's private repo. **It never enters `knowledge/`:** a harvest projects it onto the engagement record's buckets, and `Test-BrainKnowledge` fails on any estate pseudonym (`est-`, `hp-`, `st-`, `sub-`) in `knowledge/`.
+
+**Approval is a second file.** `avd-target-approval/v1` holds the manifest file's SHA-256 (over its exact bytes), the approval time and the decisions a person accepted at `confidence: low`. Who approved is the commit that added it in the customer's repo. Readers refuse a manifest without a matching approval.
+
+**What `Test-TargetState` checks** beyond the schema: the guard; the register version the manifest pins; every citation is a registered fact that isn't `proposed`, that the register lists as evidence for that decision, and that names its subject when its grain is a host pool, group, storage account or host; cited rules exist in `knowledge/rules/` at that version or lower; pool IDs are unique; `hosts × maxSessions` covers each pool's peak; `lz-cloudnative` manifests have no gaps. `tests/Connectors.Tests.ps1` runs it over the example and over one broken copy per rule.
+
+**Freshness** is checked against the approval date: within 7 days of the C11 snapshot and 90 days of the C12 window's end when decisions cite them, the same limits avd-swarm's gate uses. avd-swarm doesn't read manifests yet; deploying one is an operator's run of the landing zone.
+
+## C15. `avd-fact-register/v1`
+
+`contracts/fact-register.json`: the **decisions** a manifest makes (with the manifest path and the tiers whose facts alone can support each) and the **facts** any repo may cite (ID, tier, contract and JSON path, grain, unit, privacy class, status, and the decisions it can evidence). `Test-FactRegister` keeps it honest: unique IDs, a prefix per tier (`c11.`, `c12.`, `intake.`, `liquidware.`), known decisions, no proposed fact as evidence, and every **built** fact's path resolvable in its contract's schema, so renaming a C11 field without the register fails CI.
+
+- `version` goes up whenever a fact is removed or renamed; manifests pin it.
+- C12 facts are `specified`: their paths follow C12's shape above and are checked when its schema lands.
+- `liquidware.*` facts (avd-liquidware spec §10.1) are `proposed` and can't be cited until the Liquidware tier builds them.
+- avd-current-state vendors a copy for its **manifest coverage** line: how many decisions an estate's C11 snapshot can support (those whose `decidableFrom` includes `azure`), and which need measurement.
+
+## C16. `stratusphere-instrument/v1` (proposed)
+
+The output files of the Stratusphere instrument that avd-readiness-stratusphere reads: the deployment preflight's `manifest.json` and `current-state.json`, the appliance check report (with each role's address), and the Connector ID Key rollout report (per machine: name, resource ID, subscription ID, status, version, source channel). Every one holds names, so none reaches the brain; the factory pseudonymizes at ingest. The instrument is moving from avd-readiness-stratusphere to avd-liquidware; the Liquidware project lands this schema with its producer, and the factory's consumer test follows in the same set of PRs (boundaries spec §4).

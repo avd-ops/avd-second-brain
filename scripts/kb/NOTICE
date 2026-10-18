@@ -1,0 +1,16 @@
+avd-second-brain knowledge base tooling
+Copyright 2026 Nick Prignano and the avd-second-brain contributors
+
+The files in this folder (scripts/kb/), the JSON Schemas in docs/knowledge/schema/, the workflows
+.github/workflows/kb-*.yml and secrets.yml, and the issue forms in .github/ISSUE_TEMPLATE/kb-*.yml
+are licensed under the Apache License, Version 2.0 (see LICENSE in this folder), not under the
+repository's MIT License.
+
+They are adapted from ai-brain (https://github.com/nickprignano/ai-brain), which adapted them from
+nerdio-hcl (https://github.com/nickprignano/nerdio-hcl). Both are Copyright 2026 Nick Prignano and
+their contributors, licensed under the Apache License, Version 2.0.
+
+Changes made here: this knowledge base's topics, upstream vendor (Microsoft), code search
+extensions (PowerShell and Bicep), examples and issue-form wording. Each changed file says so in
+a comment at its top. The rest of the repository is MIT-licensed;
+see ../../LICENSE.

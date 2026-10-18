@@ -13,7 +13,8 @@ The organizational second brain for **Azure Virtual Desktop**: one memory across
 
 | Repo | Lifecycle stage | Gives the brain | Takes from the brain |
 |---|---|---|---|
-| [avd-readiness-stratusphere](https://github.com/nickprignano/avd-readiness-stratusphere) | Assess and design (Stratusphere, the migration factory) | Engagement harvests, measured sizing per wave, lessons | App catalog, rules, sizing calibration |
+| [avd-readiness-stratusphere](https://github.com/nickprignano/avd-readiness-stratusphere) | Assess and design (the migration factory) | Engagement harvests, measured sizing per wave, forensic facts (C12), target-state manifests (C14, as buckets), lessons | App catalog, rules, sizing calibration, the fact register (C15) |
+| [avd-liquidware](https://github.com/nickprignano/avd-liquidware) | The Stratusphere instrument (moving from avd-readiness-stratusphere) and the optional ProfileUnity tier | Lessons; Liquidware facts once built | The manifest's `liquidware` block, later |
 | [avd-current-state](https://github.com/nickprignano/avd-current-state) | Inventory and validate (collector, validator) | Evidence packages, ingested into a customer's estate vault | — |
 | [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) | Deploy and operate (landing zone, operations brain) | Lessons, decisions, day-2 sizing evidence | Workload tiers, calibration, catalog, shared runbooks |
 
