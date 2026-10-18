@@ -39,7 +39,7 @@ They are the same idea at different points of one lifecycle: **assess → invent
 
 | Stage | Repo (sensor or runtime) | Feeds the brain | Reads from the brain |
 |---|---|---|---|
-| Assess and design | avd-readiness-stratusphere | Engagement harvests; sizing evidence from the verify stage; lessons | Catalog, rules, calibration (pinned by commit) |
+| Assess and design | avd-readiness-stratusphere | Engagement harvests; sizing evidence from the verify stage; the forensic facts tier for performance and sizing (C12); lessons | Catalog, rules, calibration (pinned by commit) |
 | Inventory and validate | avd-current-state | Evidence packages into a customer vault (C1); the redacted facts snapshot the brain's agents read (C11) | — |
 | Deploy | avd-landing-zone | Lessons and decisions | Workload tiers and calibration for its sizing defaults; catalog for the image pipeline |
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
@@ -74,6 +74,7 @@ The factory's engagement folders (`output/engagements/` in avd-readiness-stratus
 | 8 | avd-swarm → brain | `avd-swarm-insights/v1` ([contracts](contracts.md) C8), action outcomes and the switch position (C10) | Specified |
 | 9 | Brain → avd-swarm | Playbook run proposals ([contracts](contracts.md) C9); the Concierge as a read tool | Specified |
 | 10 | avd-current-state → brain agents → avd-swarm | `avd-current-state-facts/v1` ([contracts](contracts.md) C11): the fact layer the brain's agents read, filed in the vault by `scripts/Import-CurrentStateFacts.ps1`; avd-swarm sees it only as the brain's cited evidence | Built (offline) |
+| 11 | avd-readiness-stratusphere → brain agents → avd-swarm | `avd-forensic-facts/v1` ([contracts](contracts.md) C12): measured demand, concurrency, logon and profile aggregates per host pool or persona, the forensic tier under C11 | Specified |
 | 7 | Every repo's lessons and decisions → search | `scripts/Sync-BrainSources.ps1` checks out the repos in `sources/sources.json`; `scripts/Find-BrainKnowledge.ps1` searches them, the knowledge base and optionally a vault, and cites `<repo>@<commit>:<path>` | Built |
 
 Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's `lz-cloudnative` renderer tags each host pool with `avdbrain-engagement` and `avdbrain-tier` ([contracts](contracts.md) C5); a host pool without them yields no observation, because there is no prediction to compare with.

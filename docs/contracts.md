@@ -15,8 +15,9 @@ What each repo gives the brain and takes from it, in a form that can be tested. 
 | C9 | Playbook run proposal | The brain (a playbook matched to an episode by signature) | avd-swarm's `propose_playbook_run`, then its gate and approval | Playbook ID and content hash, targets as resource IDs, parameters bound from the episode, evidence links, the Critic's dissent | Specified |
 | C10 | Action outcomes and switch position | avd-swarm | The brain's episodes and its own halts | Outcome per plan (verified, failed, rolled back, rejected with a reason category) and the kill switch position, as events | Specified |
 | C11 | Current-state facts | avd-current-state `avd_current_state_facts.ps1`, from the C1 packages | `scripts/Import-CurrentStateFacts.ps1`, then the brain's agents; avd-swarm only through the brain | `avd-current-state-facts/v1` (`contracts/schemas/current-state-facts.schema.json`): counts, booleans, public Azure values and keyed pseudonyms, no names, IDs, IPs, tags or free text | Built (producer and importer, offline) |
+| C12 | Forensic facts | avd-readiness-stratusphere's factory, from its pseudonymized estate model (Stratusphere telemetry) | The brain's agents, as C11; avd-swarm only through the brain | `avd-forensic-facts/v1`: per host pool or persona, aggregates over a measured window (concurrency, p95 demand per user and per host, logon, UX, profile, latency), at least 5 users per group, no user or machine at all | Specified |
 
-C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C11 is the fact layer under both, so a change to it is three PRs: here, avd-current-state (the producer) and avd-swarm (its gate rule).
+C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C11 and C12 are the fact layer under both: C11 the Azure-side inventory every estate gets, C12 the forensic tier when a question needs measured performance. A change to either is three PRs: here, the producer (avd-current-state or avd-readiness-stratusphere) and avd-swarm (its gate rule).
 
 ## C1. Evidence packages → vault
 
@@ -107,4 +108,44 @@ collector + validator packages ──C1──► estate vault (private; names an
 **Freshness.** A snapshot is evidence of the moment its packages were collected (`collectedUtc`, `generatedUtc` per validator run), not of now. The brain cites it with that time: `facts:<estate>@<generatedUtc>#/subscriptions/0/hostPools/1`. avd-swarm's gate refuses a C9 proposal whose only evidence is a snapshot older than its freshness limit (avd-swarm governance §2.1, 7 days by default) and resolves every target live before approval; a snapshot is a reason to propose, never the target list.
 
 **Producer and consumer.** avd-current-state's `avd_current_state_facts.ps1` (Windows PowerShell 5.1 and PowerShell 7, offline, tests in its `tests/Facts.Tests.ps1` against a copy of this schema) writes the snapshot; `scripts/Import-CurrentStateFacts.ps1` checks it (`Test-CurrentStateFacts`) and, with `-Apply`, files it in the vault under `facts/<estate>/`. It refuses to write inside this repository: a snapshot is still one estate's data. Generalized facts for the knowledge base still come through the vault harvest (C2).
+
+## C12. `avd-forensic-facts/v1` (specified)
+
+The forensic tier of the fact layer. C11 says what an estate is configured as, from Azure's control plane, for free. It can't say what users do: how many are on at 10:00, how hard they push a host, how long logon takes, how big profiles are, where latency hurts. That is Stratusphere UX telemetry, collected by avd-readiness-stratusphere's instrument over a 2-to-4-week window and normalized into the factory's pseudonymized estate model (`estate.duckdb`, factory spec §4.3–4.4). C12 is what of it the brain's agents may read.
+
+| | C11 current-state facts | C12 forensic facts |
+|---|---|---|
+| Answers | What is deployed and is it wired right | How it performs and how big it needs to be |
+| Source | ARM (collector, validator) | Endpoint telemetry (Stratusphere Connector ID Key), plus C11 for the host pool mapping |
+| Cost | $0, minutes, any time | Hub appliance VMs and a license for the window, weeks; only when a question needs it |
+| Grain | Resource (subscription, host pool, storage account) | Group: a host pool (estate already on AVD) or a persona (estate not yet on AVD), never a user or a machine |
+| Freshness limit at avd-swarm's gate | 7 days | 90 days after the window ends |
+
+**Shape** (the schema lands with the producer, factory phase 1, once a real Hub has fixed the field names, factory Q1):
+
+```json
+{
+  "schema": "avd-forensic-facts/v1",
+  "estate": "est-2540bffa",
+  "engagement": "eng-2026-11-a7f3",
+  "window": { "start": "2026-11-02", "end": "2026-11-27", "days": 26, "peakIncluded": true },
+  "quality": { "coverage": 0.86, "verdict": "pass" },
+  "groups": [
+    { "kind": "hostPool", "id": "hp-ac5fc5e3", "tier": "medium", "users": 120,
+      "concurrency": { "peak": 84, "byHour": [0, 0, 0, 0, 0, 0, 3, 22, 61, 80, 84, 82, 70, 79, 81, 77, 60, 31, 9, 2, 0, 0, 0, 0] },
+      "perUser": { "p95CpuPercentOfCore": 38, "p95MemoryMiB": 2900, "p95DiskIops": 14 },
+      "perHost": { "peakSessionsPerHost": 11, "p95CpuPercent": 62, "p95MemoryPercent": 81 },
+      "logonSeconds": { "p50": 21, "p95": 48 }, "uxScoreMedian": 7.9,
+      "profile": { "p95SizeGiB": 6.2, "logonIopsPerUser": 55 }, "rttMsP95": 64,
+      "apps": { "catalog": ["microsoft-teams", "sap-gui"], "unknown": 7 } }
+  ]
+}
+```
+
+**Rules.**
+- **No user, no machine.** Groups only, at least 5 users each; a smaller group folds into its nearest neighbor or is dropped with a count. App usage is catalog IDs (`knowledge/catalog/apps.json`, public products) plus a count of the unknown ones, never names or paths.
+- **One key, one pseudonym space.** The producer uses the estate's C11 key. With an avd-current-state collector package, machines that are session hosts map to their host pool's resource ID, so `hp-ac5fc5e3` here is the same host pool as in C11, and the brain can put configuration and behavior side by side. Personas (`persona-<n>`) are for estates not yet on AVD.
+- **Quality travels with the numbers.** The factory's quality gate (§5) result is part of the document; a `low-confidence` snapshot may inform, never back a sizing proposal.
+- **C4 is a subset.** For a factory-designed host pool (C5 tags) at the verify stage, the same numbers become `avd-sizing-evidence/v1` for calibration. C12 is the wider, per-estate view the agents reason with.
+- **Asking for one is an action.** Forensic collection deploys appliances and costs money, so the brain doesn't start it: when a question needs measured data (a sizing or size-change proposal, a performance complaint with no ARM-side cause, a migration), it says so, and the collection is a plan avd-swarm runs through its spend gate, approval and teardown evidence (avd-swarm spec §6d).
 
