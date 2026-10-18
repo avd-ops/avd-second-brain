@@ -1,0 +1,7 @@
+# Upstream asks for Microsoft (AVD, Azure Files and FSLogix, Entra, Image Builder, Foundry, docs):
+# the source of truth for the tables in microsoft/upstream-contributions.md.
+# Regenerate with `python3 scripts/kb/build.py`. Schema: ../schema/upstream.schema.json.
+
+feature_gaps: []
+api_asks: []
+docs_packaging: []

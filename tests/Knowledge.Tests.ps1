@@ -233,6 +233,7 @@ Describe 'Get-BrainSensitiveText' {
   }
   It 'ignores <Why>' -ForEach @(
     @{ Why = 'documentation addresses and placeholder GUIDs'; Text = '192.0.2.10, 203.0.113.5, 00000000-0000-0000-0000-000000000001, x@example.com' }
+    @{ Why = 'the contoso.com and GitHub noreply placeholders'; Text = 'user@contoso.com, 41898282+github-actions[bot]@users.noreply.github.com' }
     @{ Why = 'version numbers that are not addresses'; Text = 'Teams 25198.1112.3855.4568' }
     @{ Why = 'registry and program paths'; Text = '"HKLM\\Software\\Microsoft\\Teams" and C:\\Program Files\\Microsoft OneDrive' }
   ) {
@@ -346,8 +347,46 @@ Describe 'Search-BrainKnowledge' {
   }
 }
 
+Describe 'Test-KbLeaks.ps1' {
+  # The brain's guard over the family knowledge base (docs/knowledge/ and llms.txt).
+  BeforeAll {
+    function New-TestKb {
+      $dir = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
+      Copy-Item -Recurse (Join-Path $script:root 'docs') (Join-Path $dir 'docs')
+      Copy-Item (Join-Path $script:root 'llms.txt') $dir
+      $dir
+    }
+    $script:kbLeaks = Join-Path $script:root 'scripts/Test-KbLeaks.ps1'
+  }
+  It 'passes on the repo as it is' {
+    & pwsh -NoProfile -File $script:kbLeaks | Out-Null
+    $LASTEXITCODE | Should -Be 0
+  }
+  It 'fails on a <Kind> in a KB page' -ForEach @(
+    @{ Kind = 'guid'; Text = 'tenant 3fa85f64-5717-4562-b3fc-2c963f66afa6' }
+    @{ Kind = 'unc-path'; Text = 'profiles on \\fs01\profiles$' }
+    @{ Kind = 'machine-name'; Text = 'seen on DESKTOP-7Q2K9LM' }
+  ) {
+    $kb = New-TestKb
+    Add-Content (Join-Path $kb 'docs/knowledge/fslogix/README.md') "`n$Text"
+    $out = & pwsh -NoProfile -File $script:kbLeaks -Path $kb
+    $LASTEXITCODE | Should -Be 1
+    ($out -join "`n") | Should -Match "sensitive:$Kind"
+  }
+  It 'fails on a denylisted name in an organization fork' {
+    $kb = New-TestKb
+    New-Item -ItemType Directory (Join-Path $kb 'knowledge') | Out-Null
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    [Convert]::ToHexString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes('northwind traders'))).ToLowerInvariant() |
+      Set-Content (Join-Path $kb 'knowledge/denylist.sha256')
+    Add-Content (Join-Path $kb 'docs/knowledge/troubleshooting/known-errors.yaml') '# seen at Northwind Traders'
+    & pwsh -NoProfile -File $script:kbLeaks -Path $kb | Out-Null
+    $LASTEXITCODE | Should -Be 1
+  }
+}
+
 Describe 'Entry points' {
-  It '<_> carries the project notice' -ForEach @('scripts/Test-Knowledge.ps1', 'scripts/Find-BrainKnowledge.ps1', 'scripts/AvdBrain.psm1') {
+  It '<_> carries the project notice' -ForEach @('scripts/Test-Knowledge.ps1', 'scripts/Find-BrainKnowledge.ps1', 'scripts/AvdBrain.psm1', 'scripts/Test-KbLeaks.ps1') {
     Get-Content (Join-Path $script:root $_) -Raw | Should -Match 'Personal project, not for production use'
   }
 }

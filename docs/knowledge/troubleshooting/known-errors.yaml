@@ -1,0 +1,5 @@
+# Known errors catalog: the source of truth for troubleshooting/README.md.
+# Regenerate the page with `python3 scripts/kb/build.py`. Schema: ../schema/known-errors.schema.json
+# `source` is a KB path (relative to docs/knowledge/) or an https URL.
+
+errors: []
