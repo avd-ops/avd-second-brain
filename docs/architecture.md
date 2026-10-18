@@ -53,7 +53,7 @@ The brain has three stores. They differ in **whose data they hold**, and so in w
 
 | Layer | Holds | Lives in | Visibility |
 |---|---|---|---|
-| **Knowledge** (`knowledge/`) | Generalized, cross-customer knowledge: public products, rules with their history, calibration, shared runbooks, pseudonymous engagement records | This repo (public scope: private for now, publishable by design) and an organization's private fork (organization scope) | Public: no engagement trail. Organization: no customer data. The guard enforces both ([knowledge spec](knowledge-spec.md) §5) |
+| **Knowledge** (`knowledge/`) | Generalized, cross-customer knowledge: public products, rules with their history, calibration, shared runbooks, pseudonymous engagement records | This repo (public scope) and an organization's private fork (organization scope) | Public: no engagement trail. Organization: no customer data. The guard enforces both ([knowledge spec](knowledge-spec.md) §5) |
 | **Estate vault** (`vault/`) | One customer's estate: subscriptions, resources, drift, findings, their decisions and runbooks | A private repository per customer or organization, built by `vault/avd_second_brain.ps1` | Private, tenant data |
 | **Operations memory** | Signals, episodes, evidence of a running landing zone | The adopter's tenant (Blob, Cosmos DB) and private landing-zone fork ([operations spec](operations-spec.md) §4.3) | Private, tenant data |
 

@@ -15,6 +15,6 @@ The owner asked on 2026-10-18 for a repo or swarm function that builds a wiki an
 - **The wiki is generated Markdown in `wiki/`**, reviewed by PR, not a GitHub wiki.
 
 ## Consequences
-- Phase D0 (check, generator, wiki, vendored per-repo checks) costs no Azure and no model calls, and works before avd-swarm exists.
-- Each connected repo gains `scripts/docs/` (vendored, hash-pinned), `docs/reference/`, generated README blocks and a `CHANGELOG.md`.
+- Phase D0 (check, generator, wiki, and the shared check each repo calls pinned by SHA) costs no Azure and no model calls, and works before avd-swarm exists.
+- Each connected repo gains a caller for `docs-check.yml` (pinned by SHA), `docs/reference/`, generated README blocks and a `CHANGELOG.md`.
 - A change to C13, the checks' rules or Scribe's limits is a pair of PRs here and in avd-swarm.

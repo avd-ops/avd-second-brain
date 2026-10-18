@@ -103,15 +103,15 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | **The wiki** (the handbook) | Every indexed doc at the commits in `.sources/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
 | **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, terms, contracts named, first 300 characters) and `wiki/llms.txt` | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
 
-**Why not GitHub's wiki feature.** A GitHub wiki is a separate git repository with no pull requests and no CI, and this repo is private, where wikis need a paid plan. Generated Markdown in `wiki/` gets review, history and the guards for free. A public repo may later mirror its own pages to its GitHub wiki one way, overwritten on each publish, with a banner that says so (red team W1).
+**Why not GitHub's wiki feature.** A GitHub wiki is a separate git repository with no pull requests and no CI. Generated Markdown in `wiki/` gets review, history and the guards for free. A public repo may later mirror its own pages to its GitHub wiki one way, overwritten on each publish, with a banner that says so (red team W1).
 
-**Per-repo generation without depending on this private repo.** A public repo's Actions can't call a reusable workflow in a private repo (red team W2). So the small generator and the per-repo checks (D1, D2, D3, D6, D10, D11) are **vendored** into each repo as `scripts/docs/` with a pinned SHA-256, the way avd-current-state vendors the C11 schema; D4, D5, D7, D8 and D9 need the facts of record and run here, in the nightly sweep.
+**One shared check, pinned.** This repo is public (since 2026-10-18), so it ships the check as a reusable workflow, `.github/workflows/docs-check.yml` (`on: workflow_call`). Each connected repo calls it on every PR, pinned to a commit SHA, never a branch: `uses: nickprignano/avd-second-brain/.github/workflows/docs-check.yml@<sha>` with `permissions: contents: read`. The workflow checks out the calling repo and this repo at the same pinned SHA, so the facts of record a PR is checked against are fixed and reviewable. Bumping the pin is a PR in the calling repo (Scribe can draft it). Every check that needs only the calling repo and the facts of record runs at PR time; D5 and D7, which compare several repos, also run in the nightly sweep (red team W3).
 
 ## 8. Who does what
 
 | Step | Who | Model? | Writes |
 |---|---|---|---|
-| Check one repo on its PR | That repo's CI, vendored check | No | Nothing; fails or passes the PR |
+| Check one repo on its PR | That repo's CI, calling the pinned shared workflow | No | Nothing; fails or passes the PR |
 | Sweep all repos nightly | This repo's scheduled workflow: `Sync-BrainSources.ps1`, then `Test-DocConsistency.ps1 -All -Json` | No | A findings file (C13) as a workflow artifact, and one issue here per repo with open errors, updated in place |
 | Build the wiki and index | Same workflow, after the sweep | No | A draft PR here that only touches `wiki/`, when it changed |
 | Judge prose against code | The Critic's pattern (brain), on demand or weekly: for each changed doc section, a Claude model lists claims the code or facts of record don't support | Yes; flags only | Findings marked `judge`, never errors; a person confirms each before Scribe may act on it |
@@ -155,23 +155,23 @@ Scribe's outcomes need no new contract: a finding closes when the next sweep no 
 
 | Phase | Azure | Model calls | GitHub |
 |---|---|---|---|
-| D0 | None | None | Nightly sweep in this private repo: about 3 minutes a night, roughly 90 of the 2,000 free Actions minutes a month; public repos' CI is free |
+| D0 | None | None | Free: all connected repos, this one included, are public, and Actions on public repos costs nothing |
 | D1 | None | Scribe and the judge, through avd-swarm's model access. Estimated before enabling in the spend format (avd-swarm `docs/spend.md`), with a monthly token cap; a docs PR draft is small (one finding's file and the facts it cites) | Same |
 | D2 | None | Same, inside avd-swarm's Improve schedule | Same |
 
-Nothing here creates an Azure resource. Any later public site (GitHub Pages) is free for public repos.
+Nothing here creates an Azure resource. A later GitHub Pages site for `wiki/` is free too.
 
 ## 12. Phases
 
 | Phase | Delivers | Exit |
 |---|---|---|
-| **D0** | `terms.json`; `Test-DocConsistency.ps1` with D1–D11 as pure functions and Pester fixtures; C13 schema and test; the generator for reference pages, README blocks and changelog; the nightly sweep; the first `wiki/` and `wiki/index.json`; `Find-BrainKnowledge.ps1 -Wiki`; vendored checks in the four connected repos, one PR each | The sweep runs green on the brain itself; every finding in the first sweep is fixed or recorded as accepted |
+| **D0** | `terms.json`; `Test-DocConsistency.ps1` with D1–D11 as pure functions and Pester fixtures; C13 schema and test; the generator for reference pages, README blocks and changelog; the nightly sweep; the first `wiki/` and `wiki/index.json`; `Find-BrainKnowledge.ps1 -Wiki`; the shared `docs-check.yml` workflow; a caller in each of the four connected repos, one PR each | The sweep runs green on the brain itself; every finding in the first sweep is fixed or recorded as accepted |
 | **D1** | Scribe in avd-swarm (its spec §6e): draft PRs from C13 errors, generated fixes first; the judge, flag-only, with the seeded-fault auditor; checks become errors | Ten Scribe PRs merged with no hand edits beyond review nits; judge seeded-fault catch rate ≥ 95% |
 | **D2** | Scribe runs inside avd-swarm's Improve schedule once that exists; optional one-way GitHub wiki mirror for public repos | Owner's call |
 
 ## 13. Open questions
 
 - **DQ1.** Should the per-repo changelog start at the next merged PR, or be backfilled from merged PR titles? Default: start at the next PR, with one "Earlier history: see merged pull requests" line.
-- **DQ2.** Is `wiki/` in this private repo enough, or should the public repos' share of the handbook also be published publicly? Default: private `wiki/` only until the owner decides; the public repos already have their own `docs/`.
+- **DQ2.** Should `wiki/` also be published as a site (GitHub Pages from this repo, free now that it is public)? Default: not in D0; GitHub renders `wiki/` already.
 - **DQ3.** Should avd-readiness-stratusphere's factory docs be in scope from D0, or after its phase 1? Default: from D0 for D1–D3 only.
 - **DQ4.** Until avd-swarm's Scribe exists (D1), the findings issues are fixed by hand or in a Claude Code session. Is that acceptable for the first weeks? Default: yes.
