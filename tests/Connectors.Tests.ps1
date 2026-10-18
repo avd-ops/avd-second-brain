@@ -150,10 +150,10 @@ Describe 'avd-sizing-evidence/v1 -> calibration' {
 }
 
 Describe 'Connected repositories' {
-  It 'sources.json matches its schema and names the three repos' {
+  It 'sources.json matches its schema and names the connected repos' {
     $file = Join-Path $script:root 'sources/sources.json'
     Test-Json -Json (Get-Content $file -Raw) -SchemaFile (Join-Path $script:root 'sources/sources.schema.json') | Should -BeTrue
-    (Get-BrainSource -Path $file).name | Should -Be @('avd-readiness-stratusphere', 'avd-current-state', 'avd-landing-zone')
+    (Get-BrainSource -Path $file).name | Should -Be @('avd-readiness-stratusphere', 'avd-current-state', 'avd-landing-zone', 'avd-swarm')
   }
   It 'searches a checked-out source and cites it with its commit' {
     $sr = Join-Path $TestDrive 'sources'
