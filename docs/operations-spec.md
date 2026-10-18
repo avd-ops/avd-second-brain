@@ -133,7 +133,7 @@ All new resources go into one new resource group, `rg-<prefix>-<env>-brain`, dep
 | FSLogix and host events | Log Analytics `Event` (FSLogix Apps operational log), `Perf` | Same | Extend the DCR with FSLogix event IDs |
 | Resource state and changes | Azure Resource Graph, `resourcechanges` | Event Grid system topic (subscription) for writes; Resource Graph for "what changed before X" | Correlates incidents with changes |
 | Platform health | Service Health, Resource Health | Activity Log alert → action group | First check of every connection incident |
-| Posture | Advisor, Defender for Cloud, Policy compliance | Scheduled pull, REST | Same sources as `-WellArchitected` |
+| Posture | Advisor, Defender for Cloud, Policy compliance | Scheduled pull, REST | Same sources as `-WellArchitected`. avd-swarm's compliance gate (its governance §2.5) enforces the same Defender data on every change and reports each plan's compliance change through C10; the brain learns from those which playbooks fix, and which regress, which controls |
 | Cost | Cost Management exports to Blob; budget alerts | Export + action group | Budget lock already exists (0011) |
 | Landing zone health | Post-deployment preflight (`-SkipTenant -SkipNtfs`, plus `-WellArchitected` weekly), run by a **Container Apps job** on a schedule (red-team H2) | State line `<<<AVDLZ-STATE ...>>>` written to private Blob | Same scripts and modules as Cloud Shell, so the portal's contract holds |
 | Host compliance | Azure Policy guest configuration assignments and the Azure Monitor Agent on the hosts | ARM and Log Analytics | No Graph permissions (red-team H8) |
