@@ -13,7 +13,7 @@ Flags:
   - known errors whose fix is still unverified
   - experts not re-scored in --max-age-days, and nominations waiting to be scored
   - with --digests, each tracked expert's yield: digest items ticked as worth adding (experts.md)
-  - with --family, sibling KBs whose family format version differs from ours, or that can't be read
+  - with --family, siblings on a different family format version, unreadable, or not linked yet
 
 Writes a Markdown checklist and, under GitHub Actions, items=<count> to GITHUB_OUTPUT.
 """
@@ -85,33 +85,32 @@ def expert_items(max_age_days: int, today: date, digests: list[dict] | None) -> 
     return out
 
 
-def read_sibling_family(kb: dict) -> dict:
+def read_sibling_family(project: dict) -> dict:
     """A sibling's own family.yaml, read through the GitHub contents API."""
     from sources import github
-    data = github(f"/repos/{kb['repo']}/contents/{kb['path']}/family.yaml")
+    data = github(f"/repos/{project['repo']}/contents/{kblib.kb_path(project)}/family.yaml")
     return yaml.safe_load(base64.b64decode(data["content"]).decode("utf-8")) or {}
 
 
 def family_items(fetch=read_sibling_family) -> list[str]:
-    """Siblings whose format version differs from ours, can't be read, or aren't filled in yet."""
+    """Siblings on a different format version, that can't be read, or that aren't linked yet."""
     data = kblib.family()
-    ours = kblib.family_self(data).get("format_version")
+    ours = data.get("format_version")
     out = []
-    for k in data.get("kbs", []):
-        if k.get("repo") == kblib.THIS_REPO:
+    for p in data.get("projects", []):
+        if p.get("self"):
             continue
-        if str(k.get("repo", "")).startswith("<"):
-            out.append(f"{k['name']}: placeholder in family.yaml; fill in its repo, path and focus")
+        if not p.get("repo"):
+            out.append(f"{p['name']}: repo not linked yet; add it to family.yaml, then its sources")
             continue
         try:
-            theirs = next((e for e in fetch(k).get("kbs", []) if e.get("repo") == k["repo"]), {})
+            theirs = fetch(p).get("format_version")
         except Exception as exc:
-            out.append(f"{k['name']}: couldn't read its family.yaml ({type(exc).__name__}); "
+            out.append(f"{p['name']}: couldn't read its family.yaml ({type(exc).__name__}); "
                        "private repo, or not set up yet")
             continue
-        if theirs.get("format_version") != ours:
-            out.append(f"{k['name']}: follows format version {theirs.get('format_version', 'none')}, "
-                       f"this KB follows {ours}")
+        if theirs != ours:
+            out.append(f"{p['name']}: follows family format {theirs or 'none'}, this KB follows {ours}")
     return out
 
 

@@ -45,11 +45,11 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 ## Related knowledge bases
 
 <!-- BEGIN GENERATED: family (from family.yaml; run scripts/kb/build.py) -->
-This KB follows family format version 1. Its siblings share the format, not the content:
-
-- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on AVD, Terraform and Packer (the reference implementation) (format version 1)
-- Liquidware project: not set up yet
-- [AI research](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): Claude API, agents and AI tooling used across the family and in personal apps (format version 1)
+| Knowledge base | Role | Focus | Source of truth for |
+|---|---|---|---|
+| [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge) | hub | The AI research behind all four projects | Claude API and Microsoft Foundry use; model choices; keyless sign-in for AI APIs; prompts and evaluations; AI tooling shared by the family |
+| [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge) | reference | Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer | Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer |
+| Liquidware (repo not linked yet) | member | Liquidware products on virtual desktops | Liquidware products |
 <!-- END GENERATED: family -->
 
 When a fact belongs to a sibling's topic, link to their page instead of copying it. When we learn

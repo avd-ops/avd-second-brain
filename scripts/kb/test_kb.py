@@ -204,10 +204,10 @@ class BuildTests(unittest.TestCase):
 
 
 class FamilyTests(unittest.TestCase):
-    FAMILY = {"kbs": [
-        {"name": "Us", "repo": kblib.THIS_REPO, "path": "docs/knowledge", "focus": "x", "format_version": 1},
-        {"name": "Sib", "repo": "octo/sib", "path": "kb", "focus": "y", "format_version": 1},
-        {"name": "Later", "repo": "<owner>/<repo>", "path": "<path>", "focus": "<one line>", "format_version": 1},
+    FAMILY = {"format_version": 1, "projects": [
+        {"id": "us", "name": "Us", "self": True, "focus": "x", "owns": ["x"]},
+        {"id": "sib", "name": "Sib", "repo": "octo/sib", "kb_path": "kb", "focus": "y", "owns": ["y"]},
+        {"id": "later", "name": "Later", "focus": "z", "owns": ["z"]},
     ]}
 
     def setUp(self):
@@ -215,34 +215,25 @@ class FamilyTests(unittest.TestCase):
         p.start()
         self.addCleanup(p.stop)
 
-    def test_siblings_skip_self_and_placeholders(self):
-        self.assertEqual([k["name"] for k in kblib.siblings()], ["Sib"])
-        self.assertEqual(kblib.family_self()["name"], "Us")
-
-    def test_render_family(self):
-        rows = build.family_rows()
-        self.assertIn("- Later: not set up yet", rows)
-        self.assertTrue(any(r.startswith("- [Sib](https://github.com/octo/sib/tree/main/kb)") for r in rows))
+    def test_siblings_need_a_repo(self):
+        self.assertEqual([p["name"] for p in kblib.siblings()], ["Sib"])
 
     def test_family_items(self):
-        same = lambda kb: {"kbs": [{"repo": kb["repo"], "format_version": 1}]}
-        newer = lambda kb: {"kbs": [{"repo": kb["repo"], "format_version": 2}]}
-
-        def private(kb):
+        def private(project):
             raise OSError("404")
 
-        self.assertEqual(len(freshness.family_items(same)), 1)  # only the placeholder
-        self.assertTrue(any("format version 2" in i for i in freshness.family_items(newer)))
+        self.assertEqual(freshness.family_items(lambda p: {"format_version": 1}),
+                         ["Later: repo not linked yet; add it to family.yaml, then its sources"])
+        self.assertTrue(any("family format 2" in i for i in freshness.family_items(lambda p: {"format_version": 2})))
         self.assertTrue(any("couldn't read" in i for i in freshness.family_items(private)))
 
     def test_validate_wants_sibling_sources(self):
         import validate
-        validate.errors.clear()
         tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, tmp)
-        with mock.patch.object(kblib, "SOURCES", tmp / "sources.toml") as src, \
-                mock.patch.object(validate, "ROOT", Path("/")):
-            src.write_text('[[source]]\nname = "a"\nkind = "github_commits"\nrepo = "octo/sib"\npath = "kb"\n')
+        (tmp / "sources.toml").write_text('[[source]]\nname = "a"\nkind = "github_commits"\nrepo = "octo/sib"\npath = "kb"\n')
+        validate.errors.clear()
+        with mock.patch.object(kblib, "SOURCES", tmp / "sources.toml"), mock.patch.object(validate, "ROOT", Path("/")):
             validate.check_family()
         self.assertEqual(len(validate.errors), 1)
         self.assertIn("kb/decisions", validate.errors[0])

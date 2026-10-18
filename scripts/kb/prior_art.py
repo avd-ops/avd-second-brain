@@ -67,11 +67,11 @@ def code(query: str, limit: int) -> list[str]:
     return rows
 
 
-def sibling(kb: dict, query: str, limit: int) -> list[str]:
+def sibling(project: dict, query: str, limit: int) -> list[str]:
     if not (os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")):
         return ["_Skipped: searching sibling KBs needs GITHUB_TOKEN._"]
-    data = github("/search/code", {"q": f"{query} repo:{kb['repo']} path:{kb['path']}", "per_page": limit})
-    return [f"- [{i['path']}]({i['html_url']})" for i in data.get("items", [])]
+    q = f"{query} repo:{project['repo']} path:{kblib.kb_path(project)}"
+    return [f"- [{i['path']}]({i['html_url']})" for i in github("/search/code", {"q": q, "per_page": limit}).get("items", [])]
 
 
 def issues(query: str, limit: int) -> list[str]:
@@ -90,8 +90,8 @@ def main() -> int:
 
     out = [f"## Prior art: {args.query}", ""]
     out += ["### Already in our knowledge base", *(search_kb(args.query.split()) or ["_Nothing yet._"]), ""]
-    for kb in kblib.siblings():
-        out += section(f"Sibling KB: {kb['name']}", lambda kb=kb: sibling(kb, args.query, args.limit))
+    for p in kblib.siblings():
+        out += section(f"Sibling KB: {p['name']}", lambda p=p: sibling(p, args.query, args.limit))
     out += section("GitHub repositories", lambda: repos(args.query, args.limit))
     out += section("Code", lambda: code(args.query, args.limit))
     out += section("Issues and pull requests", lambda: issues(args.query, args.limit))
