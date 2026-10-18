@@ -19,7 +19,10 @@
       "ref": "main",
       "stage": "Inventory and validate: the collector and the deployment validator",
       "index": ["README.md"],
-      "feeds": ["Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1)"],
+      "feeds": [
+        "Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1, contracts C1)",
+        "avd-current-state-facts/v1: the redacted facts snapshot the brain's agents read (contracts C11)"
+      ],
       "reads": []
     },
     {

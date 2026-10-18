@@ -40,7 +40,7 @@ They are the same idea at different points of one lifecycle: **assess → invent
 | Stage | Repo (sensor or runtime) | Feeds the brain | Reads from the brain |
 |---|---|---|---|
 | Assess and design | avd-readiness-stratusphere | Engagement harvests; sizing evidence from the verify stage; lessons | Catalog, rules, calibration (pinned by commit) |
-| Inventory and validate | avd-current-state | Evidence packages into a customer vault | — |
+| Inventory and validate | avd-current-state | Evidence packages into a customer vault (C1); the redacted facts snapshot the brain's agents read (C11) | — |
 | Deploy | avd-landing-zone | Lessons and decisions | Workload tiers and calibration for its sizing defaults; catalog for the image pipeline |
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
 | Act and control | [avd-swarm](https://github.com/nickprignano/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
@@ -73,6 +73,7 @@ The factory's engagement folders (`output/engagements/` in avd-readiness-stratus
 | 6 | Knowledge → factory and landing zone | They read `knowledge/` at a pinned commit ([contracts](contracts.md) C6) | Specified |
 | 8 | avd-swarm → brain | `avd-swarm-insights/v1` ([contracts](contracts.md) C8), action outcomes and the switch position (C10) | Specified |
 | 9 | Brain → avd-swarm | Playbook run proposals ([contracts](contracts.md) C9); the Concierge as a read tool | Specified |
+| 10 | avd-current-state → brain agents → avd-swarm | `avd-current-state-facts/v1` ([contracts](contracts.md) C11): the fact layer the brain's agents read, filed in the vault by `scripts/Import-CurrentStateFacts.ps1`; avd-swarm sees it only as the brain's cited evidence | Built (offline) |
 | 7 | Every repo's lessons and decisions → search | `scripts/Sync-BrainSources.ps1` checks out the repos in `sources/sources.json`; `scripts/Find-BrainKnowledge.ps1` searches them, the knowledge base and optionally a vault, and cites `<repo>@<commit>:<path>` | Built |
 
 Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's `lz-cloudnative` renderer tags each host pool with `avdbrain-engagement` and `avdbrain-tier` ([contracts](contracts.md) C5); a host pool without them yields no observation, because there is no prediction to compare with.
@@ -84,7 +85,7 @@ The three repos already agreed on these; the brain keeps them in one place.
 1. **Real runs are the source of truth.** Evidence beats documents, and documents beat a model's guess.
 2. **Knowledge is code.** Schemas, a guard in CI, versioned rules with a reason for every change.
 3. **Models propose, people approve.** No model writes knowledge, approves a plan or sets a verdict on its own. The operations brain's approval rules ([spec](operations-spec.md) §4.5) are the strictest form of this.
-4. **Tenant data stays with the tenant.** Every crossing is generalized and scanned.
+4. **Tenant data stays with the tenant.** Every crossing is generalized and scanned. The brain's agents read current state as C11 facts (pseudonyms and counts), never as the raw packages.
 5. **Derived values are computed, not stored.** Calibration factors, recurring-finding counts and harvest proposals are recomputed from their evidence.
 6. **PowerShell, no modules, offline tests.** Like the repos it connects.
 
@@ -94,10 +95,10 @@ The three repos already agreed on these; the brain keeps them in one place.
 avd-second-brain/
 ├── knowledge/          the knowledge base (schemas, catalog, rules, calibration, runbooks, engagements)
 ├── vault/              avd_second_brain.ps1 and the vault template (from avd-current-state)
-├── contracts/schemas/  avd-sizing-evidence/v1
+├── contracts/schemas/  avd-sizing-evidence/v1, avd-current-state-facts/v1
 ├── sources/            sources.json: the connected repos and what each feeds and reads
 ├── scripts/            AvdBrain.psm1; Test-Knowledge, Find-BrainKnowledge, Sync-BrainSources,
-│                       Get-VaultHarvest, Import-SizingEvidence
+│                       Get-VaultHarvest, Import-SizingEvidence, Import-CurrentStateFacts
 ├── tests/              Pester: the guard, the connectors, an end-to-end package → vault → harvest run
 ├── docs/               this page, knowledge-spec, vault, operations-spec (+ red team), contracts, decisions
 └── .claude/skills/     harvest

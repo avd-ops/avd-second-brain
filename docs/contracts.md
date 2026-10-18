@@ -14,8 +14,9 @@ What each repo gives the brain and takes from it, in a form that can be tested. 
 | C8 | Swarm insights | avd-swarm's Improve workflow and judge auditor | The `harvest` skill, then `knowledge/` by PR | `avd-swarm-insights/v1`: counts and topics from a fixed vocabulary, no free text, no names or IDs | Specified |
 | C9 | Playbook run proposal | The brain (a playbook matched to an episode by signature) | avd-swarm's `propose_playbook_run`, then its gate and approval | Playbook ID and content hash, targets as resource IDs, parameters bound from the episode, evidence links, the Critic's dissent | Specified |
 | C10 | Action outcomes and switch position | avd-swarm | The brain's episodes and its own halts | Outcome per plan (verified, failed, rolled back, rejected with a reason category) and the kill switch position, as events | Specified |
+| C11 | Current-state facts | avd-current-state `avd_current_state_facts.ps1`, from the C1 packages | `scripts/Import-CurrentStateFacts.ps1`, then the brain's agents; avd-swarm only through the brain | `avd-current-state-facts/v1` (`contracts/schemas/current-state-facts.schema.json`): counts, booleans, public Azure values and keyed pseudonyms, no names, IDs, IPs, tags or free text | Built (producer and importer, offline) |
 
-C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other.
+C8 to C10 connect the brain to avd-swarm ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C11 is the fact layer under both, so a change to it is three PRs: here, avd-current-state (the producer) and avd-swarm (its gate rule).
 
 ## C1. Evidence packages → vault
 
@@ -83,3 +84,27 @@ Consumers read the JSON files directly, validated against `knowledge/schemas/`, 
 ## C7. Searchable docs
 
 `sources/sources.json` lists each repo, the ref to follow, and the Markdown paths worth searching. `scripts/Sync-BrainSources.ps1` checks them out into `.sources/` (git-ignored) and records each commit in `.sources/lock.json`, so a citation names the exact text: `avd-landing-zone@5f10290:docs/gotchas.md`.
+
+## C11. `avd-current-state-facts/v1`
+
+The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The vault's `/ask` and `/brief` commands are a person's tools inside their private vault, outside this.) avd-swarm never reads a package, a vault or a snapshot file; it gets facts only from the brain, as answers with citations and as C9 evidence.
+
+```
+collector + validator packages ──C1──► estate vault (private; names and IDs, for people)
+            │
+            └─► avd_current_state_facts.ps1 (offline, the estate's key)
+                        │
+                        ▼ C11
+              vault facts/<estate>/<time>.json ──► brain agents ──C9 evidence──► avd-swarm gate
+```
+
+**What it holds.** Per subscription: regions, dataset counts, host pools (type, load balancing, max session limit, Start VM on Connect, RDP property names without values, app group types, session hosts by status, agent, SxS and OS version, stale heartbeats, VM sizes, marketplace images or `custom`), VM sizes and power states, storage accounts (kind, SKU, TLS, network default, private endpoint), network counts (custom DNS, NSGs and route tables on subnets, default routes by next hop, private endpoints by group), Key Vault protection, Log Analytics retention, policy assignment counts, and role assignments by built-in role. Per validator run: mode, verdict, counts, the planned region, host count and VM size, and every check as phase, category, check name, status and, when it is in the snapshot, the pseudonym of what it checked.
+
+**What it can't hold.** The schema has no field for a name, a resource ID, an object ID, an IP address, a tag, a user, a check's scope or detail, or a recommendation, and every string has a pattern. A custom role counts as `other`; a value that doesn't fit its pattern becomes `other` and is counted in `redactedValues`. A validator check name that contains a collected name becomes `redacted`. The producer scans the result for GUIDs, email addresses, UNC paths and IPv4 addresses and refuses to write it if it finds one; the importer runs the brain's guard over it again and refuses on any finding.
+
+**Pseudonyms.** `sub-`, `hp-`, `st-` and `est-` (the tenant) followed by the first 8 hex characters of HMAC-SHA256 over the kind and the lowercased resource ID, keyed with the estate's key. The same key gives the same pseudonyms on every run, so the brain sees one host pool's trend without its name. The brain keeps no mapping: whoever needs the real target recomputes the pseudonym over live resource IDs with the key, in the tenant. With an operations brain deployed, the key is the one in the landing zone's Key Vault ([operations spec](operations-spec.md) §9.4), and rotating it is the same crypto-shredding. Without one, the key is a file beside the vault (`.brain/facts.key`, ignored by the vault template's `.gitignore`), backed up like any secret and never committed.
+
+**Freshness.** A snapshot is evidence of the moment its packages were collected (`collectedUtc`, `generatedUtc` per validator run), not of now. The brain cites it with that time: `facts:<estate>@<generatedUtc>#/subscriptions/0/hostPools/1`. avd-swarm's gate refuses a C9 proposal whose only evidence is a snapshot older than its freshness limit (avd-swarm governance §2.1, 7 days by default) and resolves every target live before approval; a snapshot is a reason to propose, never the target list.
+
+**Producer and consumer.** avd-current-state's `avd_current_state_facts.ps1` (Windows PowerShell 5.1 and PowerShell 7, offline, tests in its `tests/Facts.Tests.ps1` against a copy of this schema) writes the snapshot; `scripts/Import-CurrentStateFacts.ps1` checks it (`Test-CurrentStateFacts`) and, with `-Apply`, files it in the vault under `facts/<estate>/`. It refuses to write inside this repository: a snapshot is still one estate's data. Generalized facts for the knowledge base still come through the vault harvest (C2).
+
