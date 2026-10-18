@@ -1,6 +1,6 @@
 # Spec: the knowledge base
 
-- **Status:** Proposed (see [decision 0002](decisions/0002-knowledge-base.md)). Phase 1 (the knowledge base, its schemas and its guards) is built; nothing in it has been fed by a real engagement yet.
+- **Status:** Proposed (see [decision 0002](knowledge/decisions/0002-knowledge-base.md)). Phase 1 (the knowledge base, its schemas and its guards) is built; nothing in it has been fed by a real engagement yet.
 - **Date:** 2026-10-16
 - **Builds on:** the migration factory's [spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/factory-spec.md) §10.5 (Learn), where this design started (in avd-readiness-stratusphere). Part of avd-second-brain: the [architecture](architecture.md) shows how this layer connects to the estate vaults and the operations brain. "Factory §n" below refers to the factory spec.
 
@@ -62,7 +62,7 @@ The rule that holds it together, the same as the landing zone's: **models and sc
 | **Rules** | The engine's thresholds and decision tables: workload tiers, delivery, quality gate, calibration policy. Each rule has a version and a history with a reason per change | `knowledge/rules/*.json` | Stages 3–5 |
 | **Calibration** | One observation per host pool per wave: predicted vs measured sessions per host, by tier and VM family | `knowledge/calibration/sizing.json` | Stage 4 sizing, through `Get-SizingCalibration` |
 | **Engagements** | A pseudonymous record per engagement: estate shape (in buckets), sources, outcome, and what it contributed to the brain | `knowledge/engagements/eng-<yyyy>-<mm>-<4 chars>.json` | Cross-references, measures (§11), people |
-| **Lessons and decisions** | What real runs taught and why the design is what it is | `docs/lessons/`, `docs/decisions/` | People and Claude Code |
+| **Lessons and decisions** | What real runs taught and why the design is what it is | `docs/lessons/`, `docs/knowledge/decisions/` | People and Claude Code |
 
 Derived values are never stored. Calibration factors are computed from the observations when they are read, so a factor can't drift from its evidence.
 

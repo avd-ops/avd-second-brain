@@ -1,6 +1,6 @@
 # Spec: one set of docs, consistent with the brain
 
-- **Status:** Proposed ([decision 0004](decisions/0004-docs-consistency.md)). Not built; nothing here runs until the owner agrees.
+- **Status:** Proposed ([decision 0004](knowledge/decisions/0004-docs-consistency.md)). Not built; nothing here runs until the owner agrees.
 - **Date:** 2026-10-18
 - **Pair:** avd-swarm spec §6e and its decision 0004 say the same from the acting side. The two change together.
 - **Red team:** [docs-redteam.md](docs-redteam.md). Every finding is folded in below.
@@ -64,7 +64,7 @@ What the check compares against. All already exist except the terms list.
 | `docs/contracts.md` (the table) | Contract ID, name, producer, consumer, format, status | Exists; the check parses the table |
 | `contracts/schemas/*.json` | The authoritative schema per built contract; vendored copies elsewhere must match by hash | Exists |
 | `sources/sources.json` | Connected repos, their ref, what they feed and read, the paths indexed | Exists |
-| `docs/decisions/*.md` and the paired decisions in avd-swarm | Number, title, status, `Pair:` link | Exists |
+| `docs/knowledge/decisions/*.md` (MADR 4) and the paired decisions in avd-swarm | Number, title, status (MADR front matter `status:`, or the `Status:` line in repos not on MADR yet), `Pair:` and "Also recorded in" links | Exists |
 | `sources/terms.json` (new) | Canonical terms and the variants to flag: kill switch positions (`run`, `halt-actions`, `halt-agents`, `halt-all`), avd-buddy, the contract names, repo names, "Entra ID" not "Azure AD", the American English spellings already required | Proposed, D0 |
 
 ## 6. The check
@@ -75,11 +75,11 @@ Each finding has a check ID, severity, repo, file, line, what the text says, wha
 
 | ID | Check | How (all deterministic) | Severity |
 |---|---|---|---|
-| D1 | **Links and paths resolve** | Every relative Markdown link and every backticked path that looks like a repo path exists at the commit; cross-repo citations `<repo>@<commit>:<path>` resolve through `.sources/` | Error |
+| D1 | **Links and paths resolve** | Every relative Markdown link and every backticked path that looks like a repo path exists at the commit; cross-repo citations `<repo>@<commit>:<path>` resolve through `.sources/`. Links under `docs/knowledge/` are left to the family check, `scripts/kb/validate.py` | Error |
 | D2 | **Entry points are documented** | Every script a README calls an entry point (or that carries the project notice) appears in the README's entry point table, has comment-based help with `.SYNOPSIS`, and the README's one-line description matches the synopsis's first sentence word for word (the README row is generated, §7) | Error |
 | D3 | **Parameters match** | Every `-Name` written next to a script name in any doc exists in that script's `param()` block (parsed with the PowerShell AST); every `.PARAMETER` in comment help exists in `param()` and every parameter has one; for Bicep, every documented parameter exists with the same default | Error |
 | D4 | **Contracts agree** | Each repo's mentions of `C<n>` use the name and status in the contracts table; a "Built" contract has its schema and a test in `tests/Connectors.Tests.ps1`; vendored schema copies (avd-current-state `contracts/`) match the authority by SHA-256; `sources.json` `feeds` and `reads` name the same contracts the table gives that repo | Error |
-| D5 | **Paired decisions agree** | Every decision with a `Pair:` line links a decision that exists, links back, and has the same status | Error |
+| D5 | **Paired decisions agree** | Every decision with a `Pair:` line links a decision that exists, links back, and has the same status, read from MADR front matter where there is one; every "Also recorded in" link resolves | Error |
 | D6 | **Changelog is kept** | Every merged PR that touches an entry point, a contract, a schema or a workflow has a line under `## Unreleased` (or a release) in `CHANGELOG.md`, taken from the PR body's `Changelog:` line; a version a script prints matches the changelog's latest release | Warning in D0, error from D1 |
 | D7 | **The connection tables agree** | Every table that lists connected repos (READMEs, `architecture.md`, avd-swarm spec §6c) lists the same repos as `sources/sources.json`, with the same stage | Error. Today's README drift is this check |
 | D8 | **Terms** | Variants listed in `terms.json` are flagged, outside code blocks and quotations | Warning |
@@ -101,7 +101,7 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | **README blocks**: the entry point table, the "How it connects" table | The reference data; `sources/sources.json` | Each README, between markers | First thing a person reads |
 | **Changelog** | `Changelog:` lines in merged PR bodies, grouped Added/Changed/Fixed/Removed ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/)) | Each repo's `CHANGELOG.md` | Release notes, agents asking "what changed" |
 | **The wiki** (the handbook) | Every indexed doc at the commits in `.sources/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
-| **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, terms, contracts named, first 300 characters) and `wiki/llms.txt` | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
+| **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, terms, contracts named, first 300 characters), linked from the root `llms.txt` that `scripts/kb/build.py` generates, so there is one agent index, not two | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
 
 **Why not GitHub's wiki feature.** A GitHub wiki is a separate git repository with no pull requests and no CI. Generated Markdown in `wiki/` gets review, history and the guards for free. A public repo may later mirror its own pages to its GitHub wiki one way, overwritten on each publish, with a banner that says so (red team W1).
 

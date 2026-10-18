@@ -6,10 +6,21 @@ decision, numbered in order, in [MADR 4](https://adr.github.io/madr/) format. Co
 A reversed decision gets a new record, and the old one is marked *Superseded by NNNN*. Each KB in
 the family numbers its own decisions; refer to a sibling's as `<project> 0012`, with a link.
 
-This repo's earlier decisions are still in [docs/decisions/](../../decisions/) and move here, converted
-to MADR 4, in a follow-up pull request ([roadmap](../roadmap.md)).
+This repo's earlier decisions (0001 to 0005) were moved here from `docs/decisions/` and converted
+to MADR 4 without changing what they decided. Decisions paired with avd-swarm keep a "Pair:" line
+under More Information, and decisions shared with a sibling KB say "Also recorded in".
 
 <!-- BEGIN GENERATED: decision-index (from front matter; run scripts/kb/build.py) -->
 | # | Decision | Status |
 |---|---|---|
+| [0001](0001-one-brain-for-the-avd-lifecycle.md) | One brain for the AVD lifecycle, in its own repository | Accepted |
+| [0002](0002-knowledge-base.md) | The knowledge base: reviewed knowledge in Git, no customer data | Accepted |
+| [0003](0003-brain-thinks-swarm-acts.md) | The brain is the intelligence layer; avd-swarm is the actor and control layer | Accepted |
+| [0004](0004-docs-consistency.md) | Docs consistency: the brain checks and generates, avd-swarm drafts | Proposed |
+| [0005](0005-one-schema-registry-and-fact-register.md) | One schema registry and one fact register for every repo | Proposed |
+| [0006](0006-family-kb-format.md) | Adopt the family KB format at docs/knowledge/, beside the engine's knowledge/ | Accepted |
+| [0007](0007-python-family-layer-powershell-engine.md) | Python for the family layer, PowerShell for the engine | Accepted |
+| [0008](0008-learned-knowledge-stays-where-it-happened.md) | Learned knowledge stays where it happened; this KB links and watches | Accepted |
+| [0009](0009-family-format-stronger-leak-check.md) | Family format: a stronger leak check and reviewed model-drafted entries | Proposed |
+| [0010](0010-family-model-selection-convention.md) | Follow the family's model-selection convention, as one of its four pilot projects | Proposed |
 <!-- END GENERATED: decision-index -->

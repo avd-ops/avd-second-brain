@@ -1,6 +1,6 @@
 # The knowledge base
 
-What the organization has learned across engagements and estates, in a form the engine reads and people review. Design: [docs/knowledge-spec.md](../docs/knowledge-spec.md). Decision: [0002](../docs/decisions/0002-knowledge-base.md).
+What the organization has learned across engagements and estates, in a form the engine reads and people review. Design: [docs/knowledge-spec.md](../docs/knowledge-spec.md). Decision: [0002](../docs/knowledge/decisions/0002-knowledge-base.md).
 
 | Path | Holds | Schema |
 |---|---|---|
@@ -11,7 +11,7 @@ What the organization has learned across engagements and estates, in a form the 
 | `engagements/eng-*.json` | One pseudonymous record per engagement (organization scope only) | `schemas/engagement.schema.json` |
 | `denylist.sha256` | SHA-256 of the lowercase names of your customers, one per line (organization scope only) | — |
 
-Lessons and decisions stay in `docs/lessons/` and `docs/decisions/`.
+Lessons stay in `docs/lessons/`; decisions are in `docs/knowledge/decisions/`, the family knowledge base's decision records.
 
 ## Ask it
 

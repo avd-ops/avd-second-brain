@@ -29,8 +29,7 @@ chat assistant never asks for, shows or stores a secret; the person runs the ste
 
 Changes land through reviewed pull requests with green CI. Nothing changes a real tenant,
 subscription or estate without the owner's explicit yes. The brain never holds a write credential:
-every change to an estate goes through avd-swarm's approval and kill switch (decision 0003 in
-[decisions/](decisions/)).
+every change to an estate goes through avd-swarm's approval and kill switch ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)).
 
 ## 4. Respect licenses: unlicensed code is reference only
 

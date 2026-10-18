@@ -1,6 +1,6 @@
 # Architecture: one brain for the AVD lifecycle
 
-- **Status:** Proposed ([decision 0001](decisions/0001-one-brain-for-the-avd-lifecycle.md)). The knowledge base, the vault, the connectors and the cross-repo search are built and tested offline; nothing has run against a real estate yet.
+- **Status:** Proposed ([decision 0001](knowledge/decisions/0001-one-brain-for-the-avd-lifecycle.md)). The knowledge base, the vault, the connectors and the cross-repo search are built and tested offline; nothing has run against a real estate yet.
 - **Date:** 2026-10-16
 
 > Personal project. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft.
@@ -46,7 +46,7 @@ They are the same idea at different points of one lifecycle: **assess → invent
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
 | Act and control | [avd-swarm](https://github.com/nickprignano/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
 
-**The brain thinks, avd-swarm acts** ([decision 0003](decisions/0003-brain-thinks-swarm-acts.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
+**The brain thinks, avd-swarm acts** ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
 
 ## 3. Layers and scopes
 
