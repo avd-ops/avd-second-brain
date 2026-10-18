@@ -5,52 +5,96 @@
       "name": "avd-readiness-stratusphere",
       "url": "https://github.com/nickprignano/avd-readiness-stratusphere",
       "ref": "main",
-      "stage": "Assess and design: the Stratusphere instrument and the migration factory",
-      "index": ["docs"],
+      "stage": "Assess and design: the migration factory (estate model, quality gate, analysis, the target-state manifest)",
+      "index": [
+        "docs"
+      ],
       "feeds": [
         "Engagement harvests: catalog evidence, rule changes, lessons, engagement records (.claude/skills/harvest)",
         "avd-sizing-evidence/v1 from the factory's verify stage (contracts/sizing-evidence.md)",
-        "avd-forensic-facts/v1: measured performance and sizing aggregates per host pool or persona (contracts C12, specified)"
+        "avd-forensic-facts/v1: measured performance and sizing aggregates per host pool or persona (contracts C12, specified)",
+        "avd-target-state/v1 manifests, harvested as engagement buckets only, never as files (contracts C14)"
       ],
-      "reads": ["knowledge/catalog/apps.json", "knowledge/rules/*.json", "knowledge/calibration/sizing.json"]
+      "reads": [
+        "knowledge/catalog/apps.json",
+        "knowledge/rules/*.json",
+        "knowledge/calibration/sizing.json",
+        "contracts/fact-register.json (contracts C15)"
+      ]
+    },
+    {
+      "name": "avd-liquidware",
+      "url": "https://github.com/nickprignano/avd-liquidware",
+      "ref": "main",
+      "stage": "Deploy Liquidware products in Azure: the Stratusphere UX instrument (moving from avd-readiness-stratusphere), and the optional ProfileUnity, FlexApp and CommandCTRL tier",
+      "index": [
+        "docs"
+      ],
+      "feeds": [
+        "Stratusphere instrument outputs to avd-readiness-stratusphere (contracts C16, proposed)",
+        "Liquidware facts (liquidware.* in the fact register, proposed)",
+        "Lessons and decisions (searched in place)"
+      ],
+      "reads": [
+        "The liquidware block of avd-target-state/v1 (contracts C14), when its tier is built"
+      ]
     },
     {
       "name": "avd-current-state",
       "url": "https://github.com/nickprignano/avd-current-state",
       "ref": "main",
       "stage": "Inventory and validate: the collector and the deployment validator",
-      "index": ["README.md"],
+      "index": [
+        "README.md"
+      ],
       "feeds": [
         "Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1, contracts C1)",
         "avd-current-state-facts/v1: the redacted facts snapshot the brain's agents read (contracts C11)"
       ],
-      "reads": []
+      "reads": [
+        "contracts/fact-register.json, for manifest coverage (contracts C15)"
+      ]
     },
     {
       "name": "avd-landing-zone",
       "url": "https://github.com/nickprignano/avd-landing-zone",
       "ref": "master",
       "stage": "Deploy and operate: the cloud-native landing zone and its operations brain",
-      "index": ["docs/lessons", "docs/decisions", "docs/gotchas.md", "docs/operations.md"],
+      "index": [
+        "docs/lessons",
+        "docs/decisions",
+        "docs/gotchas.md",
+        "docs/operations.md"
+      ],
       "feeds": [
         "Lessons and decisions (searched in place)",
         "avd-sizing-evidence/v1 from the operations brain's baselines (contracts/sizing-evidence.md)",
-        "Episodes that became lessons (docs/operations-spec.md §4.6)"
+        "Episodes that became lessons (docs/operations-spec.md \u00a74.6)"
       ],
-      "reads": ["knowledge/rules/workload-tiers.json", "knowledge/calibration/sizing.json", "knowledge/catalog/apps.json (image pipeline)"]
+      "reads": [
+        "knowledge/rules/workload-tiers.json",
+        "knowledge/calibration/sizing.json",
+        "knowledge/catalog/apps.json (image pipeline)",
+        "avd-target-state/v1 manifests and their approvals (contracts C14)"
+      ]
     },
     {
       "name": "avd-swarm",
       "url": "https://github.com/nickprignano/avd-swarm",
       "ref": "main",
       "stage": "Act and control: the agents, the approval path, the executor and the kill switch (decision 0003)",
-      "index": ["docs"],
+      "index": [
+        "docs"
+      ],
       "feeds": [
         "avd-swarm-insights/v1: insights, incidents and grading scores (contracts C8)",
         "Action outcomes and the kill switch position (contracts C10)",
         "Lessons and decisions (searched in place)"
       ],
-      "reads": ["Playbook run proposals (contracts C9)", "knowledge/ at a pinned commit (contracts C6)"]
+      "reads": [
+        "Playbook run proposals (contracts C9)",
+        "knowledge/ at a pinned commit (contracts C6)"
+      ]
     }
   ]
 }
