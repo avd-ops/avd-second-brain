@@ -27,6 +27,7 @@ The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [
 | **Knowledge** (`knowledge/`) | Generalized knowledge shared across customers: app catalog, engine rules with their history, sizing calibration, shared runbooks, pseudonymous engagement records. Public here; an organization keeps its own in a private fork | [knowledge-spec.md](docs/knowledge-spec.md) | Built |
 | **Estate vault** (`vault/`) | One customer's estate as a Markdown vault: environments, drift, findings, decisions, runbooks, built from avd-current-state packages. Kept in the customer's private repo | [vault.md](docs/vault.md) | Built (moved from avd-current-state) |
 | **Operations brain** | Detections, playbooks with a person approving every change, episodes, the kill switch, for a running landing zone. The runtime deploys from avd-landing-zone | [operations-spec.md](docs/operations-spec.md), [red team](docs/operations-redteam.md) | Specified (moved from avd-landing-zone) |
+| **Docs consistency** | A deterministic check that keeps code comments, READMEs, changelogs, docs and a generated wiki consistent with the code and the brain's contracts and sources; avd-swarm's Scribe drafts the fixes | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Specified |
 
 ## Quick start
 
