@@ -629,6 +629,37 @@ function ConvertFrom-SizingEvidence {
   }
 }
 
+function Test-CurrentStateFacts {
+  # Contract C11: an avd-current-state-facts/v1 snapshot. Schema first (no field can hold a name),
+  # then the guard over the whole text, then references: every check target must be a subscription,
+  # host pool or storage account the snapshot describes. Returns the document and the findings.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] [string] $File,
+    [Parameter(Mandatory)] [string] $SchemaFile
+  )
+  $display = Split-Path $File -Leaf
+  $r = Test-BrainJson -File $File -SchemaFile $SchemaFile -Display $display
+  if (-not $r.Document) { return $r }
+  $findings = @(Get-BrainSensitiveText -Text (Get-Content -LiteralPath $File -Raw) -Path $display)
+  $doc = $r.Document
+  $known = @{}
+  foreach ($sub in @($doc.subscriptions)) {
+    $known[$sub.id] = $true
+    foreach ($x in @($sub.hostPools) + @($sub.storageAccounts)) {
+      if ($known.ContainsKey($x.id)) { $findings += Get-BrainFinding Error 'facts:pseudonym-collision' $display "Pseudonym $($x.id) names two resources; re-run with a new key." }
+      $known[$x.id] = $true
+    }
+  }
+  foreach ($v in @($doc.validations)) {
+    foreach ($c in @($v.checks)) {
+      $t = Get-BrainProperty $c 'target'
+      if ($t -and -not $known.ContainsKey($t)) { $findings += Get-BrainFinding Warning 'facts:unknown-target' $display "Check '$($c.check)' points at $t, which the snapshot doesn't describe." }
+    }
+  }
+  [pscustomobject]@{ Document = $doc; Findings = @($findings) }
+}
+
 Export-ModuleMember -Function Get-BrainSensitiveText, Test-BrainCatalog, Test-BrainRule, Test-BrainCalibration,
   Test-BrainEngagement, Test-BrainKnowledge, Resolve-BrainApp, Get-SizingCalibration, Search-BrainKnowledge,
-  Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence
+  Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence, Test-CurrentStateFacts

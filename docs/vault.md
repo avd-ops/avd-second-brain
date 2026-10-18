@@ -107,6 +107,15 @@ avd-brain/
 └── .brain/state.json         # ingest state; do not edit
 ```
 
+## Facts snapshots for the brain's agents
+
+The vault keeps names and IDs because people need them. The brain's agents, and through them avd-swarm, read a redacted form instead: a facts snapshot (`avd-current-state-facts/v1`, [contract C11](contracts.md#c11-avd-current-state-factsv1)) made by avd-current-state's `avd_current_state_facts.ps1` with the estate's key, and filed here under `facts/<estate>/` by `scripts/Import-CurrentStateFacts.ps1 -Apply`. Keep the key at `.brain/facts.key` (the template's `.gitignore` excludes it) and back it up like any secret: the same key keeps a host pool's pseudonym the same from run to run.
+
+```powershell
+..\avd-current-state\avd_current_state_facts.ps1 -PackagePath D:\Assessments -KeyPath ..\avd-brain\.brain\facts.key -NewKey -OutputPath $env:TEMP
+.\scripts\Import-CurrentStateFacts.ps1 -FactsPath $env:TEMP\avd-current-state-facts-20261018T090000.json -VaultPath ..\avd-brain -Apply
+```
+
 ## Limits
 
 - The vault knows only what the collector and validator saw. Their [limitations](https://github.com/nickprignano/avd-current-state/blob/main/README.md#limitations)

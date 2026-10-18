@@ -9,7 +9,8 @@
       "index": ["docs"],
       "feeds": [
         "Engagement harvests: catalog evidence, rule changes, lessons, engagement records (.claude/skills/harvest)",
-        "avd-sizing-evidence/v1 from the factory's verify stage (contracts/sizing-evidence.md)"
+        "avd-sizing-evidence/v1 from the factory's verify stage (contracts/sizing-evidence.md)",
+        "avd-forensic-facts/v1: measured performance and sizing aggregates per host pool or persona (contracts C12, specified)"
       ],
       "reads": ["knowledge/catalog/apps.json", "knowledge/rules/*.json", "knowledge/calibration/sizing.json"]
     },
@@ -19,7 +20,10 @@
       "ref": "main",
       "stage": "Inventory and validate: the collector and the deployment validator",
       "index": ["README.md"],
-      "feeds": ["Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1)"],
+      "feeds": [
+        "Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1, contracts C1)",
+        "avd-current-state-facts/v1: the redacted facts snapshot the brain's agents read (contracts C11)"
+      ],
       "reads": []
     },
     {

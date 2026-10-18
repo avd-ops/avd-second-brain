@@ -40,6 +40,26 @@ BeforeAll {
     [pscustomobject]@{ schema = 'avd-sizing-evidence/v1'; source = 'landing-zone-brain'; engagement = 'eng-2026-11-a7f3'; wave = 2
       period = [pscustomobject]@{ start = '2027-01-01'; end = '2027-01-31' }; hostPools = @([pscustomobject]$hp) }
   }
+  function Get-TestFacts {
+    # A minimal avd-current-state-facts/v1 snapshot (contract C11), as avd_current_state_facts.ps1 writes it.
+    [ordered]@{
+      schema = 'avd-current-state-facts/v1'; estate = 'est-0a1b2c3d'; generatedUtc = '2026-10-18T09:00:00Z'
+      producer = [ordered]@{ name = 'avd_current_state_facts.ps1'; version = '1.0.0' }
+      sources = @([ordered]@{ kind = 'collector'; generatedUtc = '2026-10-18T08:00:00Z'; manifestSha256 = ('ab' * 32) })
+      subscriptions = @([ordered]@{
+          id = 'sub-1a2b3c4d'; collectedUtc = '2026-10-18T08:00:00Z'; regions = @('eastus2'); counts = [ordered]@{ avdHostPools = 1; virtualMachines = 4 }
+          hostPools = @([ordered]@{ id = 'hp-2b3c4d5e'; region = 'eastus2'; type = 'Pooled'; loadBalancer = 'BreadthFirst'; maxSessionLimit = 12
+              sessionHosts = [ordered]@{ total = 4; status = [ordered]@{ Available = 3; Unavailable = 1 }; staleHeartbeat = 1 }
+              vmSizes = [ordered]@{ Standard_D4ads_v5 = 4 }; images = @([ordered]@{ publisher = 'custom'; hosts = 4 }) })
+          virtualMachines = [ordered]@{ total = 4 }
+          storageAccounts = @([ordered]@{ id = 'st-3c4d5e6f'; kind = 'FileStorage'; sku = 'Premium_LRS'; privateEndpoint = $true })
+          network = [ordered]@{ virtualNetworks = 1 }; keyVaults = [ordered]@{ total = 0 }; logAnalytics = [ordered]@{ total = 1 }
+          policy = [ordered]@{ assignments = 2 }; roleAssignments = [ordered]@{ roles = [ordered]@{ 'Desktop Virtualization User' = 1 } } })
+      validations = @([ordered]@{ subscription = 'sub-1a2b3c4d'; mode = 'PostDeployment'; generatedUtc = '2026-10-18T08:30:00Z'; verdict = 'FAIL'
+          checks = @([ordered]@{ phase = 'PostDeployment'; category = 'SessionHost'; check = 'Heartbeat freshness'; status = 'FAIL'; target = 'hp-2b3c4d5e' }) })
+      redactedValues = 0
+    }
+  }
 }
 
 Describe 'avd-current-state -> vault -> knowledge' {
@@ -94,6 +114,56 @@ Describe 'avd-current-state -> vault -> knowledge' {
     $h = Get-VaultHarvest -VaultPath $script:vault
     ($h.Candidates | Where-Object Path -eq 'lessons/token.md').SensitiveLines | Should -Be 1
     ($h.Candidates | Where-Object Kind -eq 'runbook').Path | Should -Be 'runbooks/renew-registration-token.md'
+  }
+}
+
+Describe 'avd-current-state facts (C11) -> estate facts store' {
+  BeforeAll {
+    $script:factsSchema = Join-Path $script:root 'contracts/schemas/current-state-facts.schema.json'
+    $script:importer = Join-Path $script:root 'scripts/Import-CurrentStateFacts.ps1'
+    function Save-TestFacts { param($Data, [string] $Name = 'facts.json') $p = Join-Path $TestDrive $Name; $Data | ConvertTo-Json -Depth 12 | Set-Content $p; $p }
+  }
+  It 'accepts a clean snapshot' {
+    $r = Test-CurrentStateFacts -File (Save-TestFacts (Get-TestFacts)) -SchemaFile $script:factsSchema
+    $r.Findings | Should -BeNullOrEmpty
+    $r.Document.subscriptions[0].hostPools[0].sessionHosts.total | Should -Be 4
+  }
+  It 'has no field for a name: <Why>' -ForEach @(
+    @{ Why = 'a host pool name'; Change = { param($f) $f.subscriptions[0].hostPools[0]['name'] = 'hp-finance' } }
+    @{ Why = 'a real resource ID as the pseudonym'; Change = { param($f) $f.subscriptions[0].id = '/subscriptions/x' } }
+    @{ Why = 'a validator scope'; Change = { param($f) $f.validations[0].checks[0]['scope'] = 'hp-finance' } }
+    @{ Why = 'free text in a check name'; Change = { param($f) $f.validations[0].checks[0].check = "Host on line`nbreak" } }
+  ) {
+    $f = Get-TestFacts
+    & $Change $f
+    $r = Test-CurrentStateFacts -File (Save-TestFacts $f) -SchemaFile $script:factsSchema
+    @($r.Findings | Where-Object Check -eq 'schema').Count | Should -Be 1
+  }
+  It 'runs the guard over what the schema lets through' {
+    $f = Get-TestFacts
+    $f.validations[0].checks[0].check = 'Owner 0f1e2d3c-4b5a-4968-8778-695a4b3c2d1e'
+    $r = Test-CurrentStateFacts -File (Save-TestFacts $f) -SchemaFile $script:factsSchema
+    $r.Findings.Check | Should -Contain 'sensitive:guid'
+  }
+  It 'warns when a check points at something the snapshot does not describe' {
+    $f = Get-TestFacts
+    $f.validations[0].checks[0].target = 'hp-99999999'
+    (Test-CurrentStateFacts -File (Save-TestFacts $f) -SchemaFile $script:factsSchema).Findings.Check | Should -Be 'facts:unknown-target'
+  }
+  It 'files a clean snapshot in the vault by estate and time, and refuses this repo' {
+    $file = Save-TestFacts (Get-TestFacts)
+    $vault = Join-Path $TestDrive 'facts-vault'
+    New-Item -ItemType Directory -Force $vault | Out-Null
+    & $script:importer -FactsPath $file -VaultPath $vault -Apply 6>$null
+    Join-Path $vault 'facts/est-0a1b2c3d/20261018T090000Z.json' | Should -Exist
+    pwsh -NoProfile -File $script:importer -FactsPath $file -VaultPath $script:root -Apply *>$null
+    $LASTEXITCODE | Should -Be 1
+  }
+  It 'refuses a snapshot that fails the guard' {
+    $f = Get-TestFacts
+    $f.validations[0].checks[0].check = 'Share 10.20.30.40'
+    pwsh -NoProfile -File $script:importer -FactsPath (Save-TestFacts $f 'leak.json') *>$null
+    $LASTEXITCODE | Should -Be 1
   }
 }
 
@@ -174,7 +244,7 @@ Describe 'Connected repositories' {
 
 Describe 'Entry points' {
   It '<_> carries the project notice' -ForEach @(
-    'scripts/Sync-BrainSources.ps1', 'scripts/Get-VaultHarvest.ps1', 'scripts/Import-SizingEvidence.ps1', 'vault/avd_second_brain.ps1'
+    'scripts/Sync-BrainSources.ps1', 'scripts/Get-VaultHarvest.ps1', 'scripts/Import-SizingEvidence.ps1', 'scripts/Import-CurrentStateFacts.ps1', 'vault/avd_second_brain.ps1'
   ) {
     Get-Content (Join-Path $script:root $_) -Raw | Should -Match 'Personal project, not for production use'
   }

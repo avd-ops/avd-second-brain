@@ -3,6 +3,9 @@ avd-current-state-*/
 avd-validation-*/
 *.zip
 
+# The estate's pseudonymization key for C11 facts snapshots. Back it up like any secret; never commit it.
+.brain/facts.key
+
 .obsidian/workspace*.json
 .DS_Store
 Thumbs.db
