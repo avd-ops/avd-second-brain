@@ -312,7 +312,12 @@ function Test-BrainKnowledge {
     $denyHash = @(Get-Content -LiteralPath $denyFile | ForEach-Object { $_.Trim() } | Where-Object { $_ -match '^[0-9a-fA-F]{64}$' })
   }
   foreach ($f in @(Get-ChildItem -LiteralPath $brain -Recurse -File | Where-Object { $_.FullName -ne $denyFile })) {
-    Get-BrainSensitiveText -Text (Get-Content -LiteralPath $f.FullName -Raw) -Path (& $rel $f.FullName) -DenyHash $denyHash
+    $text = Get-Content -LiteralPath $f.FullName -Raw
+    Get-BrainSensitiveText -Text $text -Path (& $rel $f.FullName) -DenyHash $denyHash
+    # Estate pseudonyms (C11, C12, C14) link a record to a tenant: knowledge holds buckets, never these.
+    foreach ($m in [regex]::Matches($text, '\b(est|hp|st|sub)-[0-9a-f]{8}\b')) {
+      Get-BrainFinding Error 'sensitive:estate-pseudonym' (& $rel $f.FullName) "Holds an estate pseudonym ($($m.Value.Substring(0, 3))***). Harvest buckets, never pseudonyms (contracts C14)."
+    }
   }
 }
 
@@ -660,6 +665,137 @@ function Test-CurrentStateFacts {
   [pscustomobject]@{ Document = $doc; Findings = @($findings) }
 }
 
+function Test-SchemaPath {
+  # True when a JSON pointer (with * for every array item) names a property the schema defines.
+  # Follows local $ref and steps into allOf branches; used to keep the fact register honest.
+  [CmdletBinding()]
+  [OutputType([bool])]
+  param(
+    [Parameter(Mandatory)] $Schema,
+    [Parameter(Mandatory)] [string] $Pointer
+  )
+  $node = $Schema
+  foreach ($seg in @($Pointer.Trim('/') -split '/')) {
+    for ($hop = 0; $hop -lt 10; $hop++) {
+      $ref = Get-BrainProperty $node '$ref'
+      if (-not $ref) { break }
+      $node = $Schema
+      foreach ($r in @($ref.TrimStart('#', '/') -split '/')) { $node = Get-BrainProperty $node $r }
+    }
+    if ($seg -eq '*') { $node = Get-BrainProperty $node 'items' }
+    else {
+      $next = Get-BrainProperty (Get-BrainProperty $node 'properties') $seg
+      if ($null -eq $next) {
+        foreach ($branch in @(Get-BrainProperty $node 'allOf')) {
+          $next = Get-BrainProperty (Get-BrainProperty $branch 'properties') $seg
+          if ($null -ne $next) { break }
+        }
+      }
+      $node = $next
+    }
+    if ($null -eq $node) { return $false }
+  }
+  $true
+}
+
+function Test-FactRegister {
+  # Contract C15: unique IDs, decisions that exist, and every built fact's path resolvable in its
+  # contract's schema (SchemaByContract: @{ C11 = <schema object> }). Returns findings.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Register,
+    [Parameter(Mandatory)] [hashtable] $SchemaByContract,
+    [string] $Path = 'contracts/fact-register.json'
+  )
+  $decisions = @($Register.decisions | ForEach-Object { $_.id })
+  foreach ($dup in @($decisions | Group-Object | Where-Object Count -gt 1)) { Get-BrainFinding Error 'register:duplicate-decision' $Path "Decision '$($dup.Name)' is listed twice." }
+  foreach ($dup in @($Register.facts.id | Group-Object | Where-Object Count -gt 1)) { Get-BrainFinding Error 'register:duplicate-fact' $Path "Fact '$($dup.Name)' is listed twice." }
+  $prefix = @{ azure = 'c11.'; forensic = 'c12.'; intake = 'intake.'; liquidware = 'liquidware.' }
+  foreach ($f in @($Register.facts)) {
+    if (-not $f.id.StartsWith($prefix[$f.tier])) { Get-BrainFinding Error 'register:tier-prefix' $Path "Fact '$($f.id)' is tier $($f.tier); its ID must start with '$($prefix[$f.tier])'." }
+    foreach ($e in @($f.evidences)) {
+      if ($e -notin $decisions) { Get-BrainFinding Error 'register:unknown-decision' $Path "Fact '$($f.id)' evidences '$e', which isn't a decision in the register." }
+    }
+    if ($f.status -eq 'proposed' -and @($f.evidences).Count) { Get-BrainFinding Error 'register:proposed-evidence' $Path "Fact '$($f.id)' is proposed; it can't evidence a decision until it is specified." }
+    if ($f.status -ne 'built') { continue }
+    $schema = if ($f.contract) { $SchemaByContract[$f.contract] } else { $null }
+    if (-not $f.contract -or -not $f.path) { Get-BrainFinding Error 'register:built-without-contract' $Path "Fact '$($f.id)' is built but names no contract and path." }
+    elseif (-not $schema) { Get-BrainFinding Error 'register:no-schema' $Path "Fact '$($f.id)' is built, but there is no schema for $($f.contract)." }
+    elseif (-not (Test-SchemaPath -Schema $schema -Pointer $f.path)) { Get-BrainFinding Error 'register:path-not-in-schema' $Path "Fact '$($f.id)': $($f.path) isn't in the $($f.contract) schema." }
+  }
+}
+
+function Test-TargetState {
+  # Contract C14: an avd-target-state/v1 manifest. Schema first, then the guard, then what a schema
+  # can't say: every citation is a registered, citable fact that can support that decision, with the
+  # subject its grain needs; cited rules exist; pools are consistent. Returns the document and findings.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] [string] $File,
+    [Parameter(Mandatory)] [string] $SchemaFile,
+    [Parameter(Mandatory)] $Register,
+    [string] $RulesPath
+  )
+  $display = Split-Path $File -Leaf
+  $r = Test-BrainJson -File $File -SchemaFile $SchemaFile -Display $display
+  if (-not $r.Document) { return $r }
+  $doc = $r.Document
+  $findings = @(Get-BrainSensitiveText -Text (Get-Content -LiteralPath $File -Raw) -Path $display)
+  if ($doc.pins.factRegister -ne $Register.version) {
+    $findings += Get-BrainFinding Error 'manifest:register-version' $display "Pins fact register v$($doc.pins.factRegister); this register is v$($Register.version)."
+  }
+  $facts = @{}
+  foreach ($f in @($Register.facts)) { $facts[$f.id] = $f }
+  $rules = @{}
+  if ($RulesPath) {
+    foreach ($rf in @(Get-ChildItem -LiteralPath $RulesPath -Filter *.json -File)) { $rd = Get-Content -LiteralPath $rf.FullName -Raw | ConvertFrom-Json; $rules[$rd.id] = [int]$rd.version }
+  }
+  $needsSubject = @('hostPool', 'group', 'storageAccount', 'host')
+
+  # Every decision in the manifest, with its decision ID from the register.
+  $found = @()
+  foreach ($d in @($Register.decisions)) {
+    $segs = @($d.manifestPath.Trim('/') -split '/')
+    $nodes = @([pscustomobject]@{ Node = $doc; Pointer = '' })
+    foreach ($s in $segs) {
+      $nodes = @(foreach ($n in $nodes) {
+          if ($s -eq '*') { $i = 0; foreach ($item in @($n.Node)) { [pscustomobject]@{ Node = $item; Pointer = "$($n.Pointer)/$i" }; $i++ } }
+          else { $v = Get-BrainProperty $n.Node $s; if ($null -ne $v) { [pscustomobject]@{ Node = $v; Pointer = "$($n.Pointer)/$s" } } }
+        })
+    }
+    foreach ($n in $nodes) { $found += [pscustomobject]@{ Decision = $d.id; Pointer = $n.Pointer; Value = $n.Node } }
+  }
+  foreach ($x in $found) {
+    foreach ($ref in @($x.Value.evidence)) {
+      $id, $subject = $ref -split '@', 2
+      $f = $facts[$id]
+      if (-not $f) { $findings += Get-BrainFinding Error 'manifest:unknown-fact' $display "$($x.Pointer) cites '$id', which isn't in the fact register."; continue }
+      if ($f.status -eq 'proposed') { $findings += Get-BrainFinding Error 'manifest:proposed-fact' $display "$($x.Pointer) cites '$id', which is only proposed." }
+      if ($x.Decision -notin @($f.evidences)) { $findings += Get-BrainFinding Error 'manifest:fact-cannot-support' $display "$($x.Pointer) cites '$id', which the register doesn't list as evidence for $($x.Decision)." }
+      if ($f.grain -in $needsSubject -and -not $subject) { $findings += Get-BrainFinding Error 'manifest:missing-subject' $display "$($x.Pointer) cites '$id' (grain $($f.grain)) without naming which one (@hp-..., @persona-...)." }
+    }
+    $rule = Get-BrainProperty $x.Value 'rule'
+    if ($rule -and $RulesPath) {
+      $rid, $rv = $rule -split '@v', 2
+      if (-not $rules.ContainsKey($rid)) { $findings += Get-BrainFinding Error 'manifest:unknown-rule' $display "$($x.Pointer) cites rule '$rid', which isn't in knowledge/rules/." }
+      elseif ([int]$rv -gt $rules[$rid]) { $findings += Get-BrainFinding Error 'manifest:future-rule' $display "$($x.Pointer) cites $rule; the newest is v$($rules[$rid])." }
+    }
+  }
+
+  $ids = @($doc.hostPools | ForEach-Object { $_.id })
+  foreach ($dup in @($ids | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'manifest:duplicate-pool' $display "Host pool '$($dup.Name)' is listed twice." }
+  foreach ($p in @($doc.hostPools)) {
+    if ($p.hosts.value * $p.maxSessions.value -lt $p.peakConcurrent) {
+      $findings += Get-BrainFinding Error 'manifest:capacity' $display "$($p.id): $($p.hosts.value) hosts x $($p.maxSessions.value) sessions is below the peak of $($p.peakConcurrent)."
+    }
+  }
+  if ($doc.target.renderer -eq 'lz-cloudnative' -and @($doc.target.gaps).Count) {
+    $findings += Get-BrainFinding Error 'manifest:gaps' $display "lz-cloudnative can't express: $(@($doc.target.gaps) -join ', '). Route to another renderer or remove the requirement."
+  }
+  [pscustomobject]@{ Document = $doc; Findings = @($findings) }
+}
+
 Export-ModuleMember -Function Get-BrainSensitiveText, Test-BrainCatalog, Test-BrainRule, Test-BrainCalibration,
   Test-BrainEngagement, Test-BrainKnowledge, Resolve-BrainApp, Get-SizingCalibration, Search-BrainKnowledge,
-  Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence, Test-CurrentStateFacts
+  Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence, Test-CurrentStateFacts,
+  Test-SchemaPath, Test-FactRegister, Test-TargetState
