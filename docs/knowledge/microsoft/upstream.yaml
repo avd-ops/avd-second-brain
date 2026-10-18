@@ -2,6 +2,26 @@
 # the source of truth for the tables in microsoft/upstream-contributions.md.
 # Regenerate with `python3 scripts/kb/build.py`. Schema: ../schema/upstream.schema.json.
 
-feature_gaps: []
-api_asks: []
-docs_packaging: []
+feature_gaps:
+  - id: avm-nat-gateway-pip-zones
+    title: "AVM nat-gateway: public IPs default to zones 1-3 even when the NAT Gateway is non-zonal"
+    evidence: "https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0001-nat-gateway-pip-zones.md"
+    why: "Deploying to a region without availability zones fails with LocationNotSupportAvailabilityZones unless the caller overrides a nested default it can't see from the parent module"
+    fix: "Default the public IPs' zones to the NAT Gateway's own zones, or to none"
+    status: candidate
+    note: "Check the current module version in Azure/bicep-registry-modules before raising"
+api_asks:
+  - id: graph-sp-unlisted-delegated-scopes
+    title: "Microsoft Graph's service principal doesn't list every delegated permission it issues"
+    evidence: "https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md"
+    why: "Tooling that looks scopes up in oauth2PermissionScopes reports a real delegated permission as missing"
+    fix: "List every issued delegated scope, or document which ones are left out"
+    status: candidate
+docs_packaging:
+  - id: azure-files-entra-kerberos-channel-encryption
+    title: "Azure Files: say that Entra Kerberos sessions are denied when AES-256-GCM is the only SMB channel encryption"
+    evidence: "https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md"
+    why: "Hardening the share to AES-256-GCM only breaks FSLogix for cloud-only users with a plain access denied, and the cause took a long bisect to find"
+    fix: "A note in the Entra Kerberos and SMB security settings pages"
+    status: candidate
+    note: "Check the current docs before raising"

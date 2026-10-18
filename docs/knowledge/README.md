@@ -26,14 +26,14 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 <!-- BEGIN GENERATED: kb-index (from front matter; run scripts/kb/build.py) -->
 | Page | What's in it | Status |
 |---|---|---|
-| [landing-zone/](landing-zone/README.md) | Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell | plan |
-| [identity/](identity/README.md) | Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities | plan |
-| [fslogix/](fslogix/README.md) | FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks | plan |
-| [images/](images/README.md) | Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion | plan |
+| [landing-zone/](landing-zone/README.md) | Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell | verified |
+| [identity/](identity/README.md) | Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities | partial |
+| [fslogix/](fslogix/README.md) | FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks | verified |
+| [images/](images/README.md) | Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion | partial |
 | [assessment/](assessment/README.md) | How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence | plan |
-| [operations/](operations/README.md) | Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate | plan |
+| [operations/](operations/README.md) | Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate | partial |
 | [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | plan |
-| [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | plan |
+| [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | partial |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
 | [troubleshooting/](troubleshooting/README.md) | Errors hit deploying and running AVD: symptom, cause, fix and source | verified |
 | [roadmap.md](roadmap.md) | How this KB is being moved onto the family format, step by step, and what's still to come | plan |

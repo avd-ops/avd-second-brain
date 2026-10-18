@@ -1,5 +1,197 @@
 # Known errors catalog: the source of truth for troubleshooting/README.md.
 # Regenerate the page with `python3 scripts/kb/build.py`. Schema: ../schema/known-errors.schema.json
 # `source` is a KB path (relative to docs/knowledge/) or an https URL.
+# Seeded from avd-landing-zone's lessons (decision 0008: they stay there; each entry links its lesson).
 
-errors: []
+errors:
+- id: avm-nat-gateway-pip-zones
+  symptom: '`LocationNotSupportAvailabilityZones` on the NAT Gateway public IP when deploying to a region
+    without availability zones'
+  cause: The AVM nat-gateway module defaults each public IP to zones 1-3, even when the NAT Gateway itself
+    is non-zonal
+  fix: Pass the landing zone's zones to the network module and give the IP no zones when the list is empty
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0001-nat-gateway-pip-zones.md
+  status: verified
+  added: '2026-10-18'
+- id: bicep-readenvironmentvariable-empty
+  symptom: A Bicep parameter compiles to an empty string although `readEnvironmentVariable('X', 'default')`
+    has a default
+  cause: The default applies only when the variable is unset, not when it is set but empty (an unset CI
+    variable often is)
+  fix: '`empty(readEnvironmentVariable(''X'', '''')) ? ''default'' : readEnvironmentVariable(''X'', '''')`'
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0004-empty-env-var.md
+  status: verified
+  added: '2026-10-18'
+- id: get-azresourceprovider-per-region
+  symptom: A region check built on `Get-AzResourceProvider -ProviderNamespace` reports it can't read the
+    regions, though the region supports the resource type
+  cause: The cmdlet returns one object per region, each with only that region's resource types; reading
+    the first object misses the rest
+  fix: 'Read `GET /subscriptions/<subscription-id>/providers/<namespace>` through ARM: one object with
+    every region per resource type'
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0005-provider-per-region.md
+  status: verified
+  added: '2026-10-18'
+- id: register-provider-hangs-encryptionathost
+  symptom: '`Register-AzResourceProvider` hangs silently for minutes, or EncryptionAtHost reports ready
+    while it is still registering'
+  cause: The cmdlet can block until registration completes and prints nothing; EncryptionAtHost takes
+    effect only after Microsoft.Compute is registered again, about 15 minutes after the feature
+  fix: Register through the ARM `register` API (returns at once), wait with visible progress up to 15
+    minutes, then register Microsoft.Compute again
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0006-provider-registration.md
+  status: verified
+  added: '2026-10-18'
+- id: connect-mggraph-cloud-shell-device-code
+  symptom: '`Connect-MgGraph` in Cloud Shell hangs with no device code shown, or a sign-in that succeeded
+    fails later with `DeviceCodeCredential authentication failed: Object reference not set`'
+  cause: The device-code prompt goes to the output stream (`| Out-Null` hides it), and a Graph context
+    can exist without being able to issue tokens
+  fix: Show the prompt with `Write-Host`, test that the context can issue a token before reusing it, and
+    compare the Graph account with the Azure account
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0007-graph-sign-in.md
+  status: verified
+  added: '2026-10-18'
+- id: graph-paging-loop-forever
+  symptom: A script prints the same Microsoft Graph errors endlessly
+  cause: '`Invoke-MgGraphRequest` returned nothing without a terminating error (module scope doesn''t
+    inherit the script''s `ErrorActionPreference`), so the paging loop asked for the same page again'
+  fix: Make the Graph wrapper throw on any error record or empty response
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0008-non-terminating-loops.md
+  status: verified
+  added: '2026-10-18'
+- id: azure-files-rest-share-root-acl
+  symptom: Setting the profile share's root ACL through the Azure Files REST API fails with `400 Bad Request`,
+    then `MissingRequiredHeader`, then no `x-ms-file-permission-key`
+  cause: Get and Create Permission need `x-ms-date`, and the root of a new share has never had an ACL
+    set, so it returns no permission key
+  fix: Send `x-ms-date` on every request and treat a missing key as the default ACL that still needs setting
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0011-azure-files-rest.md
+  status: verified
+  added: '2026-10-18'
+- id: new-subscription-vm-family-quota-zero
+  symptom: Deployment or preflight finds 0 vCPU quota for a VM family (for example standardDASv5Family)
+    on a new subscription, though the regional quota is 10
+  cause: Family quotas start at 0 on new subscriptions; the regional limit is separate
+  fix: Request the family quota through the Microsoft.Quota API (often approved in minutes) and check
+    both family and regional quota before deploying
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0013-vcpu-quota.md
+  status: verified
+  added: '2026-10-18'
+- id: get-azroleassignment-parameter-set
+  symptom: '`Get-AzRoleAssignment -Scope <scope> -ExpandPrincipalGroups` fails: the combination isn''t
+    a valid parameter set'
+  cause: Parameter sets were assumed, and the test mock accepted any parameters
+  fix: Use `-ExpandPrincipalGroups` and filter by scope afterwards; check every call against the cmdlet's
+    help
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0014-cmdlet-parameter-sets.md
+  status: verified
+  added: '2026-10-18'
+- id: psscriptanalyzer-ci-newer
+  symptom: CI fails on `PSUseShouldProcessForStateChangingFunctions` or `PSUseSingularNouns` for code
+    that passed locally
+  cause: CI installs the latest PSScriptAnalyzer; an older local copy doesn't enforce those rules for
+    script-level functions
+  fix: Install the same analyzer version as CI locally, and fix the finding (for example rename to a `Get-`
+    noun)
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0016-analyzer-version.md
+  status: verified
+  added: '2026-10-18'
+- id: bicep-bcp178-loop-names
+  symptom: Bicep error BCP178 in a for-loop over resources
+  cause: A for-loop can't use runtime values for resource names
+  fix: Use values known at deployment start, or direct references and full-name child resources
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0019-bicep-authoring.md
+  status: verified
+  added: '2026-10-18'
+- id: arm-omits-empty-zones
+  symptom: A zone check passes with an empty list (`Zones:` with nothing after it) in a region without
+    availability zones
+  cause: ARM leaves out properties with no value, and in PowerShell `@($null).Count` is 1
+  fix: 'Count only real entries: `@($x | Where-Object { $_ }).Count`, and make mocks omit empty properties
+    too'
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0021-arm-omits-empty-properties.md
+  status: verified
+  added: '2026-10-18'
+- id: key-vault-purge-protection-recover
+  symptom: After deleting a landing zone, redeploying with the same name prefix fails on a soft-deleted
+    Key Vault, and recovery fails because its resource group is gone
+  cause: Purge protection keeps the name for 90 days, and recovery puts the vault back into its original
+    resource group, which the cleanup deleted
+  fix: Create the original resource group again (its name is in the deleted vault's resource ID), then
+    recover the vault
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0022-key-vault-recovery.md
+  status: verified
+  added: '2026-10-18'
+- id: log-analytics-soft-delete-dcr-table
+  symptom: '`InvalidOutputTable: Table for output stream ''Microsoft-Perf'' is not available for destination`
+    when creating a data collection rule after redeploying'
+  cause: Deleting a resource group only soft-deletes its Log Analytics workspace for 14 days; a workspace
+    with the same name recovers it, and its tables come back a little later
+  fix: Delete the workspace permanently (`force=true`) before deleting the resource group, or wait for
+    the recovered tables and run again
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0023-log-analytics-soft-delete.md
+  status: verified
+  added: '2026-10-18'
+- id: quota-check-counts-deployed-hosts
+  symptom: A post-deployment quota check reports `0 free, N needed` for hosts that are already deployed
+  cause: The subscription's `used` already includes the landing zone's own hosts, so they were counted
+    twice
+  fix: Count the deployed hosts' vCPUs out of `used` and require only the difference
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0024-quota-counts-deployed-hosts.md
+  status: verified
+  added: '2026-10-18'
+- id: retail-prices-lookalike-meters
+  symptom: A cost estimate from the Azure Retail Prices API leaves VMs or OS disks unpriced, or matches
+    two meters for one SKU
+  cause: The price list gained lookalike meters with the same SKU (for example Cloud Services compute,
+    other disk products)
+  fix: Match the product name too (`Virtual Machines …`, `Premium SSD Managed Disks`), not just the SKU
+    and meter
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0025-retail-price-lookalike-meters.md
+  status: verified
+  added: '2026-10-18'
+- id: redeploy-stopped-session-hosts
+  symptom: 'Redeploy fails with `OperationNotAllowed: Cannot modify extensions in the VM when the VM is
+    not running`'
+  cause: Each deployment changes the hosts' run commands (a new registration token), and Azure changes
+    run commands only on running VMs; scaling plans keep idle hosts deallocated
+  fix: Start the session hosts before redeploying and deallocate them again after
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0026-redeploy-stopped-hosts.md
+  status: verified
+  added: '2026-10-18'
+- id: gitignore-json-hides-bicep-data
+  symptom: Bicep error BCP091 (`Could not find file …json`) in CI for a data file that exists locally
+  cause: A repo-wide `*.json` ignore rule kept data files that `loadJsonContent` reads out of git
+  fix: Ignore JSON only where Bicep writes build output, and check `git status --ignored` when adding
+    data files
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0027-gitignore-json-data-files.md
+  status: verified
+  added: '2026-10-18'
+- id: fslogix-entra-kerberos-aes256gcm-only
+  symptom: FSLogix fails for cloud-only users with Access is denied (Status 0x1B, Reason 0x5, Error 0x5);
+    the SMB session setup returns `STATUS_ACCESS_DENIED (0xC0000022)` although the Kerberos ticket is
+    valid
+  cause: Azure Files denies Entra Kerberos sessions when AES-256-GCM is the only SMB channel encryption
+  fix: Allow `AES-128-GCM;AES-256-GCM;` channel encryption on the storage account (keep CCM off and Kerberos
+    only)
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md
+  status: verified
+  added: '2026-10-18'
+- id: device-cleanup-cannot-rerun
+  symptom: A cleanup that times out at the Microsoft Graph sign-in can't delete the hosts' Entra ID and
+    Intune devices on a second run
+  cause: The device names came from the VMs and deployment record, which the first run had already deleted
+  fix: Delete devices before the Azure resources, and read names from the deployment's outputs when the
+    VMs are gone
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0029-device-cleanup-rerun.md
+  status: verified
+  added: '2026-10-18'
+- id: graph-unlisted-delegated-scope
+  symptom: An app setup reports a delegated Microsoft Graph permission (for example `Device.ReadWrite.All`)
+    as not found, though Entra ID issues it
+  cause: Microsoft Graph's service principal doesn't list every delegated permission in `oauth2PermissionScopes`
+  fix: Grant scopes by name in the `oauth2PermissionGrant` instead of looking up their IDs
+  source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md
+  status: verified
+  added: '2026-10-18'
