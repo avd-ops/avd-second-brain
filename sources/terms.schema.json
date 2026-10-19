@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Terms the connected repos use (docs-spec D8)",
+  "type": "object",
+  "required": [
+    "terms"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "terms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "use",
+          "avoid",
+          "why"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "use": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The wording to use"
+          },
+          "avoid": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Wording to avoid: whole words, or regular expressions when regex is true"
+          },
+          "regex": {
+            "type": "boolean"
+          },
+          "caseSensitive": {
+            "type": "boolean"
+          },
+          "why": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "skip": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Folders whose text the terms check leaves alone (the vault template keeps avd-current-state's wording until it is next edited)"
+    }
+  }
+}

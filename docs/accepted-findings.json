@@ -1,0 +1,14 @@
+{
+  "about": "Docs findings this repo accepts, by key, with the reason (docs/docs-spec.md §12). scripts/Test-DocConsistency.ps1 leaves them out; D11 can't be accepted. Remove an entry when its text changes.",
+  "accepted": [
+    { "key": "fe262d03bf6d", "check": "D1", "path": "docs/contracts.md", "reason": "tests/Facts.Tests.ps1 is avd-current-state's file; the sentence says so." },
+    { "key": "0d446699fddd", "check": "D1", "path": "docs/docs-spec.md", "reason": "docs/spend.md is avd-swarm's file; the sentence says so." },
+    { "key": "39bb7d092d00", "check": "D1", "path": "docs/knowledge-spec.md", "reason": "knowledge/denylist.sha256 exists only in an organization's private fork." },
+    { "key": "d0d688f001a3", "check": "D1", "path": "docs/operations-redteam.md", "reason": "Names the file's old path in avd-landing-zone, where it moved from." },
+    { "key": "780246d8d04d", "check": "D1", "path": "docs/operations-spec.md", "reason": "Names the file's old path in avd-landing-zone, where it moved from." },
+    { "key": "3abb380e0776", "check": "D1", "path": "docs/operations-redteam.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
+    { "key": "ef52de0a2f4c", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
+    { "key": "89fbd6d8f24a", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
+    { "key": "487742f52368", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." }
+  ]
+}

@@ -327,8 +327,39 @@ Describe 'Connected repositories' {
 
 Describe 'Entry points' {
   It '<_> carries the project notice' -ForEach @(
-    'scripts/Sync-BrainSources.ps1', 'scripts/Get-VaultHarvest.ps1', 'scripts/Import-SizingEvidence.ps1', 'scripts/Import-CurrentStateFacts.ps1', 'vault/avd_second_brain.ps1'
+    'scripts/Sync-BrainSources.ps1', 'scripts/Get-VaultHarvest.ps1', 'scripts/Import-SizingEvidence.ps1', 'scripts/Import-CurrentStateFacts.ps1', 'vault/avd_second_brain.ps1',
+    'scripts/Test-DocConsistency.ps1', 'scripts/Update-BrainDocs.ps1'
   ) {
     Get-Content (Join-Path $script:root $_) -Raw | Should -Match 'Personal project, not for production use'
+  }
+}
+
+Describe 'C13 avd-doc-findings/v1' {
+  BeforeAll {
+    $script:c13 = Join-Path $script:root 'contracts/schemas/doc-findings.schema.json'
+    function Get-TestFindingJson {
+      param([scriptblock] $Change = {})
+      $f = Get-DocFinding -Check D7 -Severity error -Repo 'avd-second-brain' -Path 'README.md' -Line 14 -Says 'the table lists 3 repos without avd-swarm' -Truth 'sources/sources.json connects avd-swarm' -Generated
+      $f = [pscustomobject]([ordered]@{ id = 'D7-0001' } + [ordered]@{} + ($f.PSObject.Properties | ForEach-Object -Begin { $h = [ordered]@{} } -Process { $h[$_.Name] = $_.Value } -End { $h }))
+      & $Change $f
+      $repo = [pscustomobject]@{ Name = 'avd-second-brain'; Commit = 'd2415e6' }
+      Get-DocFindingDocument -Finding @($f) -Repo @($repo) | ConvertTo-Json -Depth 6
+    }
+  }
+  It 'what Test-DocConsistency.ps1 writes matches the schema' {
+    Test-Json -Json (Get-TestFindingJson) -SchemaFile $script:c13 | Should -BeTrue
+  }
+  It 'refuses <name>' -ForEach @(
+    @{ name = 'an unknown severity'; change = { param($f) $f.severity = 'info' } }
+    @{ name = 'a judge finding marked as an error'; change = { param($f) $f.origin = 'judge' } }
+    @{ name = 'a check that does not exist'; change = { param($f) $f.check = 'D12' } }
+    @{ name = 'free text beyond says and truth'; change = { param($f) $f | Add-Member note 'anything' } }
+  ) {
+    Test-Json -Json (Get-TestFindingJson -Change $change) -SchemaFile $script:c13 -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'contracts.md lists C13 as built, with this schema' {
+    $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C13')[0]
+    $c.Built | Should -BeTrue
+    $c.Schemas | Should -Contain 'doc-findings.schema.json'
   }
 }

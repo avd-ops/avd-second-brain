@@ -39,7 +39,7 @@ each entry records which ones found it (`found_via`):
 
 ### 2. Apply the gates
 
-A candidate must pass all four gates to be tracked. Organisations go through the same gates and
+A candidate must pass all four gates to be tracked. Organizations go through the same gates and
 scores as people. Failing identity or originality declines them; failing only recency or feed puts
 them on the watch list if their score is high enough.
 

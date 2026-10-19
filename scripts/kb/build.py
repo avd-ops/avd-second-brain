@@ -208,6 +208,7 @@ def render_llms_txt() -> str:
         "- [Experts study](docs/knowledge/experts.yaml): people the KB follows, with scores, evidence and the feeds watched",
         "- [Family](docs/knowledge/family.yaml): the sibling knowledge bases and the format version each follows",
         "- [Schemas](docs/knowledge/schema/page.schema.json): JSON Schemas for page front matter and the YAML files above",
+        "- [Handbook index](wiki/index.json): every connected repo's docs chunked by heading, with repo, commit, path and anchor to cite (wiki/, built by scripts/Update-BrainDocs.ps1)",
         "",
         "## Decisions",
         "",

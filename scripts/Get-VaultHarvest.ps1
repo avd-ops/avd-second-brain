@@ -19,7 +19,9 @@
 #requires -Version 7.4
 [CmdletBinding()]
 param(
+  # The vault to read (built by vault/avd_second_brain.ps1).
   [Parameter(Mandatory)] [string] $VaultPath,
+  # Print the proposal as JSON instead of text.
   [switch] $Json
 )
 

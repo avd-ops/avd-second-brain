@@ -18,6 +18,7 @@
 #requires -Version 7.4
 [CmdletBinding()]
 param(
+  # The knowledge base to check.
   [string] $Path = (Join-Path (Split-Path $PSScriptRoot -Parent) 'knowledge')
 )
 
