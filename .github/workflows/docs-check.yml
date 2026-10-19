@@ -1,0 +1,89 @@
+name: docs-check
+
+# Docs consistency (docs/docs-spec.md): checks D1 to D11 on one repo against the brain's facts of
+# record. Runs on this repo's PRs, and every connected repo calls it on its PRs, pinned to a commit
+# of this repo (the same SHA twice, so the facts of record are the ones the pin names):
+#
+#   jobs:
+#     docs:
+#       permissions:
+#         contents: read
+#       uses: nickprignano/avd-second-brain/.github/workflows/docs-check.yml@<sha>
+#       with:
+#         repo-name: avd-landing-zone
+#         brain-ref: <sha>
+#
+# Read-only: it checks out code, parses scripts (never runs them) and writes a findings artifact
+# (avd-doc-findings/v1, contract C13). No model, no Azure. During the rollout only D11 fails it;
+# enforce: true makes every error fail it.
+on:
+  workflow_call:
+    inputs:
+      repo-name:
+        description: The calling repo's name, as sources/sources.json has it
+        required: true
+        type: string
+      brain-ref:
+        description: The avd-second-brain commit to check against (the SHA the caller pins)
+        required: true
+        type: string
+      enforce:
+        description: Fail on any error, not only on D11
+        required: false
+        type: boolean
+        default: false
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: Docs consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: repo
+          fetch-depth: 0
+
+      - name: Check out avd-second-brain at the pinned commit
+        if: inputs.repo-name != '' && inputs.repo-name != 'avd-second-brain'
+        uses: actions/checkout@v4
+        with:
+          repository: nickprignano/avd-second-brain
+          ref: ${{ inputs.brain-ref }}
+          path: brain
+
+      - name: Check out the connected repos at the handbook's commits
+        if: inputs.repo-name == '' || inputs.repo-name == 'avd-second-brain'
+        shell: pwsh
+        run: ./repo/scripts/Sync-BrainSources.ps1 -LockPath ./repo/wiki/lock.json -AllowMissing
+
+      - name: Check
+        shell: pwsh
+        env:
+          REPO_NAME: ${{ inputs.repo-name || 'avd-second-brain' }}
+          ENFORCE: ${{ inputs.enforce }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          $brain = if (Test-Path ./brain) { './brain' } else { './repo' }
+          $changed = @()
+          if ($env:BASE_SHA) { $changed = @(git -C ./repo diff --name-only "$env:BASE_SHA...HEAD") }
+          $arguments = @{
+            RepoPath = './repo'; RepoName = $env:REPO_NAME; BrainPath = $brain
+            SourcesRoot = './repo/.sources'; JsonPath = './doc-findings.json'
+            ChangedFile = $changed; PullRequestBody = $env:PR_BODY
+            Enforce = $env:ENFORCE -eq 'true'
+          }
+          & "$brain/scripts/Test-DocConsistency.ps1" @arguments
+
+      - name: Findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-findings
+          path: doc-findings.json
+          if-no-files-found: ignore

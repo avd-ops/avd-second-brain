@@ -20,7 +20,12 @@
         "knowledge/rules/*.json",
         "knowledge/calibration/sizing.json",
         "contracts/fact-register.json (contracts C15)"
-      ]
+      ],
+      "readme": {
+        "stage": "Assess and design (the migration factory)",
+        "gives": "Engagement harvests, measured sizing per wave, forensic facts (C12), target-state manifests (C14, as buckets), lessons",
+        "takes": "App catalog, rules, sizing calibration, the fact register (C15)"
+      }
     },
     {
       "name": "avd-liquidware",
@@ -37,7 +42,12 @@
       ],
       "reads": [
         "The liquidware block of avd-target-state/v1 (contracts C14), when its tier is built"
-      ]
+      ],
+      "readme": {
+        "stage": "The Stratusphere instrument (moving from avd-readiness-stratusphere) and the optional ProfileUnity tier",
+        "gives": "Lessons; Liquidware facts once built",
+        "takes": "The manifest's `liquidware` block, later"
+      }
     },
     {
       "name": "avd-current-state",
@@ -53,7 +63,12 @@
       ],
       "reads": [
         "contracts/fact-register.json, for manifest coverage (contracts C15)"
-      ]
+      ],
+      "readme": {
+        "stage": "Inventory and validate (collector, validator)",
+        "gives": "Evidence packages, ingested into a customer's estate vault; the redacted facts snapshot (C11)",
+        "takes": "The fact register (C15), for manifest coverage"
+      }
     },
     {
       "name": "avd-landing-zone",
@@ -69,14 +84,19 @@
       "feeds": [
         "Lessons and decisions (searched in place)",
         "avd-sizing-evidence/v1 from the operations brain's baselines (contracts/sizing-evidence.md)",
-        "Episodes that became lessons (docs/operations-spec.md \u00a74.6)"
+        "Episodes that became lessons (docs/operations-spec.md §4.6)"
       ],
       "reads": [
         "knowledge/rules/workload-tiers.json",
         "knowledge/calibration/sizing.json",
         "knowledge/catalog/apps.json (image pipeline)",
         "avd-target-state/v1 manifests and their approvals (contracts C14)"
-      ]
+      ],
+      "readme": {
+        "stage": "Deploy and operate (landing zone, operations brain)",
+        "gives": "Lessons, decisions, day-2 sizing evidence",
+        "takes": "Workload tiers, calibration, catalog, shared runbooks, target-state manifests (C14)"
+      }
     },
     {
       "name": "avd-swarm",
@@ -94,7 +114,12 @@
       "reads": [
         "Playbook run proposals (contracts C9)",
         "knowledge/ at a pinned commit (contracts C6)"
-      ]
+      ],
+      "readme": {
+        "stage": "Act and control (agents, approvals, the executor, the kill switch)",
+        "gives": "Insights and grading (C8), action outcomes and the kill switch position (C10), lessons and decisions",
+        "takes": "Playbook run proposals (C9), docs findings (C13), the knowledge base at a pinned commit (C6)"
+      }
     }
   ]
 }

@@ -1,0 +1,48 @@
+{
+  "$schema": "./terms.schema.json",
+  "skip": [
+    "vault/"
+  ],
+  "terms": [
+    {
+      "use": "Microsoft Entra ID",
+      "avoid": [
+        "Azure Active Directory",
+        "Azure AD",
+        "AAD"
+      ],
+      "caseSensitive": true,
+      "why": "Microsoft renamed Azure AD to Microsoft Entra ID in 2023."
+    },
+    {
+      "use": "Azure Virtual Desktop",
+      "avoid": [
+        "Windows Virtual Desktop",
+        "WVD"
+      ],
+      "caseSensitive": true,
+      "why": "Microsoft renamed Windows Virtual Desktop in 2021."
+    },
+    {
+      "use": "avd-buddy",
+      "avoid": [
+        "AVD Buddy",
+        "AVD-Buddy",
+        "avdbuddy"
+      ],
+      "caseSensitive": true,
+      "why": "Repo names are written as the repo is named."
+    },
+    {
+      "use": "American spelling",
+      "avoid": [
+        "\\b(?:organi|recogni|priori|normali|summari|initiali|authori|customi|optimi|standardi|minimi|maximi|utili|seriali|synchroni|finali|categori|visuali|speciali|centrali|memori|emphasi|apologi|reali|util)s(?:e|ed|es|ing|ation|ations|er|ers)\\b",
+        "\\banalys(?:e|ed|ing)\\b",
+        "\\b(?:behaviour|colour|honour|favour|labour|neighbour)s?\\b",
+        "\\b(?:catalogue|licence|centre|organisation)s?\\b"
+      ],
+      "regex": true,
+      "why": "Docs, output and comments are in American English (CLAUDE.md)."
+    }
+  ]
+}

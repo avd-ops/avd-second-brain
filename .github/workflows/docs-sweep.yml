@@ -1,0 +1,104 @@
+name: docs-sweep
+
+# The nightly docs sweep (docs/docs-spec.md §8): checks this repo and every connected repo it can
+# read (D1 to D11, including D5 and D7 across repos), keeps one issue per repo with open errors up to
+# date (label docs-findings), and refreshes the handbook (wiki/) as a draft PR on docs/refresh when the
+# connected repos moved. Findings are an artifact (avd-doc-findings/v1, contract C13) for avd-swarm's
+# Scribe. No model and no Azure; it writes only issues and the docs/refresh branch in this repo.
+# Opening the PR needs "Allow GitHub Actions to create and approve pull requests" in the repo's
+# Actions settings.
+on:
+  schedule:
+    - cron: "17 3 * * *" # 03:17 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: docs-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the connected repos
+        shell: pwsh
+        run: ./scripts/Sync-BrainSources.ps1 -AllowMissing
+
+      - name: Sweep
+        id: sweep
+        shell: pwsh
+        run: |
+          ./scripts/Test-DocConsistency.ps1 -All -JsonPath ./doc-findings.json
+          "failed=$LASTEXITCODE" >> $env:GITHUB_OUTPUT
+          exit 0
+
+      - name: Findings
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-findings
+          path: doc-findings.json
+
+      - name: One issue per repo with open errors
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create docs-findings --color c5def5 --description "Docs consistency findings from the nightly sweep" --force | Out-Null
+          $doc = Get-Content ./doc-findings.json -Raw | ConvertFrom-Json
+          $open = @(gh issue list --label docs-findings --state open --limit 100 --json number,title | ConvertFrom-Json)
+          foreach ($repo in @($doc.sources.PSObject.Properties.Name)) {
+            $title = "Docs findings: $repo"
+            $errors = @($doc.findings | Where-Object { $_.repo -eq $repo -and $_.severity -eq 'error' })
+            $warnings = @($doc.findings | Where-Object { $_.repo -eq $repo -and $_.severity -eq 'warning' }).Count
+            $issue = @($open | Where-Object title -eq $title)[0]
+            if (-not $errors.Count) {
+              if ($issue) { gh issue close $issue.number --comment "No open errors in the sweep of $($doc.generated)." | Out-Null }
+              continue
+            }
+            $rows = foreach ($f in $errors) {
+              $at = if ($f.line) { "$($f.path):$($f.line)" } else { $f.path }
+              $how = if ($f.generated) { 'regenerate' } else { $f.fix }
+              ("| {0} | ``{1}`` | {2} | {3} | {4} |" -f $f.id, $at, ($f.says -replace '\|', '\|'), ($f.truth -replace '\|', '\|'), $how)
+            }
+            $body = @(
+              "The nightly docs sweep found $($errors.Count) errors and $warnings warnings in $repo at ``$($doc.sources.$repo.Substring(0, 7))`` ($($doc.generated)). The full list, warnings included, is the doc-findings artifact of [this run]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)."
+              ''
+              'Fix them in the repo named, regenerate with `./scripts/Update-BrainDocs.ps1` where it says so, or accept one by its key in that repo''s `docs/accepted-findings.json`. This issue updates in place and closes when the sweep finds no errors (docs/docs-spec.md).'
+              ''
+              '| ID | Where | Says | Source of truth | Fix |'
+              '|---|---|---|---|---|'
+            ) + $rows
+            $file = Join-Path $env:RUNNER_TEMP "issue-$repo.md"
+            $body -join "`n" | Set-Content $file
+            if ($issue) { gh issue edit $issue.number --body-file $file | Out-Null }
+            else { gh issue create --title $title --label docs-findings --body-file $file | Out-Null }
+          }
+
+      - name: Refresh the handbook
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/Update-BrainDocs.ps1 -Wiki
+          if (-not (git status --porcelain -- wiki)) { Write-Host 'The handbook is current.'; return }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C docs/refresh
+          git add wiki
+          git commit -m 'Refresh the handbook from the connected repos' -m 'Changelog: none'
+          git push --force origin docs/refresh
+          $pr = gh pr list --head docs/refresh --state open --json number --jq '.[0].number'
+          if (-not $pr) {
+            gh pr create --draft --head docs/refresh --base main --title 'Refresh the handbook (wiki/)' --body "The nightly docs sweep rebuilt wiki/ from the connected repos at the commits in wiki/lock.json. Only wiki/ changes; review and merge when ready.`n`nChangelog: none"
+          }
+          # A PR or push made with GITHUB_TOKEN starts no workflows, so start the required ones on the branch.
+          gh workflow run validate.yml --ref docs/refresh
+          gh workflow run docs-check.yml --ref docs/refresh

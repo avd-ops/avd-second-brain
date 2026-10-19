@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "avd-doc-findings/v1: what the docs consistency check found",
+  "description": "Contract C13. Written by scripts/Test-DocConsistency.ps1 -Json (docs/docs-spec.md §6, §9) and read by avd-swarm's Scribe, which drafts fixes as PRs. says and truth quote only the repos' own public text. Tests in tests/Connectors.Tests.ps1.",
+  "type": "object",
+  "required": ["schema", "generated", "sources", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "avd-doc-findings/v1" },
+    "generated": { "type": "string", "format": "date-time" },
+    "sources": {
+      "type": "object",
+      "description": "Each repo checked and the commit it was read at (7 to 40 hex characters).",
+      "propertyNames": { "pattern": "^[a-z0-9-]+$" },
+      "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "check", "severity", "origin", "key", "repo", "path", "line", "says", "truth", "fix", "generated"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^D([1-9]|1[01])-[0-9]{4}$", "description": "Numbered per check in this document; not stable across runs." },
+          "check": { "type": "string", "pattern": "^D([1-9]|1[01])$" },
+          "severity": { "enum": ["error", "warning"] },
+          "origin": { "enum": ["check", "judge"] },
+          "key": { "type": "string", "pattern": "^[0-9a-f]{12}$", "description": "Stable across runs (check, repo, path, says, truth; not the line), so a finding can be tracked or accepted." },
+          "repo": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "path": { "type": "string", "minLength": 1 },
+          "line": { "type": "integer", "minimum": 0, "description": "0 when the finding is about the whole file." },
+          "says": { "type": "string", "maxLength": 400 },
+          "truth": { "type": "string", "maxLength": 400 },
+          "fix": { "enum": ["repo", "brain"] },
+          "generated": { "type": "boolean", "description": "true: the fix is regenerating a marked block or page with the generator, not a model." },
+          "confirmedBy": { "type": "string", "description": "A judge finding a person confirmed; Scribe acts on a judge finding only with it." }
+        },
+        "if": { "properties": { "origin": { "const": "judge" } } },
+        "then": { "properties": { "severity": { "const": "warning" } } }
+      }
+    }
+  }
+}

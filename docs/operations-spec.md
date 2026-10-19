@@ -125,7 +125,7 @@ There are two roles, and the safety rules apply to each one differently.
 └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-All new resources go into one new resource group, `rg-<prefix>-<env>-brain`, deployed by a new module `bicep/modules/brain.bicep`, opt-in through `AVD_BRAIN_TIER` (§3.1). A landing zone at tier 0 behaves exactly as today. Network: two `/27` subnets in the spoke's free range: `snet-brain-jobs` (`10.100.2.64/27`, delegated to the Container Apps environment) and, at Tier 3, `snet-brain-func` (`10.100.2.96/27`, for the Functions app). In hub mode, the hub firewall must allow `github.com` and `mcr.microsoft.com` for the job.
+All new resources go into one new resource group, `rg-<prefix>-<env>-brain`, deployed by a new module `bicep/modules/brain.bicep`, opt-in through `AVD_BRAIN_TIER` (§3.1). A landing zone at tier 0 behaves exactly as today. Network: two `/27` subnets in the spoke's free range: `snet-brain-jobs` (`10.x.2.64/27`, delegated to the Container Apps environment) and, at Tier 3, `snet-brain-func` (`10.x.2.96/27`, for the Functions app). In hub mode, the hub firewall must allow `github.com` and `mcr.microsoft.com` for the job.
 
 ### 4.2 Sense
 

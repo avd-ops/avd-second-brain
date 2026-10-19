@@ -23,8 +23,11 @@
 #requires -Version 7.4
 [CmdletBinding()]
 param(
+  # The evidence file (avd-sizing-evidence/v1).
   [Parameter(Mandatory)] [string] $EvidencePath,
+  # The knowledge base whose rules it reads and whose calibration -Apply appends to.
   [string] $KnowledgePath = (Join-Path (Split-Path $PSScriptRoot -Parent) 'knowledge'),
+  # Append the observations; without it the script only prints.
   [switch] $Apply
 )
 

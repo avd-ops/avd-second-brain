@@ -11,7 +11,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 
 ## Knowledge base
 
-- [Knowledge base](docs/knowledge/README.md): What this knowledge base is, how it's organised, and how to add to it safely (status: verified)
+- [Knowledge base](docs/knowledge/README.md): What this knowledge base is, how it's organized, and how to add to it safely (status: verified)
 - [Landing zone](docs/knowledge/landing-zone/README.md): Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell (status: verified)
 - [Identity and Entra](docs/knowledge/identity/README.md): Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities (status: partial)
 - [FSLogix profiles](docs/knowledge/fslogix/README.md): FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks (status: verified)
@@ -34,6 +34,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [Experts study](docs/knowledge/experts.yaml): people the KB follows, with scores, evidence and the feeds watched
 - [Family](docs/knowledge/family.yaml): the sibling knowledge bases and the format version each follows
 - [Schemas](docs/knowledge/schema/page.schema.json): JSON Schemas for page front matter and the YAML files above
+- [Handbook index](wiki/index.json): every connected repo's docs chunked by heading, with repo, commit, path and anchor to cite (wiki/, built by scripts/Update-BrainDocs.ps1)
 
 ## Decisions
 

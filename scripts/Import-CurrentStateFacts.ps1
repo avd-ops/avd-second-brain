@@ -25,8 +25,11 @@
 #requires -Version 7.4
 [CmdletBinding()]
 param(
+  # The snapshot avd-current-state wrote (avd-current-state-facts/v1).
   [Parameter(Mandatory)] [string] $FactsPath,
+  # The estate's private vault, where -Apply files the snapshot.
   [string] $VaultPath,
+  # File the snapshot in the vault; without it the script only prints.
   [switch] $Apply
 )
 

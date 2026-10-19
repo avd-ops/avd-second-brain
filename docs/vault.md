@@ -36,7 +36,7 @@ those points together and puts the team's own knowledge next to them.
 - **Plain Markdown in Git.** Readable on GitHub, in any editor, and as an
   [Obsidian](https://obsidian.md) vault. History, review and blame come from Git.
 - **Its own private repository.** The vault holds subscription IDs, resource names and
-  findings, so it is kept apart from this public repository. One vault per organisation or
+  findings, so it is kept apart from this public repository. One vault per organization or
   customer.
 - **Condensed evidence only.** Raw evidence packages stay where they are. The vault keeps
   the facts that matter for history: host pools, session host health, resource IDs, dataset

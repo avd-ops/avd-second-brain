@@ -1,6 +1,6 @@
 ---
 title: "Knowledge base"
-summary: "What this knowledge base is, how it's organised, and how to add to it safely"
+summary: "What this knowledge base is, how it's organized, and how to add to it safely"
 topic: overview
 status: verified
 last_reviewed: 2026-10-18

@@ -1,6 +1,6 @@
 # Spec: one set of docs, consistent with the brain
 
-- **Status:** Proposed ([decision 0004](knowledge/decisions/0004-docs-consistency.md)). Not built; nothing here runs until the owner agrees.
+- **Status:** Phase D0 built (2026-10-19, at the owner's go): the check, the generator, the handbook and the workflows (§12). D1 and later wait on avd-swarm's Scribe. [Decision 0004](knowledge/decisions/0004-docs-consistency.md) stays proposed until the owner accepts it, with its avd-swarm pair.
 - **Date:** 2026-10-18
 - **Pair:** avd-swarm spec §6e and its decision 0004 say the same from the acting side. The two change together.
 - **Red team:** [docs-redteam.md](docs-redteam.md). Every finding is folded in below.
@@ -65,11 +65,11 @@ What the check compares against. All already exist except the terms list.
 | `contracts/schemas/*.json` | The authoritative schema per built contract; vendored copies elsewhere must match by hash | Exists |
 | `sources/sources.json` | Connected repos, their ref, what they feed and read, the paths indexed | Exists |
 | `docs/knowledge/decisions/*.md` (MADR 4) and the paired decisions in avd-swarm | Number, title, status (MADR front matter `status:`, or the `Status:` line in repos not on MADR yet), `Pair:` and "Also recorded in" links | Exists |
-| `sources/terms.json` (new) | Canonical terms and the variants to flag: kill switch positions (`run`, `halt-actions`, `halt-agents`, `halt-all`), avd-buddy, the contract names, repo names, "Entra ID" not "Azure AD", the American English spellings already required | Proposed, D0 |
+| `sources/terms.json` (new) | Canonical terms and the variants to flag: kill switch positions (`run`, `halt-actions`, `halt-agents`, `halt-all`), avd-buddy, the contract names, repo names, `Entra ID` not `Azure AD`, the American English spellings already required | Built in D0, with a `skip` list for text kept in another repo's wording |
 
 ## 6. The check
 
-`scripts/Test-DocConsistency.ps1`, with the checks as pure functions in `scripts/AvdBrain.psm1` (this repo's rule), tested offline with Pester against fixture repos. PowerShell 7.4. Output: console, or `-Json` as `avd-doc-findings/v1` (C13, §9).
+`scripts/Test-DocConsistency.ps1`, with the checks as pure functions in `scripts/AvdBrain.psm1` (this repo's rule), tested offline with Pester against fixture repos. PowerShell 7.4. Output: console, or `-JsonPath` as `avd-doc-findings/v1` (C13, §9).
 
 Each finding has a check ID, severity, repo, file, line, what the text says, what the source of truth says, and which side to fix.
 
@@ -100,8 +100,8 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | **Reference pages**, one per entry point | Comment-based help and `param()` (AST), Bicep `@description` and parameter types | Each repo's `docs/reference/<script>.md` | People reading a repo on GitHub |
 | **README blocks**: the entry point table, the "How it connects" table | The reference data; `sources/sources.json` | Each README, between markers | First thing a person reads |
 | **Changelog** | `Changelog:` lines in merged PR bodies, grouped Added/Changed/Fixed/Removed ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/)) | Each repo's `CHANGELOG.md` | Release notes, agents asking "what changed" |
-| **The wiki** (the handbook) | Every indexed doc at the commits in `.sources/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
-| **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, terms, contracts named, first 300 characters), linked from the root `llms.txt` that `scripts/kb/build.py` generates, so there is one agent index, not two | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
+| **The wiki** (the handbook) | Every indexed doc at the commits in `wiki/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
+| **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, contracts named, first 300 characters), linked from the root `llms.txt` that `scripts/kb/build.py` generates, so there is one agent index, not two | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
 
 **Why not GitHub's wiki feature.** A GitHub wiki is a separate git repository with no pull requests and no CI. Generated Markdown in `wiki/` gets review, history and the guards for free. A public repo may later mirror its own pages to its GitHub wiki one way, overwritten on each publish, with a banner that says so (red team W1).
 
@@ -112,7 +112,7 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | Step | Who | Model? | Writes |
 |---|---|---|---|
 | Check one repo on its PR | That repo's CI, calling the pinned shared workflow | No | Nothing; fails or passes the PR |
-| Sweep all repos nightly | This repo's scheduled workflow: `Sync-BrainSources.ps1`, then `Test-DocConsistency.ps1 -All -Json` | No | A findings file (C13) as a workflow artifact, and one issue here per repo with open errors, updated in place |
+| Sweep all repos nightly | This repo's scheduled workflow: `Sync-BrainSources.ps1`, then `Test-DocConsistency.ps1 -All -JsonPath` | No | A findings file (C13) as a workflow artifact, and one issue here per repo with open errors, updated in place |
 | Build the wiki and index | Same workflow, after the sweep | No | A draft PR here that only touches `wiki/`, when it changed |
 | Judge prose against code | The Critic's pattern (brain), on demand or weekly: for each changed doc section, a Claude model lists claims the code or facts of record don't support | Yes; flags only | Findings marked `judge`, never errors; a person confirms each before Scribe may act on it |
 | Draft fixes | **Scribe**, in avd-swarm (its spec §6e), from the C13 findings | Yes, for prose; the generator for generated text | Draft PRs in the repo the finding names |
@@ -130,7 +130,7 @@ Brain → avd-swarm, like C9: the brain decides what is inconsistent; avd-swarm 
   "generated": "2026-10-19T03:00:00Z",
   "sources": { "avd-second-brain": "d2415e6", "avd-swarm": "25725a5" },
   "findings": [
-    { "id": "D7-0001", "check": "D7", "severity": "error", "origin": "check",
+    { "id": "D7-0001", "check": "D7", "severity": "error", "origin": "check", "key": "5b0e2c41a9d7",
       "repo": "avd-second-brain", "path": "README.md", "line": 14,
       "says": "3 connected repos", "truth": "sources/sources.json lists 4 (avd-swarm missing)",
       "fix": "repo", "generated": true }
@@ -141,7 +141,8 @@ Brain → avd-swarm, like C9: the brain decides what is inconsistent; avd-swarm 
 - `origin` is `check` or `judge`; Scribe acts on a `judge` finding only once a person has confirmed it (`confirmedBy`).
 - `generated: true` means the fix is regenerating a marked block, which Scribe does with the generator, not a model.
 - No free text beyond `says` and `truth`, which quote the repos' own public text; the sweep only reads connected repos, so no tenant data can appear. D11 runs on the findings file too.
-- Status: **Specified.** The schema (`contracts/schemas/doc-findings.schema.json`) and its test in `tests/Connectors.Tests.ps1` land in D0 with the check, and avd-swarm's Scribe follows in D1.
+- `key` is stable across runs (check, repo, path, says, truth; not the line). A repo accepts a finding by its key, with a reason, in its `docs/accepted-findings.json`; D11 can't be accepted.
+- Status: **Built in D0.** The schema is `contracts/schemas/doc-findings.schema.json`, with its tests in `tests/Connectors.Tests.ps1`; avd-swarm's Scribe follows in D1.
 
 Scribe's outcomes need no new contract: a finding closes when the next sweep no longer reports it, and the counts (opened, drafted, merged, rejected) go to the brain in C8's insights.
 

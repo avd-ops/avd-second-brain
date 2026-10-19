@@ -9,6 +9,9 @@
   and, with -VaultPath, a customer vault's decisions, runbooks and lessons. Each hit prints with
   the path to cite. -App resolves one raw inventory name (as Stratusphere
   reports it) to a catalog entry, or says it is unknown and belongs on the app test plan.
+  -Wiki searches the handbook's agent index instead (wiki/index.json, built by
+  ./scripts/Update-BrainDocs.ps1 -Wiki from every connected repo's docs at a pinned commit) and cites
+  each hit as <repo>@<commit>:<path>#<anchor>.
   -Calibration prints the sizing calibration factors per tier and VM family, computed from the
   observations with the rule in knowledge/rules/calibration.json.
 
@@ -19,30 +22,51 @@
 .EXAMPLE
   ./scripts/Find-BrainKnowledge.ps1 'fslogix kerberos' -VaultPath ../contoso-avd-brain
 .EXAMPLE
+  ./scripts/Find-BrainKnowledge.ps1 -Wiki 'kill switch'
+.EXAMPLE
   ./scripts/Find-BrainKnowledge.ps1 -Calibration
 #>
 #requires -Version 7.4
 [CmdletBinding(DefaultParameterSetName = 'Query')]
 param(
+  # What to search for.
   [Parameter(Mandatory, ParameterSetName = 'Query', Position = 0)] [string] $Query,
+  # Raw inventory app names to resolve against the app catalog.
   [Parameter(Mandatory, ParameterSetName = 'App')] [string[]] $App,
+  # Print the sizing calibration factors.
   [Parameter(Mandatory, ParameterSetName = 'Calibration')] [switch] $Calibration,
+  # Search the handbook's agent index (wiki/index.json) instead of the knowledge base.
+  [Parameter(ParameterSetName = 'Query')] [switch] $Wiki,
+  # How many hits to print.
   [Parameter(ParameterSetName = 'Query')] [int] $Top = 10,
+  # A customer vault to search as well.
   [Parameter(ParameterSetName = 'Query')] [string] $VaultPath,
+  # Where Sync-BrainSources.ps1 checked out the connected repos.
   [Parameter(ParameterSetName = 'Query')] [string] $SourcesRoot = (Join-Path (Split-Path $PSScriptRoot -Parent) '.sources'),
+  # The knowledge base.
   [string] $Path = (Join-Path (Split-Path $PSScriptRoot -Parent) 'knowledge')
 )
 
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'AvdBrain.psm1') -Force
 
-$mode = if ($Calibration) { 'Calibration' } else { $PSCmdlet.ParameterSetName }
+$mode = if ($Calibration) { 'Calibration' } elseif ($Wiki) { 'Wiki' } else { $PSCmdlet.ParameterSetName }
 switch ($mode) {
   'Query' {
     $hits = @(Search-BrainKnowledge -Path $Path -Query $Query -Top $Top -VaultPath $VaultPath -SourcesRoot $SourcesRoot)
     if (-not $hits.Count) { Write-Host "Nothing in the brain matches '$Query'."; return }
     foreach ($h in $hits) {
       Write-Host ("[{0}] {1}" -f $h.Kind, $h.Ref) -ForegroundColor Cyan
+      Write-Host "  $($h.Title)"
+      if ($h.Snippet) { Write-Host "  $($h.Snippet)" -ForegroundColor DarkGray }
+    }
+  }
+  'Wiki' {
+    $index = Join-Path (Split-Path $PSScriptRoot -Parent) 'wiki/index.json'
+    $hits = @(Search-DocWiki -IndexPath $index -Query $Query -Top $Top)
+    if (-not $hits.Count) { Write-Host "Nothing in the handbook matches '$Query'."; return }
+    foreach ($h in $hits) {
+      Write-Host "[wiki] $($h.Ref)" -ForegroundColor Cyan
       Write-Host "  $($h.Title)"
       if ($h.Snippet) { Write-Host "  $($h.Snippet)" -ForegroundColor DarkGray }
     }
