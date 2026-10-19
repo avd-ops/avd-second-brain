@@ -1,5 +1,1042 @@
 # Experts study: people the KB follows, scored with the method in experts.md.
 # Schema: schema/experts.schema.json. Use the same id for the same person across the family.
-# The first study for this KB's topic hasn't been run yet (roadmap.md).
 reviewed: '2026-10-18'
-experts: []
+experts:
+# --- Tracked -------------------------------------------------------------------------------
+- id: wayne-bellows
+  name: Wayne Bellows
+  affiliation: other-vendor
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - blog
+  - GitHub
+  links:
+    blog: https://modern-euc.com/
+    feed: https://modern-euc.com/feed/
+    github: WayneBellows
+  latest:
+    date: '2026-10-08'
+    url: https://modern-euc.com/2026/10/08/how-to-update-an-avd-golden-image-to-windows-11-26h2-without-a-bad-monday/
+  evidence:
+  - https://modern-euc.com/2026/10/08/how-to-update-an-avd-golden-image-to-windows-11-26h2-without-a-bad-monday/
+  - https://modern-euc.com/2026/10/01/azure-virtual-desktop-hybrid-is-ga-microsoft-built-half-of-it-on-purpose/
+  - https://github.com/WayneBellows/fslogix-healthcheck
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 3
+    recency: 3
+    track_record: 2
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio TAM, but most of the feed is AVD images, AVD platform news and Entra, plus FSLogix
+    scripts on GitHub. Only about one post in ten is Nerdio-specific.
+- id: dean-cefola
+  name: Dean Cefola (Azure Academy)
+  affiliation: independent
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list (YouTube)
+  - AVD Community Newsletter (2026-10-02 issue links five of his Shorts)
+  links:
+    youtube: https://www.youtube.com/channel/UC-MXgaFhsYU8PkqgKBdnusQ
+    feed: https://www.youtube.com/feeds/videos.xml?channel_id=UC-MXgaFhsYU8PkqgKBdnusQ
+    github: DeanCefola
+  identity: https://github.com/DeanCefola
+  latest:
+    date: '2026-10-01'
+    url: https://www.youtube.com/shorts/Z-F4fqsIzQc
+  evidence:
+  - https://www.youtube.com/shorts/Z-F4fqsIzQc
+  - https://avdcommunity.com/avd-community-newsletter-2nd-october-2026/
+  - https://github.com/DeanCefola/Azure-WVD
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 3
+    track_record: 3
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Former Microsoft principal engineer, now Azure Academy LLC. Recent Shorts cover Entra Kerberos,
+    FSLogix and Azure Files errors; the sibling missed them because it didn't check Shorts. The
+    channel feed couldn't be fetched (YouTube blocks robots), so the feed URL is built from the verified channel ID.
+- id: marcel-meurer
+  name: Marcel Meurer
+  affiliation: other-vendor
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://blog.itprocloud.de/
+    feed: https://blog.itprocloud.de/feed.xml
+    github: MarcelMeurer
+  latest:
+    date: '2026-09-02'
+    url: https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/
+  evidence:
+  - https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 3
+    recency: 3
+    track_record: 3
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Makes WVDAdmin and Hydra, now owned by a vendor, so he's other-vendor here (the sibling has
+    independent). Filter out product and event posts.
+- id: justin-verstijnen
+  name: Justin Verstijnen
+  affiliation: unknown
+  status: tracked
+  found_via:
+  - web search (FSLogix with Entra Kerberos)
+  links:
+    blog: https://justinverstijnen.nl/
+    feed: https://justinverstijnen.nl/blog/azure-virtual-desktop/index.xml
+    github: JustinVerstijnen
+  identity: https://github.com/JustinVerstijnen/JVTechnicalBlog
+  latest:
+    date: '2026-10-11'
+    url: https://justinverstijnen.nl/fix-windows-app-grey-screen-windows-11-26h2-webview2/
+  evidence:
+  - https://justinverstijnen.nl/azure-virtual-desktop-fslogix-and-native-kerberos-authentication/
+  - https://justinverstijnen.nl/update-your-kerberos-configuration-with-azure-virtual-desktop-rc4/
+  - https://justinverstijnen.nl/fix-black-screen-azure-virtual-desktop-windows-11/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 3
+    recency: 3
+    track_record: 1
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Step-by-step AVD, FSLogix and Entra Kerberos guides and fixes, about one a month. The feed is
+    his AVD category only, so it needs no keywords; no evidence yet of others citing him.
+- id: microsoft-avd-blog
+  name: Microsoft Azure Virtual Desktop blog
+  affiliation: microsoft
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - control source for balance
+  links:
+    blog: https://techcommunity.microsoft.com/category/azure/blog/azurevirtualdesktopblog
+    feed: https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=AzureVirtualDesktopBlog
+  latest:
+    date: '2026-10-01'
+    url: https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/now-generally-available-regional-resiliency-for-azure-virtual/ba-p/4540458
+  evidence:
+  - https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/now-generally-available-regional-resiliency-for-azure-virtual/ba-p/4540458
+  - https://techcommunity.microsoft.com/t5/azure-virtual-desktop-blog/microsoft-azure-virtual-desktop-hybrid-is-now-generally/ba-p/4550523
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 1
+    recency: 3
+    track_record: 3
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Official AVD announcements by the product team, roughly monthly. Already watched in sources.toml;
+    that entry gets expert = "microsoft-avd-blog" rather than a second source.
+- id: neil-mcloughlin
+  name: Neil McLoughlin
+  affiliation: other-vendor
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list (YouTube)
+  links:
+    blog: https://virtualmanc.co.uk/
+    feed: https://virtualmanc.co.uk/feed/
+    youtube: https://www.youtube.com/channel/UCS5W4f_rZexpCnBF1tSh1XA
+    github: virtualmanc
+  latest:
+    date: '2026-07-15'
+    url: https://www.virtualmanc.co.uk/2026/07/15/context-based-redirection-in-avd-windows-365-guide/
+  evidence:
+  - https://www.virtualmanc.co.uk/2026/07/15/context-based-redirection-in-avd-windows-365-guide/
+  - https://www.virtualmanc.co.uk/2025/08/02/how-to-secure-your-azure-virtual-desktop-with-entra-id-token-protection/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 2
+    track_record: 3
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio TAM and Microsoft MVP; his blog is AVD-general and rarely Nerdio. Posts only a few times
+    a year; his newer blog, virtualdesktops.community, still wasn't checked.
+- id: aaron-parker
+  name: Aaron Parker
+  affiliation: other-vendor
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - GitHub
+  links:
+    blog: https://stealthpuppy.com/
+    feed: https://stealthpuppy.com/feed/
+    github: aaronparker
+  latest:
+    date: '2026-05-11'
+    url: https://stealthpuppy.com/dynamic-groups-azure-virtual-desktop/
+  evidence:
+  - https://stealthpuppy.com/dynamic-groups-azure-virtual-desktop/
+  - https://stealthpuppy.com/avd-w365-secure-authentication/
+  - https://github.com/EUCPilots/evergreen-module
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 3
+    recency: 2
+    track_record: 3
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio employee. Evergreen is widely used to build session host images; the blog posts on AVD
+    and Entra a few times a year. The sibling's sources.toml uses /feed.xml while this uses /feed/,
+    which was fetched and works.
+- id: duo-infernale
+  name: Duo Infernale (Michele Blum and Flavio Meyer)
+  affiliation: unknown
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - AVD Community Newsletter (2026-10-02 issue)
+  links:
+    blog: https://duo-infernale.ch/
+    feed: https://duo-infernale.ch/feed/
+  latest:
+    date: '2026-10-14'
+    url: https://duo-infernale.ch/azure-virtual-desktop-now-available-in-your-region-ga/
+  evidence:
+  - https://duo-infernale.ch/hide-avd-sso-consent-prompt/
+  - https://duo-infernale.ch/patching-avd-what-to-use-and-when/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 3
+    track_record: 1
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Frequent AVD and Entra-for-AVD how-tos, several a month. Accounts aren't cross-linked, so only
+    the blog is watched.
+- id: wayne-markovich
+  name: Wayne Markovich
+  affiliation: independent
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - AVD Community Newsletter (2026-10-02 issue)
+  links:
+    blog: https://markovich.io/
+    feed: https://markovich.io/feed/
+    github: wmarkovich
+  latest:
+    date: '2026-10-13'
+    url: https://markovich.io/windows-11-image-versioning-avd-copilot-fslogix/
+  evidence:
+  - https://markovich.io/avd-regional-resiliency-architecture-host-pool-design/
+  - https://markovich.io/avd-session-host-malware-detection-defender-sentinel/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 3
+    track_record: 1
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Posts almost daily on AVD, FSLogix and Entra without saying how the posts are written; keep the
+    sibling's probation and spot-check a sample for accuracy at the next review.
+- id: cristian-schmitt-nieto
+  name: Cristian Schmitt Nieto
+  affiliation: partner
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - GitHub topic 'azure-virtual-desktop'
+  links:
+    blog: https://schmitt-nieto.com/
+    feed: https://schmitt-nieto.com/feed.xml
+    github: schmittnieto
+  latest:
+    date: '2026-09-22'
+    url: https://schmitt-nieto.com/blog/azure-local-avd-entra-join/
+  evidence:
+  - https://schmitt-nieto.com/blog/azure-local-avd-entra-join/
+  - https://github.com/schmittnieto/awesome-azure-virtual-desktop
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 3
+    recency: 3
+    track_record: 2
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio NVP who maintains the awesome-azure-virtual-desktop list. Writes mostly about Azure Local
+    now, with AVD-on-Azure-Local and Entra join posts, so the feed is filtered to AVD.
+- id: microsoft-fslogix-blog
+  name: Microsoft FSLogix blog
+  affiliation: microsoft
+  status: tracked
+  found_via:
+  - Microsoft channels (Tech Community)
+  - this KB's sources.toml
+  links:
+    feed: https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=FSLogix-Blog
+  latest:
+    date: '2026-03-27'
+    url: https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=FSLogix-Blog
+  evidence:
+  - https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=FSLogix-Blog
+  - https://learn.microsoft.com/fslogix/overview-what-is-fslogix
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 1
+    track_record: 3
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    Release, known-issue and action-required posts from the FSLogix product team, mostly by Jason
+    Parker; latest was the RC4 Kerberos hardening notice. No post for release 26.08 was in the feed;
+    latest.url is the feed because the post URL wasn't captured. Already in sources.toml; add expert there.
+- id: travis-roberts
+  name: Travis Roberts (Ciraltos)
+  affiliation: unknown
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  - web search (FSLogix with Entra Kerberos)
+  links:
+    blog: https://www.ciraltos.com/
+    feed: https://www.ciraltos.com/feed/
+    youtube: https://www.youtube.com/channel/UCuB24cID6NnypDWSLe4gfqA
+  latest:
+    date: '2026-09-09'
+    url: https://www.ciraltos.com/azure-virtual-desktop-hybrid-is-now-ga-6-reasons-to-use-it-and-2-reasons-to-reconsider/
+  evidence:
+  - https://www.ciraltos.com/avd-fslogix-without-domain-controllers-a-complete-cloud-native-setup/
+  - https://www.ciraltos.com/azure-files-backup-and-recovery-what-it-pros-need-to-know/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 3
+    track_record: 2
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    AVD, FSLogix storage and Entra explainers with video walkthroughs, mixed with AI exam posts, so
+    the blog is filtered to AVD. Only the blog is watched.
+- id: modernworkspacehub
+  name: ModernWorkspaceHub
+  affiliation: unknown
+  status: tracked
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - GitHub topic 'azure-virtual-desktop'
+  links:
+    blog: https://modernworkspacehub.com/
+    feed: https://modernworkspacehub.com/feed/
+    github: durrante
+  latest:
+    date: '2026-09-09'
+    url: https://modernworkspacehub.com/expand-azure-vm-os-disk/
+  evidence:
+  - https://modernworkspacehub.com/expand-azure-vm-os-disk/
+  - https://github.com/durrante/AVDMonitoringBaseline
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 3
+    recency: 3
+    track_record: 1
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Session host disk sizing with Bicep and an AVD monitoring baseline, useful for landing zone and
+    operations. Low volume (about one post a month) and the author signs only as Alex.
+- id: ryan-mangan
+  name: Ryan Mangan
+  affiliation: independent
+  status: tracked
+  found_via:
+  - awesome-azure-virtual-desktop list (LinkedIn)
+  - Sessionize
+  links:
+    blog: https://www.democratising-clouds.com/
+    feed: https://www.democratising-clouds.com/rss.xml
+  identity: https://sessionize.com/ryan-mangan
+  latest:
+    date: '2026-06-21'
+    url: https://www.democratising-clouds.com/blog/native-msix-or-app-attach-avd-decision-study
+  evidence:
+  - https://www.democratising-clouds.com/blog/native-msix-or-app-attach-avd-decision-study
+  - https://www.democratising-clouds.com/blog/evolving-cloud-endpoints-windows-365-flex-and-avd-hybrid
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 2
+    track_record: 3
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft MVP and author of Mastering Azure Virtual Desktop. Writes on app attach, MSIX and AVD
+    versus Windows 365; quiet since June, so re-check recency at the next review.
+# --- Watch ---------------------------------------------------------------------------------
+- id: johan-vanneuville
+  name: Johan Vanneuville
+  affiliation: partner
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://johanvanneuville.com/
+    feed: https://johanvanneuville.com/feed/
+  latest:
+    date: '2026-03-02'
+    url: https://johanvanneuville.com/avd/get-avd-hosts-outbound-internet-access-in-2026-using-a-nat-gateway/
+  evidence:
+  - https://johanvanneuville.com/avd/get-avd-hosts-outbound-internet-access-in-2026-using-a-nat-gateway/
+  - https://johanvanneuville.com/avd/avd-managed-identities-new-era-of-avd-security/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 1
+    track_record: 2
+    feedability: 2
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio NVP. Half the feed is AVD-general (networking, managed identities, ephemeral disks), the
+    rest Nerdio; last AVD-general post was March 2026.
+- id: alex-ter-neuzen
+  name: Alex ter Neuzen
+  affiliation: unknown
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://www.gettothe.cloud/
+    feed: https://www.gettothe.cloud/feed/
+    github: GetToThe-Cloud
+  latest:
+    date: '2026-09-24'
+    url: https://www.gettothe.cloud/azure-virtual-desktop-sessionhost-monitoring-2-0/
+  evidence:
+  - https://www.gettothe.cloud/azure-virtual-desktop-sessionhost-monitoring-2-0/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 3
+    track_record: 1
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Deep AVD monitoring work, but one post in ten is AVD; the rest is Azure Local. Re-score if AVD
+    on Azure Local becomes a regular topic.
+- id: marius-sandbu
+  name: Marius Sandbu
+  affiliation: unknown
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://msandbu.org/
+    feed: https://msandbu.org/feed/
+  latest:
+    date: '2026-10-16'
+    url: https://msandbu.org/getting-started-with-azure-sre-agent-and-some-success-stories/
+  evidence:
+  - https://msandbu.org/getting-started-with-azure-sre-agent-and-some-success-stories/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 1
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Writes on Azure, security and AI now; his latest post uses an AVD and FSLogix outage as an SRE
+    agent example. Only the blog is watched.
+- id: jon-towles
+  name: Mobile Jon
+  affiliation: partner
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://mobile-jon.com/
+    feed: https://mobile-jon.com/feed/
+    youtube: https://www.youtube.com/channel/UCJBM-j8va7lrwTZBWSXt7vw
+    github: mobilejon
+  latest:
+    date: '2026-05-14'
+    url: https://mobile-jon.com/
+  evidence:
+  - https://mobile-jon.com/2026/01/10/building-azure-virtual-desktop-images-powered-by-nerdio/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 2
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio NVP. Mostly Intune and Entra; his two AVD posts this year are about vendor tools.
+- id: nerdio-youtube
+  name: Nerdio (YouTube channel)
+  affiliation: other-vendor
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    youtube: https://www.youtube.com/channel/UClzdOrR9o0I05hnnByEKIKA
+    feed: https://www.youtube.com/feeds/videos.xml?channel_id=UClzdOrR9o0I05hnnByEKIKA
+    github: Get-Nerdio
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 1
+    recency: 3
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Product webinars and release walkthroughs; Nerdio Manager belongs to nerdio-hcl, which tracks it.
+    Recency reused from the sibling's study, not re-checked.
+- id: shabaz-darr
+  name: Shabaz Darr
+  affiliation: partner
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list (YouTube)
+  links:
+    youtube: https://www.youtube.com/channel/UCt5sNdu14RterwDfEDEJidQ
+  latest:
+    date: '2025-07-22'
+    url: https://www.youtube.com/watch?v=k27nZcv7sew
+  evidence:
+  - https://www.youtube.com/watch?v=k27nZcv7sew
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 0
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft MVP and Nerdio NVP. Reused from the sibling: newest video found is July 2025, and the
+    channel moved to a new ID that wasn't found.
+- id: bas-van-kaam
+  name: Bas van Kaam
+  affiliation: other-vendor
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://www.basvankaam.com/
+    feed: https://www.basvankaam.com/feed/
+  latest:
+    date: '2023-04-11'
+    url: https://www.basvankaam.com/
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 0
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio employee. The feed still works but has nothing since the AVD security cheat sheet of April 2023.
+- id: christiaan-brinkhoff
+  name: Christiaan Brinkhoff
+  affiliation: other-vendor
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://christiaanbrinkhoff.com/
+    feed: https://christiaanbrinkhoff.com/feed/
+    youtube: https://www.youtube.com/channel/UCP894c8_Rgop-qANoVK6Vkg
+  latest:
+    date: '2026-02-26'
+    url: https://www.youtube.com/watch?v=ETbS-R4n4bw
+  evidence:
+  - https://www.youtube.com/watch?v=ETbS-R4n4bw
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 1
+    recency: 1
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Joined Nerdio in 2026 from Microsoft's Windows 365 and AVD team. The blog is now mostly speaking
+    dates and books; one AVD episode in 2026.
+- id: fabian-rodrigues
+  name: Fabian Rodrigues
+  affiliation: unknown
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB, not identified there)
+  - web search (FSLogix with Entra Kerberos)
+  links:
+    blog: https://fabssolutions.co.uk/blog
+  latest:
+    date: '2026-10-13'
+    url: https://fabssolutions.co.uk/index.php/blog/detail/microsoft-global-secure-access-for-avd-windows-365-external-identities-token-protection-and-zero-trust-architecture
+  evidence:
+  - https://fabssolutions.co.uk/blog/detail/azure-virtual-desktop-fslogix-and-native-microsoft-entra-kerberos-authentication
+  - https://fabssolutions.co.uk/index.php/blog/detail/the-avd-allowlist-field-guide
+  gates:
+    original: true
+    recent: true
+    feed: false
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 3
+    track_record: 1
+    feedability: 0
+  reviewed: '2026-10-18'
+  notes: >-
+    Found this time: AVD, FSLogix and Windows 365 guides with commands on fabssolutions.co.uk. No RSS
+    feed was found, and several posts share one date, so check how they're written before tracking.
+- id: john-savill
+  name: John Savill
+  affiliation: microsoft
+  status: watch
+  found_via:
+  - awesome-azure-virtual-desktop list (YouTube)
+  links:
+    youtube: https://www.youtube.com/channel/UCpIn7ox7j7bH_OFj7tYouOQ
+    feed: https://www.youtube.com/feeds/videos.xml?channel_id=UCpIn7ox7j7bH_OFj7tYouOQ
+  identity: https://www.youtube.com/@NTFAQGuy
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 0
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft employee whose personal channel does deep Azure explainers, AVD only occasionally. No
+    AVD video in the last 12 months could be verified (YouTube blocks fetching), so recency is 0.
+- id: jim-moyle
+  name: Jim Moyle
+  affiliation: microsoft
+  status: watch
+  found_via:
+  - snowball (co-author of Mastering Azure Virtual Desktop with Ryan Mangan)
+  - GitHub
+  links:
+    github: JimMoyle
+    x: JimMoyle
+  identity: https://github.com/JimMoyle
+  evidence:
+  - https://github.com/JimMoyle
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 2
+    depth: 3
+    recency: 0
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft, formerly FSLogix; maintains Community.AppAttach for app attach lifecycle. Recent
+    activity couldn't be dated without the GitHub API, so recency is scored 0 until checked.
+- id: thomas-marcussen
+  name: Thomas Marcussen
+  affiliation: independent
+  status: watch
+  found_via:
+  - awesome-azure-virtual-desktop list (LinkedIn)
+  - AVD Community Newsletter (editor of the 2026-10-02 issue)
+  links:
+    blog: https://blog.thomasmarcussen.com/
+    feed: https://blog.thomasmarcussen.com/feed/
+  latest:
+    date: '2026-07'
+    url: https://blog.thomasmarcussen.com/enhanced-host-pool-management-azure-virtual-desktop-ga-setup/
+  evidence:
+  - https://blog.thomasmarcussen.com/enhanced-host-pool-management-azure-virtual-desktop-ga-setup/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 2
+    recency: 2
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft MVP and freelance consultant writing mostly on Intune and Entra; occasional AVD how-tos.
+    The AVD post's exact date wasn't shown; July 2026 is when the feature went GA.
+- id: dominiek-verham
+  name: Dominiek Verham
+  affiliation: partner
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://dominiekverham.com/
+    feed: https://dominiekverham.com/feed/
+  latest:
+    date: '2026-07-23'
+    url: https://dominiekverham.com/nerdio-manager-showdown-enterprise-vs-msp/
+  evidence:
+  - https://dominiekverham.com/configuring-nerdio-manager-for-msp-post-installation-checklist/
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 2
+    recency: 1
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft MVP and Nerdio NVP. Every recent post is Nerdio Manager, which nerdio-hcl tracks;
+    AVD-general posts are older.
+- id: aresh-sarkari
+  name: Aresh Sarkari
+  affiliation: unknown
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://askaresh.com/
+    feed: https://askaresh.com/feed/
+  latest:
+    date: '2026-10-08'
+    url: https://askaresh.com/2026/10/08/windows-365-local-admin-cloud-pc-configurations-vs-user-settings-powershell-graph-rest-api/
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 0
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Writes on Windows 365 now (latest is Windows 365, not AVD); no AVD post in the last 12 months was
+    found in the feed's short window.
+- id: sander-rozemuller
+  name: Sander Rozemuller
+  affiliation: unknown
+  status: watch
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://rozemuller.com/
+    feed: https://rozemuller.com/index.xml
+    github: srozemuller
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 0
+    depth: 3
+    recency: 0
+    track_record: 3
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Strong AVD automation history; the last ten posts are all Intune.
+- id: stefan-dingemanse
+  name: Stefan Dingemanse
+  affiliation: partner
+  status: watch
+  found_via:
+  - awesome-azure-virtual-desktop list (LinkedIn)
+  - Sessionize
+  links:
+    blog: https://www.stefandingemanse.com/
+  identity: https://sessionize.com/stefan-dingemanse
+  latest:
+    date: '2024-03-26'
+    url: https://www.stefandingemanse.com/2024/03/26/simplify-virtual-desktop-management-with-intune-filters-for-windows-365-and-avd/
+  gates:
+    original: true
+    recent: false
+    feed: false
+    identity: true
+  scores:
+    relevance: 2
+    depth: 2
+    recency: 0
+    track_record: 2
+    feedability: 0
+  reviewed: '2026-10-18'
+  notes: >-
+    Microsoft MVP and Nerdio NVP who co-founded the AVD Community; still speaks on AVD with Intune,
+    but the blog stopped in 2024 and its feed couldn't be fetched.
+- id: azurearchetype
+  name: azureArchetype (Frametype Solutions)
+  affiliation: unknown
+  status: watch
+  found_via:
+  - web search (FSLogix with Entra Kerberos)
+  links:
+    blog: https://azurearchetype.com/
+    github: azurearchetype
+  identity: https://github.com/azurearchetype
+  latest:
+    date: '2026-02-11'
+    url: https://azurearchetype.com/2026/02/11/avd-observations-part-1.html
+  evidence:
+  - https://azurearchetype.com/2026/02/11/avd-observations-part-1.html
+  gates:
+    original: true
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 1
+    depth: 3
+    recency: 1
+    track_record: 0
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Cloud-native AVD with Entra Kerberos and FSLogix, deployed by IaC, plus landing zone Bicep repos.
+    The GitHub account is the feed; no blog feed was found and the post is the only AVD one seen.
+# --- Declined ------------------------------------------------------------------------------
+- id: dane-young
+  name: Dane Young
+  affiliation: partner
+  status: declined
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://blog.youngtech.com/
+    feed: https://blog.youngtech.com/feed/
+  gates:
+    original: true
+    recent: false
+    feed: true
+    identity: true
+  scores:
+    relevance: 0
+    depth: 2
+    recency: 0
+    track_record: 2
+    feedability: 1
+  reviewed: '2026-10-18'
+  notes: >-
+    Nerdio NVP. Current posts are about other VDI platforms; nothing on AVD.
+- id: avd-community-newsletter
+  name: AVD Community Newsletter
+  affiliation: independent
+  status: declined
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://avdcommunity.com/category/newsletter/
+    feed: https://avdcommunity.com/feed/
+  latest:
+    date: '2026-10-02'
+    url: https://avdcommunity.com/avd-community-newsletter-2nd-october-2026/
+  gates:
+    original: false
+    recent: true
+    feed: true
+    identity: true
+  scores:
+    relevance: 3
+    depth: 0
+    recency: 3
+    track_record: 2
+    feedability: 3
+  reviewed: '2026-10-18'
+  notes: >-
+    A curated roundup, not original content. Use it to find new people at each review; this study
+    found Dean Cefola's Shorts through it.
+- id: avdpunks
+  name: AVD Punks
+  affiliation: unknown
+  status: declined
+  found_via:
+  - awesome-azure-virtual-desktop list
+  links:
+    blog: https://avdpunks.com/
+  gates:
+    original: true
+    recent: false
+    feed: false
+    identity: false
+  scores:
+    relevance: 3
+    depth: 2
+    recency: 0
+    track_record: 1
+    feedability: 0
+  reviewed: '2026-10-18'
+  notes: >-
+    AVD and Windows 365 posts by an unnamed group; the site shows no authors, dates or feed.
+- id: patrick-coble
+  name: Patrick Coble
+  affiliation: unknown
+  status: declined
+  found_via:
+  - nerdio-hcl experts list (sibling KB)
+  links:
+    blog: https://vdihacker.com/
+  gates:
+    original: true
+    recent: false
+    feed: false
+    identity: false
+  scores:
+    relevance: 1
+    depth: 2
+    recency: 0
+    track_record: 3
+    feedability: 0
+  reviewed: '2026-10-18'
+  notes: >-
+    Reused from the sibling without a new check: the site couldn't be read and no feed was confirmed.

@@ -15,8 +15,8 @@ data in [`knowledge/`](../../knowledge/README.md) or the lessons that live in th
 |---|---|---|
 | 1. Foundation | Done: the scripts, schemas, workflows and issue forms; this README, `family.yaml`, the first sources, the curation and experts method, the guardrails, and a page per topic with status `plan` | Nothing |
 | 2. Decisions | Done: the earlier decisions moved here in MADR 4 format with every reference updated (0001 to 0003 accepted), and the first family decisions, [0006](decisions/0006-family-kb-format.md) to [0010](decisions/0010-family-model-selection-convention.md) | Nothing |
-| 3. Seed content | Topic pages and known errors written from the connected repos' lessons, linked rather than copied, and the first upstream asks | Step 1 |
-| 4. Experts study | The first scored list for this KB's topic, and its feeds in `sources.toml` | Step 1 |
+| 3. Seed content | Done: topic pages and known errors written from the connected repos' lessons, linked rather than copied, and the first upstream asks | Nothing |
+| 4. Experts study | Done: the first scored list for this KB's topic, and its feeds in `sources.toml` | Nothing |
 | 5. Guardrails everywhere | Done: the guardrails and the family KB in the repo README and CLAUDE.md | Nothing |
 
 Proposed to the family in step 2, waiting on the other three KBs: a stronger leak check and
