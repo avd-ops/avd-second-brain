@@ -242,6 +242,14 @@ Describe 'Fact register (C15) and target-state manifest (C14)' {
     Test-Json -Path (Join-Path $script:contracts 'fact-register.json') -SchemaFile (Join-Path $script:contracts 'schemas/fact-register.schema.json') | Should -BeTrue
     @(Test-FactRegister -Register $script:register -SchemaByContract @{ C11 = $script:c11 }) | Should -BeNullOrEmpty
   }
+  It 'puts every C12 group measure, the hourly series and the app catalog in the group-behavior class' {
+    $c12 = @($script:register.facts | Where-Object { $_.id -like 'c12.group.*' })
+    $behavior = @($c12 | Where-Object { $_.id -notin 'c12.group.users', 'c12.group.concurrency.peak', 'c12.group.perHost.peakSessionsPerHost', 'c12.group.apps.unknown' })
+    $behavior.Count | Should -BeGreaterThan 10
+    foreach ($f in $behavior) { $f.privacy | Should -Be 'group-behavior' -Because "$($f.id) describes a group's behavior" }
+    @($script:register.facts | Where-Object { $_.privacy -eq 'group-behavior' -and $_.id -notlike 'c12.group.*' }) | Should -BeNullOrEmpty
+    foreach ($m in 'CpuPercentOfCore', 'MemoryMiB', 'DiskIops') { "c12.group.perUser.p50$m" | Should -BeIn $c12.id -Because 'groups under 20 get p50, not p95' }
+  }
   It 'catches a built fact whose path the contract no longer has' {
     $r = $script:register | ConvertTo-Json -Depth 8 | ConvertFrom-Json
     ($r.facts | Where-Object id -eq 'c11.hostPool.type').path = '/subscriptions/*/hostPools/*/kind'

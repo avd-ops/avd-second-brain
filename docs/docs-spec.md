@@ -118,7 +118,7 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | Draft fixes | **Scribe**, in avd-swarm (its spec §6e), from the C13 findings | Yes, for prose; the generator for generated text | Draft PRs in the repo the finding names |
 | Decide | A person merges, and the check on the draft PR must pass | — | — |
 
-**Judging is graded the same way as avd-swarm's answers** (its spec §6b): the mechanical auditor seeds faults into copies of real docs (a parameter renamed, a contract status flipped, a repo dropped from a table, a path broken) and measures the judge's catch rate; the deterministic checks above are the ground truth for the kinds they cover. Thresholds live in avd-swarm's `governance/`.
+**Judging is graded the same way as avd-swarm's answers** (its spec §6b): the mechanical auditor seeds faults into copies of real docs (a parameter renamed, a contract status flipped, a repo dropped from a table, a path broken) and measures the judge's catch rate; the deterministic checks above are the ground truth for the kinds they cover. Thresholds live in avd-swarm's `governance/judge-auditor.yml`, and the rule is the same: one check per window, a confidence bound with minimum counts, never a point rate on every run (second red team AX-17).
 
 ## 9. Contract C13: `avd-doc-findings/v1`
 
@@ -166,7 +166,7 @@ Nothing here creates an Azure resource. A later GitHub Pages site for `wiki/` is
 | Phase | Delivers | Exit |
 |---|---|---|
 | **D0** | `terms.json`; `Test-DocConsistency.ps1` with D1–D11 as pure functions and Pester fixtures; C13 schema and test; the generator for reference pages, README blocks and changelog; the nightly sweep; the first `wiki/` and `wiki/index.json`; `Find-BrainKnowledge.ps1 -Wiki`; the shared `docs-check.yml` workflow; a caller in each of the four connected repos, one PR each | The sweep runs green on the brain itself; every finding in the first sweep is fixed or recorded as accepted |
-| **D1** | Scribe in avd-swarm (its spec §6e): draft PRs from C13 errors, generated fixes first; the judge, flag-only, with the seeded-fault auditor; checks become errors | Ten Scribe PRs merged with no hand edits beyond review nits; judge seeded-fault catch rate ≥ 95% |
+| **D1** | Scribe in avd-swarm (its spec §6e): draft PRs from C13 errors, generated fixes first; the judge, flag-only, with the seeded-fault auditor; checks become errors | Ten Scribe PRs merged with no hand edits beyond review nits; no seeded-fault alarm from the judge auditor over its last four windows (avd-swarm spec §6b: a fixed seeded-fault count per window, a confidence bound, minimum counts) |
 | **D2** | Scribe runs inside avd-swarm's Improve schedule once that exists; optional one-way GitHub wiki mirror for public repos | Owner's call |
 
 ## 13. Open questions
