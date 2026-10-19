@@ -282,3 +282,17 @@ kind = "github_commits"
 repo = "nickprignano/ai-brain"
 path = "docs/knowledge"
 kb_page = "curation.md"
+
+[[source]]
+name = "Liquidware KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge/decisions"
+kb_page = "curation.md"
+
+[[source]]
+name = "Liquidware KB: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge"
+kb_page = "curation.md"

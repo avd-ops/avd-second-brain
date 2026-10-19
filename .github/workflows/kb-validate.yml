@@ -3,7 +3,7 @@ name: kb-validate
 
 # Checks the knowledge base on every change to it: front matter and YAML against the JSON Schemas,
 # MADR decision records, links and anchors, leak patterns, generated files (indexes, tables,
-# llms.txt) in sync, the family checks, the KB scripts' unit tests, and the brain's leak guard over
+# llms.txt) in sync, the family checks (no HCL anywhere in the repo, decision 0012), the KB scripts' unit tests, and the brain's leak guard over
 # the KB (scripts/Test-KbLeaks.ps1). Secrets are covered by gitleaks in secrets.yml.
 
 on:
@@ -16,6 +16,12 @@ on:
       - llms.txt
       - .github/ISSUE_TEMPLATE/**
       - .github/workflows/kb-*.yml
+      # HCL anywhere in the repo fails the lane check (decision 0012).
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - "**/*.tf.json"
+      - "**/*.hcl"
+      - "**/*.pkr.json"
   push:
     branches: [main]
     paths:
@@ -24,6 +30,12 @@ on:
       - scripts/Test-KbLeaks.ps1
       - scripts/AvdBrain.psm1
       - llms.txt
+      # HCL anywhere in the repo fails the lane check (decision 0012).
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - "**/*.tf.json"
+      - "**/*.hcl"
+      - "**/*.pkr.json"
 
 permissions:
   contents: read

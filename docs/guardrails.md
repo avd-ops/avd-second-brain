@@ -38,9 +38,12 @@ copy, adapt, fork or redistribute it. Check the license of every vendor repo or 
 it. This repo is MIT ([LICENSE](../LICENSE)); the knowledge base tooling in `scripts/kb/` is adapted
 from Apache-2.0 sources and keeps that license ([scripts/kb/NOTICE](../scripts/kb/NOTICE)).
 
-## 5. Azure-native, GitHub, HashiCorp and open source first
+## 5. Azure-native, GitHub and open source first
 
-Prefer Azure-native, GitHub, HashiCorp and open-source tooling. A paid third-party service needs a
+Prefer Azure-native, GitHub and open-source tooling. For the AVD repos that means Bicep,
+PowerShell and native Azure, Entra and Microsoft 365 tooling; Terraform, Packer and any other HCL
+belong to nerdio-hcl and fail the KB check here
+([decision 0012](knowledge/decisions/0012-family-format-project-lanes.md)). A paid third-party service needs a
 decision record saying why the free options fell short. The knowledge base's own tooling spends no
 LLM tokens.
 

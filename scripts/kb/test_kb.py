@@ -240,6 +240,47 @@ class FamilyTests(unittest.TestCase):
         validate.errors.clear()
 
 
+class LaneTests(unittest.TestCase):
+    """Lanes between sibling projects (decision 0012)."""
+    FAMILY = {"format_version": 1, "projects": [
+        {"id": "us", "name": "Us", "self": True, "repo": "octo/us", "focus": "x", "owns": ["x"], "claude_project": "Us",
+         "not_here": [{"topic": "HCL. Bicep only here", "owner": "sib", "keywords": ["terraform", "packer"],
+                       "files": ["*.tf", "*.hcl"]}]},
+        {"id": "sib", "name": "Sib", "repo": "octo/sib", "focus": "y", "owns": ["y"], "claude_project": "Sib"},
+    ]}
+
+    def test_lanes_match_whole_keywords(self):
+        self.assertEqual([o["id"] for _, o in kblib.lanes("Packer image build", self.FAMILY)], ["sib"])
+        self.assertEqual(kblib.lanes("packers and terraforming", self.FAMILY), [])
+
+    def test_validate_refuses_files_in_another_lane(self):
+        import validate
+        validate.errors.clear()
+        validate.check_lanes(self.FAMILY, ["bicep/main.bicep", "infra/main.tf", ".terraform.lock.hcl"])
+        self.assertEqual(len(validate.errors), 2)
+        self.assertIn("belongs to sib", validate.errors[0])
+        validate.errors.clear()
+
+    def test_validate_wants_a_known_owner(self):
+        import validate
+        family = {"projects": [{**self.FAMILY["projects"][0], "not_here": [{"topic": "z", "owner": "nobody"}]}]}
+        validate.errors.clear()
+        validate.check_lanes(family, [])
+        self.assertIn("isn't another project", validate.errors[0])
+        validate.errors.clear()
+
+    def test_lane_items(self):
+        us, row = self.FAMILY["projects"]
+        agreeing = {"projects": [{**row, "self": True}, {**us, "self": False}]}
+        self.assertEqual(freshness.lane_items(us, row, agreeing), [])
+        stale = {"projects": [{**row, "self": True, "owns": ["y", "x"]}, {"id": "us", "repo": "octo/us"}]}
+        items = freshness.lane_items(us, row, stale)
+        self.assertTrue(any("our row's `owns`" in i for i in items))
+        self.assertTrue(any("its row for this KB differs on owns, claude_project" in i for i in items))
+        self.assertTrue(any("both KBs claim to own 'x'" in i for i in items))
+        self.assertTrue(any("no row for this KB" in i for i in freshness.lane_items(us, row, {"projects": [{**row, "self": True}]})))
+
+
 class AnchorTests(unittest.TestCase):
     def test_github_slugs(self):
         body = "# A\n## Post-deployment checks with Playwright\n## 8. Deployment troubleshooting\n## A\n"

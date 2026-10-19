@@ -6,7 +6,7 @@ Generated:
   - the index table in docs/knowledge/README.md (from page front matter)
   - the list in docs/knowledge/decisions/README.md (from decision records)
   - the tables in troubleshooting/README.md, microsoft/upstream-contributions.md and experts.md (from YAML)
-  - the "Related knowledge bases" table in docs/knowledge/README.md (from family.yaml)
+  - the "Related knowledge bases" table and the "Not built here" list in docs/knowledge/README.md (from family.yaml)
   - llms.txt at the repo root (from all of the above)
 
     python3 scripts/kb/build.py           # rewrite files
@@ -180,6 +180,22 @@ def render_family() -> str:
     return table(["Knowledge base", "Role", "Focus", "Source of truth for"], rows)
 
 
+def lane_lines() -> list[str]:
+    """One line per not_here lane: the work, and the project and Claude project that own it."""
+    data = kblib.load_yaml(kblib.FAMILY)
+    by_id = {p["id"]: p for p in data["projects"]}
+    lines = []
+    for entry in kblib.family_self(data).get("not_here", []):
+        owner = by_id.get(entry["owner"], {"name": entry["owner"]})
+        project = f", the {owner['claude_project']} Claude project" if owner.get("claude_project") else ""
+        lines.append(f"- {entry['topic']}: {family_link(owner)}{project}")
+    return lines
+
+
+def render_lanes() -> str:
+    return "\n".join(lane_lines()) + "\n"
+
+
 def render_llms_txt() -> str:
     lines = [
         "# avd-second-brain: Azure Virtual Desktop knowledge base",
@@ -218,6 +234,10 @@ def render_llms_txt() -> str:
     lines += ["", "## Related knowledge bases", ""]
     for p in family_rows():
         lines.append(f"- {family_link(p)}: {p['focus']}. Source of truth for: {'; '.join(p['owns'])}")
+    if lanes := lane_lines():
+        lines += ["", "## Not built here", "",
+                  "Refer these to the project that owns them, and read its KB before researching (decision 0012):", ""]
+        lines += lanes
     lines += [
         "",
         "## Optional",
@@ -241,7 +261,7 @@ def targets() -> dict[Path, str]:
     """Every generated file and its desired content."""
     out = {}
     jobs = {
-        KB_DIR / "README.md": {"kb-index": render_kb_index, "family": render_family},
+        KB_DIR / "README.md": {"kb-index": render_kb_index, "family": render_family, "lanes": render_lanes},
         KB_DIR / "decisions" / "README.md": {"decision-index": render_decision_index},
         KB_DIR / "troubleshooting" / "README.md": {"known-errors": render_known_errors},
         KB_DIR / "experts.md": {

@@ -50,12 +50,22 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0009. Family format: a stronger leak check and reviewed model-drafted entries](docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): proposed
 - [0010. Follow the family's model-selection convention, as one of its four pilot projects](docs/knowledge/decisions/0010-family-model-selection-convention.md): proposed
 - [0011. Family format: link to upstream sources of truth, check against them, and give back](docs/knowledge/decisions/0011-family-format-upstream-sources.md): proposed
+- [0012. Family format: project lanes, referrals and a no-HCL guard for the AVD repos](docs/knowledge/decisions/0012-family-format-project-lanes.md): proposed
 
 ## Related knowledge bases
 
 - [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): The AI research behind all four projects. Source of truth for: Claude API and Microsoft Foundry use; model choices; keyless sign-in for AI APIs; prompts and evaluations; AI tooling shared by the family
 - [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer. Source of truth for: Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer
-- Liquidware (repo not linked yet): Liquidware products on virtual desktops. Source of truth for: Liquidware products
+- [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge): Liquidware products on virtual desktops, starting with Stratusphere UX in Azure. Source of truth for: Liquidware products; Stratusphere UX appliances; the Connector ID Key; the Stratusphere API; this repo's Bicep and PowerShell
+
+## Not built here
+
+Refer these to the project that owns them, and read its KB before researching (decision 0012):
+
+- Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
+- Nerdio Manager, its provider and scripted actions: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
+- Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project: [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge), the Liquidware Claude project
+- General Claude API and Microsoft Foundry research, model choice and prompt evaluation: [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge), the AI Claude project
 
 ## Optional
 

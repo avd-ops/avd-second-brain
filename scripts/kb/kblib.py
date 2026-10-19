@@ -142,6 +142,24 @@ def siblings(data: dict | None = None) -> list[dict]:
     return [p for p in data.get("projects", []) if not p.get("self") and p.get("repo")]
 
 
+def family_self(data: dict | None = None) -> dict:
+    """This KB's own row in family.yaml."""
+    data = family() if data is None else data
+    return next((p for p in data.get("projects", []) if p.get("self")), {})
+
+
+def lanes(query: str, data: dict | None = None) -> list[tuple[dict, dict]]:
+    """The `not_here` entries whose keywords appear in the query, each with the project that owns it."""
+    data = family() if data is None else data
+    by_id = {p["id"]: p for p in data.get("projects", [])}
+    words = " ".join(re.findall(r"[a-z0-9]+", query.lower()))
+    hits = []
+    for entry in family_self(data).get("not_here", []):
+        if any(re.search(rf"\b{re.escape(k.lower())}\b", words) for k in entry.get("keywords", [])):
+            hits.append((entry, by_id.get(entry["owner"], {"id": entry["owner"], "name": entry["owner"]})))
+    return hits
+
+
 def kb_path(project: dict) -> str:
     return project.get("kb_path", "docs/knowledge").strip("/")
 
