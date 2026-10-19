@@ -2,7 +2,8 @@
 # Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Check for prior art before starting new work.
 
-Searches this repo's knowledge base, then the sibling KBs in family.yaml, then GitHub repositories,
+Says first when the topic is in another project's lane (family.yaml `not_here`, decision 0012).
+Then searches this repo's knowledge base, then the sibling KBs in family.yaml, then GitHub repositories,
 code and issues for a topic, and prints a Markdown report. Run it before building something so you can reuse what
 others have already figured out, and record anything useful in docs/knowledge/.
 
@@ -89,6 +90,11 @@ def main() -> int:
     args = parser.parse_args()
 
     out = [f"## Prior art: {args.query}", ""]
+    for entry, owner in kblib.lanes(args.query):
+        where = owner.get("claude_project", owner["name"])
+        repo = f" ([{owner['repo']}](https://github.com/{owner['repo']}))" if owner.get("repo") else ""
+        out += [f"> **Another project's lane:** {entry['topic']} Refer it to the {where} project{repo} "
+                "and read its KB below before researching (decision 0012).", ""]
     out += ["### Already in our knowledge base", *(search_kb(args.query.split()) or ["_Nothing yet._"]), ""]
     for p in kblib.siblings():
         out += section(f"Sibling KB: {p['name']}", lambda p=p: sibling(p, args.query, args.limit))

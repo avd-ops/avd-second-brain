@@ -93,7 +93,7 @@ The handbook, one map of every connected repo for people and agents, is in [wiki
 
 - **Tenant data stays with the tenant.** Vaults live in the customer's private repo; the knowledge base holds only generalized facts, and a guard (`scripts/Test-Knowledge.ps1`, in CI) fails on customer names, addresses, IDs, LOB apps and engagement trails in the public scope.
 - **Models propose, people approve.** Knowledge changes only by a PR a person merges. A model never sets a verdict, a rule or a plan on its own.
-- **The guardrails apply to everyone** ([docs/guardrails.md](docs/guardrails.md); AI assistants also read [AGENTS.md](AGENTS.md)): nothing in the repo identifies a tenant, customer or employer; secrets never go through chat, the repo or the knowledge base; changes land as pull requests and nothing touches a real environment without the owner's yes; code from unlicensed repos is reference only; Azure-native, GitHub, HashiCorp and open-source tooling first; everything runs from Azure Cloud Shell.
+- **The guardrails apply to everyone** ([docs/guardrails.md](docs/guardrails.md); AI assistants also read [AGENTS.md](AGENTS.md)): nothing in the repo identifies a tenant, customer or employer; secrets never go through chat, the repo or the knowledge base; changes land as pull requests and nothing touches a real environment without the owner's yes; code from unlicensed repos is reference only; Azure-native, GitHub and open-source tooling first, with no HCL (Terraform, Packer) in any AVD repo; everything runs from Azure Cloud Shell.
 - **Every number traces to evidence.** Rules carry a history with a reason per change; catalog verdicts cite a document, a pilot or an engagement; calibration factors are computed from observations when read.
 
 ## Validate

@@ -121,6 +121,12 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
   [sources.toml](sources.toml): one with `path` set to its decisions folder, and one with `path` set
   to its KB folder. `validate.py` fails if either is missing for a sibling with a `repo`. A private sibling can't be read with
   the built-in token; its sources stay in and start working once the repo is public.
+- **Stay in your lane** ([decision 0012](decisions/0012-family-format-project-lanes.md)). Each
+  row can name its `claude_project` and, on this KB's own row, the work it never does
+  (`not_here`, with the owning project, `keywords` and `files` globs). An ask in a `not_here` lane is
+  referred to the owner, not built. `prior_art.py` prints the owner first when a query matches a
+  lane's keywords; `validate.py` fails on a tracked file matching a lane's `files`; the freshness
+  check flags rows that disagree between two KBs and topics both claim to own.
 - **Link instead of copying.** When a fact belongs to a sibling's topic, link to their page. When we
   learn something they need, open an issue or PR on their repo with the evidence. If two KBs
   disagree, the one closer to the topic is the source of truth, and the other links to it.

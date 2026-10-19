@@ -19,9 +19,11 @@ Prints GitHub Actions ::error annotations and exits 1 on any error.
 
 from __future__ import annotations
 
+import fnmatch
 import ipaddress
 import json
 import re
+import subprocess
 import sys
 import tomllib
 from pathlib import Path
@@ -154,6 +156,32 @@ def check_family() -> None:
             if (p["repo"], path) not in watched:
                 error(kblib.SOURCES, f"sibling {p['name']}: add a github_commits source for "
                                      f"{p['repo']} with path = \"{path}\" (see curation.md)")
+    check_lanes(data)
+
+
+def tracked_files() -> list[str]:
+    """Paths git tracks in this repo; every file under ROOT if git isn't available."""
+    try:
+        out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+        return out.splitlines()
+    except (OSError, subprocess.CalledProcessError):
+        return [f.relative_to(ROOT).as_posix() for f in ROOT.rglob("*") if f.is_file() and ".git" not in f.parts]
+
+
+def check_lanes(data: dict, files: list[str] | None = None) -> None:
+    """Each not_here lane names another family project, and nothing in it was built here (decision 0012)."""
+    ids = {p.get("id") for p in data.get("projects", []) if not p.get("self")}
+    for entry in kblib.family_self(data).get("not_here", []):
+        if entry["owner"] not in ids:
+            error(kblib.FAMILY, f"not_here {entry['topic']!r}: owner {entry['owner']!r} isn't another project in family.yaml")
+        globs = entry.get("files", [])
+        if not globs:
+            continue
+        files = tracked_files() if files is None else files
+        for f in files:
+            if any(fnmatch.fnmatch(Path(f).name, g) for g in globs):
+                error(ROOT / f, f"belongs to {entry['owner']} ({entry['topic'].split('.')[0]}); "
+                         "refer the work there instead of building it here (decision 0012)")
 
 
 def check_links(path: Path) -> None:

@@ -2,6 +2,12 @@
 # Schema: schema/family.schema.json, the same in every KB. How it works:
 # curation.md#staying-aligned-with-the-family. Add a sibling's repo once it's known, then add
 # its two sources in sources.toml.
+#
+# Lanes (decision 0012): `claude_project` names the Claude project that does a sibling's work, and
+# `not_here` lists work this project never does, with the sibling that owns it. An assistant that
+# gets an ask in a `not_here` lane refers it to the owner instead of building it, and reads the
+# owner's KB before researching anything near it. validate.py fails on a tracked file matching a
+# `files` glob; prior_art.py prints the owner when a query matches `keywords`.
 
 format_version: 1
 projects:
@@ -14,6 +20,22 @@ projects:
   focus: Azure Virtual Desktop itself, across its lifecycle (assess, inventory, deploy, operate), and the intelligence layer behind avd-swarm
   owns: [Azure Virtual Desktop platform, FSLogix, session host images in general, the AVD landing zone and its operations]
   format_version: 1
+  claude_project: AVD
+  builds_in: [avd-landing-zone, avd-swarm, avd-second-brain, avd-current-state, avd-readiness-ux, avd-liquidware deployment tooling]
+  not_here:
+  - topic: Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only
+    owner: nerdio-hcl
+    keywords: [terraform, packer, opentofu, hcl, tfvars, azurerm provider]
+    files: ['*.tf', '*.tfvars', '*.tf.json', '*.hcl', '*.pkr.json']
+  - topic: Nerdio Manager, its provider and scripted actions
+    owner: nerdio-hcl
+    keywords: [nerdio, nme]
+  - topic: Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project
+    owner: liquidware
+    keywords: [liquidware, profileunity, flexapp, stratusphere, commandctrl]
+  - topic: General Claude API and Microsoft Foundry research, model choice and prompt evaluation
+    owner: ai
+    keywords: [model choice, model selection, prompt evaluation]
 - id: ai
   name: AI
   repo: nickprignano/ai-brain
@@ -23,6 +45,7 @@ projects:
   owns: [Claude API and Microsoft Foundry use, model choices, keyless sign-in for AI APIs, prompts and evaluations,
     AI tooling shared by the family]
   format_version: 1
+  claude_project: AI
 - id: nerdio-hcl
   name: Nerdio HCL kit
   repo: nickprignano/nerdio-hcl
@@ -31,8 +54,14 @@ projects:
   focus: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer
   owns: [Nerdio Manager, the nerdio/nme provider, this kit's Terraform and Packer]
   format_version: 1
+  claude_project: Nerdio
 - id: liquidware
   name: Liquidware
+  repo: nickprignano/avd-liquidware
+  kb_path: docs/knowledge
   role: member
-  focus: Liquidware products on virtual desktops
-  owns: [Liquidware products]
+  focus: Liquidware products on virtual desktops, starting with Stratusphere UX in Azure
+  owns: [Liquidware products, Stratusphere UX appliances, the Connector ID Key, the Stratusphere API,
+    this repo's Bicep and PowerShell]
+  format_version: 1
+  claude_project: Liquidware

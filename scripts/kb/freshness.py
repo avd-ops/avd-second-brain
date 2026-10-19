@@ -104,13 +104,41 @@ def family_items(fetch=read_sibling_family) -> list[str]:
             out.append(f"{p['name']}: repo not linked yet; add it to family.yaml, then its sources")
             continue
         try:
-            theirs = fetch(p).get("format_version")
+            sibling = fetch(p)
+            theirs = sibling.get("format_version")
         except Exception as exc:
             out.append(f"{p['name']}: couldn't read its family.yaml ({type(exc).__name__}); "
                        "private repo, or not set up yet")
             continue
         if theirs != ours:
             out.append(f"{p['name']}: follows family format {theirs or 'none'}, this KB follows {ours}")
+        out += lane_items(kblib.family_self(data), p, sibling)
+    return out
+
+
+# The fields two KBs must agree on about one project (decision 0012).
+AGREE_ON = ("repo", "kb_path", "owns", "claude_project")
+
+
+def lane_items(us: dict, row: dict, sibling: dict) -> list[str]:
+    """Where our row for a sibling, its own row, and its row for us disagree, or both claim a topic."""
+    out = []
+    theirs = kblib.family_self(sibling)
+    if not theirs:
+        return out
+    for field in AGREE_ON:
+        if field in theirs and row.get(field) != theirs[field]:
+            out.append(f"{row['name']}: our row's `{field}` differs from its own; copy {theirs[field]!r}")
+    about_us = next((q for q in sibling.get("projects", []) if q.get("id") == us.get("id")), None)
+    if about_us is None:
+        out.append(f"{row['name']}: its family.yaml has no row for this KB ({us.get('id')}); send it ours")
+    else:
+        drift = [f for f in AGREE_ON if f in us and about_us.get(f) != us[f]]
+        if drift:
+            out.append(f"{row['name']}: its row for this KB differs on {', '.join(drift)}; "
+                       "open an issue or PR there with our row")
+    for topic in set(us.get("owns", [])) & set(theirs.get("owns", [])):
+        out.append(f"{row['name']}: both KBs claim to own {topic!r}; decide the owner and drop it from the other")
     return out
 
 
