@@ -3,7 +3,7 @@ title: "FSLogix profiles"
 summary: "FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks"
 topic: fslogix
 status: verified
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # FSLogix profiles
@@ -12,7 +12,8 @@ FSLogix profile containers on Azure Files with Entra Kerberos, for Entra ID-join
 
 ## SMB settings
 
-- Azure Files denies Entra Kerberos sessions when AES-256-GCM is the only SMB channel encryption: the ticket is valid but SMB session setup returns access denied. Allow `AES-128-GCM;AES-256-GCM;`, keep CCM off and Kerberos only ([lesson 0028](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md)). Fixed in avd-landing-zone PR #45 and checked with a real profile load on 2026-10-18.
+- The SMB settings themselves (protocol versions, authentication methods, Kerberos ticket encryption, channel encryption) are documented in [SMB file shares in Azure Files](https://learn.microsoft.com/azure/storage/files/files-smb-protocol); setting up Entra Kerberos is in [Enable Microsoft Entra Kerberos authentication](https://learn.microsoft.com/azure/storage/files/storage-files-identity-auth-hybrid-identities-enable). What follows is what those pages don't say.
+- Azure Files denies Entra Kerberos sessions when AES-256-GCM is the only SMB channel encryption: the ticket is valid but SMB session setup returns access denied. The Entra Kerberos page says you can pick whichever channel encryption fits (checked 2026-10-19); our run disagrees, and it's an [upstream ask](../microsoft/upstream-contributions.md#docs-and-packaging). Allow `AES-128-GCM;AES-256-GCM;`, keep CCM off and Kerberos only ([lesson 0028](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md)). Fixed in avd-landing-zone PR #45 and checked with a real profile load on 2026-10-18.
 - Before shipping a change to an SMB setting on an Entra Kerberos share, sign in as a real cloud-only user. When the ticket is good and session setup is denied, change the share's SMB settings one at a time before looking at identity ([lesson 0028](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md)).
 
 ## Share permissions

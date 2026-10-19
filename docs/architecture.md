@@ -91,6 +91,7 @@ The three repos already agreed on these; the brain keeps them in one place.
 4. **Tenant data stays with the tenant.** Every crossing is generalized and scanned. The brain's agents read current state as C11 facts (pseudonyms and counts), never as the raw packages.
 5. **Derived values are computed, not stored.** Calibration factors, recurring-finding counts and harvest proposals are recomputed from their evidence.
 6. **PowerShell, no modules, offline tests.** Like the repos it connects.
+7. **Not a second source of truth.** Microsoft Learn, the product repos and vendor docs own what a product is documented to do; the brain links them and records only what they don't say. What it learns that they should say goes back upstream as a draft a person reviews and files ([decision 0011](knowledge/decisions/0011-family-format-upstream-sources.md)).
 
 ## 6. Repository layout
 

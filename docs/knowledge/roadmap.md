@@ -3,7 +3,7 @@ title: "Knowledge base roadmap"
 summary: "How this KB is being moved onto the family format, step by step, and what's still to come"
 topic: roadmap
 status: plan
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Knowledge base roadmap
@@ -23,3 +23,9 @@ Proposed to the family in step 2, waiting on the other three KBs: a stronger lea
 reviewed model-drafted entries ([0009](decisions/0009-family-format-stronger-leak-check.md)). The
 family's model-selection convention, with the AI KB as its source of truth, is
 [0010](decisions/0010-family-model-selection-convention.md).
+
+Proposed on 2026-10-19: link to upstream sources of truth instead of restating them, check
+against them, and give back through reviewed drafts
+([0011](decisions/0011-family-format-upstream-sources.md)). The writing rule applies now; the
+`upstream:` front matter and its freshness check wait on the family. Pages still to get their
+upstream links: every topic page except [fslogix/](fslogix/README.md).

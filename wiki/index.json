@@ -4526,18 +4526,18 @@
       "commit": "6d853be0ed4aaf853cdaa663c496ab327b854ec9",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "",
-      "title": "MADR 4 front matter. status: proposed | accepted | rejected | deprecated | superseded by NNNN",
+      "title": "NNNN. Short title of the problem and solution",
       "contracts": [],
-      "text": "status: proposed date: YYYY-MM-DD decision-makers: [maintainers] ---"
+      "text": ""
     },
     {
       "repo": "avd-liquidware",
       "commit": "6d853be0ed4aaf853cdaa663c496ab327b854ec9",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "",
-      "title": "NNNN. Short title of the problem and solution",
+      "title": "MADR 4 front matter. status: proposed | accepted | rejected | deprecated | superseded by NNNN",
       "contracts": [],
-      "text": ""
+      "text": "status: proposed date: YYYY-MM-DD decision-makers: [maintainers] ---"
     },
     {
       "repo": "avd-liquidware",
@@ -5891,7 +5891,7 @@
       "anchor": "4-sources-of-truth-who-wins-when-two-texts-disagree",
       "title": "4. Sources of truth: who wins when two texts disagree",
       "contracts": [],
-      "text": "This rule is what \"consistent with the brain\" means. The check reports the losing side as the one to fix. Where the code and a brain fact disagree (a contract says \"Built\" but the importer is missing), the finding goes to the brain's side, because the fact of record is wrong."
+      "text": "This rule is what \"consistent with the brain\" means. The check reports the losing side as the one to fix. Where the code and a brain fact disagree (a contract says \"Built\" but the importer is missing), the finding goes to the brain's side, because the fact of record is wrong. Where a real run con..."
     },
     {
       "repo": "avd-second-brain",
@@ -6339,6 +6339,15 @@
       "title": "Staying aligned with the family",
       "contracts": [],
       "text": "family.yaml lists every KB in the family, this one included (self: true): its repo, KB path, role, focus, what it's the source of truth for (owns) and the family format version. The AI KB is the hub: it owns the AI knowledge the others use. nerdio-hcl is the format's reference implementation. A s..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/curation.md",
+      "anchor": "upstream-link-out-check-against-give-back",
+      "title": "Upstream: link out, check against, give back",
+      "contracts": [],
+      "text": "This KB is not a second copy of Microsoft Learn or a product's docs (decision 0011). The upstream set is Microsoft Learn plus the repos watched in sources.toml. - Link out. A topic page links the upstream page each fact builds on and adds only what upstream doesn't say. Upstream wins on what a pr..."
     },
     {
       "repo": "avd-second-brain",
@@ -6922,6 +6931,60 @@
     {
       "repo": "avd-second-brain",
       "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "",
+      "title": "0011. Family format: link to upstream sources of truth, check against them, and give back",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because a page that links its source tells the reader where the full, current answer is, and the freshness check tells us when that answer changes. - Good, because what we learn the hard way has a route back to the people who can fix the product or the docs. - Bad, because the freshness c..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Keep format v1; each KB links upstream as it sees fit - A writing rule only, in each KB's README and curation page - A writing rule now, plus a front matter field, a freshness check and a contribution path in the next format version"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Microsoft Learn, the product repos (the AVD Landing Zone Accelerator, Azure Verified Modules, Bicep, the Windows Desktop Optimization Tool) and vendor docs are the sources of truth for what a product is documented to do. The KBs in the family must not become a second copy of them: a paraphrase go..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"A writing rule now, plus a front matter field, a freshness check and a contribution path in the next format version\", because a rule nobody checks drifts, and the check needs no model and no new service. Now, in format v1 (this KB, no code change): - Link, don't restate. A page st..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0011-family-format-upstream-sources.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "- Proposed to the family per curation.md. The rule also lands in docs-spec.md section 4 (who wins), and avd-swarm spec section 6e records that Scribe links out and never files upstream. - The default upstream set is Microsoft Learn plus the repos already watched in sources.toml."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
       "path": "docs/knowledge/decisions/README.md",
       "anchor": "",
       "title": "Decision records",
@@ -7115,7 +7178,7 @@
       "anchor": "smb-settings",
       "title": "SMB settings",
       "contracts": [],
-      "text": "- Azure Files denies Entra Kerberos sessions when AES-256-GCM is the only SMB channel encryption: the ticket is valid but SMB session setup returns access denied. Allow AES-128-GCM;AES-256-GCM;, keep CCM off and Kerberos only (lesson 0028). Fixed in avd-landing-zone PR #45 and checked with a real..."
+      "text": "- The SMB settings themselves (protocol versions, authentication methods, Kerberos ticket encryption, channel encryption) are documented in SMB file shares in Azure Files; setting up Entra Kerberos is in Enable Microsoft Entra Kerberos authentication. What follows is what those pages don't say. -..."
     },
     {
       "repo": "avd-second-brain",
@@ -7219,11 +7282,29 @@
     {
       "repo": "avd-second-brain",
       "commit": "",
+      "path": "docs/knowledge/microsoft/drafts/README.md",
+      "anchor": "",
+      "title": "Upstream drafts",
+      "contracts": [],
+      "text": "Before an entry in upstream.yaml is raised, its text is drafted here as <id>.md, with the same id as the entry, and reviewed in a pull request like any other change. The target can be Microsoft (a Learn page's feedback or its docs repo, a product repo such as Azure/bicep-registry-modules) or anot..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/microsoft/drafts/README.md",
+      "anchor": "rules",
+      "title": "Rules",
+      "contracts": [],
+      "text": "- A person files it. A draft is reviewed here, then a person files it upstream under their own account and records the link and status: raised in upstream.yaml. No agent files anything outside the connected repos (decision 0011). - Nothing from an estate. Generic reproduction steps only: no tenan..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
       "path": "docs/knowledge/microsoft/upstream-contributions.md",
       "anchor": "",
       "title": "Upstream asks for Microsoft",
       "contracts": [],
-      "text": "Things only Microsoft can change: gaps in AVD, Azure Files and FSLogix, Entra, Image Builder or Foundry, and docs fixes. The tables are generated from upstream.yaml. Nothing is raised upstream without the maintainer's go-ahead, and every entry carries its evidence."
+      "text": "Things only Microsoft can change: gaps in AVD, Azure Files and FSLogix, Entra, Image Builder or Foundry, and docs fixes. The tables are generated from upstream.yaml. Nothing is raised upstream without the maintainer's go-ahead, and every entry carries its evidence. An entry for another upstream, ..."
     },
     {
       "repo": "avd-second-brain",

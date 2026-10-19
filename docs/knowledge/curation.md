@@ -131,6 +131,25 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
 - **Cross-project decisions.** A decision that affects more than one project is recorded in each
   affected KB, and each copy says "Also recorded in ..." with links.
 
+## Upstream: link out, check against, give back
+
+This KB is not a second copy of Microsoft Learn or a product's docs
+([decision 0011](decisions/0011-family-format-upstream-sources.md)). The upstream set is Microsoft
+Learn plus the repos watched in [sources.toml](sources.toml).
+
+- **Link out.** A topic page links the upstream page each fact builds on and adds only what
+  upstream doesn't say. Upstream wins on what a product is documented to do; a real run wins on
+  what it did.
+- **Check against it.** The weekly digest reports upstream changes from `sources.toml`; when one
+  touches a page, re-check the page and update `last_reviewed`. A page is `verified` only when its
+  claims about documented behavior link the source they were checked against. Proposed for format
+  v2: an `upstream:` front matter list that the freshness check compares with each source's own
+  last-changed date.
+- **Give back.** When a run shows a gap or a docs error, add an entry to
+  [microsoft/upstream.yaml](microsoft/upstream.yaml), draft it in
+  [microsoft/drafts/](microsoft/drafts/README.md), and have a person review and file it. No agent
+  posts outside the connected repos, and nothing from an estate goes upstream.
+
 ## How this fits the rest of the brain
 
 The brain has two knowledge layers, and they're kept apart on purpose:

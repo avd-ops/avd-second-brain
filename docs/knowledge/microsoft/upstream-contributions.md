@@ -10,7 +10,12 @@ last_reviewed: 2026-10-18
 
 Things only Microsoft can change: gaps in AVD, Azure Files and FSLogix, Entra, Image Builder or Foundry, and docs fixes. The
 tables are generated from [upstream.yaml](upstream.yaml). Nothing is raised upstream without the
-maintainer's go-ahead, and every entry carries its evidence.
+maintainer's go-ahead, and every entry carries its evidence. An entry for another upstream, such as
+a community tool, goes here too and names its target in `note` until the family format has a
+`target` field ([decision 0011](../decisions/0011-family-format-upstream-sources.md)).
+
+To raise one: draft its text in [drafts/](drafts/README.md), get the draft reviewed in a pull
+request, then a person files it under their own account and sets `status: raised` and `link`.
 
 ## Feature gaps
 

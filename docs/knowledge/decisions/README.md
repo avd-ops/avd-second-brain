@@ -23,4 +23,5 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0008](0008-learned-knowledge-stays-where-it-happened.md) | Learned knowledge stays where it happened; this KB links and watches | Accepted |
 | [0009](0009-family-format-stronger-leak-check.md) | Family format: a stronger leak check and reviewed model-drafted entries | Proposed |
 | [0010](0010-family-model-selection-convention.md) | Follow the family's model-selection convention, as one of its four pilot projects | Proposed |
+| [0011](0011-family-format-upstream-sources.md) | Family format: link to upstream sources of truth, check against them, and give back | Proposed |
 <!-- END GENERATED: decision-index -->
