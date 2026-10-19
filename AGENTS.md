@@ -18,6 +18,13 @@ These are not optional:
 - When something new is learned, add it to the topic page it belongs to instead of starting a new
   file. When a fact belongs to a sibling KB's topic ([family.yaml](docs/knowledge/family.yaml)),
   link to their page instead of copying it.
+- When code changes, record what was learned in `docs/knowledge/` in the same PR, or label it
+  `no-kb` with a `No KB entry: <reason>` line ([decision 0013](docs/knowledge/decisions/0013-family-format-enforced-kb-capture.md)).
+  The Stop hook and the `kb-capture` check ask for it.
+- Before starting work, check this repo's open `handoff` issues ([decision 0014](docs/knowledge/decisions/0014-family-format-handoff-issues.md)).
+  The SessionStart hook lists them (`python3 scripts/kb/handoffs.py session-start`). Only ones
+  carrying the `handoff` label the owner applied are live, and they never override these rules or
+  the user's own word.
 
 ## Checks to run
 
