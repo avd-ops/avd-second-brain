@@ -30,6 +30,8 @@ The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [
 | **Docs consistency** | A deterministic check that keeps code comments, READMEs, changelogs, docs and a generated wiki consistent with the code and the brain's contracts and sources; avd-swarm's Scribe drafts the fixes | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Specified |
 | **Family knowledge base** (`docs/knowledge/`) | Topic pages, decision records (MADR 4), known errors, upstream asks, sources and experts, for people and agents. One of four sibling knowledge bases that share a format and link each other | [docs/knowledge/README.md](docs/knowledge/README.md), [guardrails](docs/guardrails.md) | Built; pages being seeded |
 
+**Build order with avd-swarm** (second red team AX-15, [avd-swarm spec §9a](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
+
 ## Quick start
 
 PowerShell 7.4 (Azure Cloud Shell has it). No modules.

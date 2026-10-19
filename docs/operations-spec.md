@@ -95,6 +95,8 @@ There are two roles, and the safety rules apply to each one differently.
 
 **Upstream changes are guardrail changes.** An adopter syncs from a **release tag**, never from `master`. Releases carry GitHub artifact attestations. A sync PR runs `brain-guard` (§9.2) like any other PR, so an adopter sees every guardrail field that upstream changed before merging it. Upstream never ships an active exception beyond EX-0001, EX-0002, EX-0004 and EX-0005, so a release can't turn on self-healing in someone's tenant.
 
+**avd-swarm follows the same split** ([its spec §5b](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#5b-where-the-write-path-runs-the-project-and-its-adopters)). Since decision 0003 it is the only write path, and its repository is public, so its approve, kill switch and Improve workflows run only from an adopter's private repo synced from a release tag. Logs and job summaries carry a plan's ID, hash, action and gate counts only, never its targets, in either repo.
+
 ## 4. Architecture
 
 ### 4.1 Overview
@@ -297,6 +299,8 @@ Playbooks are actions in `scripts/automation/Invoke-AvdPlaybook.ps1`. Like decis
 
 **Guardrails.** They hold even after an approval. The orchestrator checks them before it asks, and the executor checks them again before it acts.
 
+> **Where these rules are enforced now** (second red team AX-2): avd-swarm executes every change (decision 0003), so the rules below are preconditions every host action in its catalog declares ([avd-swarm spec §5a](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#5a-action-safety-rules-ported-from-the-brains-playbooks)), checked by its gate before approval and again from live state in the approve job, which rebuilds the plan and refuses on any difference. A change to a rule here comes with the matching change to that table, and the other way round.
+
 - **Kill switch (EX-0004):** the levels and limits deploy from Git. The tag `avdlz-brain-killswitch` on the brain's resource group can only **lower** them (§4.5.1). If the tag can't be read, nothing runs. Default for a new deployment: `maxLevel = 1`.
 - **Blast radius:** at most one host per host pool in remediation at a time. Availability never drops below current demand plus one host, or the scaling plan's minimum, whichever is higher.
 - **Respect the other actors:**
@@ -392,75 +396,9 @@ Because no person approves each run, these red-team fixes become **required** be
 
 **EX-0004 Kill switch**
 
-The kill switch stops the brain from changing anything, at once and from more than one place. Stopping it is a change the brain process can make by itself, so it is an exception. It is the only exception of kind **safety**: it can only take capability away, never add it.
+**The kill switch is avd-swarm's** ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md); second red team AX-11). Its positions, trip layers, watchdog, resume and drills are in [avd-swarm governance §2.3 and §2.4](https://github.com/nickprignano/avd-swarm/blob/main/docs/governance.md#23-kill-switch), and this section no longer describes them, so that nobody builds the brain's earlier version from it. Where the brain's earlier text differed, avd-swarm's governance §3 records how each point was settled: four positions (`run`, `halt-actions`, `halt-agents`, `halt-all`), not three; the daily token cap trips `halt-agents` from a metered count, not `halt-all` from Cost Management; the watchdog's identity holds no Managed Identity Contributor; and only a person resumes, from Cloud Shell, with no standing resume workflow.
 
-*Positions*
-
-| Position | Effect | Brain level |
-|---|---|---|
-| `run` | Normal | As deployed |
-| `halt-actions` | No changes by the brain. Agents keep diagnosing and recommending, with Cloud Shell blocks for people to run themselves | 1 |
-| `halt-all` | No changes and no model calls. The brain only records signals and evidence | 0 |
-
-*What a trip does, in order*
-
-1. **Sets the switch:** the tag `avdlz-brain-killswitch` on the brain's resource group becomes `halt-actions` or `halt-all`. Companion tags record who or what tripped it, when, and the episode (the same pattern as decision 0011's Lock tag).
-
-   The state lives in an ARM tag, not in App Configuration. Every runtime can read it over the public control plane: the Actions runner, Automation, Cloud Shell and the orchestrator (red-team H1). And the Activity Log records every change to it.
-2. **Cuts the executors' credentials:** it deletes the federated identity credentials on the executor identities (`brain-execute` and every EX-0003 identity). After that, Azure won't issue them a token, whatever GitHub approves.
-3. **Expires every pending plan** and posts the trip on each open episode.
-4. **Stops runs in flight at the next step boundary.** Each executor reads the switch before every step and stops when it isn't `run` or can't be read. A run that already changed something completes **only** its approved rollback, such as restoring the drain state it found. It still holds a token from before the trip, which lasts about an hour at most. That is also why step 2 alone isn't enough.
-5. **Notifies:** the owner and the approvers team, through the action group and a pinned issue.
-
-*What it never touches*
-
-- **EX-0001 and EX-0002.** The kill switch never turns off a cost safety.
-- **Azure's own features:** the scaling plan, Start VM on Connect, agent updates.
-- **The landing zone's resources:** a trip changes only the brain's own tag and identities.
-
-*Who can trip it*
-
-- **Any one person** in the owner or approvers team, with no second approval. Stopping is easy; starting again is hard. There are two ways:
-  - the `brain-killswitch.yml` workflow (`workflow_dispatch`, which also works from GitHub mobile);
-  - a self-contained Cloud Shell block in [operations.md](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/operations.md) (lesson 0015).
-- **The watchdog**, automatically, on these deterministic triggers:
-
-| Trigger | Position |
-|---|---|
-| A write by a brain identity with no matching approved plan or exception run (Activity Log) | `halt-all` |
-| A write by a brain identity outside the landing zone's resource groups | `halt-all` |
-| `brain/exceptions/` or a guardrail file changed on the default branch without the required CODEOWNERS reviews | `halt-actions` |
-| Two EX-0003 suspensions within 24 hours, or failed verifications above 20% of runs in a day | `halt-actions` |
-| A Service Health incident for Azure Virtual Desktop in the landing zone's region (healing during a platform outage only churns) | `halt-actions` |
-| The brain's daily token or cost cap reached | `halt-all` |
-| The switch tag cleared outside `brain-resume.yml` | Trips again at the previous position |
-
-- **Not agents.** No model or agent can trip it or clear it. The Critic and Diagnose agents can recommend a trip, and a person decides.
-
-*The watchdog is not the brain*
-
-The watchdog is a separate Consumption Logic App, in the same pattern as decision 0011's trigger Logic Apps:
-- Azure Monitor alerts and Activity Log alerts start it through its own action group;
-- it calls ARM with its own managed identity, which has exactly two roles: Tag Contributor on the brain's resource group, and Managed Identity Contributor on the executor identities;
-- it doesn't depend on the orchestrator, Foundry or any private endpoint, so it still works when those are the problem.
-
-If a trip fails, the action group pages the owner. A trip that doesn't happen is never silent.
-
-*Starting again*
-
-Only a person can start the brain again. The brain never re-enables itself, and nothing re-enables on a timer.
-1. Close the trip's episode with a reason.
-2. Run `brain-resume.yml`. It refuses while any trigger is still true.
-3. The workflow redeploys `brain.bicep`, which recreates the federated credentials, then clears the tag.
-4. dev and test need one person. Prod needs the `prod` environment's two required reviewers in team mode, or the owner after a 60-minute wait timer in solo mode (§9.3).
-
-Clearing the tag by hand restores nothing: without the redeploy the executors still have no credentials, and the watchdog trips again.
-
-*Drills*
-
-- The kill switch has an offline scenario (`tests/offline/KillSwitch.Scenario.ps1`) with mock paths for the tag write, the deletion of federated credentials, and an executor that stops at a step boundary.
-- It is drilled in `test` before any playbook is active under EX-0003, and then monthly. Each drill trips the switch while a drill run is in flight, confirms the executor can no longer get a token, confirms the run stopped and rolled back, and resumes.
-- A missed or failed drill sets EX-0003 to approving each run until a drill passes.
+What stays here is what the brain does with it: it reads the position through contract C10 and obeys it (no proposals at `halt-actions`, no model calls at `halt-agents` or `halt-all`, sensing and recording at every position), and the cost safeties EX-0001 and EX-0002 stay outside it. The ID EX-0004 stays in the exception register so earlier references still resolve.
 
 ### 4.6 Learn
 
@@ -474,7 +412,7 @@ Clearing the tag by hand restores nothing: without the redeploy the executors st
   - each case runs **5 times**. A PR fails when the **90% lower confidence bound** of its pass rate falls more than **5 points** below the base branch's pass rate, measured the same way. A single unlucky run never fails a PR;
   - it runs on PRs that change prompts, models, detections or playbooks, **only from branches in the same repository** (the owner's or the brain's App), and nightly on the default branch. Never on fork PRs: the model credential is a federated one (Anthropic workload identity federation or Entra for Azure OpenAI, no API key), usable only from a `brain-eval` environment limited to those branches;
   - a daily spend cap stops evals once reached and reports it, rather than passing silently.
-- **Grading model output, and grading the grader (decision 0003).** Answers and diagnoses are checked against facts read from Azure, then by a judge model that isn't the model that produced them; the judge only flags and a person settles disputes. A code auditor scores every judge, including the Critic, on seeded faults, ground-truth misses and overturns, with thresholds in a protected file; crossing one adds a second model family in shadow. The design is shared with avd-swarm (its spec §6b): one mechanism, run there on the swarm's judge and here on the Critic and the Concierge. The swarm's scores arrive through C8, so the brain holds the history for both and turns misses into lessons.
+- **Grading model output, and grading the grader (decision 0003).** Answers and diagnoses are checked against facts read from Azure, then by a judge model that isn't the model that produced them; the judge only flags and a person settles disputes. A code auditor scores every judge, including the Critic, with thresholds in a protected file; crossing one adds a second model family in shadow. Sized for one operator's volume (second red team AX-17): a fixed 120 seeded faults per 7-day window (six kinds, counted as distinct question-and-fault pairs), one check per window instead of every run, confidence bounds with minimum counts, ground-truth misses and overturns advisory until their counts exist, and a paired comparison before a shadow judge is promoted. The design is shared with avd-swarm (its spec §6b): one mechanism, run there on the swarm's judge and here on the Critic and the Concierge. The swarm's scores arrive through C8, so the brain holds the history for both and turns misses into lessons.
 
 ### 4.7 Evolve
 
@@ -515,7 +453,7 @@ The Evolve agent proposes, CI checks, `test` proves, a person decides.
 | Microsoft Foundry (Agent Service, a chat model, an embedding model) | Tier 3: reasoning and embeddings | Hosts Claude and Azure OpenAI models, agent identities, tracing |
 | Budget on the brain's resource group | Every tier: its action group trips EX-0004 `halt-all` | The brain can't outspend its own budget (red-team H9) |
 | Logic App (Consumption), its own action group | Kill-switch watchdog (EX-0004) | Independent of the brain it stops; the same pattern as decision 0011's trigger Logic Apps |
-| Key Vault (the landing zone's) | The pseudonymization key (§9.4), generated at deployment and never shown | Existing pattern; lesson 0002 |
+| Key Vault (the landing zone's) | The two pseudonymization secrets, `users` and `resources` (§9.4), generated at deployment and never shown | Existing pattern; lesson 0002 |
 | Managed identities, Microsoft Entra Agent ID (where available) | One identity per agent; the executor's identity is federated to the approval environment only | Least privilege, auditable per actor |
 | Private endpoints and private DNS | Blob, Cosmos DB, Key Vault, Functions | Decision 0001 |
 
@@ -660,10 +598,10 @@ bicep/modules/brain.bicep
 scripts/automation/Invoke-AvdPlaybook.ps1
 scripts/brain/       the Tier 1 job entry point; Tier 3 Functions (orchestrator, agents' tools); all PowerShell
 scripts/ops/host/    Run Command scripts for playbooks (Windows PowerShell 5.1, hash-pinned)
-tests/offline/Playbooks.Scenario.ps1, Brain.Scenario.ps1, KillSwitch.Scenario.ps1
+tests/offline/Playbooks.Scenario.ps1, Brain.Scenario.ps1
 tests/brain/         schema tests, detection compile tests, eval runner
-.github/workflows/   brain-index.yml, brain-eval.yml, brain-evolve.yml, brain-retro.yml, brain-execute.yml, brain-standing.yml,
-                     brain-killswitch.yml, brain-resume.yml
+.github/workflows/   brain-index.yml, brain-eval.yml, brain-evolve.yml, brain-retro.yml, brain-execute.yml, brain-standing.yml
+                     (the kill switch and resume are avd-swarm's, §4.5.1)
 ```
 
 Template and CI guards to add with the first slice:
@@ -776,6 +714,8 @@ Branch protection in solo mode:
 
 The watchdog's "merged around the rules" trigger (§9.2 rule 5) accepts the solo path, and only that path.
 
+**avd-swarm uses the same solo mode** ([its governance §2.6](https://github.com/nickprignano/avd-swarm/blob/main/docs/governance.md#26-solo-mode-and-team-mode-r19)), with the required check `swarm-guard/timelock`, since it too has one maintainer and CODEOWNERS review can't be met by the author (second red team AX-3).
+
 **AI reviews are advisory, in both modes.** No review by an app, a bot or a model ever satisfies a review requirement here. That includes GitHub Copilot code review (the repo's advisory reviewer, guided by `.github/copilot-instructions.md`), Claude Code Review, and any third-party reviewer.
 - `brain-guard` ignores reviews from any account that isn't a person, and only a person's approving review counts toward the team-mode and solo-mode rules above.
 - Copilot code review posts comments only. It points out guardrail changes and whether they raise or lower capability, but the 72-hour time-lock or the second person still decides.
@@ -786,6 +726,7 @@ The watchdog's "merged around the rules" trigger (§9.2 rule 5) accepts the solo
 
 - **Pseudonymize at collection.** The job and the orchestrator replace user principal names, user display names, client public IPs and client device names with keyed pseudonyms (`user-3fa2c1d0`), using HMAC-SHA256.
   - The key is a secret in the landing zone's Key Vault, generated at deployment and never shown to anyone (lesson 0002).
+  - **Two subkeys** (second red team AX-16): `users` for user principal names, display names, client IPs and device names, and `resources` for resource pseudonyms (`hp-`, `st-`, `sub-`, `est-`, contract C11). Each is derived with HKDF-SHA256 (info `avd-pseudonym/users` or `avd-pseudonym/resources`) from its own Key Vault secret. Resource IDs aren't personal data, so only the `users` secret rotates and host pool trend lines survive a rotation. They come from two secrets rather than one root because rotating one subkey of a shared root means keeping the root, and a kept root can derive the old `users` subkey again, which would undo the crypto-shredding below.
   - Every brain store, every issue and every model prompt holds pseudonyms only.
   - The brain keeps no mapping. To answer "who is `user-3fa2c1d0`?", an operator with access to the vault runs `Get-AvdPseudonym -UserPrincipalName <candidate>` in Cloud Shell, or queries Log Analytics, which keeps the raw data under its own access control.
 - **Redact as well.** The redaction rules of decision 0008 (`report.js`, ported to PowerShell with the same fixtures) run after pseudonymization on anything bound for GitHub.
@@ -795,7 +736,7 @@ The watchdog's "merged around the rules" trigger (§9.2 rule 5) accepts the solo
   - With `none`, Tier 1 and Tier 2 still work, and diagnosis is left to people.
 - **Erasure (red-team M7).** Pseudonymized data is still personal data, so the brain has to be able to forget a person.
   - **One person:** an operator computes their pseudonym (`Get-AvdPseudonym`). `Remove-AvdBrainSubject` then scrubs it from the mutable stores (issue comments the brain wrote, Cosmos DB, the statistics file). Immutable evidence that still holds the pseudonym ages out within the 30-day window, and the script reports which blobs those are and when they unlock.
-  - **Everyone at once:** the pseudonymization key **rotates every 12 months**, and the old key is deleted and purged from Key Vault. Pseudonyms made with it can then no longer be linked to anyone (crypto-shredding). An erasure request can also trigger an early rotation.
+  - **Everyone at once:** the `users` secret **rotates every 12 months**, and the old one is deleted and purged from Key Vault. Pseudonyms made with it can then no longer be linked to anyone (crypto-shredding). An erasure request can also trigger an early rotation. The `resources` secret is replaced only if it is exposed.
   - **Fixtures in Git** hold redacted placeholders only, never pseudonyms (decision 0008).
 ## 10. Measures of success
 
