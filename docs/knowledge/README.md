@@ -32,7 +32,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | [images/](images/README.md) | Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion | partial |
 | [assessment/](assessment/README.md) | How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence | plan |
 | [operations/](operations/README.md) | Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate | partial |
-| [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | plan |
+| [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | partial |
 | [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | partial |
 | [microsoft/drafts/](microsoft/drafts/README.md) | Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it | plan |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
