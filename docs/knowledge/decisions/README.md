@@ -25,4 +25,6 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0010](0010-family-model-selection-convention.md) | Follow the family's model-selection convention, as one of its four pilot projects | Proposed |
 | [0011](0011-family-format-upstream-sources.md) | Family format: link to upstream sources of truth, check against them, and give back | Proposed |
 | [0012](0012-family-format-project-lanes.md) | Family format: project lanes, referrals and a no-HCL guard for the AVD repos | Proposed |
+| [0013](0013-family-format-enforced-kb-capture.md) | Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot | Accepted |
+| [0014](0014-family-format-handoff-issues.md) | Handoffs between Claude projects go through a `handoff` issue in the receiving repo | Accepted |
 <!-- END GENERATED: decision-index -->

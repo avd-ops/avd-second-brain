@@ -2,7 +2,8 @@ avd-second-brain knowledge base tooling
 Copyright 2026 Nick Prignano and the avd-second-brain contributors
 
 The files in this folder (scripts/kb/), the JSON Schemas in docs/knowledge/schema/, the workflows
-.github/workflows/kb-*.yml and secrets.yml, and the issue forms in .github/ISSUE_TEMPLATE/kb-*.yml
+.github/workflows/kb-*.yml and secrets.yml, the issue forms in .github/ISSUE_TEMPLATE/kb-*.yml,
+the issue template .github/ISSUE_TEMPLATE/handoff.md and the hooks in .claude/settings.json
 are licensed under the Apache License, Version 2.0 (see LICENSE in this folder), not under the
 repository's MIT License.
 
