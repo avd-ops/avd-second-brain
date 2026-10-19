@@ -18,7 +18,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [Golden images](docs/knowledge/images/README.md): Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion (status: partial)
 - [Assessment and sizing](docs/knowledge/assessment/README.md): How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence (status: plan)
 - [Operating an estate](docs/knowledge/operations/README.md): Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate (status: partial)
-- [AI agents in the AVD repos](docs/knowledge/agents/README.md): How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities (status: plan)
+- [AI agents in the AVD repos](docs/knowledge/agents/README.md): How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities (status: partial)
 - [Cost and spend](docs/knowledge/cost/README.md): Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence (status: partial)
 - [Upstream drafts](docs/knowledge/microsoft/drafts/README.md): Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it (status: plan)
 - [Upstream asks for Microsoft](docs/knowledge/microsoft/upstream-contributions.md): Gaps, API asks and doc fixes we could raise with Microsoft, with evidence (status: verified)
