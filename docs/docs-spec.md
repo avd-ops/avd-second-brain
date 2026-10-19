@@ -52,8 +52,11 @@ This rule is what "consistent with the brain" means. The check reports the losin
 | Cross-repo facts | **The brain's facts of record** (§5) | Contract IDs, names, status, producer and consumer; which repo feeds or reads what; paired decisions; canonical terms |
 | Intent and why | **The decision** (newest accepted one wins; a superseded one says so) | "avd-swarm is the only write path" |
 | What changed and when | **Merged PRs**, recorded in the changelog | Changelog entries |
+| What a Microsoft or third-party product is documented to do | **Upstream**: Microsoft Learn, the product's repo or vendor docs, linked, not restated ([decision 0011](knowledge/decisions/0011-family-format-upstream-sources.md)) | SMB settings Azure Files supports, a Bicep module's parameters, an API's permissions |
 
 Where the code and a brain fact disagree (a contract says "Built" but the importer is missing), the finding goes to the brain's side, because the fact of record is wrong.
+
+Where a real run contradicts upstream docs, neither side is "fixed" in our repos: the text keeps the finding, links the upstream page, and the disagreement becomes an upstream ask in `docs/knowledge/microsoft/upstream.yaml`. The check doesn't fetch upstream pages (it stays offline and deterministic); the KB's curator and freshness jobs watch upstream.
 
 ## 5. Facts of record
 

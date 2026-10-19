@@ -20,6 +20,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [Operating an estate](docs/knowledge/operations/README.md): Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate (status: partial)
 - [AI agents in the AVD repos](docs/knowledge/agents/README.md): How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities (status: plan)
 - [Cost and spend](docs/knowledge/cost/README.md): Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence (status: partial)
+- [Upstream drafts](docs/knowledge/microsoft/drafts/README.md): Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it (status: plan)
 - [Upstream asks for Microsoft](docs/knowledge/microsoft/upstream-contributions.md): Gaps, API asks and doc fixes we could raise with Microsoft, with evidence (status: verified)
 - [Known errors](docs/knowledge/troubleshooting/README.md): Errors hit deploying and running AVD: symptom, cause, fix and source (status: verified)
 - [Knowledge base roadmap](docs/knowledge/roadmap.md): How this KB is being moved onto the family format, step by step, and what's still to come (status: plan)
@@ -48,6 +49,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0008. Learned knowledge stays where it happened; this KB links and watches](docs/knowledge/decisions/0008-learned-knowledge-stays-where-it-happened.md): accepted
 - [0009. Family format: a stronger leak check and reviewed model-drafted entries](docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): proposed
 - [0010. Follow the family's model-selection convention, as one of its four pilot projects](docs/knowledge/decisions/0010-family-model-selection-convention.md): proposed
+- [0011. Family format: link to upstream sources of truth, check against them, and give back](docs/knowledge/decisions/0011-family-format-upstream-sources.md): proposed
 
 ## Related knowledge bases
 

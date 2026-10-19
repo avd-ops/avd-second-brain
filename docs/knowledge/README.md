@@ -34,6 +34,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | [operations/](operations/README.md) | Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate | partial |
 | [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | plan |
 | [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | partial |
+| [microsoft/drafts/](microsoft/drafts/README.md) | Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it | plan |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
 | [troubleshooting/](troubleshooting/README.md) | Errors hit deploying and running AVD: symptom, cause, fix and source | verified |
 | [roadmap.md](roadmap.md) | How this KB is being moved onto the family format, step by step, and what's still to come | plan |
@@ -76,6 +77,11 @@ Two ways in, both reviewed before anything merges:
 - **With a pull request:**
   - **A fact or gotcha:** add a bullet to the matching topic page. Say what happened, the fix,
     and the versions it applies to. Mark anything you haven't confirmed as *unverified*.
+  - **Link upstream, don't restate it.** Microsoft Learn, the product's own repo and vendor docs
+    are the source of truth for what a product is documented to do. Link the page a fact builds
+    on, and write only what it doesn't say: a gap, a contradiction from a real run, or how the
+    pieces combine. When a run contradicts the docs, keep the finding, link both, and add an
+    upstream ask ([decision 0011](decisions/0011-family-format-upstream-sources.md)).
   - **A known error or an upstream ask:** add an entry to
     [troubleshooting/known-errors.yaml](troubleshooting/known-errors.yaml) or
     [microsoft/upstream.yaml](microsoft/upstream.yaml), not to the Markdown table.
