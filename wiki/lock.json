@@ -8,22 +8,22 @@
     {
       "name": "avd-liquidware",
       "ref": "main",
-      "commit": "6d853be0ed4aaf853cdaa663c496ab327b854ec9"
+      "commit": "6459693722392fd65edb110cc80a11ed35ff4fa6"
     },
     {
       "name": "avd-current-state",
       "ref": "main",
-      "commit": "204a814c698a606ef7621ef340d504c70d41f77c"
+      "commit": "17fe96ac9a041077b8383be8359c4a835404514c"
     },
     {
       "name": "avd-landing-zone",
       "ref": "master",
-      "commit": "acf50cfcc0cd5525a636a0fe4b6ac8c006bd7256"
+      "commit": "326a3c5c66a808d58f2a56c5ff06987368ebee1c"
     },
     {
       "name": "avd-swarm",
       "ref": "main",
-      "commit": "2d6823d6ecb6e489337d4264ef57e8f97df3fa16"
+      "commit": "8a08980b884c99ba0b1ffc4e95eea84a1591c4db"
     }
   ]
 }

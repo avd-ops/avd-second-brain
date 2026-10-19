@@ -29,6 +29,9 @@
 - [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): 
 - [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): 
 - [0011. Family format: link to upstream sources of truth, check against them, and give back](../docs/knowledge/decisions/0011-family-format-upstream-sources.md): 
+- [0012. Family format: project lanes, referrals and a no-HCL guard for the AVD repos](../docs/knowledge/decisions/0012-family-format-project-lanes.md): 
+- [0013. Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot](../docs/knowledge/decisions/0013-family-format-enforced-kb-capture.md): 
+- [0014. Handoffs between Claude projects go through a handoff issue in the receiving repo](../docs/knowledge/decisions/0014-family-format-handoff-issues.md): 
 - [Decision records](../docs/knowledge/decisions/README.md): Short records of choices that shape this knowledge base and the work it covers. One file per decision, numbered in order, in MADR 4 format. Copy template.md to add one. A decision stays proposed until the maintainer says yes. A reversed decision gets a new record, and the old one is marked Supers...
 - [MADR 4 front matter. status: proposed \| accepted \| rejected \| deprecated \| superseded by NNNN](../docs/knowledge/decisions/template.md): status: proposed date: YYYY-MM-DD decision-makers: [maintainers] ---
 - [Experts we follow](../docs/knowledge/experts.md): The weekly digest (curation.md) watches a set of people who write about Azure Virtual Desktop, FSLogix, Entra for AVD and the tooling around them. This page explains how that list is chosen, so anyone can check it, re-run it or challenge it. The data is in experts.yaml, and the tables below are g...
@@ -85,3 +88,6 @@
 - [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): proposed
 - [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): proposed
 - [0011. Family format: link to upstream sources of truth, check against them, and give back](../docs/knowledge/decisions/0011-family-format-upstream-sources.md): proposed
+- [0012. Family format: project lanes, referrals and a no-HCL guard for the AVD repos](../docs/knowledge/decisions/0012-family-format-project-lanes.md): proposed
+- [0013. Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot](../docs/knowledge/decisions/0013-family-format-enforced-kb-capture.md): accepted
+- [0014. Handoffs between Claude projects go through a `handoff` issue in the receiving repo](../docs/knowledge/decisions/0014-family-format-handoff-issues.md): accepted
