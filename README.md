@@ -3,11 +3,13 @@
 The organizational second brain for **Azure Virtual Desktop**: one memory across the whole lifecycle, from assessing an estate with Stratusphere, through its current state and its deployment, to operating it. It remembers what each estate looked like and what broke. It also remembers what the organization learned and why each rule is what it is, so the next estate starts smarter than the last one.
 
 > [!WARNING]
-> **Personal project. Not for production. No warranty.**
+> **Personal project. Research and learning only. Not for production. No warranty.**
 >
-> - This is my own personal project, built on my own time. It is **not affiliated with, endorsed by or supported by my employer**, and it does not represent my employer's views, products or guidance.
+> - This is my own personal project, built on my own time **for research and learning**. It is **not affiliated with, endorsed by or supported by my employer**, and it does not represent my employer's views, products or guidance.
 > - It is **not affiliated with or endorsed by Liquidware** or Microsoft. Stratusphere, Azure Virtual Desktop, Entra and FSLogix are trademarks of their owners.
-> - It is provided **"as is", without warranty of any kind**, under the [MIT License](LICENSE).
+> - **Do not run it in production** or rely on it for decisions about estates that matter without checking the evidence yourself. Test the scripts in a lab first.
+> - It is provided **"as is", without warranty of any kind**, under the [MIT License](LICENSE). You use it at your own risk. You are responsible for reviewing the code before you run it.
+> - **Contributions and forks are welcome and encouraged.** See [Contributing](#contributing).
 
 ## How it connects
 
@@ -107,3 +109,9 @@ pwsh -c "Invoke-Pester -Path ./tests -CI"
 python3 scripts/kb/build.py --check && python3 scripts/kb/validate.py && python3 -m unittest discover -s scripts/kb
 pwsh -c "./scripts/Test-KbLeaks.ps1"
 ```
+
+## Contributing
+
+Contributions and forks are welcome and encouraged. Fork it and make it your own, or send back what you learn: open an issue for a bug, a question or an idea, or a pull request with a fix, a test, a doc or a lesson from a real run. Small pull requests are easiest to review.
+
+Before you open one, run the checks in [Validate](#validate) and follow the [guardrails](docs/guardrails.md). Keep tenant data, IDs and secrets out of the repo, issues and pull requests. Knowledge changes land only through a pull request a person merges, and customer or estate data never comes in, from a vault or anywhere else. By contributing, you agree your contributions are licensed under the repo's [MIT License](LICENSE).
