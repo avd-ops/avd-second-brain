@@ -363,3 +363,49 @@ Describe 'C13 avd-doc-findings/v1' {
     $c.Schemas | Should -Contain 'doc-findings.schema.json'
   }
 }
+
+Describe 'C17 avd-run-record/v1' {
+  BeforeAll {
+    $script:c17 = Join-Path $script:root 'contracts'
+    $script:runSchema = Join-Path $script:c17 'schemas/run-record.schema.json'
+    $script:journalSchema = Join-Path $script:c17 'schemas/run-journal.schema.json'
+    $script:costSchema = Join-Path $script:c17 'schemas/run-cost.schema.json'
+    $script:examples = Join-Path $script:c17 'examples/run-record'
+    $script:useCases = @((Get-Content (Join-Path $script:c17 'run-use-cases.json') -Raw | ConvertFrom-Json).useCases.id)
+  }
+  It 'the example run, cost and every journal line match the schemas' {
+    Test-Json -Path (Join-Path $script:examples 'run.example.json') -SchemaFile $script:runSchema | Should -BeTrue
+    Test-Json -Path (Join-Path $script:examples 'cost.example.json') -SchemaFile $script:costSchema | Should -BeTrue
+    foreach ($line in Get-Content (Join-Path $script:examples 'journal.example.jsonl')) {
+      Test-Json -Json $line -SchemaFile $script:journalSchema | Should -BeTrue
+    }
+  }
+  It 'every use case in the examples is registered' {
+    $run = Get-Content (Join-Path $script:examples 'run.example.json') -Raw | ConvertFrom-Json
+    $script:useCases | Should -Contain $run.useCase
+    foreach ($k in $run.extensions.PSObject.Properties.Name) { if ($k -notlike 'x-*') { $script:useCases | Should -Contain $k } }
+    foreach ($line in Get-Content (Join-Path $script:examples 'journal.example.jsonl')) {
+      $e = $line | ConvertFrom-Json
+      if ($e.event -like 'x.*') { $script:useCases | Should -Contain $e.useCase }
+    }
+  }
+  It 'refuses a price on an estimate line that matched no single meter' {
+    $c = Get-Content (Join-Path $script:examples 'cost.example.json') -Raw | ConvertFrom-Json
+    $c.expected.lines[1].cost = 1.5
+    Test-Json -Json ($c | ConvertTo-Json -Depth 8) -SchemaFile $script:costSchema -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'refuses <name>' -ForEach @(
+    @{ name = 'an unregistered core event'; line = '{"v":1,"event":"deploy.done","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z"}' }
+    @{ name = 'an extension event without its use case'; line = '{"v":1,"event":"x.liquidware-tier.package","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z"}' }
+    @{ name = 'a check without a status'; line = '{"v":1,"event":"check","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z","area":"a","check":"c"}' }
+    @{ name = 'a run ID the portal would not generate'; line = '{"v":1,"event":"operator.note","runId":"my-run","ts":"2026-10-20T16:52:00Z","text":"x"}' }
+  ) {
+    Test-Json -Json $line -SchemaFile $script:journalSchema -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'contracts.md lists C17 as built, with its three schemas' {
+    $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C17')[0]
+    $c.Built | Should -BeTrue
+    foreach ($s in 'run-record.schema.json', 'run-journal.schema.json', 'run-cost.schema.json') { $c.Schemas | Should -Contain $s }
+    $c.Formats | Should -Contain 'avd-run-record/v1'
+  }
+}
