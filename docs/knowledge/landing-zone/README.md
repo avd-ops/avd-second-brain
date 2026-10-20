@@ -3,7 +3,7 @@ title: "Landing zone"
 summary: "Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell"
 topic: landing-zone
 status: verified
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-20
 ---
 
 # Landing zone
@@ -40,3 +40,7 @@ The landing zone's scope is Entra ID only, greenfield and private by default ([a
 - Check each Az and Graph cmdlet call against its documented parameter sets, and keep mocks no more permissive than the real cmdlet ([lesson 0014](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0014-cmdlet-parameter-sets.md)). Emit items from functions instead of returning one array ([lesson 0009](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0009-array-unrolling.md)).
 - Lint with the PSScriptAnalyzer version CI installs; use approved verbs and singular nouns ([lesson 0016](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0016-analyzer-version.md)). Offline tests provide every external tool they touch ([lesson 0020](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0020-hermetic-harness.md)).
 - Never make a person remember a secret the platform can generate and reset, such as the break-glass password ([lesson 0002](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0002-break-glass-password.md)).
+
+## Publishing the deployment portal
+
+- Set the repo's **Settings > Pages > Source** to **GitHub Actions** before relying on a Pages workflow. While the source is a branch folder (`docs/`), GitHub's own branch build runs after the next push and replaces what the workflow deployed, so the portal vanishes. Switching the source doesn't republish anything: run the Pages workflow once after the switch ([GitHub Pages publishing sources](https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)).
