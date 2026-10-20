@@ -5,7 +5,10 @@ topic: agents
 status: partial
 last_reviewed: 2026-10-20
 sources:
-  - https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/privacy-and-safety/README.md
+  - https://github.com/microsoft/PyRIT
+  - https://github.com/NVIDIA/garak
+  - https://github.com/beelzebub-labs/beelzebub
+  - https://docs.canarytokens.org/guide/entraid-token
   - https://learn.microsoft.com/azure/ai-services/content-safety/concepts/jailbreak-detection
   - https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnections
   - https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-create-custom-tool
@@ -20,7 +23,7 @@ sources:
 
 # AI agents in the AVD repos
 
-How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General facts about Claude, the Claude API, prompting and evals belong to the [AI research knowledge base](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge); this page keeps only how the AVD repos use them. The security section and avd-buddy's voice are written so far.
+How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General research on Claude, the Claude API, prompting and evals is outside this project; this page keeps only how the AVD repos use them. The security section and avd-buddy's voice are written so far.
 
 ## Where it lives today
 
@@ -29,7 +32,7 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 
 ## Securing the agents and AVD security signal
 
-Checked on 2026-10-19 for [avd-swarm's security tooling proposal](https://github.com/nickprignano/avd-swarm/blob/main/docs/security-tooling.md) (avd-swarm PR #14, proposed). The tools themselves (Prompt Shields, PyRIT, garak, decoy MCP tools, Sentinel MCP, Canarytokens) are surveyed in the AI knowledge base's [Open-source AI tools for fighting bad actors](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/privacy-and-safety/README.md#open-source-ai-tools-for-fighting-bad-actors); this section keeps only what applies to the AVD repos. Nothing was installed or run.
+Checked on 2026-10-19 for [avd-swarm's security tooling proposal](https://github.com/nickprignano/avd-swarm/blob/main/docs/security-tooling.md) (avd-swarm PR #14, proposed). The tools themselves are documented upstream: [Prompt Shields](https://learn.microsoft.com/azure/ai-services/content-safety/concepts/jailbreak-detection), [PyRIT](https://github.com/microsoft/PyRIT), [garak](https://github.com/NVIDIA/garak), decoy MCP tools such as [Beelzebub](https://github.com/beelzebub-labs/beelzebub), [Sentinel MCP custom tools](https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-create-custom-tool) and the [Canarytokens Entra ID token](https://docs.canarytokens.org/guide/entraid-token); this section keeps only what applies to the AVD repos. Nothing was installed or run.
 
 - **Foundry guardrails don't cover the Anthropic path.** avd-swarm's build steps 1 and 2 call Claude through Anthropic's API from a Container App, where Foundry's indirect-injection checks never run; and in Foundry, tool-response scanning is preview and document-attack detection is off by default ([Prompt Shields concepts](https://learn.microsoft.com/azure/ai-services/content-safety/concepts/jailbreak-detection)). Scan untrusted text in the model client instead, which works on any provider.
 - **No upstream AVD hunts.** Azure/Azure-Sentinel (MIT) has no Azure Virtual Desktop solution and no hunting query on the `WVD*` tables (checked 2026-10-19). AVD hunts have to be written, and are a candidate to give back upstream once proven (decision 0011).

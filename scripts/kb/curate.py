@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Collect what's new in the sources the knowledge base watches.
 
 Reads docs/knowledge/sources.toml, fetches items newer than --since-days, drops anything the KB
