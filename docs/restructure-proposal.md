@@ -113,7 +113,7 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 | R2 | Foundation contracts: finish #54, move the pinned copies under `contracts/foundation/` with the `FOUNDATION-PINS.json` paths and the pin-hash tests in `tests/Connectors.Tests.ps1` in the same PR; C22 to C24 point to avd-assess | #54 |
 | R3 | Baselines: drop `workload-tiers` and `quality-gate` after avd-assess holds them; calibration reads avd-assess's prior | R2, avd-assess PR |
 | R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |
-| R5 | Assessment factory knowledge out (G2), C16 to avd-liquidware, assess-spec to avd-assess | Owner on G2 |
+| R5 | Factory stage rules copied to the private factory repo (its #13, merged); assess spec copied to avd-assess (#16, merged) and stubbed here; C16 needs nothing (the Liquidware project lands it with its producer); the brain's rule copies go once the tests stop reading them | Done, except the rule copies |
 | R6 | Trim operations-spec; settle v1-review decisions into specs (G5) | #44 merged |
 | R7 | Optional rename to `guidance/` (G9) | Everything else |
 
