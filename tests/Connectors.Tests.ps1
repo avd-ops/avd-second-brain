@@ -409,3 +409,125 @@ Describe 'C17 avd-run-record/v1' {
     $c.Formats | Should -Contain 'avd-run-record/v1'
   }
 }
+
+Describe 'C18 avd-lifecycle-record/v1' {
+  BeforeAll {
+    $script:c18 = Join-Path $script:root 'contracts'
+    $script:lcSchema = Join-Path $script:c18 'schemas/lifecycle-record.schema.json'
+    $script:lcExample = Join-Path $script:c18 'examples/lifecycle-record.example.json'
+    $script:lcRegister = Get-Content (Join-Path $script:c18 'fact-register.json') -Raw | ConvertFrom-Json
+    $script:lcRules = Join-Path $script:root 'knowledge/rules'
+    function Write-Lifecycle {
+      param([scriptblock] $Change)
+      $m = Get-Content $script:lcExample -Raw | ConvertFrom-Json
+      & $Change $m
+      $f = Join-Path $TestDrive "lc-$([guid]::NewGuid().ToString('n').Substring(0, 6)).json"
+      $m | ConvertTo-Json -Depth 12 | Set-Content $f
+      $f
+    }
+    function Get-LifecycleFinding { param([string] $File) @((Test-LifecycleRecord -File $File -SchemaFile $script:lcSchema -Register $script:lcRegister -RulesPath $script:lcRules).Findings) }
+  }
+
+  It 'accepts the example record' {
+    $r = Test-LifecycleRecord -File $script:lcExample -SchemaFile $script:lcSchema -Register $script:lcRegister -RulesPath $script:lcRules
+    $r.Document | Should -Not -BeNullOrEmpty
+    $r.Findings | Should -BeNullOrEmpty
+  }
+  It 'refuses <Why>' -ForEach @(
+    @{ Why = 'a fact that is not registered'; Check = 'lifecycle:unknown-fact'; Change = { param($m) $m.decisions[0].evidence = @('c11.hostPool.colour@hp-5e6f7a8b') } }
+    @{ Why = 'a host pool fact without its subject'; Check = 'lifecycle:missing-subject'; Change = { param($m) $m.decisions[0].watch = @('c12.group.rttMsP95') } }
+    @{ Why = 'a proposed Liquidware fact'; Check = 'lifecycle:proposed-fact'; Change = { param($m) $m.decisions[3].evidence = @('liquidware.version@hp-5e6f7a8b') } }
+    @{ Why = 'a rule that does not exist'; Check = 'lifecycle:unknown-rule'; Change = { param($m) $m.decisions[1].evidence = @('rule:spare-hosts@v1') } }
+    @{ Why = 'a rule version from the future'; Check = 'lifecycle:future-rule'; Change = { param($m) $m.decisions[1].evidence = @('rule:workload-tiers@v9') } }
+    @{ Why = 'a topic nobody knows'; Check = 'lifecycle:unknown-topic'; Change = { param($m) $m.decisions[3].topic = 'vibes' } }
+    @{ Why = 'a use case the record does not have'; Check = 'lifecycle:unknown-use-case'; Change = { param($m) $m.events[0].useCases = @('uc-09') } }
+    @{ Why = 'an event carrying out a decision that does not exist'; Check = 'lifecycle:unknown-decision'; Change = { param($m) $m.events[1].decisions = @('dec-0099') } }
+    @{ Why = 'evidence pointing at an event that does not exist'; Check = 'lifecycle:unknown-event'; Change = { param($m) $m.events[3].evidence = @('evt-0042') } }
+    @{ Why = 'a superseded decision still accepted'; Check = 'lifecycle:supersede-status'; Change = { param($m) $m.decisions[2].status = 'accepted' } }
+    @{ Why = 'a decision superseded by nothing'; Check = 'lifecycle:superseded-by-nothing'; Change = { param($m) $m.decisions[1].status = 'superseded' } }
+    @{ Why = 'a decision that supersedes a later one'; Check = 'lifecycle:supersede-order'; Change = { param($m) $m.decisions[5].date = '2026-11-01' } }
+    @{ Why = 'a second birth'; Check = 'lifecycle:born'; Change = { param($m) $m.events[4].kind = 'born' } }
+    @{ Why = 'an event before the birth'; Check = 'lifecycle:born'; Change = { param($m) $m.events[1].utc = '2026-12-01T00:00:00Z' } }
+    @{ Why = 'a duplicate ID'; Check = 'lifecycle:duplicate-id'; Change = { param($m) $m.decisions[1].id = 'dec-0001' } }
+    @{ Why = 'another register version'; Check = 'lifecycle:register-version'; Change = { param($m) $m.pins.factRegister = 2 } }
+  ) {
+    $f = @(Get-LifecycleFinding (Write-Lifecycle $Change))
+    ($f | Where-Object Severity -eq 'Error').Check | Should -Contain $Check
+  }
+  It 'warns about <Why>' -ForEach @(
+    @{ Why = 'a change no decision explains'; Check = 'lifecycle:unexplained-change'; Change = { param($m) $m.events[4].PSObject.Properties.Remove('decisions') } }
+    @{ Why = 'drift no decision explains'; Check = 'lifecycle:unexplained-change'; Change = { param($m) $m.events[2].kind = 'drift' } }
+    @{ Why = 'an accepted decision with no alternatives'; Check = 'lifecycle:no-alternatives'; Change = { param($m) $m.decisions[0].PSObject.Properties.Remove('alternatives') } }
+    @{ Why = 'carrying out a rejected decision'; Check = 'lifecycle:rejected-decision-applied'; Change = { param($m) $m.decisions[3].status = 'rejected' } }
+  ) {
+    $f = @(Get-LifecycleFinding (Write-Lifecycle $Change))
+    ($f | Where-Object Severity -eq 'Warning').Check | Should -Contain $Check
+    ($f | Where-Object Severity -eq 'Error') | Should -BeNullOrEmpty
+  }
+  It 'has no field for <Why>' -ForEach @(
+    @{ Why = 'a subscription ID'; Change = { param($m) $m | Add-Member subscriptionId '00000000-0000-0000-0000-000000000001' } }
+    @{ Why = 'a person who decided'; Change = { param($m) $m.decisions[0].decidedBy = 'Sam Example' } }
+    @{ Why = 'a user count instead of a bucket'; Change = { param($m) $m.useCases[0].users = 120 } }
+    @{ Why = 'an app by name'; Change = { param($m) $m.useCases[0].apps = @('Contoso Ledger 7') } }
+    @{ Why = 'a URL in a note'; Change = { param($m) $m.events[2].note = 'see https://contoso.example/x' } }
+    @{ Why = 'a resource ID as a subject'; Change = { param($m) $m.events[0].subjects = @('/subscriptions/x/resourceGroups/rg-avd') } }
+    @{ Why = 'free text as a reason'; Change = { param($m) $m.decisions[0].alternatives[0].whyNot = 'the customer did not like it' } }
+  ) {
+    @(Get-LifecycleFinding (Write-Lifecycle $Change)).Check | Should -Be @('schema')
+  }
+  It 'explains a host pool from its birth, following the design pool it was mapped from' {
+    $doc = Get-Content $script:lcExample -Raw | ConvertFrom-Json
+    $x = Get-LifecycleExplanation -Record $doc -Subject 'hp-5e6f7a8b'
+    $x.Aliases | Should -Be @('tp-01')
+    $x.UseCases.Id | Should -Be @('uc-01', 'uc-02')
+    $x.InForce.Id | Should -Contain 'dec-0002'
+    $x.InForce.Id | Should -Not -Contain 'dec-0003'
+    ($x.InForce | Where-Object Id -eq 'dec-0006').Supersedes | Should -Be 'dec-0003'
+    $x.History.Id | Should -Be @('evt-0001', 'evt-0003', 'evt-0005')
+    $x.History[0].Utc | Should -Be '2026-12-07T15:20:00Z'
+    ($x.History | Where-Object Id -eq 'evt-0005').Why.Id | Should -Be @('dec-0006')
+    $x.Unexplained | Should -BeNullOrEmpty
+    (Get-LifecycleExplanation -Record $doc -Subject 'hp-5e6f7a8b' -Topic 'hostPool.hosts').InForce.Id | Should -Be @('dec-0006')
+  }
+  It 'lists a change nothing explains' {
+    $doc = Get-Content (Write-Lifecycle { param($m) $m.events[4].PSObject.Properties.Remove('decisions') }) -Raw | ConvertFrom-Json
+    (Get-LifecycleExplanation -Record $doc -Subject 'hp-5e6f7a8b').Unexplained | Should -Be @('lifecycle:env-7d41c0e2#evt-0005')
+  }
+  It 'reopens a decision when a watched fact changes or its review date comes' {
+    $doc = Get-Content $script:lcExample -Raw | ConvertFrom-Json
+    $r = @(Get-LifecycleReview -Record $doc -Changed 'c12.group.concurrency.peak@hp-5e6f7a8b', 'c12.group.rttMsP95@hp-ac5fc5e3')
+    $r.Decision | Should -Be @('dec-0006')
+    $r[0].Reason | Should -Be 'watched-fact-changed'
+    @(Get-LifecycleReview -Record $doc -AsOf '2027-05-15').Reason | Should -Be @('review-date')
+    @(Get-LifecycleReview -Record $doc -AsOf '2027-05-14') | Should -BeNullOrEmpty
+  }
+  It 'starts a record from an approved manifest, one decision per register decision' {
+    $m = Get-Content (Join-Path $script:c18 'examples/target-state.example.json') -Raw | ConvertFrom-Json
+    $sha = (Get-FileHash (Join-Path $script:c18 'examples/target-state.example.json') -Algorithm SHA256).Hash.ToLowerInvariant()
+    $d = @(ConvertFrom-TargetStateDecision -Manifest $m -ManifestSha256 $sha -Register $script:lcRegister -FirstNumber 7)
+    $d.Count | Should -Be 10
+    $d[0].id | Should -Be 'dec-0007'
+    $d[0].date | Should -Be '2026-11-30'
+    $vm = $d | Where-Object topic -eq 'hostPool.vmSize'
+    $vm.subjects | Should -Be @('tp-01')
+    $vm.decidedBy | Should -Be 'factory-rule'
+    $vm.evidence | Should -Contain "manifest:$($sha.Substring(0, 12))#hostPool.vmSize"
+    $vm.evidence | Should -Contain 'rule:workload-tiers@v1'
+    $f = Write-Lifecycle { param($r) $r.decisions = @($r.decisions) + @($d) }
+    $found = @(Get-LifecycleFinding $f)
+    ($found | Where-Object Severity -eq 'Error') | Should -BeNullOrEmpty
+    @($found | Where-Object Check -eq 'lifecycle:no-alternatives').Count | Should -Be 10 -Because 'a manifest records no alternatives; a person adds them'
+  }
+  It 'keeps environment pseudonyms out of knowledge/' {
+    $k = Join-Path $TestDrive 'kb18'
+    Copy-Item -Recurse (Join-Path $script:root 'knowledge') $k
+    Set-Content (Join-Path $k 'runbooks/leak.md') '# Seen on env-7d41c0e2 last week'
+    (Test-BrainKnowledge -Path $k).Check | Should -Contain 'sensitive:estate-pseudonym'
+  }
+  It 'contracts.md lists C18 as built, with its schema' {
+    $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C18')[0]
+    $c.Built | Should -BeTrue
+    $c.Schemas | Should -Contain 'lifecycle-record.schema.json'
+    $c.Formats | Should -Contain 'avd-lifecycle-record/v1'
+  }
+}

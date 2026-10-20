@@ -26,7 +26,7 @@ those points together and puts the team's own knowledge next to them.
 | What do we run, and where? | `environments/<sub>/README.md` and the latest inventory snapshot |
 | What changed since last month? | `environments/<sub>/drift/`, generated from consecutive inventory snapshots |
 | What is broken, and for how long? | `environments/<sub>/findings.md`: every validator FAIL / WARN with first-seen date, closed only when the same check passes again |
-| Why is it built this way? | `decisions/`: one ADR per decision, linked to the environments it affects |
+| Why is it built this way? | `decisions/`: one ADR per decision, linked to the environments it affects; `lifecycle/`: the same decisions, use cases and changes as a pseudonymous record the brain's agents read (C18) |
 | How do I fix this finding? | `runbooks/`: a runbook that lists the check in `resolves-checks` is linked from the finding automatically |
 | What went wrong before? | `lessons/` |
 | What does this codename mean? | `glossary.md` |
@@ -114,6 +114,20 @@ The vault keeps names and IDs because people need them. The brain's agents, and 
 ```powershell
 ..\avd-current-state\avd_current_state_facts.ps1 -PackagePath D:\Assessments -KeyPath ..\avd-brain\.brain\facts.key -NewKey -OutputPath $env:TEMP
 .\scripts\Import-CurrentStateFacts.ps1 -FactsPath $env:TEMP\avd-current-state-facts-20261018T090000.json -VaultPath ..\avd-brain -Apply
+```
+
+## Lifecycle records: the why for the brain's agents
+
+The ADRs say why, in full, for people. The brain's agents read only pseudonymous data, so each environment also gets a lifecycle record, `lifecycle/<environment>.json` (`avd-lifecycle-record/v1`, [contract C18](contracts.md#c18-avd-lifecycle-recordv1)): its use cases, every decision with what else was considered and why not, and the events that carried them out, from its birth onwards. An ADR and its record entry are one decision (`lifecycle-id` in the ADR's front matter).
+
+It starts from the approved target-state manifest, when there is one, and grows with each run, plan and decision. Check it before committing:
+
+```powershell
+Import-Module ./scripts/AvdBrain.psm1
+$register = Get-Content ./contracts/fact-register.json -Raw | ConvertFrom-Json
+$r = Test-LifecycleRecord -File ..\avd-brain\lifecycle\env-7d41c0e2.json -SchemaFile ./contracts/schemas/lifecycle-record.schema.json -Register $register -RulesPath ./knowledge/rules
+$r.Findings                                                          # warnings: changes nobody explained, decisions with no alternatives
+Get-LifecycleExplanation -Record $r.Document -Subject hp-5e6f7a8b    # why this host pool is the way it is
 ```
 
 ## Limits

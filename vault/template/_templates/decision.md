@@ -5,6 +5,9 @@ status: proposed        # proposed | accepted | superseded | rejected
 date: YYYY-MM-DD
 deciders: []
 environments: []        # e.g. [sub-avd-prod]
+lifecycle-id:           # dec-NNNN in lifecycle/<environment>.json (contract C18): the same decision, pseudonymous
+phase:                  # assess | design | build | configure | expand | contract | fix | recover | retire | operate
+use-cases: []           # uc-NN from the lifecycle record
 supersedes:
 superseded-by:
 tags: []
