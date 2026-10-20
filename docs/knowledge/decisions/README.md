@@ -28,4 +28,5 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0013](0013-family-format-enforced-kb-capture.md) | Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot | Accepted |
 | [0014](0014-family-format-handoff-issues.md) | Handoffs between Claude projects go through a `handoff` issue in the receiving repo | Accepted |
 | [0015](0015-family-format-github-work-conventions.md) | GitHub work follows the family conventions, with knowledge base PRs able to merge themselves | Accepted |
+| [0018](0018-public-family-boundary-and-layering.md) | The public family ends at its contracts; work outside it builds on them and never the reverse | Proposed |
 <!-- END GENERATED: decision-index -->
