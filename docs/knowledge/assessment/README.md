@@ -25,3 +25,14 @@ Checked 2026-10-20. Cite these by their own IDs and link them; don't restate the
 - Microsoft Assessments has an [Azure Virtual Desktop workload assessment](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations#specialized-well-architected-reviews), a Well-Architected questionnaire. Links under `well-architected/azure-virtual-desktop/` now redirect into the AVD product docs.
 - Windows desktop optimization: the [Windows Desktop Optimization Tool](https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool) (WDOT, MIT) supersedes VDOT, which has no license; Learn's [Optimizing Windows configuration for VDI desktops](https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration) explains the settings. The landing zone's image build pins WDOT with a reviewed profile.
 - None of them joins recommendations to a redacted fact snapshot or says which target-state decisions the evidence supports; that join is what the family adds.
+
+## Diagrams from what is deployed
+
+Checked 2026-10-20 for avd-current-state. Every ready-made generator reads Azure live and draws real resource names, so none of its output can be shared under the redaction rules. Use them for ideas and link them; don't depend on them.
+
+- [Azure Resource Inventory](https://github.com/microsoft/ARI) (MIT in the repo) writes a draw.io diagram with one tab per subscription, hub and spoke VNets colored by role, and broken peerings highlighted.
+- [AzViz](https://github.com/PrateekKumarSingh/AzViz) (MIT) draws resource groups, VNets and subnets through Graphviz, which must be installed as a binary.
+- Microsoft's [azure-resource-visualizer](https://github.com/microsoft/azure-skills/tree/main/skills/azure-resource-visualizer) agent skill (MIT) has an agent draw Mermaid from Resource Graph. Its list of edges (peering, subnet assignment, private endpoints, NSGs) is useful, but a model choosing the relationships isn't repeatable evidence.
+- [Network Watcher topology](https://learn.microsoft.com/azure/network-watcher/network-insights-topology) is a portal map built from Resource Graph, with SVG download. Changes can take up to 30 hours to show.
+- No AVD-specific diagram generator was found.
+- The gap for a redacted diagram is data, not drawing. The C11 snapshot holds counts, not connections, and pseudonyms exist only for subscriptions, host pools and storage. The collector doesn't read VNet peerings or which subnet a session host's NIC is on. A diagram needs those edges first. [Mermaid](https://github.com/mermaid-js/mermaid) (MIT) fits the output: it is plain text a PowerShell 5.1 script can write and a test can compare, GitHub renders it, and avd-ops can theme it.
