@@ -29,4 +29,5 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0014](0014-family-format-handoff-issues.md) | Handoffs between Claude projects go through a `handoff` issue in the receiving repo | Accepted |
 | [0015](0015-family-format-github-work-conventions.md) | GitHub work follows the family conventions, with knowledge base PRs able to merge themselves | Accepted |
 | [0019](0019-recovery-runs-through-the-swarm.md) | Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean | Proposed |
+| [0023](0023-family-format-best-open-source-or-build.md) | Adopt an outside tool only when it is the best and open source; otherwise build our own | Accepted |
 <!-- END GENERATED: decision-index -->

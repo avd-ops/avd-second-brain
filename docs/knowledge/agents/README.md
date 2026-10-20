@@ -10,6 +10,11 @@ sources:
   - https://github.com/beelzebub-labs/beelzebub
   - https://docs.canarytokens.org/guide/entraid-token
   - https://learn.microsoft.com/azure/ai-services/content-safety/concepts/jailbreak-detection
+  - https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/
+  - https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop
+  - https://learn.microsoft.com/graph/mcp-server/overview
+  - https://learn.microsoft.com/azure/sre-agent/user-roles
+  - https://learn.microsoft.com/azure/sre-agent/permissions
   - https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnections
   - https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-create-custom-tool
   - https://learn.microsoft.com/connectors/sentinelmcp/
@@ -29,6 +34,19 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 
 - [avd-swarm spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) and [identities](https://github.com/nickprignano/avd-swarm/blob/main/docs/identities.md)
 - [An optional computer-use agent on an isolated VM](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0015-foundry-cua.md) (avd-landing-zone decision 0015)
+
+## MCP in the AVD repos
+
+Checked on 2026-10-20 for the v1 reviews ([brain](../../v1-review.md), [avd-swarm](https://github.com/nickprignano/avd-swarm/blob/main/docs/v1-review.md)). Proposed for v1: avd-swarm uses MCP as a client for reads, and neither repo builds an MCP server of its own; the brain's Concierge reaches operators as one of avd-swarm's tools.
+
+- **Microsoft's Azure MCP Server is the AVD read tool.** Its `virtualdesktop` namespace lists host pools, session hosts and user sessions, and those tools are annotated read-only. `--read-only` refuses every write, and `--namespace` limits the services exposed ([tools](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/), [AVD tools](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop)).
+- **A per-tool allowlist needs the right server mode.** The default `namespace` mode exposes one tool per namespace, so an allowlist by tool name sees one name for all of AVD. Name tools with `--tool` (which switches the server to `all` mode) or start it in `all` mode when an agent's allowlist lists individual tools ([start parameters](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/#azure-mcp-server-start-parameters)). avd-swarm's S1a spike already starts it with `--mode all --read-only --namespace virtualdesktop`, and its Q4 tests the allowlist.
+- **The Graph MCP server is tenant-wide.** Microsoft's MCP Server for Enterprise reads Graph read-only with the signed-in user's delegated rights, so it isn't a fit for an agent that should see only AVD groups and users; avd-swarm's Users agent keeps a narrow tool of its own ([overview](https://learn.microsoft.com/graph/mcp-server/overview)).
+- **Azure SRE Agent's own identity isn't read-only by default.** Whatever permission level is chosen, its managed identity always gets Reader, Log Analytics Reader and Monitoring Reader on its resource groups and **Monitoring Contributor on the subscription**, which can update monitoring settings and close alerts. Using it as a read-only investigator (avd-swarm spec §3a) means removing that assignment ([agent permissions](https://learn.microsoft.com/azure/sre-agent/permissions)).
+- **SRE Agent roles:** only its Administrator can approve actions and authorize on-behalf-of requests; a Standard User can chat, manage scheduled tasks, upload knowledge and add code repository connectors ([user roles](https://learn.microsoft.com/azure/sre-agent/user-roles)). Its API reference names an "SRE Agent User" role that can approve, so check the tenant's role list before assigning one. Personal Microsoft accounts can't authorize on-behalf-of.
+- **SRE Agent can't be stopped from writing by a hook.** Its hooks fire on Stop and PostToolUse only, so a hook sees a tool call after it ran; a user-defined hook that returns allow even overrides a global deny. The deny that holds is its **tool access policy at global scope** (only the global scope can deny; custom-agent and thread scopes can only allow), and the control to rely on is still Azure RBAC on its identity ([tool access policies](https://learn.microsoft.com/azure/sre-agent/tool-access-policies), [agent hooks](https://learn.microsoft.com/azure/sre-agent/agent-hooks)).
+- **Azure RBAC conditions don't limit control-plane deletes by tag.** Conditions apply to storage data actions and to role assignment management (delegation conditions can limit `roleAssignments/write` and `delete` to named principals or roles). A "delete only what is tagged" identity has to be scoped by resource group instead, and Azure Policy's `denyAction` on `delete` protects tagged resources ([ABAC conditions](https://learn.microsoft.com/azure/role-based-access-control/conditions-overview), [delegation conditions](https://learn.microsoft.com/azure/role-based-access-control/delegate-role-assignments-overview), [denyAction](https://learn.microsoft.com/azure/governance/policy/concepts/effect-deny-action)).
+- **MCP approval is never the write approval.** An MCP or Foundry tool approval answers inside the conversation; every change still goes through avd-swarm's plan, gate and GitHub Environment.
 
 ## Securing the agents and AVD security signal
 
