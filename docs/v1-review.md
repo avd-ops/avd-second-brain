@@ -81,6 +81,7 @@ avd-swarm's build step 2 gives its agents one link to the brain: the Concierge a
 | Where | What depends on what | Verdict |
 |---|---|---|
 | C11 | avd-current-state produces it offline with its own key; the importer is here | Down only; the collector and validator work without it |
+| ARI (D18) | avd-current-state wraps ARI as an opt-in step for inventory and diagrams | Down only: ARI is a tool the pair calls, never required by the collector, the validator or C11 |
 | C14 | The landing zone's reader takes an approved manifest as optional input; the files are vendored byte copies | Down only |
 | C17 | The landing zone produces run records against a vendored schema | Down only |
 | C4, C5 | C4's landing zone producer is the brain's Tier 1 job; C5 tags are written by the factory's renderer | Moves with the runtime (D1); tags are inert to the landing zone |
@@ -97,7 +98,7 @@ avd-swarm's build step 2 gives its agents one link to the brain: the Concierge a
 
 ## 7. Decisions only the owner can make
 
-One list for both repos. Each has a default that the work follows until answered. D11 to D17 came from the red team; D18 came later.
+One list for both repos. Each has a default that the work follows until answered. D11 to D17 came from the red team; D18 came later and has the owner's direction.
 
 1. **D1 Where the brain's Tier 1 runtime lives.** Default: shipped from avd-second-brain as an opt-in deployable, not from avd-landing-zone. Needs a landing zone PR that moves decision 0012's runtime out and keeps `docs/second-brain.md` as a pointer.
 2. **D2 What v1 is.** Default: avd-swarm build steps 1 to 3; the brain's Tier 1, the deterministic Concierge and the switch read.
@@ -116,4 +117,4 @@ One list for both repos. Each has a default that the work follows until answered
 15. **D15 Brain-dependent checks in the pair's repos** (V1-23). Default: never required.
 16. **D16 The failover identity's role-assignment write** (V1-27, avd-swarm recovery Q1). Default: failover stays a Cloud Shell block, and the identity stays out of identities.md, until answered. Recovery is after v1 either way.
 17. **D17 Public text naming a private project** (V1-35, B11). Default: apply decision 0018's cleanup now, rather than after v1.
-18. **D18 Azure Resource Inventory (ARI) and avd-current-state.** The owner now leans toward wrapping or enhancing ARI ([microsoft/ARI](https://github.com/microsoft/ARI)), since it is well known, instead of the earlier pointer-only plan. Whatever is chosen, avd-current-state must still do everything ARI already does. Options: wrap or enhance ARI, point to it only, or build our own. Each needs the license check first (the repo is MIT, its Gallery package says otherwise). Default: none chosen in these specs. C11 and the collector's package format stay the same whichever way it goes. A separate plan with a parity checklist for avd-current-state is being written.
+18. **D18 Azure Resource Inventory (ARI) and avd-current-state.** Direction from the owner (2026-10-20): wrap and enhance ARI ([microsoft/ARI](https://github.com/microsoft/ARI), MIT in the repo), since it is well known, and make avd-current-state do everything ARI already does. What ARI lacks for us is added on our side and offered upstream: redaction before anything is drawn (pseudonyms that keep every `/` segment of an ARM ID, since ARI reads IDs by position), an AVD overlay on its network diagram (session hosts labeled by host pool), and stable output that can be diffed. An offline spike ran ARI's diagram code on redacted Resource Graph rows with no sign-in and no Az modules. Rules: ARI is an **opt-in step**; the collector, the validator and C11 never require it, and their package format doesn't change. Nothing goes to microsoft/ARI without the owner's yes. Still open: the license of the Gallery package ("all rights reserved") before anything is copied rather than called, and the parity checklist.
