@@ -38,3 +38,11 @@ Checked 2026-10-20 for avd-current-state. Every ready-made generator draws real 
 - [Network Watcher topology](https://learn.microsoft.com/azure/network-watcher/network-insights-topology) is a portal map built from Resource Graph, with SVG download. Changes can take up to 30 hours to show.
 - No AVD-specific diagram generator was found.
 - The gap for a redacted diagram is data, not drawing. The C11 snapshot holds counts, not connections, and pseudonyms exist only for subscriptions, host pools and storage. The collector doesn't read VNet peerings or which subnet a session host's NIC is on. Saving Resource Graph rows gives ARI what it needs. [Mermaid](https://github.com/mermaid-js/mermaid) (MIT) is the fallback if ARI's draw.io output can't be styled well enough.
+
+## Shared contracts that work with or without the upper layers
+
+Decided 2026-10-20 ([decision 0021](../decisions/0021-foundation-contracts-live-in-avd-assess.md)): the formats the foundation repos exchange (C11, C15, C17, C19 to C21) live in [avd-assess `contracts/`](https://github.com/nickprignano/avd-assess/tree/main/contracts), and this repo vendors them like every other consumer. What was learned in the design:
+
+- **Pinned copies weren't enough on their own.** The pair already ran without the brain, but its schemas' home was in the layer above, so the foundation couldn't evolve its formats without it. Putting the authority with the standards removed that authoring-time dependency.
+- **The model is Group Policy, local and domain.** The foundation's baseline is local policy and works alone, with the pinned copies as the cached policy; the brain's and avd-swarm's guidance is a domain GPO, applied on top when present and valid, skipped and logged when not. The operator's explicit choice wins over both, every applied value records its source, and guidance never lowers a floor (read-only collection, only the landing zone writes, secrets recreated, the swarm's gate).
+- **Fail open means dropping guidance, never applying an unchecked value.** The rules every foundation schema follows are in avd-assess `contracts/README.md`.

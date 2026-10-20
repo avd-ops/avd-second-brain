@@ -55,6 +55,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0014. Handoffs between Claude projects go through a `handoff` issue in the receiving repo](docs/knowledge/decisions/0014-family-format-handoff-issues.md): accepted
 - [0015. GitHub work follows the family conventions, with knowledge base PRs able to merge themselves](docs/knowledge/decisions/0015-family-format-github-work-conventions.md): accepted
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): proposed
+- [0021. The foundation's contracts live in avd-assess](docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): accepted
 - [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): proposed
 - [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): accepted
 - [0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md): accepted
