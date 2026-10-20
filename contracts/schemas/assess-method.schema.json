@@ -43,7 +43,8 @@
         "properties": {
           "fact": { "$ref": "#/$defs/factId" },
           "from": { "enum": ["resource-graph", "arm-rest", "wara", "insights", "intake"] },
-          "table": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{1,80}$", "description": "Resource Graph table, Insights table or ARM resource type" },
+          "table": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{1,80}$", "description": "Resource Graph table (Resources, DesktopVirtualizationResources, PolicyResources) or Insights table" },
+          "type": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+(/[a-z]+){1,3}$", "description": "ARM resource type the row reads, for example microsoft.desktopvirtualization/hostpools" },
           "property": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_./\\[\\]-]{0,120}$" },
           "claims": { "type": "array", "items": { "anyOf": [{ "$ref": "#/$defs/claimRef" }, { "$ref": "#/$defs/gapRef" }] } }
         }
