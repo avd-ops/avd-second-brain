@@ -3,7 +3,7 @@ title: "Operating an estate"
 summary: "Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate"
 topic: operations
 status: partial
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-20
 ---
 
 # Operating an estate
@@ -25,3 +25,8 @@ The rules below came from real runs of [avd-landing-zone](https://github.com/nic
 - Deleting a resource group only soft-deletes some of what's in it. A Log Analytics workspace comes back when one with the same name is created; delete it permanently or let the next deployment handle the recovered state ([lesson 0023](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0023-log-analytics-soft-delete.md)).
 - A purge-protected Key Vault is recovered, not waited out, and recovery needs its original resource group. A safe, reversible remedy like this belongs in a `-Fix` action, not in advice ([lesson 0022](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0022-key-vault-recovery.md)).
 - Delete a cleanup step's inputs only after the step that needs them has succeeded ([lesson 0029](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0029-device-cleanup-rerun.md)).
+
+## Checking compliance after a change
+
+- Defender for Cloud's free Foundational CSPM gives the secure score and the Microsoft cloud security benchmark. Other regulatory standards, such as CIS or NIST, need the paid Defender CSPM plan, so a gate built on them needs a cost estimate first ([CSPM plans](https://learn.microsoft.com/azure/defender-for-cloud/concept-cloud-security-posture-management), [support matrix](https://learn.microsoft.com/azure/defender-for-cloud/support-matrix-defender-for-cloud#cloud-support)).
+- Don't wait on Defender's assessments to verify a change: they lag. Azure Policy's standard compliance scan runs every 24 hours and changed resources show up in about 15 minutes; an on-demand evaluation scan of the resource group (`Start-AzPolicyComplianceScan`, or a POST to `policyStates/latest/triggerEvaluation`) is asynchronous and slow, so poll its location URI until it returns 200 ([evaluation triggers](https://learn.microsoft.com/azure/governance/policy/how-to/get-compliance-data#evaluation-triggers), [troubleshooting](https://learn.microsoft.com/azure/governance/policy/troubleshoot/general#general-errors)). avd-swarm's compliance gate verifies plans this way ([governance section 2.5](https://github.com/nickprignano/avd-swarm/blob/main/docs/governance.md)). *Unverified:* not yet run against a real estate.
