@@ -99,7 +99,7 @@ The three repos already agreed on these; the brain keeps them in one place.
 avd-second-brain/
 ├── knowledge/          the knowledge base (schemas, catalog, rules, calibration, runbooks, engagements)
 ├── vault/              avd_second_brain.ps1 and the vault template (from avd-current-state)
-├── contracts/schemas/  avd-sizing-evidence/v1, avd-current-state-facts/v1
+├── contracts/          schemas/ for every cross-repo format (C4, C11, C13 to C17), the fact register, examples
 ├── sources/            sources.json: the connected repos and what each feeds and reads
 ├── scripts/            AvdBrain.psm1; Test-Knowledge, Find-BrainKnowledge, Sync-BrainSources,
 │                       Get-VaultHarvest, Import-SizingEvidence, Import-CurrentStateFacts
