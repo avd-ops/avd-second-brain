@@ -3,7 +3,7 @@ title: "FSLogix profiles"
 summary: "FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks"
 topic: fslogix
 status: verified
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # FSLogix profiles
@@ -21,3 +21,12 @@ FSLogix profile containers on Azure Files with Entra Kerberos, for Entra ID-join
 - Set the profile share's root ACL through the Azure Files REST API with OAuth, from a session host ([avd-landing-zone decision 0005](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0005-ntfs-via-rest.md)).
 - Those requests need `x-ms-date`, and the root of a new share has no ACL yet, so it returns no permission key. Treat a missing key as the default ACL that still needs setting ([lesson 0011](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0011-azure-files-rest.md)).
 - Capture the full REST error (status, `x-ms-error-code`, body and which step) from the first version of any host-side call ([lesson 0011](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0011-azure-files-rest.md), [lesson 0012](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0012-diagnose-first.md)).
+
+## Backup and recovery
+
+Checked against Microsoft Learn on 2026-10-20 ([Azure Files backup support matrix](https://learn.microsoft.com/azure/backup/azure-file-share-support-matrix), [FSLogix BCDR options](https://learn.microsoft.com/fslogix/concepts-container-recovery-business-continuity)).
+
+- Azure Backup's snapshot tier keeps recovery points as share snapshots, which go with the share: a permanently deleted share loses them. The vaulted tier is the offsite copy; it supports SSD (premium) shares, is available in North Central US with Cross Region Restore, and sends only the day's last scheduled snapshot to the vault.
+- Azure Backup for Azure Files uses key-based access: Microsoft says the source storage account must allow storage account key access, even with identity-based access. The landing zone's Entra Kerberos share turns shared keys off, so its profile backup is *unverified* until a real run reads the backup job history ([recovery spec U1](https://github.com/nickprignano/avd-landing-zone/pull/75)).
+- With Cloud Cache across two regions, list the local share first in each region's `CCDLocations`, and never let a user hold sessions in both pools: the profile lock fails the second sign-in.
+- Microsoft's own advice is to keep business data out of the profile (OneDrive, SharePoint); after a failover, a profile can come back damaged.
