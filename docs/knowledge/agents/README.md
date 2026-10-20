@@ -3,10 +3,13 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 sources:
   - https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/privacy-and-safety/README.md
   - https://learn.microsoft.com/azure/ai-services/content-safety/concepts/jailbreak-detection
+  - https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/
+  - https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop
+  - https://learn.microsoft.com/graph/mcp-server/overview
   - https://learn.microsoft.com/azure/azure-monitor/reference/tables/wvdconnections
   - https://learn.microsoft.com/azure/sentinel/datalake/sentinel-mcp-create-custom-tool
   - https://learn.microsoft.com/connectors/sentinelmcp/
@@ -21,6 +24,15 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 
 - [avd-swarm spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) and [identities](https://github.com/nickprignano/avd-swarm/blob/main/docs/identities.md)
 - [An optional computer-use agent on an isolated VM](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0015-foundry-cua.md) (avd-landing-zone decision 0015)
+
+## MCP in the AVD repos
+
+Checked on 2026-10-20 for the v1 reviews ([brain](../../v1-review.md), [avd-swarm](https://github.com/nickprignano/avd-swarm/blob/main/docs/v1-review.md)). Proposed for v1: avd-swarm uses MCP as a client for reads, and neither repo builds an MCP server of its own; the brain's Concierge reaches operators as one of avd-swarm's tools.
+
+- **Microsoft's Azure MCP Server is the AVD read tool.** Its `virtualdesktop` namespace lists host pools, session hosts and user sessions, and those tools are annotated read-only. `--read-only` refuses every write, and `--namespace` limits the services exposed ([tools](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/), [AVD tools](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/azure-virtual-desktop)).
+- **A per-tool allowlist needs the right server mode.** The default `namespace` mode exposes one tool per namespace, so an allowlist by tool name sees one name for all of AVD. Name tools with `--tool` (which switches the server to `all` mode) or start it in `all` mode when an agent's allowlist lists individual tools ([start parameters](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/#azure-mcp-server-start-parameters)). avd-swarm's S1a spike already starts it with `--mode all --read-only --namespace virtualdesktop`, and its Q4 tests the allowlist.
+- **The Graph MCP server is tenant-wide.** Microsoft's MCP Server for Enterprise reads Graph read-only with the signed-in user's delegated rights, so it isn't a fit for an agent that should see only AVD groups and users; avd-swarm's Users agent keeps a narrow tool of its own ([overview](https://learn.microsoft.com/graph/mcp-server/overview)).
+- **MCP approval is never the write approval.** An MCP or Foundry tool approval answers inside the conversation; every change still goes through avd-swarm's plan, gate and GitHub Environment.
 
 ## Securing the agents and AVD security signal
 

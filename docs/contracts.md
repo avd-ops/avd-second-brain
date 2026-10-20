@@ -91,6 +91,83 @@ Consumers read the JSON files directly, validated against `knowledge/schemas/`, 
 
 `sources/sources.json` lists each repo, the ref to follow, and the Markdown paths worth searching. `scripts/Sync-BrainSources.ps1` checks them out into `.sources/` (git-ignored) and records each commit in `.sources/lock.json`, so a citation names the exact text: `avd-landing-zone@5f10290:docs/gotchas.md`.
 
+## C8. `avd-swarm-insights/v1` (specified)
+
+What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches `knowledge/`, and it goes there only by a PR a person merges ([avd-swarm spec §6c](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#6c-what-feeds-the-second-brain)).
+
+**Shape** (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1):
+
+```json
+{
+  "schema": "avd-swarm-insights/v1",
+  "period": { "start": "2027-01-01", "end": "2027-01-31" },
+  "release": "v0.3.0",
+  "questions": [ { "topic": "hosts.agent-health", "asked": 41, "answered": 37, "unanswered": 4, "thumbsDown": 3 } ],
+  "outcomes": [ { "action": "restart-avd-agent", "verified": 9, "failed": 1, "rolledBack": 0,
+                  "rejected": { "wrong-target": 1, "not-now": 2 } } ],
+  "incidents": [ { "category": "gate.refused", "trigger": "rate", "count": 2, "stoppedBy": "gate" } ],
+  "grading": [ { "judge": "answers", "window": "2027-W02", "seeded": 120, "caught": 116, "alarm": false } ],
+  "spend": { "runs": 4, "refused": { "over-run-cap": 1 }, "medianActualToEstimate": 0.92, "teardownsWithLeftovers": 0 },
+  "docs": { "findingsDrafted": 6, "merged": 5, "rejected": 1 }
+}
+```
+
+**Rules.**
+- **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9: start from the agents' areas and this repo's check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
+- **The negative side counts as much as the positive** (incidents, rejections, failed verifications, judge alarms), so guardrail defaults learn from what went wrong.
+- **A person carries it across.** The adopter's private repo produces it; a person attaches it to a harvest PR here. The brain never pulls from an adopter, and no swarm identity writes to this repo.
+- `Test-BrainKnowledge` and the leak check run over it like any harvest input; a finding means the exporter is wrong, never that a pattern should loosen.
+
+## C9. Playbook run proposal (specified, after v1)
+
+How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it ([avd-swarm spec §5](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#5-write-path)).
+
+**Shape:**
+
+```json
+{
+  "schema": "avd-playbook-proposal/v1",
+  "id": "prop-...",
+  "createdUtc": "2027-01-12T08:14:00Z",
+  "expiresUtc": "2027-01-12T08:44:00Z",
+  "playbook": { "id": "restart-avd-agent", "version": 3, "sha256": "..." },
+  "episode": { "id": "ep-...", "signature": "wvd-agent-unhealthy:upgrade-failed", "agentClassified": false },
+  "targetHints": ["/subscriptions/.../virtualMachines/..."],
+  "parameters": { "sessionHostId": { "from": "episode.scope.sessionHost" } },
+  "evidence": [ { "fact": "c11.hostPools.loadBalancer@hp-3fa2c1d0", "at": "2027-01-11T22:00:00Z" },
+                { "ref": "blob://evidence/sha256-...", "kind": "kql" } ],
+  "critic": { "verdict": "agree | dissent", "claims": [ { "claim": "...", "citations": ["..."] } ] }
+}
+```
+
+**Rules.**
+- **Targets are hints.** The brain's in-tenant runtime knows resource IDs from live signals (episodes, §6.2 of the operations spec); its agents reason over pseudonyms (C11, C12). avd-swarm re-resolves every target live and refuses a proposal whose hints don't match what it resolves.
+- **Parameters are bound from the episode,** never by a model, and re-resolved by avd-swarm's gate. A playbook can add preconditions to avd-swarm's catalog action; it can never drop one (avd-swarm spec §5a).
+- **Evidence is cited by fact register ID (C15)** or by evidence hash. avd-swarm's gate refuses evidence older than its freshness limits and IDs the pinned register doesn't have or still marks `proposed`.
+- **The Critic's output travels as claims,** never as the Diagnose agent's reasoning, and the approver sees a dissent beside the plan.
+- **An `agentClassified` episode** always needs a person's approval of that run and is never eligible for a standing exception.
+- **Transport and identity are open** (second red team AX-8). Default: the brain's in-tenant runtime calls avd-swarm's `propose_playbook_run` function with its own managed identity, through an app role that allows submitting proposals and nothing else; it never writes avd-swarm's plan store. Built after avd-swarm's v1, with its own red team pass.
+- At `halt-actions` and above the brain sends no proposals (C10).
+
+## C10. Action outcomes and switch position (specified)
+
+What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so.
+
+**The switch position is read, not sent.** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1). The brain's model calls go through the same metered, flag-checking model client as the swarm's agents, so `halt-agents` and `halt-all` stop them whatever the brain's own code does; the brain also reads the flag before it sends a proposal. A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position. This part applies from v1.
+
+**Outcomes are a filtered copy of avd-swarm's change events.** The brain's runtime is registered in avd-swarm's observer registry as a **subscriber**: it receives the change-workflow events (governance §2.2) and has no `verdict` or `trip` call. What it keeps:
+
+| Field | Value |
+|---|---|
+| `planId`, `proposalId` | The plan, and the C9 proposal it came from, if any |
+| `action`, `playbook` | Catalog action ID; playbook ID and version, if any |
+| `outcome` | `verified`, `failed`, `rolled-back`, `rejected`, `expired` |
+| `reasonCategory` | For rejections, from avd-swarm's fixed list |
+| `times` | Proposed, approved, started, verified |
+| `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; resource IDs only for regressions |
+
+It stays in the adopter's tenant (operations memory, architecture §3); it never reaches this repo except as C8 counts through a harvest.
+
 ## C11. `avd-current-state-facts/v1`
 
 The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The vault's `/ask` and `/brief` commands are a person's tools inside their private vault, outside this.) avd-swarm never reads a package, a vault or a snapshot file; it gets facts only from the brain, as answers with citations and as C9 evidence.

@@ -65,6 +65,15 @@ Each comes from something this repo already learned.
 | P9 | Never make operators remember secrets, or carry state between sessions in their heads. | lesson 0002, 0015 |
 | P10 | A person approves every change the brain makes before it is made: one approval, one exact plan, one run. Pre-approved exceptions are written, dated and owned by people in Git, with deterministic triggers. Enforced by Azure (no token without an approval or an exception), not only by process. | Owner requirement, 2026-10-04 |
 
+### 3.0 The base pair stands alone
+
+avd-landing-zone (portal-driven Cloud Shell deployment and operation) and avd-current-state (offline fact collection and validation) are a self-contained pair that works, and keeps working, with no brain and no avd-swarm. avd-landing-zone stays true to its original purpose. The brain is built on top of them and never becomes something they need (the owner's rule, 2026-10-20; [avd-swarm spec §2](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#the-base-pair-stands-alone-invariant) says the same).
+
+- **Dependencies point down only.** The brain reads the pair's outputs (the preflight's state line, lessons and decisions through C7, the C11 snapshot, run records filed by a person) and never asks the pair to call, import, deploy or wait on it.
+- **The brain's runtime doesn't deploy from the pair's repos.** Where this spec still places `brain.bicep`, `brain/` or brain workflows in avd-landing-zone (§4.1, §7), that placement is under review (architecture Q1): the default is an opt-in deployable shipped from this repo that finds the landing zone by its naming convention, as avd-liquidware does.
+- **A need in the pair is a feature of the pair,** useful from Cloud Shell alone (a status check, a run record), never brain-specific.
+- **Formats the pair produces or reads are vendored as byte copies** (the landing zone's `contracts/PINS.json`), so the pair builds and tests on its own. The landing zone's default deployment never changes because a brain exists.
+
 ### 3.1 Tiers: adopt as much as you need (red-team S1)
 
 The brain is for the community, and one person maintains it. So it comes in tiers. Each tier is useful on its own and adds the fewest services that make it work. An adopter picks one with `AVD_BRAIN_TIER` (`0` to `3`, guarded with `empty(...)`, lesson 0004). `0`, the default, deploys nothing.
@@ -78,7 +87,7 @@ The brain is for the community, and one person maintains it. So it comes in tier
 
 What keeps this maintainable by one person:
 
-- **One language.** Everything new is PowerShell and Bicep: the job, the playbooks, the orchestrator (Durable Functions supports PowerShell) and the agents' tools. PSScriptAnalyzer, Pester and the offline harness already cover them. No custom MCP server and no new runtime.
+- **One language.** Everything new is PowerShell and Bicep: the job, the playbooks, the orchestrator (Durable Functions supports PowerShell) and the agents' tools. PSScriptAnalyzer, Pester and the offline harness already cover them. The brain builds no MCP server and no new runtime; its Concierge reaches operators as one of avd-swarm's tools, and avd-swarm decides whether its tool layer is ever published as MCP ([its spec §3](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#3-architecture)).
 - **Tier 1 is the supported core.** Tiers 2 and 3 are marked **experimental** until real runs have verified them (decision 0006), the same way decision 0011 recorded what it hadn't verified.
 - **Small surface first.** Without Tier 3, episodes live as GitHub issues plus Blob evidence. Retrieval is the Git checkout itself, which Claude Code reads.
 
@@ -451,8 +460,8 @@ The Evolve agent proposes, CI checks, `test` proves, a person decides.
 | Azure AI Search | Optional at Tier 3, large estates only | Hybrid + semantic ranking; always-on billed tier (red-team H9) |
 | Blob Storage (immutable container) | Evidence, state lines, cost exports | Tamper-evident audit |
 | Microsoft Foundry (Agent Service, a chat model, an embedding model) | Tier 3: reasoning and embeddings | Hosts Claude and Azure OpenAI models, agent identities, tracing |
-| Budget on the brain's resource group | Every tier: its action group trips EX-0004 `halt-all` | The brain can't outspend its own budget (red-team H9) |
-| Logic App (Consumption), its own action group | Kill-switch watchdog (EX-0004) | Independent of the brain it stops; the same pattern as decision 0011's trigger Logic Apps |
+| Budget on the brain's resource group | Every tier: reaching it stops the brain's spend through avd-swarm's switch (`halt-actions` for resources, `halt-agents` for the metered token cap; [avd-swarm spend.md](https://github.com/nickprignano/avd-swarm/blob/main/docs/spend.md) §3.4, §3.7) | The brain can't outspend its own budget (red-team H9) |
+| ~~Logic App (Consumption), its own action group~~ | ~~Kill-switch watchdog (EX-0004)~~ Moved to avd-swarm (decision 0003); the brain deploys no watchdog | avd-swarm governance §2.3, §2.4 |
 | Key Vault (the landing zone's) | The two pseudonymization secrets, `users` and `resources` (§9.4), generated at deployment and never shown | Existing pattern; lesson 0002 |
 | Managed identities, Microsoft Entra Agent ID (where available) | One identity per agent; the executor's identity is federated to the approval environment only | Least privilege, auditable per actor |
 | Private endpoints and private DNS | Blob, Cosmos DB, Key Vault, Functions | Decision 0001 |
@@ -701,7 +710,7 @@ GitHub doesn't let an author approve their own PR, and an adopter may have only 
 | A guardrail change that **lowers** capability | A code owner's review | The owner merges once CI is green |
 | A guardrail change that **raises** capability: a new exception, an EX-0003 entry, a higher `maxLevel` or limit | Two code owners | A **72-hour time-lock**: the required check `brain-guard/timelock` stays pending until 72 hours after the last commit. Plus the deterministic summary (§9.2), and a pinned issue for the whole window |
 | An EX-0003 entry | The run record and the last kill-switch drill, checked by CI | Same, plus the time-lock |
-| Resuming after the kill switch, prod | The `prod` environment's two required reviewers | The owner, after a 60-minute wait timer on the resume environment |
+| Resuming after the kill switch | Two people (avd-swarm governance §2.6) | The owner, running avd-swarm's reset block from Cloud Shell; there is no resume environment or workflow (avd-swarm governance §2.3, R6) |
 
 Branch protection in solo mode:
 - PRs required (no direct pushes) and status checks required, including `brain-guard`;
