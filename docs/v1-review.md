@@ -74,7 +74,7 @@ avd-swarm's build step 2 gives its agents one link to the brain: the Concierge a
 | G3 | **Diagnose's eval set** (red team M10) exists as a design only | Start with redacted fixtures from the landing zone's lessons, append-only |
 | G4 | **The docs check is a CI dependency upward:** avd-landing-zone's and avd-current-state's `docs.yml` call this repo's reusable workflow | Pinned by SHA already; keep it advisory there, never a required check, so a brain outage can't block their PRs. Owner decision D9 |
 | G5 | **General agent memory is commodity** (prior art: agent memory products, ADR tools) | Keep the brain narrow: AVD decisions with cited evidence over an estate's life. Tier 3's vector memory stays after v1 and is re-checked against what exists before it is built |
-| G6 | **avd-assess methodology.** The owner wants the brain to ingest the assessment methodology from avd-assess (free, MIT), which another thread is specifying, and avd-current-state to use it offline | Placeholder only: the brain will read it as a connected source (C7) and, if it carries rules or checks, through a contract of its own once avd-assess defines its format. Not specified here |
+| G6 | **avd-assess methodology.** avd-assess is *what it should be, and why*, beside the landing zone (*how it is built and changed from here*) and avd-current-state (*what is there now*) (operations spec §3.0). The owner wants the brain to ingest the assessment methodology from avd-assess (free, MIT), which another thread is specifying, and avd-current-state to use it offline | Placeholder only: the brain will read it as a connected source (C7) and, if it carries rules or checks, through a contract of its own once avd-assess defines its format. Not specified here |
 
 ## 6. The base pair check
 
