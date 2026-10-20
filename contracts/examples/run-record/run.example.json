@@ -1,0 +1,27 @@
+{
+  "schema": "avd-run-record/v1",
+  "runId": "run-20261020-1652-k3p9",
+  "useCase": "landing-zone",
+  "level": "public",
+  "producer": { "repo": "avd-landing-zone", "commit": "fc374c4", "entry": "Get-AvdRunStatus.ps1" },
+  "started": "2026-10-20T16:52:00Z",
+  "ended": "2026-10-20T19:40:00Z",
+  "status": "torn-down",
+  "region": "northcentralus",
+  "steps": [
+    { "step": "predeploy", "status": "ready", "started": "2026-10-20T16:52:00Z", "durationSec": 95 },
+    { "step": "deploy", "status": "succeeded", "started": "2026-10-20T16:58:00Z", "durationSec": 1820 },
+    { "step": "cleanup", "status": "ready", "started": "2026-10-20T19:10:00Z", "durationSec": 1500 }
+  ],
+  "files": [
+    { "path": "journal.jsonl", "kind": "journal", "level": "private", "bytes": 48213, "sha256": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+      "copies": [ { "target": "github", "verifiedAt": "2026-10-20T19:45:00Z", "sha256": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb" } ] },
+    { "path": "cost.json", "kind": "cost", "level": "public", "bytes": 2210, "sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
+      "copies": [ { "target": "github", "verifiedAt": "2026-10-20T19:45:00Z", "sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d" } ] },
+    { "path": "logs/WVDConnections.json.gz", "kind": "log-export", "level": "private", "bytes": 3221225472, "sha256": "2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6", "keptOnlyIn": "azure" }
+  ],
+  "teardown": { "status": "clean", "checkedAt": "2026-10-20T19:40:00Z", "evidence": "teardown.json", "logs": "Keep" },
+  "extensions": {
+    "landing-zone": { "environment": "dev", "sessionHostCount": 1, "sessionHostVmSize": "Standard_D2as_v5" }
+  }
+}

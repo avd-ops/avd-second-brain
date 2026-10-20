@@ -21,7 +21,7 @@ data in [`knowledge/`](../../knowledge/README.md) or the lessons that live in th
 
 Proposed to the family in step 2, waiting on the other three KBs: a stronger leak check and
 reviewed model-drafted entries ([0009](decisions/0009-family-format-stronger-leak-check.md)). The
-family's model-selection convention, with the AI KB as its source of truth, is
+family's model-selection convention is
 [0010](decisions/0010-family-model-selection-convention.md).
 
 Proposed on 2026-10-19: link to upstream sources of truth instead of restating them, check

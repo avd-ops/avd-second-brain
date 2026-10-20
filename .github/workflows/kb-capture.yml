@@ -1,4 +1,4 @@
-# From nickprignano/ai-brain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
+# From nickprignano/2ndbrain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
 name: kb-capture
 
 # Decision 0011: a pull request that changes code must carry what was learned. It passes when it
