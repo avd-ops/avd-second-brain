@@ -23,7 +23,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [Upstream drafts](docs/knowledge/microsoft/drafts/README.md): Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it (status: plan)
 - [Upstream asks for Microsoft](docs/knowledge/microsoft/upstream-contributions.md): Gaps, API asks and doc fixes we could raise with Microsoft, with evidence (status: verified)
 - [Known errors](docs/knowledge/troubleshooting/README.md): Errors hit deploying and running AVD: symptom, cause, fix and source (status: verified)
-- [Knowledge base roadmap](docs/knowledge/roadmap.md): How this KB is being moved onto the family format, step by step, and what's still to come (status: plan)
+- [Knowledge base roadmap](docs/knowledge/roadmap.md): Settled: this KB is on the family format; open work is tracked outside the public repo (status: plan)
 - [Keeping the knowledge base current](docs/knowledge/curation.md): How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment (status: verified)
 - [Experts we follow](docs/knowledge/experts.md): How we choose which AVD, FSLogix and Entra experts the KB follows: the method, the scores and the list (status: verified)
 
@@ -55,6 +55,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0014. Handoffs between Claude projects go through a `handoff` issue in the receiving repo](docs/knowledge/decisions/0014-family-format-handoff-issues.md): accepted
 - [0015. GitHub work follows the family conventions, with knowledge base PRs able to merge themselves](docs/knowledge/decisions/0015-family-format-github-work-conventions.md): accepted
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): proposed
+- [0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md): accepted
 
 ## Related knowledge bases
 

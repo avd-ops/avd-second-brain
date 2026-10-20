@@ -1,6 +1,6 @@
 # Proposal: restructure avd-second-brain around the estate brain
 
-- **Status:** Proposed. Nothing moves or is deleted until the owner approves this proposal and each step's PR.
+- **Status:** Accepted with every default in section 4 (owner, 2026-10-20 23:42), recorded as [decision 0024](knowledge/decisions/0024-the-brain-is-the-estate-brain.md). Each move step is its own PR.
 - **Date:** 2026-10-20
 - **Builds on:** decisions [0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md) (the brain thinks, avd-swarm acts), 0020 (the why layer, PR #45), 0021 (foundation contracts in avd-assess, PR #54), 0022 (the estate RAID log, PR #56) and 0023 (adopt the best open source or build).
 
@@ -89,7 +89,7 @@ Moving `knowledge/` to `guidance/` is a rename for clarity; it is optional and c
 
 ## 4. Gray areas for the owner
 
-Each has a default the move plan follows if the owner says nothing else.
+Each has a default. The owner chose all of them (2026-10-20).
 
 - **G1. C14 target state.** The landing zone reads it, so it is arguably a foundation contract. Default: keep here, as 0021 decided; revisit when the factory producer is built.
 - **G2. The migration factory's engine knowledge** (delivery rule, engagements, harvest, C3, C5, C6, knowledge-spec). Default: move to the private assessment factory repo, leaving a public stub, because none of it is about one estate's why.
@@ -108,7 +108,7 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 | Step | What | Waits on |
 |---|---|---|
 | R0 | This proposal (doc only) | Owner review |
-| R1 | Decision 0024 "The brain is the estate why layer", superseding 0001 in part; rewrite README and architecture.md; retire roadmap.md | R0, #45, #56 |
+| R1 | Decision 0024 "The brain is the estate brain", narrowing 0001; rewrite README and architecture.md; retire roadmap.md | Done in the proposal's PR |
 | R2 | Foundation contracts: finish #54, move the pinned copies under `contracts/foundation/` with the `FOUNDATION-PINS.json` paths and the pin-hash tests in `tests/Connectors.Tests.ps1` in the same PR; C22 to C24 point to avd-assess | #54 |
 | R3 | Baselines: drop `workload-tiers` and `quality-gate` after avd-assess holds them; calibration reads avd-assess's prior | R2, avd-assess PR |
 | R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |

@@ -1,11 +1,25 @@
-# Architecture: one brain for the AVD lifecycle
+# Architecture: the estate brain
 
-- **Status:** Proposed ([decision 0001](knowledge/decisions/0001-one-brain-for-the-avd-lifecycle.md)). The knowledge base, the vault, the connectors and the cross-repo search are built and tested offline; nothing has run against a real estate yet.
-- **Date:** 2026-10-16
+- **Status:** Scope set by [decision 0024](knowledge/decisions/0024-the-brain-is-the-estate-brain.md) (2026-10-20), which narrows [decision 0001](knowledge/decisions/0001-one-brain-for-the-avd-lifecycle.md). The vault, the connectors and the cross-repo search are built and tested offline; nothing has run against a real estate yet. Sections 1 to 7 describe the repo as decision 0001 set it up; the parts that move out are listed in the [restructure proposal](restructure-proposal.md) and leave a stub here when they go.
+- **Date:** 2026-10-16, scope updated 2026-10-20
 
 > Personal project. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft.
 
-## 1. Why one brain
+## 0. What the brain is for
+
+The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, avd-swarm acts ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)). Nothing in the foundation reads or requires the brain.
+
+| Job | What it holds | Where |
+|---|---|---|
+| The why | Each environment's use cases and the decisions made building, configuring, expanding, contracting, fixing and retiring it, from its birth | C18 lifecycle record, in the vault (decision 0020) |
+| The RAID log | Risks, assumptions, issues, dependencies, actions and decisions for each operated estate | C25, in the vault (decision 0022) |
+| The estate's memory | The evidence the why and the RAID log cite | The vault ([vault.md](vault.md)); filed C11 and C12 facts; C21 reports |
+| Guidance | What the brain learned across estates, which the foundation may apply when present and valid and ignores otherwise | Calibration (C4), runbooks, playbooks, the app catalog |
+| The KB plumbing | The family knowledge base tooling and the AVD knowledge base it keeps current | `scripts/kb/`, `docs/knowledge/`, the `kb-*` workflows |
+
+What lives elsewhere: the foundation's standards and schemas (avd-assess), the inventory (avd-current-state), the deployment (avd-landing-zone), the front door and the docs for every repo (avd-ops), and the project's own working log (private).
+
+## 1. Why one brain (decision 0001, history)
 
 Three repositories each grew their own "second brain":
 
