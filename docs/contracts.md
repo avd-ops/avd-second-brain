@@ -163,6 +163,7 @@ What avd-swarm tells the brain about what happened, so episodes close with an ou
 | `action`, `playbook` | Catalog action ID; playbook ID and version, if any |
 | `outcome` | `verified`, `failed`, `rolled-back`, `rejected`, `expired` |
 | `reasonCategory` | For rejections, from avd-swarm's fixed list |
+| `why` | When the plan carries one (avd-swarm decision 0007, "every plan says why"): its lifecycle `kind` (C18's event kinds: build, configure, expand, contract, fix, recover, retire), its `useCases` (`uc-NN`) and its `decision` (`dec-NNNN`), IDs and fixed words only, so the brain can tie the outcome to C18's lifecycle record |
 | `times` | Proposed, approved, started, verified |
 | `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; resource IDs only for regressions |
 
