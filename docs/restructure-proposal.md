@@ -31,7 +31,7 @@ Verdicts: **Keep**, **Move** (to the named repo), **Retire** (frozen in place as
 | C4 sizing evidence, `Import-SizingEvidence.ps1`, `knowledge/calibration/` | Calibration learned from measured estates | Keep | Guidance layer (fail-open over avd-assess baselines) |
 | [operations-spec.md](operations-spec.md), [red team](operations-redteam.md) | The operations brain; its acting half already moved to avd-swarm (0003) | Keep, trimmed | Keep detections, episodes, playbooks as guidance; the superseded sections become a short pointer to the avd-swarm spec |
 | C11, C15, C17, C19, C20, C21, `run-use-cases.json` | Foundation contracts | Move (under way) | avd-assess is the authority (#54); this repo keeps byte-identical pinned copies |
-| C22, C23, C24 (proposed) | Check catalog, review, plan | Move | avd-assess and avd-current-state, never registered here |
+| C22, C23, C24 (proposed) | Check catalog, assessment review, remediation plan | Move | avd-assess `contracts/`, never registered here |
 | C14 target state | The design the landing zone reads | Owner (G1) | Kept here by 0021 |
 | C16 Stratusphere instrument | Between avd-liquidware and the assessment factory; never reaches the brain | Move | avd-liquidware, with its producer |
 | `knowledge/rules/workload-tiers.json`, `quality-gate.json` | Baselines and a data-quality gate | Move | avd-assess `baselines.yaml` already holds the same sizing prior with citations; keep one copy there |
@@ -109,7 +109,7 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 |---|---|---|
 | R0 | This proposal (doc only) | Owner review |
 | R1 | Decision 0024 "The brain is the estate why layer", superseding 0001 in part; rewrite README and architecture.md; retire roadmap.md | R0, #45, #56 |
-| R2 | Foundation contracts: finish #54, move `contracts/` pinned copies under `contracts/foundation/`, retarget C22 to C24 | #54 |
+| R2 | Foundation contracts: finish #54, move the pinned copies under `contracts/foundation/` with the `FOUNDATION-PINS.json` paths and the pin-hash tests in `tests/Connectors.Tests.ps1` in the same PR; C22 to C24 point to avd-assess | #54 |
 | R3 | Baselines: drop `workload-tiers` and `quality-gate` after avd-assess holds them; calibration reads avd-assess's prior | R2, avd-assess PR |
 | R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |
 | R5 | Assessment factory knowledge out (G2), C16 to avd-liquidware, assess-spec to avd-assess | Owner on G2 |
