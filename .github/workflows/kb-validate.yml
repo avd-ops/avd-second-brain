@@ -7,21 +7,9 @@ name: kb-validate
 # the KB (scripts/Test-KbLeaks.ps1). Secrets are covered by gitleaks in secrets.yml.
 
 on:
+  # Every PR, with no paths filter, so it can be a required check (decision 0015, ai-brain 0014):
+  # a required check that never reports would hold a PR forever.
   pull_request:
-    paths:
-      - docs/knowledge/**
-      - scripts/kb/**
-      - scripts/Test-KbLeaks.ps1
-      - scripts/AvdBrain.psm1
-      - llms.txt
-      - .github/ISSUE_TEMPLATE/**
-      - .github/workflows/kb-*.yml
-      # HCL anywhere in the repo fails the lane check (decision 0012).
-      - "**/*.tf"
-      - "**/*.tfvars"
-      - "**/*.tf.json"
-      - "**/*.hcl"
-      - "**/*.pkr.json"
   push:
     branches: [main]
     paths:
