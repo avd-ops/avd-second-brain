@@ -57,6 +57,16 @@ Decisions get a record, lessons go on the topic page they belong to (or stay in 
 they happened, linked from here), and these guardrails stay visible here, in
 [AGENTS.md](../AGENTS.md) and in the README.
 
+## 8. Never delete the last copy
+
+A script, workflow or agent step that deletes data (logs, evidence, reports, ledgers, backups,
+assessment data, configuration, user data) first checks that another durable copy exists, or the
+person running it opts in. Every run's logs and teardown evidence go to one run store outside the
+deployment, kept by default (`-TeardownLogs Keep|Ask|Delete`); data inside a deployment needs
+`-DiscardLastCopy`, which `-Force` never implies. Old data moves to a colder tier instead of being
+deleted, and soft delete stays on
+([decision 0016](knowledge/decisions/0016-never-delete-the-last-copy.md)).
+
 ## When a guardrail gets in the way
 
 Don't work around it quietly. Open an issue or a decision record that says which guardrail, why,
