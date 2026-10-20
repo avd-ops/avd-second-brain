@@ -67,6 +67,14 @@ deployment, kept by default (`-TeardownLogs Keep|Ask|Delete`); data inside a dep
 deleted, and soft delete stays on
 ([decision 0016](knowledge/decisions/0016-never-delete-the-last-copy.md)).
 
+## 9. Never leave the meter running without an opt-in
+
+Anything that bills by time or use is removed, stopped or on a schedule at the end of a run. It
+keeps billing only with `-KeepRunning <until>` (an expiry or a reason, recorded), which `-Force`
+never implies. Microsoft 365 licenses, Marketplace SaaS offers and other recurring commitments
+are recorded with their renewal date and cancel path, and no script buys one
+([decision 0017](knowledge/decisions/0017-never-leave-the-meter-running.md)).
+
 ## When a guardrail gets in the way
 
 Don't work around it quietly. Open an issue or a decision record that says which guardrail, why,

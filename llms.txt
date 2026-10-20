@@ -55,6 +55,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0014. Handoffs between Claude projects go through a `handoff` issue in the receiving repo](docs/knowledge/decisions/0014-family-format-handoff-issues.md): accepted
 - [0015. GitHub work follows the family conventions, with knowledge base PRs able to merge themselves](docs/knowledge/decisions/0015-family-format-github-work-conventions.md): accepted
 - [0016. Never delete the last copy](docs/knowledge/decisions/0016-never-delete-the-last-copy.md): accepted
+- [0017. Never leave the meter running without an opt-in](docs/knowledge/decisions/0017-never-leave-the-meter-running.md): accepted
 
 ## Related knowledge bases
 
