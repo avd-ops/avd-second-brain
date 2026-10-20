@@ -3,7 +3,7 @@
   "estate": "est-0a1b2c3d",
   "generatedUtc": "2026-10-20T10:00:00Z",
   "producer": { "name": "avd_current_state_assess.ps1", "version": "1.0.0" },
-  "method": { "version": 1, "commit": "abababababababababababababababababababab", "sha256": "c9c42133ac1ee10c60fa91f073250763934f57b3eda1df7a8b3459baf8170386", "factRegister": 1 },
+  "method": { "version": 1, "commit": "abababababababababababababababababababab", "sha256": "027e59873233093e410679dea1cdbbe50650bbf81310dfd81b14b5776647079c", "factRegister": 1 },
   "inputs": {
     "facts": { "generatedUtc": "2026-10-18T09:00:00Z", "sha256": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd" },
     "intake": { "answeredOn": "2026-10-20", "sha256": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef" }

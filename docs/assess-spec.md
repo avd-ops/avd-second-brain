@@ -1,6 +1,6 @@
 # Spec: avd-assess, a research index for AVD assessment
 
-- **Status:** Phases 0 to 2 built: this spec, the avd-assess seed, and the C19 to C21 schemas and checks here (§7). Phases 3 to 6 are not built.
+- **Status:** Phases 0 to 3 built: this spec, the avd-assess seed, the C19 to C21 schemas and checks here (§7), and avd-assess's first `method.json`. Phases 4 to 6 are not built.
 - **Owner's direction (2026-10-20):** `avd-assess` gets its own public MIT repo. It holds methodology only: collection, assessment, and target, benchmark and scoring. It is a **research project**. It doesn't reinvent anything that already exists. It links out to existing sources with immutable references and adds value by validating them against our own experience and observations. It writes new method only where nothing exists.
 - **Date:** 2026-10-20
 - **Builds on:** [decision 0005](knowledge/decisions/0005-one-schema-registry-and-fact-register.md) (one schema registry and fact register), [decision 0011](knowledge/decisions/0011-family-format-upstream-sources.md) (link upstream, don't restate), [decision 0018](https://github.com/nickprignano/avd-second-brain/pull/41) (proposed: the public family ends at its contracts), and contracts C11, C14, C15 and C17 in [contracts.md](contracts.md).
@@ -117,7 +117,7 @@ Each gap file opens with what was searched and not found, and is retired the day
 
 ### 6.1 Collection: facts to sources
 
-For each fact ID in the register (C15), the Resource Graph table and property (`DesktopVirtualizationResources`, `Resources`) or the REST call, the WARA output field, the Insights table, or the intake question it comes from, and its privacy class. avd-current-state's collector is moving to these Resource Graph reads (adoption spec, section 6), with C11 unchanged. Each row cites the reference that documents the property, so the gap is only the join.
+For each fact ID in the register (C15), the Resource Graph table and property (`DesktopVirtualizationResources`, `Resources`) or the REST call, the WARA output field, the Insights table, or the intake question it comes from, and its privacy class. avd-current-state's collector is moving to these Resource Graph reads (adoption spec, section 6), with C11 unchanged. Each row cites the reference that documents the property, so the gap is only the join. Found while writing it: only session hosts are in `DesktopVirtualizationResources`; host pools, application groups, workspaces and scaling plans are in `Resources`, and policy assignments in `PolicyResources` (avd-assess `references/resource-graph-tables.yaml`). The rows carry the ARM resource type as well as the table.
 
 ### 6.2 Intake (`avd-intake/v1`, contract C19)
 
@@ -136,7 +136,7 @@ A check is a declarative test of one or more claims against facts. It has a JSON
   "informs": ["hostPool.power"] }
 ```
 
-There are four outcomes: `pass`, `warn` (a trade-off to review), `gap` and `unknown`. Unknown is never guessed, and a model never decides an outcome. A missing property makes a subject `unknown`, and a check's outcome is its subjects' worst (`gap`, `warn`, `unknown`, `pass`). Every cited fact must be `built` in the register, every claim must exist in `references/`, and every `informs` value must be a register decision (`Test-AssessMethod`). Version 1 has about 20 checks. Image checks cite the WDOT reference and stay `unknown` until a host fact exists.
+There are four outcomes: `pass`, `warn` (a trade-off to review), `gap` and `unknown`. Unknown is never guessed, and a model never decides an outcome. A missing property makes a subject `unknown`, and a check's outcome is its subjects' worst (`gap`, `warn`, `unknown`, `pass`). Every cited fact must be `built` in the register, every claim must exist in `references/`, and every `informs` value must be a register decision (`Test-AssessMethod`). Version 1 has four checks that run on today's facts (Start VM on Connect for personal pools, two hosts per pooled pool, a private endpoint and zone-redundant storage for premium files). avd-assess's checklist mapping lists the other items with the fact or rule-language feature each needs (a join across subjects, an "any"), as the to-do for C11 and C20. Image checks cite the WDOT reference and stay `unknown` until a host fact exists.
 
 ### 6.4 Decision readiness and target-state rules
 
@@ -205,7 +205,7 @@ All offline. No cloud spend until phase 6, which waits on the owner's go and a c
 | 0 | this repo | This spec (draft PR) |
 | 1 | avd-assess | A broad GitHub and Learn search outside the build container. Then the seed: README, LICENSE, CI, references for the sources in §3 with pins, the four methodology pages (version 1), and the first observations from existing lessons |
 | 2 | this repo | C19, C20 and C21 schemas, examples, `Test-AssessMethod`, `Test-AssessmentReport` (built) |
-| 3 | avd-assess | Gap files, version 1: collection map, intake, about 20 checks, readiness, scoring |
+| 3 | avd-assess | Gap files, version 1: collection map, intake, checks, readiness, scoring, in `method.json` (built: 4 checks, 26 collection rows, 10 readiness rows) |
 | 4 | avd-current-state | Vendor the gap files with `assess/PINS.json`; evaluator, `-Assess`, C21; WARA import; collector reads through Resource Graph |
 | 5 | this repo | `sources.json` entry, report filing, topic page links, `workload-tiers.json` cites its prior |
 | 6 | (owner's go) | One sandbox run, which becomes the first observations from a run made for avd-assess; teardown evidence |
