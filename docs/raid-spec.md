@@ -6,6 +6,8 @@ Status: **proposed** ([decision 0022](knowledge/decisions/0022-the-brain-keeps-t
 
 The owner, 2026-10-20: the brain should be the living RAID log (risks, assumptions, issues, dependencies) plus the action and decision tracker for an AVD environment, in addition to its other jobs.
 
+**Scope (owner, 2026-10-20):** the AVD environment itself, meaning each operated estate and its environments. The family's own project RAID log (risks and actions about building these repos) is kept privately, outside this repo. The two never share a store. They line up by row format only (section 4, `uid`), so a project row can name an estate row, or the reverse, without either copying the other.
+
 The brain already holds most of the pieces, spread out:
 
 | Piece | Where it is | What it lacks for a RAID log |
@@ -34,6 +36,8 @@ Nothing found joins a risk register to measured facts so that a changed fact reo
 
 ## 3. Decision: a sibling record, C25, linked by ID to C18
 
+The owner confirmed R1 (2026-10-20): one RAID log for the estate, beside the lifecycle records.
+
 **C25 `avd-raid-log/v1`**, one file per estate in its vault, `raid/raid.json`, beside `lifecycle/<env>.json`. Decisions stay in C18 and are referenced, never copied.
 
 Why a sibling rather than more arrays inside C18:
@@ -50,7 +54,9 @@ One document per estate: `schema`, `estate` (`est-`), `generatedUtc`, `pins` (fa
 
 | Field | Meaning |
 |---|---|
-| `id` | `rsk-NNNN`, `asm-NNNN`, `iss-NNNN`, `dep-NNNN` or `act-NNNN`; never reused, gaps left (as CAF does) |
+| `id` | `rsk-NNNN`, `asm-NNNN`, `iss-NNNN`, `dep-NNNN` or `act-NNNN`; never reused, gaps left (as CAF does). People and links use this |
+| `uid` | A [ULID](https://github.com/ulid/spec) (26 characters, sortable by time, made offline with no counter to share), fixed for the row's life. It is what another ledger cites to crosswalk to this row. It is deliberately not a GUID: the family's leak checks treat any GUID as a possible tenant or object ID and refuse it |
+| `xref` | Rows in another ledger that this row relates to, as `ledger:<ULID>`, plus public family work items as `gh:<repo>#<number>` (an estate issue waiting on a landing-zone fix). IDs only: a crosswalk never copies a title or note |
 | `type` | `risk`, `assumption`, `issue`, `dependency`, `action` |
 | `title` | One line, at most 120 characters of the C18 note alphabet: no names, IDs, addresses or links. Harvests drop it |
 | `category` | CAF's list plus AVD's: `compliance`, `security`, `cost`, `operations`, `data`, `resource`, `identity`, `network`, `performance`, `user-experience`, `capacity`, `supportability`, `vendor`, `other` |
@@ -140,8 +146,9 @@ Names come back only in the vault's own Markdown through `ownerKey` and the peop
 
 | # | Question | Default |
 |---|---|---|
-| R1 | A sibling C25 per estate, or more arrays in C18 per environment? | Sibling C25 (§3) |
+| R1 | A sibling C25 per estate, or more arrays in C18 per environment? | **Decided** (owner, 2026-10-20): one per estate, for the AVD environment; the project's own log is private and elsewhere |
 | R2 | Owners as roles plus a private key, or a person's name in the JSON? | Roles plus `ownerKey`; names only in the vault's people page |
 | R3 | Default review cadence | Monthly, plus event-based |
 | R4 | Can the brain mark an action `done-verified` from a C10 outcome without a person? | No: it proposes, a person keeps it |
 | R5 | A GitHub issues view of actions in the vault repo | Later, one-way, optional |
+| R6 | Row IDs for crosswalks: a GUID per row, or a ULID? | ULID (`uid`), because a GUID per row trips every family leak check; the private project ledger uses the same format |

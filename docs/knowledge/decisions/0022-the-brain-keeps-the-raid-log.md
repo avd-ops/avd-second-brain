@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-The owner asked (2026-10-20) for the brain to be the living RAID log (risks, assumptions, issues, dependencies) and the action and decision tracker for an AVD environment. Decisions already have a home in the lifecycle record (C18, [0020](https://github.com/nickprignano/avd-second-brain/pull/45)), findings in C21, a person's dispositions and remediation items in the proposed C23 and C24, and the why of a change in avd-swarm's plans. Nothing holds risks, assumptions, issues, dependencies and actions with an owner, a due date and a status, linked to those records. Where does that register live, and how does it stay optional?
+The owner asked (2026-10-20) for the brain to be the living RAID log (risks, assumptions, issues, dependencies) and the action and decision tracker for an AVD environment. Decisions already have a home in the lifecycle record (C18, [0020](https://github.com/nickprignano/avd-second-brain/pull/45)), findings in C21, a person's dispositions and remediation items in the proposed C23 and C24, and the why of a change in avd-swarm's plans. Nothing holds risks, assumptions, issues, dependencies and actions with an owner, a due date and a status, linked to those records. Where does that register live, and how does it stay optional? The scope is the AVD environment itself; the owner keeps the project's own RAID log privately, outside this repo (2026-10-20).
 
 ## Considered Options
 
@@ -24,6 +24,7 @@ Chosen option: "a sibling contract, C25", because RAID items are often estate-wi
 
 - Good, because the brain can reopen a risk or an assumption when a fact it names changes, and close an action from the evidence of the change that did it, which no RAID template does.
 - Good, because the foundation repos and avd-swarm need no change: the brain reads what they already write.
+- Good, because each row carries a ULID, so the private project ledger and an estate's log can cite each other's rows without sharing a store or copying text.
 - Bad, because it is one more contract to keep, and it waits on C18 (#45) and on avd-assess publishing C23 and C24.
 
 ## More Information
