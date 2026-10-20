@@ -106,14 +106,14 @@ What avd-swarm learned in a month, as counts, for the harvest. It is the only wa
   "outcomes": [ { "action": "restart-avd-agent", "verified": 9, "failed": 1, "rolledBack": 0,
                   "rejected": { "wrong-target": 1, "not-now": 2 } } ],
   "incidents": [ { "category": "gate.refused", "trigger": "rate", "count": 2, "stoppedBy": "gate" } ],
-  "grading": [ { "judge": "answers", "window": "2027-W02", "seeded": 120, "caught": 116, "alarm": false } ],
+  "grading": [ { "judge": "answers", "seeded": 120, "caught": 116, "alarms": 0 } ],
   "spend": { "runs": 4, "refused": { "over-run-cap": 1 }, "medianActualToEstimate": 0.92, "teardownsWithLeftovers": 0 },
   "docs": { "findingsDrafted": 6, "merged": 5, "rejected": 1 }
 }
 ```
 
 **Rules.**
-- **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9: start from the agents' areas and this repo's check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
+- **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9, owned by this repo since `knowledge/` consumes it; default: the agents' areas plus avd-current-state's validator check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
 - **The negative side counts as much as the positive** (incidents, rejections, failed verifications, judge alarms), so guardrail defaults learn from what went wrong.
 - **A person carries it across.** The adopter's private repo produces it; a person attaches it to a harvest PR here. The brain never pulls from an adopter, and no swarm identity writes to this repo.
 - `Test-BrainKnowledge` and the leak check run over it like any harvest input; a finding means the exporter is wrong, never that a pattern should loosen.
@@ -153,19 +153,26 @@ How the brain asks avd-swarm to run one of its playbooks for one episode. A prop
 
 What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so.
 
-**The switch position is read, not sent.** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1). The brain's model calls go through the same metered, flag-checking model client as the swarm's agents, so `halt-agents` and `halt-all` stop them whatever the brain's own code does; the brain also reads the flag before it sends a proposal. A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position. This part applies from v1.
+**The switch position is read, not sent (v1, avd-swarm build step 2).** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the brain's runtime reads it with Reader on that resource group only (avd-swarm identities.md). A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position.
 
-**Outcomes are a filtered copy of avd-swarm's change events.** The brain's runtime is registered in avd-swarm's observer registry as a **subscriber**: it receives the change-workflow events (governance §2.2) and has no `verdict` or `trip` call. What it keeps:
+- **In v1** the brain's only model call is Tier 1's Diagnose, which runs as Claude Code in GitHub Actions with its own client. So the `brain-diagnose` workflow's first step reads the flag and exits at `halt-agents` or above, or when it can't read it. Its spend is capped by the action's max turns and a workspace limit, and reconciled by the daily job (red team V1-8).
+- **From Tier 3** the brain's model calls go through the metered, flag-checking model client avd-swarm owns, consumed as a pinned package, never a copy.
+- **Without avd-swarm** (red team V1-9; owner decision D13 in the [v1 review](v1-review.md)). Default: the brain's deployable creates the same tag on its own resource group, and a person sets it from Cloud Shell. One flag, two possible homes: when avd-swarm is present, its flag wins and the brain's is ignored. The alternative is that a brain without a swarm runs only with `AVD_BRAIN_MODEL=none`.
+
+**Outcomes come later (avd-swarm build step 4)**, with C8 and C9 (red team V1-7).
+
+**Outcomes are a filtered copy of avd-swarm's change events.** The brain's runtime is registered in avd-swarm's observer registry as a **subscriber**: it receives the change-workflow events (governance §2.2) and has no `verdict` or `trip` call. The events carry resource IDs, parameters and approvers, and every brain store holds pseudonyms only (operations spec §9.4), so **the subscriber filters on ingest** (red team V1-12): it pseudonymizes targets with the `resources` subkey, drops parameters and approvers, and keeps only the fields below. Group actions never carry a UPN; user object IDs stay inside avd-swarm's plan store (closes GQ4). What it keeps:
 
 | Field | Value |
 |---|---|
 | `planId`, `proposalId` | The plan, and the C9 proposal it came from, if any |
+| `targets` | Pseudonyms (`hp-`, `vm-`), so an outcome joins C11 facts and episodes even for an operator-requested plan with no proposal |
 | `action`, `playbook` | Catalog action ID; playbook ID and version, if any |
 | `outcome` | `verified`, `failed`, `rolled-back`, `rejected`, `expired` |
 | `reasonCategory` | For rejections, from avd-swarm's fixed list |
 | `why` | When the plan carries one (avd-swarm decision 0007, "every plan says why"): its lifecycle `kind` (C18's event kinds: build, configure, expand, contract, fix, recover, retire), its `useCases` (`uc-NN`) and its `decision` (`dec-NNNN`), IDs and fixed words only, so the brain can tie the outcome to C18's lifecycle record |
 | `times` | Proposed, approved, started, verified |
-| `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; resource IDs only for regressions |
+| `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; regressions as `(control, target pseudonym)` |
 
 It stays in the adopter's tenant (operations memory, architecture §3); it never reaches this repo except as C8 counts through a harvest.
 
@@ -186,7 +193,7 @@ collector + validator packages ──C1──► estate vault (private; names an
 
 **What it can't hold.** The schema has no field for a name, a resource ID, an object ID, an IP address, a tag, a user, a check's scope or detail, or a recommendation, and every string has a pattern. A custom role counts as `other`; a value that doesn't fit its pattern becomes `other` and is counted in `redactedValues`. A validator check name that contains a collected name becomes `redacted`. The producer scans the result for GUIDs, email addresses, UNC paths and IPv4 addresses and refuses to write it if it finds one; the importer runs the brain's guard over it again and refuses on any finding.
 
-**Pseudonyms.** `sub-`, `hp-`, `st-` and `est-` (the tenant) followed by the first 8 hex characters of HMAC-SHA256 over the kind and the lowercased resource ID, keyed with the estate's **`resources` subkey**. The same key gives the same pseudonyms on every run, so the brain sees one host pool's trend without its name. The brain keeps no mapping: whoever needs the real target recomputes the pseudonym over live resource IDs with the key, in the tenant. With an operations brain deployed, the key is derived from the landing zone's Key Vault `resources` secret with HKDF-SHA256 ([operations spec](operations-spec.md) §9.4). It is not the `users` subkey, which rotates every 12 months to crypto-shred user pseudonyms: resource IDs aren't personal data, so a host pool's trend line survives that rotation (second red team AX-16). Without an operations brain, the key is a file beside the vault (`.brain/facts.key`, ignored by the vault template's `.gitignore`), backed up like any secret and never committed. The producer (avd-current-state) moves to the derived subkey when it is next changed; until then its file key is already separate from any user key.
+**Pseudonyms.** `sub-`, `hp-`, `st-` and `est-` (the tenant) followed by the first 8 hex characters of HMAC-SHA256 over the kind and the lowercased resource ID, keyed with the estate's **`resources` subkey**. The same key gives the same pseudonyms on every run, so the brain sees one host pool's trend without its name. The brain keeps no mapping: whoever needs the real target recomputes the pseudonym over live resource IDs with the key, in the tenant. With an operations brain deployed, the key is derived with HKDF-SHA256 from the `resources` secret in **the brain's own Key Vault**, created by the brain's deployable, never a secret inside the landing zone's deployment ([operations spec](operations-spec.md) §9.4; red team V1-13, owner decision D12). avd-swarm's gate gets `get` on that `resources` secret only, to recompute pseudonyms over live resource IDs when it checks a C9 proposal; without a brain there is no C9 and no such check. It is not the `users` subkey, which rotates every 12 months to crypto-shred user pseudonyms: resource IDs aren't personal data, so a host pool's trend line survives that rotation (second red team AX-16). Without an operations brain, the key is a file beside the vault (`.brain/facts.key`, ignored by the vault template's `.gitignore`), backed up like any secret and never committed. The producer (avd-current-state) moves to the derived subkey when it is next changed; until then its file key is already separate from any user key.
 
 **Freshness.** A snapshot is evidence of the moment its packages were collected (`collectedUtc`, `generatedUtc` per validator run), not of now. The brain cites it with that time: `facts:<estate>@<generatedUtc>#/subscriptions/0/hostPools/1`. avd-swarm's gate refuses a C9 proposal whose only evidence is a snapshot older than its freshness limit (avd-swarm governance §2.1, 7 days by default) and resolves every target live before approval; a snapshot is a reason to propose, never the target list.
 
