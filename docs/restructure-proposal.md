@@ -34,8 +34,9 @@ Verdicts: **Keep**, **Move** (to the named repo), **Retire** (frozen in place as
 | C22, C23, C24 (proposed) | Check catalog, assessment review, remediation plan | Move | avd-assess `contracts/`, never registered here |
 | C14 target state | The design the landing zone reads | Owner (G1) | Kept here by 0021 |
 | C16 Stratusphere instrument | Between avd-liquidware and the assessment factory; never reaches the brain | Move | avd-liquidware, with its producer |
-| `knowledge/rules/workload-tiers.json`, `quality-gate.json` | Baselines and a data-quality gate | Move | avd-assess `baselines.yaml` already holds the same sizing prior with citations; keep one copy there |
-| `knowledge/rules/delivery.json`, `knowledge/engagements/`, C3, C5, C6, the `harvest` skill, [knowledge-spec.md](knowledge-spec.md), decision 0002 | The migration factory's engine knowledge and its feed | Owner (G2) | Belongs with the assessment factory, not the estate brain |
+| `knowledge/rules/workload-tiers.json` | The sizing prior | Move | avd-assess `baselines.yaml` already holds the same prior with citations; keep one copy there (R3: calibration and the tests read it first) |
+| `knowledge/rules/delivery.json`, `quality-gate.json` | The factory's stage 4 and stage 3 rules | Move (G2) | The private assessment factory repo (copied, its decision 0004) |
+| `knowledge/engagements/`, C3, C5, C6, the `harvest` skill, [knowledge-spec.md](knowledge-spec.md), decision 0002 | How estates feed the catalog and calibration, and how the factory reads them | Keep (G2, revised) | They serve the guidance that stays; the spec gets a note that the stage rules moved |
 | `knowledge/catalog/apps.json` | App compatibility verdicts with evidence | Owner (G3) | Guidance (keep) or a standard (avd-assess) |
 | `knowledge/runbooks/` | Shared runbooks copied into new vaults | Keep | Guidance for vaults |
 | [assess-spec.md](assess-spec.md) | avd-assess's own spec | Move | avd-assess `docs/`; a stub here points to it |
@@ -92,7 +93,7 @@ Moving `knowledge/` to `guidance/` is a rename for clarity; it is optional and c
 Each has a default. The owner chose all of them (2026-10-20).
 
 - **G1. C14 target state.** The landing zone reads it, so it is arguably a foundation contract. Default: keep here, as 0021 decided; revisit when the factory producer is built.
-- **G2. The migration factory's engine knowledge** (delivery rule, engagements, harvest, C3, C5, C6, knowledge-spec). Default: move to the private assessment factory repo, leaving a public stub, because none of it is about one estate's why.
+- **G2. The migration factory's engine knowledge.** Default: move it to the private assessment factory repo. Revised on a closer read (2026-10-20): only the stage rules (delivery, quality gate) are the factory's own. The harvest, engagement records and C3, C5 and C6 feed and serve the catalog and calibration, which stay here as guidance, so they stay too.
 - **G3. The app catalog.** Default: keep as guidance; it is learned across estates.
 - **G4. Docs consistency and the handbook.** Default: move to avd-ops, with a paired avd-swarm PR for the Scribe.
 - **G5. Owner-decision lists in public docs** (v1-review D1 to D18, status lines). Default: once answered, each becomes a settled line in its spec; open items live only in the private log.
