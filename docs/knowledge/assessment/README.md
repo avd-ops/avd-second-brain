@@ -14,7 +14,7 @@ How an estate is assessed and sized before and after a migration: the app catalo
 
 - [The knowledge base spec](../../knowledge-spec.md): catalog, rules, calibration and the harvest
 - [Contracts C4, C11 and C12](../../contracts.md): sizing evidence, current-state facts and forensic facts
-- [avd-assess spec](../../assess-spec.md) (draft): the free baseline assessment, a method as data over C11 facts and intake
+- [avd-assess spec](../../assess-spec.md) (draft): a research index of AVD assessment methodology (collection, assessment, benchmarks, scoring), pinned references validated by our own observations
 
 ## Upstream sources for a baseline assessment
 
