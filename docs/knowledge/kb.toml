@@ -8,3 +8,10 @@
 # engine knowledge, which changes only by a reviewed harvest PR.
 capture_hook = "block"
 capture_ignore = ["wiki/**", "knowledge/**"]
+
+# Decision 0015 (ai-brain 0014): a PR that only touches these paths turns on GitHub's auto-merge
+# through the kb-auto-merge workflow. Off until the owner has turned on "Allow auto-merge" and the
+# branch ruleset; a separate PR turns it on. Code, scripts, workflows, decisions and engine
+# knowledge (knowledge/**) never qualify.
+auto_merge = "off"
+auto_merge_paths = ["docs/knowledge/**", "llms.txt"]
