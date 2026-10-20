@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Turn an accepted KB feedback or known-error issue into a change to the KB's YAML data.
 
 Run by .github/workflows/kb-feedback.yml when a maintainer labels an issue kb-accepted. It reads

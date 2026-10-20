@@ -270,16 +270,16 @@ path = "docs/knowledge"
 kb_page = "curation.md"
 
 [[source]]
-name = "AI research KB: decisions"
+name = "2ndbrain format: decisions"
 kind = "github_commits"
-repo = "nickprignano/ai-brain"
+repo = "nickprignano/2ndbrain"
 path = "docs/knowledge/decisions"
 kb_page = "curation.md"
 
 [[source]]
-name = "AI research KB: changes"
+name = "2ndbrain format: changes"
 kind = "github_commits"
-repo = "nickprignano/ai-brain"
+repo = "nickprignano/2ndbrain"
 path = "docs/knowledge"
 kb_page = "curation.md"
 
@@ -294,5 +294,19 @@ kb_page = "curation.md"
 name = "Liquidware KB: changes"
 kind = "github_commits"
 repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge"
+kb_page = "curation.md"
+
+[[source]]
+name = "avd-ops KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-ops"
+path = "docs/knowledge/decisions"
+kb_page = "curation.md"
+
+[[source]]
+name = "avd-ops KB: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-ops"
 path = "docs/knowledge"
 kb_page = "curation.md"

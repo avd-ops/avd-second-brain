@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Fetchers for the KB curator. Standard library only, so it runs on any CI runner."""
 
 from __future__ import annotations

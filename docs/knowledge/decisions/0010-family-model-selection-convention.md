@@ -19,7 +19,7 @@ The AVD repos use Claude in two places: Claude sessions that build them, and avd
 
 Chosen option: "Follow the convention", because avd-swarm's spike already matches its fallback rules (Foundry first, the Claude API with workload identity federation when quota is missing, no stored API key), and the brain's agents can start on its defaults when they are built.
 
-Also recorded in: [AI 0006](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0006-model-selection-convention.md), the source of truth for the defaults, fallbacks, measures and pilot dates, and [Nerdio HCL kit 0022](https://github.com/nickprignano/nerdio-hcl/blob/main/docs/knowledge/decisions/0022-family-model-selection-convention.md).
+Also recorded in: [Nerdio HCL kit 0022](https://github.com/nickprignano/nerdio-hcl/blob/main/docs/knowledge/decisions/0022-family-model-selection-convention.md).
 
 For the pilot, the AVD repos:
 

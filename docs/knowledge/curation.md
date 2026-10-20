@@ -112,8 +112,8 @@ text, `last_reviewed` and `status`. Run it locally with `python3 scripts/kb/fres
 
 [family.yaml](family.yaml) lists every KB in the family, this one included (`self: true`): its
 repo, KB path, role, focus, what it's the source of truth for (`owns`) and the family format version.
-The AI KB is the hub: it owns the AI knowledge the others use. nerdio-hcl is the format's reference
-implementation. A sibling without a `repo` isn't linked yet. `build.py` turns the file into the
+2ndbrain is the format's reference (see [where the family format comes from](#where-the-family-format-comes-from)).
+A sibling without a `repo` isn't linked yet. `build.py` turns the file into the
 "Related knowledge bases" table in the [KB README](README.md#related-knowledge-bases) and a section
 in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in every KB.
 
@@ -136,6 +136,24 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
   all of them have merged. The freshness check flags a sibling whose version differs.
 - **Cross-project decisions.** A decision that affects more than one project is recorded in each
   affected KB, and each copy says "Also recorded in ..." with links.
+
+## Where the family format comes from
+
+- **2ndbrain is the template and the format reference.** The public template repo
+  [nickprignano/2ndbrain](https://github.com/nickprignano/2ndbrain) owns the family knowledge base
+  format, its scripts and its schemas (the `reference` row in [family.yaml](family.yaml)). The KB
+  tooling here is adapted from it under Apache-2.0 ([scripts/kb/NOTICE](../../scripts/kb/NOTICE)),
+  and this KB watches its decisions and KB folders in [sources.toml](sources.toml).
+- **The lanes extension is local.** The `claude_project`, `builds_in` and `not_here` fields and
+  their checks ([decision 0012](decisions/0012-family-format-project-lanes.md)) are this KB's own
+  extension of the format, kept when the scripts are re-ported from 2ndbrain.
+- **nerdio-hcl is related, not family.** It is a separate project. Its row stays so the lanes can
+  refer Terraform, Packer, HCL and Nerdio asks to it and its prior art can be linked, but it is not
+  the format source and the AVD repos never depend on it.
+- **avd-ops is the front door.** [avd-ops](https://avd-ops.dev/)
+  ([nickprignano/avd-ops](https://github.com/nickprignano/avd-ops)) is the brand in front of every
+  public AVD repo and holds the onboarding and user-facing docs; this KB keeps the facts, gotchas
+  and decisions behind them. Each AVD repo's README says so in one line under its title.
 
 ## Upstream: link out, check against, give back
 
