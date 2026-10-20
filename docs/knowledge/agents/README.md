@@ -16,11 +16,15 @@ sources:
   - https://styleguide.mailchimp.com/voice-and-tone/
   - https://www.nngroup.com/articles/tone-of-voice-dimensions/
   - https://www.anthropic.com/constitution
+  - https://learn.microsoft.com/azure/static-web-apps/authentication-custom
+  - https://learn.microsoft.com/azure/static-web-apps/apis-overview
+  - https://learn.microsoft.com/azure/static-web-apps/apis-functions
+  - https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/
 ---
 
 # AI agents in the AVD repos
 
-How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General facts about Claude, the Claude API, prompting and evals belong to the [AI research knowledge base](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge); this page keeps only how the AVD repos use them. The security section and avd-buddy's voice are written so far.
+How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General facts about Claude, the Claude API, prompting and evals belong to the [AI research knowledge base](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge); this page keeps only how the AVD repos use them. The security section, avd-buddy's voice and avd-buddy as an installable app are written so far.
 
 ## Where it lives today
 
@@ -46,3 +50,13 @@ Checked on 2026-10-20 for [avd-swarm's voice spec](https://github.com/nickprigna
 - **Put the joke in its own field and make it unable to carry a fact.** One optional sentence, checked in code for banned topics and for digits, links, code, IDs and estate names, dropped silently on any finding and never kept in history, plans or evals. Plans and approval text stay rendered from the plan store, so no tone reaches them.
 - **Wit doesn't translate.** Microsoft's global writing tips say to avoid idioms and culture-specific references ([writing tips](https://learn.microsoft.com/style-guide/global-communications/writing-tips)), so the aside is English-only and the answer stays plain in every language.
 
+## avd-buddy as an installable web app
+
+Checked on 2026-10-20 for [avd-swarm's app spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/buddy-app.md) (proposed). The owner asked for a mobile app for the chatbot that can be an installable web app (PWA) for now. Nothing was built or run.
+
+- **Static Web Apps' built-in sign-in keeps every token off the device.** The platform runs the Entra flow and gives the browser an HTTP-only cookie; the API reads the user from a header the platform adds. MSAL.js in the page would keep tokens in browser storage instead.
+- **The Entra provider needs no client secret.** The app registration can trust a user-assigned managed identity as a federated credential (the `OVERRIDE_USE_MI_FIC_ASSERTION_CLIENTID` setting), workforce tenants only ([custom authentication](https://learn.microsoft.com/azure/static-web-apps/authentication-custom)). The provider's `openIdIssuer` holds the tenant ID, so a public repo generates `staticwebapp.config.json` at deploy time instead of committing it.
+- **Static Web Apps APIs are HTTP only and stop at 45 seconds** ([API constraints](https://learn.microsoft.com/azure/static-web-apps/apis-overview)), so a long agent answer has to come back through short polls, not one request or a WebSocket.
+- **Managed functions have no managed identity or Key Vault references** ([comparison](https://learn.microsoft.com/azure/static-web-apps/apis-functions)). An API that calls other Azure services without secrets needs a linked ("bring your own") Functions app, which needs the Standard plan.
+- **Web push on iPhone and iPad works only after Add to Home Screen, on iOS and iPadOS 16.4 or later** ([WebKit](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/)), needs a tap to opt in, and vendors report deliveries that stop silently. Treat push as a convenience with an empty payload, never the only signal for an approval.
+- **Lighthouse no longer has a PWA category,** so installability needs its own tests (manifest fields, service worker offline behavior), for example in Playwright.
