@@ -35,13 +35,14 @@ So nothing named avd-assess exists, but most of its inputs do. It adds the metho
 
 ## 3. Prior art: what we build on
 
-Searched 2026-10-20 (GitHub, PowerShell Gallery, Microsoft Learn), plus the family's prior-art report. Microsoft sources are the source of truth for recommendations; avd-assess cites them by their own IDs and links them.
+Searched 2026-10-20: Microsoft Learn (the Learn MCP search), the web, the PowerShell Gallery, the upstream repos' own pages, the family's prior-art report and adoption spec, and the family KB (`scripts/kb/prior_art.py`). GitHub's search API and the sibling KBs returned HTTP 403 from the build container, so GitHub was checked repo by repo, not searched broadly. Microsoft sources are the source of truth for recommendations; avd-assess cites them by their own IDs and links them.
 
 | Source | What it gives us | License | How avd-assess uses it |
 |---|---|---|---|
-| [Azure/review-checklists](https://github.com/Azure/review-checklists), `checklists/avd_checklist.en.json` | The AVD landing zone review checklist: items with GUIDs, WAF pillar, severity, Learn links, and Resource Graph queries for many | MIT | Each check that comes from it cites the checklist item's GUID and link. Pinned by commit. The checklist's Resource Graph queries are a later, optional reader (§10, phase 6) |
-| [Azure Proactive Resiliency Library v2](https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2) (`azure-resources/DesktopVirtualization/`: host pools, scaling plans, workspaces) and the [WARA module](https://www.powershellgallery.com/packages/wara) that runs it | Reliability recommendations with Resource Graph queries; WARA's collector runs them against a subscription and writes JSON | MIT | **WARA is the rule engine for live checks (owner, 2026-10-20); we don't write our own.** The operator runs WARA's collector; avd-assess imports its output, keeps only AVD recommendations, and turns resource IDs into the C11 pseudonyms (§5a). Checks cite APRL recommendation IDs |
-| [Well-Architected AVD workload guidance](https://learn.microsoft.com/azure/well-architected/azure-virtual-desktop/overview) and the [Azure Virtual Desktop workload assessment](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations#specialized-well-architected-reviews) (Microsoft Assessments) | The design questions, by pillar | Microsoft Learn content | Our intake questions and check wording link to it; we don't copy its questions |
+| [Azure/review-checklists](https://github.com/Azure/review-checklists), `checklists/avd_checklist.en.json` | The AVD review checklist: items with a short ID (`A01.01`), category, WAF pillar, severity and Learn link. The AVD items carry no Resource Graph query, so the evidence for each is ours to map | MIT | A check that comes from it cites the item's short ID and link (not its GUID, which the leak guard reads as tenant data). Pinned by commit |
+| [Azure Proactive Resiliency Library v2](https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2) (`azure-resources/DesktopVirtualization/`: host pools, scaling plans, workspaces) and the [WARA module](https://github.com/Azure/Well-Architected-Reliability-Assessment) that runs it | Reliability recommendations (Reliability only) with Resource Graph queries. `Start-WARACollector -AVD` writes JSON; the analyzer writes Excel and the reporter PowerPoint, which needs Windows. Needs PowerShell 7.4, Az.Accounts and Az.ResourceGraph | MIT | **WARA is the rule engine for live reliability checks (owner, 2026-10-20); we don't write our own.** avd-assess reads only the collector's JSON (§5a). Checks cite APRL recommendation IDs |
+| The [Azure Virtual Desktop workload assessment](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations#specialized-well-architected-reviews) (Microsoft Assessments) and the pillar design review checklists (RE:01 and so on) | The design questions, by pillar, with stable codes | Microsoft Learn content | Intake questions and check wording link to them and cite the pillar code; we don't copy the questions. Links under `well-architected/azure-virtual-desktop/` now redirect into the AVD product docs, so link those directly |
+| [Windows Desktop Optimization Tool](https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool) (WDOT; it supersedes VDOT, which has no license) and Learn's [Optimizing Windows configuration for VDI desktops](https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration) | Windows desktop optimization: services, scheduled tasks, autologgers, default user settings, local policy | MIT (WDOT) | The landing zone's image build already runs WDOT at a pinned commit with a reviewed profile (`scripts/image/wdot/`). Image checks cite that profile as the source of truth. A session host's in-guest state isn't in C11, so those checks are `unknown` until a host fact exists (§11) |
 | PSRule for Azure | Rules for deployed resources, already run by the landing zone's `-WellArchitected` | MIT | Not re-run here; the landing zone keeps that check |
 | [Native session host health checks](https://learn.microsoft.com/azure/virtual-desktop/session-host-status-health-checks), AVD Insights | Health after the fact | Microsoft product | Out of scope: health is the validator's and the swarm's, not an assessment |
 | [microsoft/ARI](https://github.com/microsoft/ARI) (Azure Resource Inventory), the community Az.Avd module, documenter-azure-azurevirtualdesktop | Whole-subscription inventory (ARI writes an Excel workbook) and documentation | Check each LICENSE before reuse | Prior art only. The docs point an operator who wants a full inventory at ARI; avd-current-state's collector stays AVD-only and avd-assess doesn't inventory |
@@ -69,7 +70,7 @@ One JSON file, `method/method.json`, versioned like a rule (`version`, and a `hi
       "intake": [],
       "rule": { "each": "/subscriptions/*/hostPools/*", "where": { "type": "Pooled" }, "expect": { "startVmOnConnect": true } },
       "informs": ["hostPool.power"],
-      "upstream": [{ "source": "review-checklists/avd", "ref": "<checklist item guid>", "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect" }],
+      "upstream": [{ "source": "review-checklists/avd", "ref": "<checklist short ID, such as A01.01>", "url": "https://learn.microsoft.com/azure/virtual-desktop/start-virtual-machine-connect" }],
       "severity": "medium"
     }
   ],
@@ -99,7 +100,7 @@ The schema has no field for a name, a domain, an address, an ID or free text, an
 
 ## 5a. WARA findings (optional input)
 
-WARA's collector needs read access to the subscription and the module from the PowerShell Gallery, so it runs in Cloud Shell, not inside avd-assess. `Import-AvdWaraResult` (avd-assess) reads the collector's JSON and writes `wara-findings.json`: for each AVD recommendation (APRL ID, pillar, WARA's impact), the pseudonyms of the resources it found (same `resources` subkey as C11) and a count. Resource IDs, names and WARA's free-text fields are dropped, and the result passes the same guard as C11. Checks can then cite `wara:<APRL ID>` beside C11 facts, with the outcome `gap` when WARA found the resource and `unknown` when no WARA file was given. Without WARA, the assessment still runs on C11 and intake. The WARA output shape is pinned to a module version and tested with a synthetic file; a newer WARA version that changes it fails the test, never silently.
+WARA's collector needs read access to the subscription and the module from the PowerShell Gallery, so it runs in Cloud Shell, not inside avd-assess. `Import-AvdWaraResult` (avd-assess) reads the collector's JSON and writes `wara-findings.json`: for each AVD recommendation (APRL ID, pillar, WARA's impact), the pseudonyms of the resources it found (same `resources` subkey as C11) and a count. Resource IDs, names and WARA's free-text fields are dropped, and the result passes the same guard as C11. This is the family's one WARA reader: avd-swarm's proposed chat review reuses this module (a paired swarm change when it is built) instead of writing its own. Checks can then cite `wara:<APRL ID>` beside C11 facts, with the outcome `gap` when WARA found the resource and `unknown` when no WARA file was given. Without WARA, the assessment still runs on C11 and intake. The WARA output shape is pinned to a module version and tested with a synthetic file; a newer WARA version that changes it fails the test, never silently.
 
 ## 6. Which way dependencies point, and how the copies stay in sync
 
@@ -122,6 +123,7 @@ Owner's rule: avd-landing-zone and avd-current-state are a self-contained pair t
 
 - `assess/method.json` and `assess/AvdAssess.psm1`, byte-identical to avd-assess at the commit in `assess/PINS.json` (`assessCommit` and a SHA-256 per file). `tests/Facts.Tests.ps1` checks the hashes, as it does for `contracts/PINS.json` today. One PR updates the files, the commit and the hashes together.
 - The facts script gets `-Assess` (and keeps its coverage line). After writing the snapshot it runs the pinned method and writes `assessment.json` and `assessment.md` beside it. Same redaction guard, same refusal to write inside a repo.
+- How avd-current-state collects doesn't matter to the method. Its collector is moving to Azure Resource Graph reads (`DesktopVirtualizationResources` and `Resources`, cmdlets only where Resource Graph lacks a property), with the package format and C11 unchanged; it doesn't wrap ARI. When a check needs evidence C11 doesn't have, the collector gains a C11 fact (a register change); avd-assess never queries Azure itself.
 - `Get-ManifestCoverage` moves into `AvdAssess.psm1` and comes back as part of the vendored copy, so coverage is defined once.
 - `AvdAssess.psm1` runs in Windows PowerShell 5.1 and PowerShell 7, with no modules, because avd-current-state does.
 
@@ -183,11 +185,12 @@ All offline; no cloud spend until phase 7, which waits on the owner's go and a c
 | 3 | avd-current-state | Vendor the method and module with `assess/PINS.json`, `-Assess`, coverage moved into the module |
 | 4 | this repo | `sources.json` entry, importer files assessment reports, the assessment topic page links the method |
 | 5 | this repo, avd-landing-zone, avd-assess | C14 changes (§7.2), PINS bump, then the baseline manifest writer |
-| 6 | avd-assess | Optional reader for the AVD review checklist's Resource Graph queries, mapped to check IDs |
+| 6 | avd-current-state, avd-assess | Evidence the first checks show is missing becomes C11 facts read through Resource Graph, then checks that use them |
 | 7 | (owner's go) | One sandbox run: collector, WARA collector, facts, `-Assess`, baseline manifest, the landing zone's reader in dry run; teardown evidence |
 
 ## 11. Open questions
 
 1. Where it lives (§9).
 2. Whether the baseline manifest writer is free. The owner said avd-assess is free; this spec reads that as including the writer, the one thing a free user can't do today.
-3. Whether the method should also carry the validator's pass/fail rules (about 260 checks), or keep those in avd-current-state and cite them by check name. This spec keeps them where they are: the validator judges a subscription's readiness to deploy, the method judges an estate's design.
+3. Image optimization: whether a session host's WDOT state becomes a fact (a tag the landing zone's image build writes on the gallery image version, or a host-side read by the validator), so image checks can leave `unknown`.
+4. Whether the method should also carry the validator's pass/fail rules (about 260 checks), or keep those in avd-current-state and cite them by check name. This spec keeps them where they are: the validator judges a subscription's readiness to deploy, the method judges an estate's design.
