@@ -3,7 +3,7 @@ title: "Cost and spend"
 summary: "Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence"
 topic: cost
 status: partial
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-20
 ---
 
 # Cost and spend
@@ -22,3 +22,6 @@ What AVD and its test sandboxes cost and how spend stays capped: the retail pric
 ## Sandbox runs
 
 - Every sandbox run needs a cost estimate first, run-cost evidence, teardown evidence and a monthly reconciliation ([avd-swarm spend process](https://github.com/nickprignano/avd-swarm/blob/main/docs/spend.md)).
+- A public lab must carry its own spend guard: a run that opens and closes through a private repo can't be run by anyone else. avd-swarm's [spend guard](https://github.com/nickprignano/avd-swarm/blob/main/spend/README.md) refuses before any deploy (unpriced line, over the run cap, month to date plus estimate over the monthly cap, a second open run) and keeps its records outside the repo.
+- Azure has no hard stop on spend: a budget only alerts. Enforce caps before the run opens and check the run's due time on every resume; cap model tokens per call in the agent service, with the provider's workspace limit as the backstop.
+- Cost Management lags the spend, so month to date for a cap check is billed cost plus the estimates of runs not yet settled, and a run's actual cost is settled no sooner than three days after teardown. Read it by the run's own resource group and day, so charges after the close day show up as a tail. *Unverified:* no settled run recorded yet.
