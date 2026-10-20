@@ -49,10 +49,12 @@ data such as profiles.
 3. **A copy counts when it is durable, outside what is being deleted, and checked.** Checked
    means the copy was read back and matched against a SHA-256 manifest (or row counts, for a
    table export) before the delete starts. Accepted copies:
-   - a **private** GitHub repository or branch, the way a spend ledger branch works: compressed
-     first, each file under 50 MiB in git (GitHub warns at 50 MiB and rejects files over
-     100 MiB), files up to 2 GiB each as release assets of that private repository, with the
-     manifest in git;
+   - the operator's **private companion repository**: a separate private GitHub repository the
+     operator owns, never a public repo and never a product repo (scripts check its visibility
+     and refuse a public one). Compressed first, each file under 50 MiB in git (GitHub warns at
+     50 MiB and rejects files over 100 MiB), files up to 2 GiB each as release assets of that
+     repository, with the manifest in git. The same repository can hold the operator's estate
+     vault and anything else from avd-second-brain that should stay private to them;
    - a standing store outside the resource group being deleted, such as the run store (rule 2);
    - an archive downloaded to the operator's own machine, with its hashes.
    - any other target behind a copy hook that reads the copy back and returns its hashes, when
