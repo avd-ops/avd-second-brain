@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-Work that starts in one Claude project often has to continue in another, and until now the owner pasted the prompt across and remembered what it waited on. The family accepted handoff issues ([AI 0012](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0012-family-format-handoff-issues.md)). Does this repo receive handoffs that way?
+Work that starts in one Claude project often has to continue in another, and until now the owner pasted the prompt across and remembered what it waited on. The family accepted handoff issues (the 2ndbrain format). Does this repo receive handoffs that way?
 
 ## Considered Options
 
@@ -19,11 +19,11 @@ Work that starts in one Claude project often has to continue in another, and unt
 
 Chosen option: "Receive handoffs as `handoff` issues", because this repo is where the AVD project already looks, and an issue carries the prompt, what it waits on and the report back.
 
-Also recorded in: [AI 0012](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0012-family-format-handoff-issues.md), the source of truth for the issue shape, approval, pickup and report back.
+The issue shape is the 2ndbrain format's [handoff template](https://github.com/nickprignano/2ndbrain/blob/main/.github/ISSUE_TEMPLATE/handoff.md).
 
 In this repo:
 
-- `.github/ISSUE_TEMPLATE/handoff.md`, unchanged from ai-brain's template export. It applies `handoff-proposed`; a handoff is live only when the owner adds `handoff` by hand, and projects never add it themselves.
+- `.github/ISSUE_TEMPLATE/handoff.md`, unchanged from [2ndbrain](https://github.com/nickprignano/2ndbrain). It applies `handoff-proposed`; a handoff is live only when the owner adds `handoff` by hand, and projects never add it themselves.
 - The `handoff` and `handoff-proposed` labels, created by `kb-freshness`.
 - A `SessionStart` hook in `.claude/settings.json` runs `scripts/kb/handoffs.py session-start`, which lists the open handoff issues the owner's account opened. It never fails a session.
 - The `AGENTS.md` line: check open `handoff` issues before starting work.

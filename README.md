@@ -1,5 +1,7 @@
 # avd-second-brain
 
+Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desktop.
+
 The organizational second brain for **Azure Virtual Desktop**: one memory across the whole lifecycle, from assessing an estate with Stratusphere, through its current state and its deployment, to operating it. It remembers what each estate looked like and what broke. It also remembers what the organization learned and why each rule is what it is, so the next estate starts smarter than the last one.
 
 > [!WARNING]

@@ -316,6 +316,8 @@ Playbooks are actions in `scripts/automation/Invoke-AvdPlaybook.ps1`. Like decis
 
 > **Where these rules are enforced now** (second red team AX-2): avd-swarm executes every change (decision 0003), so the rules below are preconditions every host action in its catalog declares ([avd-swarm spec §5a](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#5a-action-safety-rules-ported-from-the-brains-playbooks)), checked by its gate before approval and again from live state in the approve job, which rebuilds the plan and refuses on any difference. A change to a rule here comes with the matching change to that table, and the other way round.
 
+> **Recovery tests and failover** run the same way ([decision 0019](knowledge/decisions/0019-recovery-runs-through-the-swarm.md)): the landing zone owns the recovery scripts, avd-swarm runs them as `recovery` catalog actions with their own preconditions ([avd-swarm recovery spec §4](https://github.com/nickprignano/avd-swarm/blob/main/docs/recovery.md#4-catalog-actions)), and the brain reads the outcomes (C10) and the landing zone's run records (C17, use case `recovery`) to say whether a tier is met.
+
 - **Kill switch (EX-0004):** the levels and limits deploy from Git. The tag `avdlz-brain-killswitch` on the brain's resource group can only **lower** them (§4.5.1). If the tag can't be read, nothing runs. Default for a new deployment: `maxLevel = 1`.
 - **Blast radius:** at most one host per host pool in remediation at a time. Availability never drops below current demand plus one host, or the scaling plan's minimum, whichever is higher.
 - **Respect the other actors:**
@@ -332,7 +334,7 @@ Playbooks are actions in `scripts/automation/Invoke-AvdPlaybook.ps1`. Like decis
   - an Activity Log alert fires on `runCommands/write` by anyone except the deploy identity, an executor, or the image pipeline's `image-validate` identity on the QA resource groups (EX-0005). A write by an executor without a matching plan trips the kill switch (EX-0004);
   - decision 0011's runbook (EX-0001, EX-0002) is pinned by content hash as well (`publishContentLink.contentHash`; verify the property against the Automation API at build);
   - agents' identities are Reader plus Log Analytics Reader;
-  - no identity can write role assignments, policy or Key Vault secrets.
+  - no identity can write role assignments, policy or Key Vault secrets. One exception is proposed and waits on the owner: avd-swarm's failover identity, limited by an ABAC condition to the Desktop Virtualization User role for the registered AVD groups on the primary and standby application groups ([decision 0019](knowledge/decisions/0019-recovery-runs-through-the-swarm.md), [avd-swarm recovery spec §5](https://github.com/nickprignano/avd-swarm/blob/main/docs/recovery.md#5-identities)).
 - **Azure Policy stays the outer wall.** A plan that would violate policy fails, and that failure is an episode, not a retry.
 
 **Verification is mandatory and positive.** Every playbook names fresh evidence that must appear after the action, such as the session host's `Available` status with a `lastHeartBeat` later than the run. Missing data is a failed verification, not a cleared alert. "Fixed" means verified (CLAUDE.md: "Fixed" means done), not "the command returned 200".
