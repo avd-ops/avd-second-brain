@@ -612,12 +612,12 @@
     {
       "id": "intake.residency",
       "tier": "intake",
-      "contract": null,
-      "path": null,
+      "contract": "C19",
+      "path": "/residency",
       "grain": "estate",
       "unit": "region",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "region"
       ]
@@ -625,12 +625,12 @@
     {
       "id": "intake.preferredRegions",
       "tier": "intake",
-      "contract": null,
-      "path": null,
+      "contract": "C19",
+      "path": "/preferredRegions",
       "grain": "estate",
       "unit": "region",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "region"
       ]
@@ -638,12 +638,12 @@
     {
       "id": "intake.existingHub",
       "tier": "intake",
-      "contract": null,
-      "path": null,
+      "contract": "C19",
+      "path": "/existingHub",
       "grain": "estate",
-      "unit": "bool",
+      "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "network"
       ]
@@ -651,12 +651,12 @@
     {
       "id": "intake.identityConstraints",
       "tier": "intake",
-      "contract": null,
-      "path": null,
+      "contract": "C19",
+      "path": "/identityConstraints",
       "grain": "estate",
       "unit": "enum",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "identity"
       ]
@@ -730,12 +730,12 @@
     {
       "id": "intake.workingHours",
       "tier": "intake",
-      "contract": null,
-      "path": null,
+      "contract": "C19",
+      "path": "/workingHours",
       "grain": "estate",
       "unit": "hours",
       "privacy": "public",
-      "status": "specified",
+      "status": "built",
       "evidences": [
         "hostPool.power"
       ]
