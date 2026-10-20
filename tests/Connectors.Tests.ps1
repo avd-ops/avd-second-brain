@@ -219,6 +219,36 @@ Describe 'avd-sizing-evidence/v1 -> calibration' {
   }
 }
 
+Describe 'Foundation contracts vendored from avd-assess (decision 0021)' {
+  BeforeAll {
+    $script:contracts = Join-Path $script:root 'contracts'
+    $script:pins = Get-Content (Join-Path $script:contracts 'FOUNDATION-PINS.json') -Raw | ConvertFrom-Json
+  }
+
+  It 'pins a commit of avd-assess' {
+    $script:pins.source | Should -Be 'https://github.com/nickprignano/avd-assess'
+    $script:pins.assessCommit | Should -Match '^[0-9a-f]{40}$'
+  }
+
+  It 'every foundation file is byte-identical to avd-assess at the pinned commit' {
+    foreach ($p in $script:pins.files.PSObject.Properties) {
+      $file = Join-Path $script:contracts $p.Name
+      Test-Path -LiteralPath $file | Should -BeTrue -Because "$($p.Name) is pinned"
+      (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() | Should -Be $p.Value -Because "$($p.Name) is a copy; change it in avd-assess first"
+    }
+  }
+
+  It 'covers the foundation contracts and none of the brain''s own' {
+    $names = @($script:pins.files.PSObject.Properties.Name)
+    foreach ($f in 'fact-register.json', 'schemas/current-state-facts.schema.json', 'schemas/intake.schema.json', 'schemas/assess-method.schema.json', 'schemas/assessment.schema.json', 'schemas/run-record.schema.json') {
+      $names | Should -Contain $f
+    }
+    foreach ($f in 'schemas/target-state.schema.json', 'schemas/target-approval.schema.json', 'schemas/sizing-evidence.schema.json', 'schemas/doc-findings.schema.json') {
+      $names | Should -Not -Contain $f -Because 'the brain keeps its own contracts'
+    }
+  }
+}
+
 Describe 'Fact register (C15) and target-state manifest (C14)' {
   BeforeAll {
     $script:contracts = Join-Path $script:root 'contracts'
