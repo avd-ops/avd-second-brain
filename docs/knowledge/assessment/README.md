@@ -14,7 +14,8 @@ How an estate is assessed and sized before and after a migration: the app catalo
 
 - [The knowledge base spec](../../knowledge-spec.md): catalog, rules, calibration and the harvest
 - [Contracts C4, C11 and C12](../../contracts.md): sizing evidence, current-state facts and forensic facts
-- [avd-assess spec](../../assess-spec.md) (draft): a research index of AVD assessment methodology (collection, assessment, benchmarks, scoring), pinned references validated by our own observations
+- [avd-assess spec](../../assess-spec.md): a research index of AVD assessment methodology (collection, assessment, benchmarks, scoring), pinned references validated by our own observations. Roles: avd-landing-zone is how an estate is built and changed from here, avd-current-state is what is there now, avd-assess is what it should be and why
+- [Contracts C19 to C21](../../contracts.md#c19-avd-intakev1): intake (`avd-intake/v1`), the method avd-assess publishes (`index.json` and `method.json`) and the report avd-current-state will write (`avd-assessment/v1`), with `Test-AssessMethod` and `Test-AssessmentReport`
 
 ## Upstream sources for a baseline assessment
 

@@ -1,9 +1,11 @@
 # Spec: avd-assess, a research index for AVD assessment
 
-- **Status:** Draft, for the owner's review. Nothing here is built.
+- **Status:** Phases 0 to 2 built: this spec, the avd-assess seed, and the C19 to C21 schemas and checks here (§7). Phases 3 to 6 are not built.
 - **Owner's direction (2026-10-20):** `avd-assess` gets its own public MIT repo. It holds methodology only: collection, assessment, and target, benchmark and scoring. It is a **research project**. It doesn't reinvent anything that already exists. It links out to existing sources with immutable references and adds value by validating them against our own experience and observations. It writes new method only where nothing exists.
 - **Date:** 2026-10-20
 - **Builds on:** [decision 0005](knowledge/decisions/0005-one-schema-registry-and-fact-register.md) (one schema registry and fact register), [decision 0011](knowledge/decisions/0011-family-format-upstream-sources.md) (link upstream, don't restate), [decision 0018](https://github.com/nickprignano/avd-second-brain/pull/41) (proposed: the public family ends at its contracts), and contracts C11, C14, C15 and C17 in [contracts.md](contracts.md).
+
+- **Roles (owner, 2026-10-20):** avd-landing-zone is how the estate is built and changed from here; avd-current-state is what is there now; avd-assess is what it should be, and why.
 
 > Personal project. Research and learning only, not for production, provided as is. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft. Azure Virtual Desktop is a trademark of its owner.
 
@@ -119,20 +121,22 @@ For each fact ID in the register (C15), the Resource Graph table and property (`
 
 ### 6.2 Intake (`avd-intake/v1`, contract C19)
 
-The operator answers these once per estate, in an `intake.json` file beside their landing zone parameters. The schema lives in this repo and gives the register's five `intake.*` facts their paths: `/residency`, `/preferredRegions`, `/existingHub` (`none`, `azure-hub`, `vwan`, `other`), `/identity` (`entra-only`, `hybrid-ad`, `entra-ds`, `undecided`) and `/workingHours`. Each question links the reference that explains why it matters. The schema has no field for a name, a domain, an address, an ID or free text.
+The operator answers these once per estate, in an `intake.json` file beside their landing zone parameters. The schema lives in this repo and gives the register's five `intake.*` facts their paths: `/residency`, `/preferredRegions`, `/existingHub` (`none`, `azure-hub`, `vwan`, `other`), `/identityConstraints` (`entra-only`, `hybrid-ad`, `entra-ds`, `undecided`) and `/workingHours`. Each question links the reference that explains why it matters. The schema has no field for a name, a domain, an address, an ID or free text.
 
 ### 6.3 Checks: claims to facts
 
 A check is a declarative test of one or more claims against facts. It has a JSON pointer, a filter and an expectation, with no code:
 
 ```json
-{ "id": "asm-hostpool-start-vm-on-connect", "claims": ["ref:review-checklists-avd#<short ID>"],
-  "facts": ["c11.hostPool.startVmOnConnect", "c11.hostPool.type"],
-  "rule": { "each": "/subscriptions/*/hostPools/*", "where": { "type": "Pooled" }, "expect": { "startVmOnConnect": true } },
-  "informs": ["hostPool.power"], "severity": "medium" }
+{ "id": "asm-personal-start-vm-on-connect", "title": "Personal host pools use Start VM on Connect",
+  "pillar": "cost", "severity": "low", "claims": ["ref:review-checklists-avd#E01.05"],
+  "facts": ["c11.hostPool.type", "c11.hostPool.startVmOnConnect"],
+  "rule": { "each": "/subscriptions/*/hostPools/*", "where": { "type": { "eq": "Personal" } },
+            "expect": { "startVmOnConnect": { "eq": true } }, "onFail": "warn" },
+  "informs": ["hostPool.power"] }
 ```
 
-There are four outcomes: `pass`, `warn` (a trade-off to review), `gap` and `unknown`. Unknown is never guessed, and a model never decides an outcome. Every cited fact must be `built` in the register, every claim must exist in `references/`, and every `informs` value must be a register decision. Version 1 has about 20 checks. Image checks cite the WDOT reference and stay `unknown` until a host fact exists.
+There are four outcomes: `pass`, `warn` (a trade-off to review), `gap` and `unknown`. Unknown is never guessed, and a model never decides an outcome. A missing property makes a subject `unknown`, and a check's outcome is its subjects' worst (`gap`, `warn`, `unknown`, `pass`). Every cited fact must be `built` in the register, every claim must exist in `references/`, and every `informs` value must be a register decision (`Test-AssessMethod`). Version 1 has about 20 checks. Image checks cite the WDOT reference and stay `unknown` until a host fact exists.
 
 ### 6.4 Decision readiness and target-state rules
 
@@ -150,9 +154,11 @@ Observations test the model like any other claim: if a high score keeps coming w
 
 ## 7. Contracts
 
-- **C19 `avd-intake/v1`**: §6.2.
-- **C20 `avd-assess-method/v1`**: one schema each for references, observations and the gap files (checks, readiness, scoring), all in this repo per decision 0005.
-- **C21 `avd-assessment/v1`**: the report avd-current-state writes. It records the method's version and commit, the snapshot time and estate pseudonym, one row per check (outcome, pseudonyms, fact IDs, claims), and the pillar scores with coverage and decision readiness. It holds no names, IDs or free text and passes the same guard as C11.
+Built in phase 2, with examples in `contracts/examples/assess/` and tests in `tests/Connectors.Tests.ps1`. The details are in [contracts.md](contracts.md#c19-avd-intakev1).
+
+- **C19 `avd-intake/v1`** (`intake.schema.json`): §6.2. The five `intake.*` facts are now `built`, at those paths.
+- **C20** is two documents, so no reader needs a YAML parser: `avd-assess-index/v1` (`assess-index.schema.json`), the references, observations and gaps that avd-assess generates as `index.json`, and `avd-assess-method/v1` (`assess-method.schema.json`), the `method.json` that holds the collection map, checks, readiness and scoring. `Test-AssessMethod` checks both against the register.
+- **C21 `avd-assessment/v1`** (`assessment.schema.json`): the report avd-current-state writes. It records the method's version and commit, the snapshot time and estate pseudonym, one row per check (outcome, pseudonyms, fact IDs, claims), and the pillar scores with coverage and decision readiness. It holds no names, IDs or free text and passes the same guard as C11. `Test-AssessmentReport` checks a report against its method, and `Get-AssessScore` recomputes the pillars.
 
 ## 8. Who implements it, and how copies stay in sync
 
@@ -169,7 +175,7 @@ Observations test the model like any other claim: if a high score keeps coming w
             avd-landing-zone     unchanged; its lessons and run records are evidence avd-assess links to
 ```
 
-- **avd-current-state** vendors the gap files it runs (collection map, checks, readiness, scoring) into `assess/`, byte-identical at the commit in `assess/PINS.json`, with a SHA-256 per file that `tests/Facts.Tests.ps1` checks, as it already does for the brain's contracts. Nothing is fetched at run time. If avd-assess disappeared, avd-current-state would keep its last pinned copy, so the landing zone and avd-current-state pair stays self-contained. Its evaluator, `-Assess` and the WARA import live there. The WARA import is the family's one WARA reader, and avd-swarm's proposed chat review reuses it (a paired swarm change when that is built).
+- **avd-current-state** vendors `method.json` (the collection map, checks, readiness and scoring of the gap files) into `assess/`, byte-identical at the commit in `assess/PINS.json`, with its SHA-256 that `tests/Facts.Tests.ps1` checks, as it already does for the brain's contracts. Nothing is fetched at run time. If avd-assess disappeared, avd-current-state would keep its last pinned copy, so the landing zone and avd-current-state pair stays self-contained. Its evaluator, `-Assess` and the WARA import live there. The WARA import is the family's one WARA reader, and avd-swarm's proposed chat review reuses it (a paired swarm change when that is built).
 - **avd-second-brain** holds the schemas and `Test-AssessMethod`, with tests in `tests/Connectors.Tests.ps1`. It adds avd-assess to `sources/sources.json`, so agents cite `avd-assess@<commit>:references/...` and observations. The assessment topic page links the index instead of restating it. `knowledge/rules/workload-tiers.json` cites the sizing claims as its prior. Reports are filed in the estate vault beside their C11 snapshot.
 - **avd-swarm:** nothing new in version 1. An outcome reaches a plan only through the C11 fact IDs it cites.
 - **avd-landing-zone:** unchanged. avd-assess links to its lessons, run records and WDOT profile at pinned commits.
@@ -198,7 +204,7 @@ All offline. No cloud spend until phase 6, which waits on the owner's go and a c
 |---|---|---|
 | 0 | this repo | This spec (draft PR) |
 | 1 | avd-assess | A broad GitHub and Learn search outside the build container. Then the seed: README, LICENSE, CI, references for the sources in §3 with pins, the four methodology pages (version 1), and the first observations from existing lessons |
-| 2 | this repo | C19, C20 and C21 schemas, examples, `Test-AssessMethod` |
+| 2 | this repo | C19, C20 and C21 schemas, examples, `Test-AssessMethod`, `Test-AssessmentReport` (built) |
 | 3 | avd-assess | Gap files, version 1: collection map, intake, about 20 checks, readiness, scoring |
 | 4 | avd-current-state | Vendor the gap files with `assess/PINS.json`; evaluator, `-Assess`, C21; WARA import; collector reads through Resource Graph |
 | 5 | this repo | `sources.json` entry, report filing, topic page links, `workload-tiers.json` cites its prior |
