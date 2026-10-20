@@ -37,7 +37,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | [microsoft/drafts/](microsoft/drafts/README.md) | Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it | plan |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
 | [troubleshooting/](troubleshooting/README.md) | Errors hit deploying and running AVD: symptom, cause, fix and source | verified |
-| [roadmap.md](roadmap.md) | How this KB is being moved onto the family format, step by step, and what's still to come | plan |
+| [roadmap.md](roadmap.md) | Settled: this KB is on the family format; open work is tracked outside the public repo | plan |
 | [curation.md](curation.md) | How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment | verified |
 | [experts.md](experts.md) | How we choose which AVD, FSLogix and Entra experts the KB follows: the method, the scores and the list | verified |
 | [decisions/](decisions/README.md) | Decision records (MADR): what was decided and why |  |

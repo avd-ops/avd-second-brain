@@ -31,4 +31,5 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0019](0019-recovery-runs-through-the-swarm.md) | Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean | Proposed |
 | [0022](0022-the-brain-keeps-the-raid-log.md) | The brain keeps each estate's RAID log and action tracker, beside the lifecycle record | Proposed |
 | [0023](0023-family-format-best-open-source-or-build.md) | Adopt an outside tool only when it is the best and open source; otherwise build our own | Accepted |
+| [0024](0024-the-brain-is-the-estate-brain.md) | The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing | Accepted |
 <!-- END GENERATED: decision-index -->
