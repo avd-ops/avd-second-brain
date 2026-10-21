@@ -100,3 +100,12 @@ Learned moving the public family repos into the avd-ops organization on 2026-10-
 - GitHub's OIDC subject changes to `repo:<new-owner>/<repo>:...`. Add the federated credential for the new subject before the move (an app takes up to 20), then delete the old one after the first sign-in.
 - Anything keyed to the repo owner breaks quietly once an organization owns the repo: owner-only workflow steps, the handoff and auto-merge checks (set the organization variable `HANDOFF_OWNER`).
 - On a Free organization, private repos get no environments, environment variables or secrets, deployment branch rules or required reviewers, so a private repo that depends on them stays with an owner whose plan has them (GitHub Pro or Team).
+- Security settings don't come with the repo. After the move, secret scanning, push protection and private vulnerability reporting were off on every public family repo, and only the repos that already had a ruleset kept one. Read `security_and_analysis` and `rules/branches/<default>` on the repo API after any move. The organization's security configuration (free for public repos) covers the first two; private vulnerability reporting needed turning on as well.
+
+### Public repo security checks
+
+Learned in the 2026-10-21 audit of the public family repos (no secret or tenant data found; the fixes were settings and one workflow change, avd-landing-zone #109).
+
+- An Actions log is public in a public repo, and it prints each step's `with:` inputs and `env:` values. Only secrets are masked. Tenant, subscription, client and group IDs and alert emails therefore go in secrets even though none grants access; avd-landing-zone's template tests refuse a `vars.*_ID` or `vars.*EMAIL` in any workflow.
+- A full check covers every branch, every PR ref (`refs/pull/*`), issue and PR text, review comments and the logs of jobs that sign in to Azure, not just the default branch. gitleaks' hits on the family repos are all deliberate fixtures (redaction samples, built-in role IDs, a one-byte PEM in a unit test).
+- A Cloudflare record left proxied, even briefly, serves Cloudflare's bot-challenge script and NEL reporting headers on the site, and cached DNS keeps serving them after the switch to DNS only. GitHub Pages issues its certificate only once the name resolves to it, so Enforce HTTPS comes last.
