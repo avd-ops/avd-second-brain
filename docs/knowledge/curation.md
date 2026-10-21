@@ -67,7 +67,9 @@ From a build container, GitHub search answers HTTP 403 even with full network ac
 2026-10-20 and 2026-10-21), so a session there can't run the script itself. It dispatches
 **kb-prior-art** instead and reads the run's log or its `prior-art` artifact, which holds one
 Markdown report per topic. The workflow is read-only. Until 2026-10-21 it failed at import because
-it skipped `pip install -r scripts/kb/requirements.txt` (`kblib` needs PyYAML).
+it skipped `pip install -r scripts/kb/requirements.txt` (`kblib` needs PyYAML). Code search allows about 10 calls a
+minute and each topic makes several, so the script waits and retries on a rate limit (429, or a 403
+that says the limit is spent); any other 403 fails at once.
 
 The digest and prior-art scripts need Python 3.11+ and `scripts/kb/requirements.txt`.
 
