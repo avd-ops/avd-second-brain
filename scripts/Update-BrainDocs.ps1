@@ -1,16 +1,14 @@
 <#
 .SYNOPSIS
-  Regenerates the docs that come from the code: reference pages, README blocks, the changelog and the handbook.
+  Regenerates the docs that come from the code: reference pages, README blocks, and the changelog.
   Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.
 
 .DESCRIPTION
   Writes what docs/docs-spec.md section 7 says is generated, and nothing else: a reference page per entry
   point and Bicep file (docs/reference/), the README's entry-points and connections blocks between
   their markers, and with -PullRequestPath the "Changelog:" lines of merged pull requests under
-  CHANGELOG.md's Unreleased heading. -Wiki also rebuilds the handbook (wiki/ and its agent index,
-  wiki/index.json) from the connected repos as ./scripts/Sync-BrainSources.ps1 checked them out,
-  and records their commits in wiki/lock.json; without -Wiki, the brain's own pages in it are rebuilt
-  at those same commits. Text outside the markers is never touched. Before
+  CHANGELOG.md's Unreleased heading. The handbook it once built (wiki/) is retired (decision 0024):
+  avd-ops holds the page for each repo. Text outside the markers is never touched. Before
   writing, it runs the privacy check (D11) on everything it would write and refuses on a finding.
   -Check writes nothing and exits 1 when anything is out of date.
 
@@ -18,8 +16,6 @@
   ./scripts/Update-BrainDocs.ps1
 .EXAMPLE
   ./scripts/Update-BrainDocs.ps1 -Check
-.EXAMPLE
-  ./scripts/Sync-BrainSources.ps1 -AllowMissing; ./scripts/Update-BrainDocs.ps1 -Wiki
 .EXAMPLE
   ./scripts/Update-BrainDocs.ps1 -RepoPath ../avd-swarm -RepoName avd-swarm -PullRequestPath ./merged.json
 #>
@@ -32,10 +28,6 @@ param(
   [string] $RepoName,
   # A checkout of avd-second-brain, for sources/sources.json.
   [string] $BrainPath = (Split-Path $PSScriptRoot -Parent),
-  # Also rebuild the handbook (wiki/) from the connected repos checked out under -SourcesRoot.
-  [switch] $Wiki,
-  # Where Sync-BrainSources.ps1 checked out the connected repos.
-  [string] $SourcesRoot = (Join-Path (Split-Path $PSScriptRoot -Parent) '.sources'),
   # Merged pull requests as JSON (an array of objects with number and body) whose "Changelog:" lines go into CHANGELOG.md.
   [string] $PullRequestPath,
   # Write nothing; list what is out of date and exit 1 if anything is.
@@ -53,24 +45,6 @@ $isBrain = $repo.Root -eq $brainRoot
 
 $out = Get-DocOutput -Repo $repo -Source $(if ($isBrain) { $sources } else { @() })
 $owned = @('docs/reference')
-if ($Wiki) {
-  if (-not $isBrain) { throw 'The handbook lives in avd-second-brain: run -Wiki there.' }
-  $connected = @(Get-DocSourceRepo -SourcesRoot $SourcesRoot -Source $sources)
-  Write-Host "Handbook from $($connected.Count) of $($sources.Count) connected repos: $(@($connected | ForEach-Object { "$($_.Name)@$($_.Commit.Substring(0, 7))" }) -join ', ')"
-  $w = Get-DocWiki -Brain $repo -Source $sources -Repo $connected
-  foreach ($k in $w.Keys) { $out[$k] = $w[$k] }
-  $owned += 'wiki'
-}
-elseif ($isBrain -and (Test-Path -LiteralPath (Join-Path $repo.Root 'wiki/lock.json'))) {
-  # The brain's own pages in the handbook follow its docs, so they're rebuilt at the same pins.
-  $pinned = Get-DocPinnedRepo -LockPath (Join-Path $repo.Root 'wiki/lock.json') -Repo @(Get-DocSourceRepo -SourcesRoot $SourcesRoot -Source $sources)
-  if ($null -ne $pinned) {
-    $w = Get-DocWiki -Brain $repo -Source $sources -Repo $pinned
-    foreach ($k in $w.Keys) { $out[$k] = $w[$k] }
-    $owned += 'wiki'
-  }
-  else { Write-Host 'wiki/ not rebuilt: the connected repos are not at wiki/lock.json (./scripts/Sync-BrainSources.ps1 -LockPath ./wiki/lock.json -AllowMissing), or use -Wiki to move it to their heads.' -ForegroundColor Yellow }
-}
 if ($PullRequestPath) {
   $file = Join-Path $repo.Root 'CHANGELOG.md'
   $current = if (Test-Path -LiteralPath $file) { Get-Content -LiteralPath $file -Raw } else { "# Changelog`n`nAll notable changes, in the format of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).`n`n## Unreleased`n" }

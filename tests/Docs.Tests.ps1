@@ -1,6 +1,6 @@
 #requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.0.0' }
 # Offline tests for the docs consistency check (docs/docs-spec.md): each check D1 to D11 against a
-# small fixture repo, the generator, the handbook and its search, and this repo's own docs.
+# small fixture repo, the generator, and this repo's own docs.
 
 BeforeAll {
   $script:root = Split-Path $PSScriptRoot -Parent
@@ -293,33 +293,6 @@ Describe 'The generator' {
     $n | Should -Match '### Added\s+- a thing. \(#2\)'
     $n | Should -Not -Match '#3'
     Get-DocChangelog -Text $n -PullRequest $prs | Should -Be $n
-  }
-}
-
-Describe 'The handbook' {
-  It 'pages each repo at its commit, says which it couldn''t read, and indexes chunks by heading' {
-    $brain = New-TestRepo -Name 'avd-second-brain'
-    $ex = New-TestRepo -File @{ 'docs/kill.md' = "# Kill switch`n`nIntro about C9.`n`n## Positions`n`nThe kill switch has four positions.`n`n## Positions`n`nAgain." }
-    $w = Get-DocWiki -Brain $brain -Source (New-TestFact).Sources -Repo @($ex)
-    $w.Keys | Should -Contain 'wiki/avd-other.md'
-    $w['wiki/avd-other.md'] | Should -Match 'Not read'
-    $w['wiki/avd-example.md'] | Should -Match 'https://github.com/nickprignano/avd-example/blob/abc1234def/docs/kill.md'
-    $w['wiki/avd-second-brain.md'] | Should -Match '\]\(\.\./docs/guide\.md\)'
-    $index = $w['wiki/index.json'] | ConvertFrom-Json
-    $chunks = @($index.chunks | Where-Object path -eq 'docs/kill.md')
-    $chunks.anchor | Should -Be @('', 'positions', 'positions-1')
-    $chunks[0].contracts | Should -Be @('C9')
-    ($w['wiki/lock.json'] | ConvertFrom-Json).sources.commit | Should -Contain 'abc1234def'
-    $file = Join-Path $TestDrive 'index.json'; Set-Content $file $w['wiki/index.json']
-    (Search-DocWiki -IndexPath $file -Query 'kill switch positions')[0].Ref | Should -Be 'avd-example@abc1234:docs/kill.md#positions'
-  }
-  It 'uses only the repos at the commits in its lock' {
-    $ex = New-TestRepo
-    $lock = Join-Path $TestDrive 'lock.json'
-    Set-Content $lock '{ "sources": [ { "name": "avd-example", "commit": "abc1234def" }, { "name": "avd-other", "commit": null } ] }'
-    (Get-DocPinnedRepo -LockPath $lock -Repo @($ex)).Name | Should -Be 'avd-example'
-    Set-Content $lock '{ "sources": [ { "name": "avd-example", "commit": "fff" } ] }'
-    Get-DocPinnedRepo -LockPath $lock -Repo @($ex) | Should -BeNullOrEmpty
   }
 }
 

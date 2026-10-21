@@ -8,15 +8,15 @@
   records the commit of each in .sources/lock.json. Find-BrainKnowledge.ps1 then searches them
   and cites each hit as <repo>@<commit>:<path>, so an answer points at the exact text it used.
   Read-only against GitHub: it only clones and fetches public repositories.
-  -LockPath checks out the commits a lock file names instead (wiki/lock.json, to rebuild or check
-  the handbook exactly as it was built); a source with no commit there is skipped.
+  -LockPath checks out the commits a lock file names instead (a saved .sources/lock.json, to repeat
+  a search or a check exactly as it ran); a source with no commit there is skipped.
 
 .EXAMPLE
   ./scripts/Sync-BrainSources.ps1
 .EXAMPLE
   ./scripts/Sync-BrainSources.ps1 -Name avd-landing-zone
 .EXAMPLE
-  ./scripts/Sync-BrainSources.ps1 -LockPath ./wiki/lock.json -AllowMissing
+  ./scripts/Sync-BrainSources.ps1 -LockPath ./saved-lock.json -AllowMissing
 #>
 #requires -Version 7.4
 [CmdletBinding()]

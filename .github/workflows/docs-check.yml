@@ -56,10 +56,10 @@ jobs:
           ref: ${{ inputs.brain-ref }}
           path: brain
 
-      - name: Check out the connected repos at the handbook's commits
+      - name: Check out the connected repos
         if: inputs.repo-name == '' || inputs.repo-name == 'avd-second-brain'
         shell: pwsh
-        run: ./repo/scripts/Sync-BrainSources.ps1 -LockPath ./repo/wiki/lock.json -AllowMissing
+        run: ./repo/scripts/Sync-BrainSources.ps1 -AllowMissing
 
       - name: Check
         shell: pwsh

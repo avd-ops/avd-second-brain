@@ -4,7 +4,7 @@
 
 Asks the second brain: search its knowledge and the connected repos, resolve an inventory app name, or show the sizing calibration.
 
--Query searches the app catalog, the engine rules, the shared runbooks and docs here, the connected repos' lessons and decisions once ./scripts/Sync-BrainSources.ps1 has checked them out, and, with -VaultPath, a customer vault's decisions, runbooks and lessons. Each hit prints with the path to cite. -App resolves one raw inventory name (as Stratusphere reports it) to a catalog entry, or says it is unknown and belongs on the app test plan. -Wiki searches the handbook's agent index instead (wiki/index.json, built by ./scripts/Update-BrainDocs.ps1 -Wiki from every connected repo's docs at a pinned commit) and cites each hit as <repo>@<commit>:<path>#<anchor>. -Calibration prints the sizing calibration factors per tier and VM family, computed from the observations with the rule in knowledge/rules/calibration.json.
+-Query searches the app catalog, the engine rules, the shared runbooks and docs here, the connected repos' lessons and decisions once ./scripts/Sync-BrainSources.ps1 has checked them out, and, with -VaultPath, a customer vault's decisions, runbooks and lessons. Each hit prints with the path to cite. -App resolves one raw inventory name (as Stratusphere reports it) to a catalog entry, or says it is unknown and belongs on the app test plan. -Calibration prints the sizing calibration factors per tier and VM family, computed from the observations with the rule in knowledge/rules/calibration.json.
 
 ## Parameters
 
@@ -13,7 +13,6 @@ Asks the second brain: search its knowledge and the connected repos, resolve an 
 | `-Query` | string | yes, in the Query set |  | What to search for. |
 | `-App` | string[] | yes, in the App set |  | Raw inventory app names to resolve against the app catalog. |
 | `-Calibration` | switch | yes, in the Calibration set |  | Print the sizing calibration factors. |
-| `-Wiki` | switch | no |  | Search the handbook's agent index (wiki/index.json) instead of the knowledge base. |
 | `-Top` | int | no | `10` | How many hits to print. |
 | `-VaultPath` | string | no |  | A customer vault to search as well. |
 | `-SourcesRoot` | string | no | `(Join-Path (Split-Path $PSScriptRoot -Parent) '.sources')` | Where Sync-BrainSources.ps1 checked out the connected repos. |
@@ -29,9 +28,6 @@ Asks the second brain: search its knowledge and the connected repos, resolve an 
 ```
 ```powershell
 ./scripts/Find-BrainKnowledge.ps1 'fslogix kerberos' -VaultPath ../contoso-avd-brain
-```
-```powershell
-./scripts/Find-BrainKnowledge.ps1 -Wiki 'kill switch'
 ```
 ```powershell
 ./scripts/Find-BrainKnowledge.ps1 -Calibration

@@ -9,6 +9,7 @@
     { "key": "3abb380e0776", "check": "D1", "path": "docs/operations-redteam.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
     { "key": "ef52de0a2f4c", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
     { "key": "89fbd6d8f24a", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
-    { "key": "487742f52368", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." }
+    { "key": "487742f52368", "check": "D1", "path": "docs/operations-spec.md", "reason": "Paths in the operations brain docs are in avd-landing-zone unless they say otherwise (the note at the top)." },
+    { "key": "65bbddd55a92", "check": "D3", "path": "CHANGELOG.md", "reason": "History: the -Wiki search shipped in D0 and was retired with the handbook (decision 0024)." }
   ]
 }

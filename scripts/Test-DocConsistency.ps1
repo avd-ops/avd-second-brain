@@ -57,16 +57,7 @@ $repos = @($target) + @(if ($brain -ne $target) { $brain }) + $connected
 if ($All) { Write-Host "Checking $($repos.Count) repos: $(@($repos.Name) -join ', ')" }
 else { Write-Host "Checking $RepoName (context: $(@($repos | Select-Object -Skip 1 | ForEach-Object Name) -join ', '))" }
 
-# The handbook is checked only when the connected repos are checked out at the commits it was built from.
-$wiki = $null
-$wikiLock = Join-Path $brainRoot 'wiki/lock.json'
-if (($All -or $target -eq $brain) -and (Test-Path -LiteralPath $wikiLock)) {
-  $pinned = Get-DocPinnedRepo -LockPath $wikiLock -Repo $connected
-  if ($null -ne $pinned) { $wiki = Get-DocWiki -Brain $brain -Source $fact.Sources -Repo $pinned }
-  else { Write-Host 'Handbook (wiki/) not checked: the connected repos are not checked out at wiki/lock.json (./scripts/Sync-BrainSources.ps1 -LockPath ./wiki/lock.json -AllowMissing).' -ForegroundColor DarkGray }
-}
-
-$findings = @(Test-DocConsistency -Repo $repos -Fact $fact -ChangedFile $ChangedFile -PullRequestBody $PullRequestBody -Wiki $wiki -All:$All)
+$findings = @(Test-DocConsistency -Repo $repos -Fact $fact -ChangedFile $ChangedFile -PullRequestBody $PullRequestBody -All:$All)
 foreach ($f in $findings) {
   $color = if ($f.severity -eq 'error') { 'Red' } else { 'Yellow' }
   $at = if ($f.line) { "$($f.path):$($f.line)" } else { $f.path }
