@@ -8,22 +8,22 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-Green PRs pile up waiting for the owner, most of them knowledge base pages that only need a skim. The family accepted a set of GitHub work conventions with auto-merge for a fixed class of low-risk PRs ([AI 0014](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0014-family-format-auto-merge-low-risk-prs.md)), and the owner approved its adoption in the AVD repos through handoff issues ([0014](0014-family-format-handoff-issues.md)). How do this repo and the AVD repos it feeds adopt it?
+Green PRs pile up waiting for the owner, most of them knowledge base pages that only need a skim. The family accepted a set of GitHub work conventions with auto-merge for a fixed class of low-risk PRs, and the owner approved its adoption in the AVD repos through handoff issues ([0014](0014-family-format-handoff-issues.md)). How do this repo and the AVD repos it feeds adopt it?
 
 ## Considered Options
 
-- Adopt AI 0014 in each AVD repo, with auto-merge off until the owner's settings are in place
+- Adopt the family conventions in each AVD repo, with auto-merge off until the owner's settings are in place
 - Keep merging every PR by hand
 
 ## Decision Outcome
 
-Chosen option: "Adopt AI 0014", because the low-risk class is decided by a workflow from the changed paths on the base branch, not by the thread that wrote the PR, and every other change still waits for the owner.
+Chosen option: "Adopt the family conventions", because the low-risk class is decided by a workflow from the changed paths on the base branch, not by the thread that wrote the PR, and every other change still waits for the owner.
 
-Also recorded in: [AI 0014](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0014-family-format-auto-merge-low-risk-prs.md), the source of truth for the low-risk class, the fixed deny list, the setup order and how to stop it.
+The low-risk class, the fixed deny list, the setup order and how to stop it are recorded below.
 
 In this repo:
 
-- `.github/workflows/kb-auto-merge.yml` and `scripts/kb/auto_merge.py`, unchanged from ai-brain's template export. The brain has no `directives.py` yet, so the workflow skips the directive gate; `KB_PAUSED` still stops it.
+- `.github/workflows/kb-auto-merge.yml` and `scripts/kb/auto_merge.py`, taken unchanged from the family template export (2ndbrain does not carry them yet). The brain has no `directives.py` yet, so the workflow skips the directive gate; `KB_PAUSED` still stops it.
 - `auto_merge = "off"` and `auto_merge_paths = ["docs/knowledge/**", "llms.txt"]` in `docs/knowledge/kb.toml`. Only the family knowledge base qualifies; the brain's engine knowledge (`knowledge/**`), contracts, schemas, scripts and code never do.
 - `kb-validate` runs on every PR, with no paths filter, so it can be a required check.
 - The `AGENTS.md` conventions line.

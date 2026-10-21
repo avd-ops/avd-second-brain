@@ -26,6 +26,20 @@ The rules below came from real runs of [avd-landing-zone](https://github.com/nic
 - A purge-protected Key Vault is recovered, not waited out, and recovery needs its original resource group. A safe, reversible remedy like this belongs in a `-Fix` action, not in advice ([lesson 0022](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0022-key-vault-recovery.md)).
 - Delete a cleanup step's inputs only after the step that needs them has succeeded ([lesson 0029](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0029-device-cleanup-rerun.md)).
 
+## Tracking risks, actions and decisions
+
+*Proposed:* the brain keeps each estate's RAID log and action tracker beside its lifecycle record ([raid spec](../../raid-spec.md), [decision 0022](../decisions/0022-the-brain-keeps-the-raid-log.md)). Checked 2026-10-20:
+
+- CAF Govern's risk register gives the fields to use as they are: ID, status, category, description, probability, impact, priority (impact weighted higher), strategy (mitigate, accept, avoid, transfer), enforcement, owner and closure date, reviewed on a schedule and after events ([Assess cloud risks](https://learn.microsoft.com/azure/cloud-adoption-framework/govern/assess-cloud-risks)).
+- Azure Advisor separates a recommendation a person *marked* completed from one the system *verified*, and a verified one can't be reopened; postponed items come back on their own ([Manage recommendation state](https://learn.microsoft.com/azure/advisor/advisor-azure-state-management)). The tracker copies that split for actions.
+- Well-Architected advises putting review recommendations into the workload's backlog with an owner and tracking them to resolution; WARP's DevOps scripts import them into Azure DevOps or GitHub ([implementing recommendations](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations)). An estate's items stay in its private vault, so a ticket system can only be a view.
+- No widely used open schema for RAID logs was found.
+
+## Checking compliance after a change
+
+- Defender for Cloud's free Foundational CSPM gives the secure score and the Microsoft cloud security benchmark. Other regulatory standards, such as CIS or NIST, need the paid Defender CSPM plan, so a gate built on them needs a cost estimate first ([CSPM plans](https://learn.microsoft.com/azure/defender-for-cloud/concept-cloud-security-posture-management), [support matrix](https://learn.microsoft.com/azure/defender-for-cloud/support-matrix-defender-for-cloud#cloud-support)).
+- Don't wait on Defender's assessments to verify a change: they lag. Azure Policy's standard compliance scan runs every 24 hours and changed resources show up in about 15 minutes; an on-demand evaluation scan of the resource group (`Start-AzPolicyComplianceScan`, or a POST to `policyStates/latest/triggerEvaluation`) is asynchronous and slow, so poll its location URI until it returns 200 ([evaluation triggers](https://learn.microsoft.com/azure/governance/policy/how-to/get-compliance-data#evaluation-triggers), [troubleshooting](https://learn.microsoft.com/azure/governance/policy/troubleshoot/general#general-errors)). avd-swarm's compliance gate verifies plans this way ([governance section 2.5](https://github.com/nickprignano/avd-swarm/blob/main/docs/governance.md)). *Unverified:* not yet run against a real estate.
+
 ## Learning from real runs
 
 What a real run did is worth keeping, and most of it is already kept by Azure. A run recorder and resume point for the landing zone is *proposed*, not built: [run recorder spec](https://github.com/nickprignano/avd-landing-zone/blob/master/build/specs/run-recorder-spec.md).

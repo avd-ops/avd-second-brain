@@ -321,6 +321,28 @@
       ]
     },
     {
+      "id": "c11.storage.kind",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/kind",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
+      "id": "c11.storage.sku",
+      "tier": "azure",
+      "contract": "C11",
+      "path": "/subscriptions/*/storageAccounts/*/sku",
+      "grain": "storageAccount",
+      "unit": "enum",
+      "privacy": "public",
+      "status": "built",
+      "evidences": []
+    },
+    {
       "id": "c11.policy.assignments",
       "tier": "azure",
       "contract": "C11",
