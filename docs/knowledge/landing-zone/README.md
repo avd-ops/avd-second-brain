@@ -4,6 +4,14 @@ summary: "Bicep, networking, policy, quotas and resource providers for an AVD la
 topic: landing-zone
 status: verified
 last_reviewed: 2026-10-20
+sources:
+  - https://learn.microsoft.com/azure/well-architected/reliability/checklist
+  - https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations
+  - https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/enterprise-scale-landing-zone
+  - https://learn.microsoft.com/azure/virtual-desktop/azure-advisor-recommendations
+  - https://learn.microsoft.com/security/benchmark/azure/baselines/azure-virtual-desktop-security-baseline
+  - https://github.com/Azure/review-checklists
+  - https://github.com/Azure/Well-Architected-Reliability-Assessment
 ---
 
 # Landing zone
@@ -53,3 +61,14 @@ The landing zone's scope is Entra ID only, greenfield and private by default ([a
   - Without a linked GitHub or Azure DevOps repo, the only way to upload is the Static Web Apps CLI (npm) with the site's deployment token, a long-lived secret. Pass it in `SWA_CLI_DEPLOYMENT_TOKEN`, never on a command line or in output, and reset it after the upload (`resetapikey`) ([CLI deploy](https://learn.microsoft.com/azure/static-web-apps/static-web-apps-cli-deploy), [token management](https://learn.microsoft.com/azure/static-web-apps/deployment-token-management)).
   - A storage static website needs neither npm nor a token: the operator's own sign-in uploads with Storage Blob Data Contributor, and turning the website on needs `blobServices/write` (Contributor has it). It has no sign-in at all (anonymous read of `$web`), though the storage firewall's IP and VNet rules do apply. Each blob is served with the Content-Type it was uploaded with, so set it on upload ([static website](https://learn.microsoft.com/azure/storage/blobs/storage-blob-static-website), [FAQ](https://learn.microsoft.com/azure/storage/blobs/static-website-hosting-faq)).
 - Every GitHub Pages project site of one account shares the origin `<owner>.github.io`, and with it local storage, and Pages sends no CSP or framing headers. Give the portal its own origin with a custom domain, or host it where `staticwebapp.config.json` can send the headers. *Unverified:* from a design red team, not a real incident.
+
+## Well-Architected review
+
+The landing zone's own review is an opt-in preflight section that only warns ([avd-landing-zone decision 0009](https://github.com/nickprignano/avd-landing-zone/blob/master/build/decisions/0009-well-architected-review.md)); avd-swarm's proposed chat review in avd-buddy reads its `waf-*` results instead of repeating them and asks the operator only what reads can't show ([avd-swarm waf-review spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/waf-review.md)). Checked on 2026-10-20:
+
+- **Link the pillar checklists and the AVD product docs, not the CAF AVD scenario.** The Cloud Adoption Framework's enterprise-scale AVD article is deprecated and due to be removed on 2026-10-30; Microsoft points to the Architecture Center and the AVD product docs instead ([deprecation notice](https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/azure-virtual-desktop/enterprise-scale-landing-zone)). Links under `learn.microsoft.com/azure/well-architected/azure-virtual-desktop/` now redirect into the AVD product docs, so a link there can silently land on a different page.
+- **Consume Microsoft's lists before writing rules.** [Azure/review-checklists](https://github.com/Azure/review-checklists) (MIT) has an AVD checklist (`checklists/avd_checklist.en.json`): each item has a category, `waf` pillar, severity, short `id` (`A01.01`), `guid` and Learn `link`, but no Resource Graph query, so the evidence for each item has to be mapped. Cite the short id, not the GUID. [WARA](https://github.com/Azure/Well-Architected-Reliability-Assessment) (MIT, PowerShell Gallery `WARA` 1.0.6) is Reliability only: `Start-WARACollector` (with `-AVD` for AVD resource types) writes JSON, the analyzer an Excel action plan, and the reporter PowerPoint and Excel, which needs Windows with PowerPoint. It needs PowerShell 7.4, Az.Accounts 3.0 and Az.ResourceGraph 1.0.
+- **The checklists have stable codes.** Each pillar's design review checklist numbers its items (Reliability RE:01 to RE:10, and SE, CO, OE, PE likewise), so a check can cite the code and the link ([Reliability checklist](https://learn.microsoft.com/azure/well-architected/reliability/checklist)).
+- **Microsoft's assessment is a questionnaire.** The Azure Well-Architected Review (about 60 questions, with an Azure Virtual Desktop workload variant) adds Advisor recommendations for one subscription or resource group only, keeps milestones per Learn profile, and exports recommendations as CSV for a backlog ([completing an assessment](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations)).
+- **Advisor refreshes about twice a day**, so a fix shows up in its recommendations hours later; don't dismiss the recommendation by hand to make it go away ([AVD Advisor recommendations](https://learn.microsoft.com/azure/virtual-desktop/azure-advisor-recommendations)).
+- **The AVD security baseline is on MCSB v1.0** and may be out of date; Defender for Cloud's regulatory compliance view tracks the current benchmark, so read posture there ([baseline](https://learn.microsoft.com/security/benchmark/azure/baselines/azure-virtual-desktop-security-baseline)).
