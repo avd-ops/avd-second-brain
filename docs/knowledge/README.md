@@ -148,3 +148,21 @@ Use placeholders such as `<tenant-id>`, `<storage-account>`, `contoso.com` and `
 as general advice, not as a story about a specific estate. Published identifiers that are the same
 for everyone, such as built-in role IDs and first-party app IDs, are fine. CI enforces what it can:
 `validate.py`, the brain's leak guard and gitleaks.
+
+### If something private is already public
+
+A removal PR fixes the current files, not what GitHub keeps. Checked 2026-10-21 in a sweep of the
+five public AVD repos:
+
+- Old commits stay reachable after a removal PR, and after a history rewrite too: through pull
+  request refs, cached commit views by SHA, forks and clones. Only GitHub Support can purge the PR
+  refs and cached views, after the rewrite is force-pushed, and only when rotating a secret can't
+  cover the risk ([removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)).
+  So a rewrite is worth its cost only for a real secret or a customer's data, and a secret is
+  rotated first either way.
+- Editing a PR description, issue or comment leaves the old text in its edit history, which anyone
+  who can read the repo can open. The author or anyone with write access deletes the revision from
+  the "edited" menu ([tracking changes in a comment](https://docs.github.com/en/communities/moderating-comments-and-conversations/tracking-changes-in-a-comment)).
+- Look beyond the default branch: every branch and `refs/pull/*`, PR and issue bodies and comments,
+  commit author emails, and pages generated from a sibling repo (such as the brain's wiki), which
+  keep a copy until they are regenerated.

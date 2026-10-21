@@ -3459,7 +3459,7 @@
       "commit": "",
       "path": "docs/architecture.md",
       "anchor": "",
-      "title": "Architecture: one brain for the AVD lifecycle",
+      "title": "Architecture: the estate brain",
       "contracts": [],
       "text": ""
     },
@@ -3467,8 +3467,24 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
-      "anchor": "1-why-one-brain",
-      "title": "1. Why one brain",
+      "anchor": "0-what-the-brain-is-for",
+      "title": "0. What the brain is for",
+      "contracts": [
+        "C4",
+        "C11",
+        "C12",
+        "C18",
+        "C21",
+        "C25"
+      ],
+      "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "1-why-one-brain-decision-0001-history",
+      "title": "1. Why one brain (decision 0001, history)",
       "contracts": [],
       "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
     },
@@ -3538,7 +3554,12 @@
       "path": "docs/architecture.md",
       "anchor": "6-repository-layout",
       "title": "6. Repository layout",
-      "contracts": [],
+      "contracts": [
+        "C4",
+        "C11",
+        "C13",
+        "C17"
+      ],
       "text": ""
     },
     {
@@ -3549,6 +3570,18 @@
       "title": "7. Open questions",
       "contracts": [],
       "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/assess-spec.md",
+      "anchor": "",
+      "title": "Spec: avd-assess, a research index for AVD assessment",
+      "contracts": [
+        "C19",
+        "C21"
+      ],
+      "text": "Moved to avd-assess: docs/assess-spec.md, the repo it designs (decision 0024). The full text as it was here is in this file's history (commit 38033b9). Contracts C19 to C21 are described in contracts.md."
     },
     {
       "repo": "avd-second-brain",
@@ -3572,9 +3605,13 @@
         "C13",
         "C14",
         "C15",
-        "C16"
+        "C16",
+        "C17",
+        "C19",
+        "C20",
+        "C21"
       ],
-      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. Overview: architecture.md §4. C8 to C10 connect the brain to avd-swarm (decision 0003): the brain proposes, avd-swarm acts. A change to..."
+      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
     },
     {
       "repo": "avd-second-brain",
@@ -3584,6 +3621,20 @@
       "title": "C1. Evidence packages → vault",
       "contracts": [],
       "text": "The vault reads collector packages (manifest.json with SubscriptionDetails) and validator packages (manifest.json with Verdict), as folders or ZIPs, in any order. From the collector it reads avd-host-pools, avd-session-hosts, virtual-machines, avd-workspaces, avd-application-groups and arm-resour..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c10-action-outcomes-and-switch-position-specified",
+      "title": "C10. Action outcomes and switch position (specified)",
+      "contracts": [
+        "C8",
+        "C9",
+        "C11",
+        "C18"
+      ],
+      "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
     },
     {
       "repo": "avd-second-brain",
@@ -3660,10 +3711,55 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
+      "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
+      "contracts": [],
+      "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c19-avd-intakev1",
+      "title": "C19. avd-intake/v1",
+      "contracts": [
+        "C11",
+        "C15"
+      ],
+      "text": "intake.json: what telemetry can't know about an estate, answered once by the operator. Each field is one intake. fact in the register (C15), at the same path: /residency (required or not, and the regions), /preferredRegions (up to three, most preferred first), /existingHub (none, azure-hub, vwan,..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c2-vault--knowledge",
       "title": "C2. Vault → knowledge",
       "contracts": [],
       "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c20-avd-assess-indexv1-and-avd-assess-methodv1",
+      "title": "C20. avd-assess-index/v1 and avd-assess-method/v1",
+      "contracts": [
+        "C14"
+      ],
+      "text": "avd-assess is the family's assessment methodology (assess spec). It publishes two JSON documents, so no reader needs a YAML parser: - index.json (assess-index.schema.json), generated from its references/, observations/ and gaps/ and checked fresh by its CI. A reference is pinned to an immutable v..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c21-avd-assessmentv1",
+      "title": "C21. avd-assessment/v1",
+      "contracts": [
+        "C11",
+        "C19",
+        "C21"
+      ],
+      "text": "One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, a..."
     },
     {
       "repo": "avd-second-brain",
@@ -3711,6 +3807,29 @@
       "title": "C7. Searchable docs",
       "contracts": [],
       "text": "sources/sources.json lists each repo, the ref to follow, and the Markdown paths worth searching. scripts/Sync-BrainSources.ps1 checks them out into .sources/ (git-ignored) and records each commit in .sources/lock.json, so a citation names the exact text: avd-landing-zone@5f10290:docs/gotchas.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c8-avd-swarm-insightsv1-specified",
+      "title": "C8. avd-swarm-insights/v1 (specified)",
+      "contracts": [],
+      "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c9-playbook-run-proposal-specified-after-v1",
+      "title": "C9. Playbook run proposal (specified, after v1)",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C15"
+      ],
+      "text": "How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it (avd-swarm spec §5). Shape: Rules. - Targets are hints...."
     },
     {
       "repo": "avd-second-brain",
@@ -3987,6 +4106,24 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/guardrails.md",
+      "anchor": "8-never-delete-the-last-copy",
+      "title": "8. Never delete the last copy",
+      "contracts": [],
+      "text": "A script, workflow or agent step that deletes data (logs, evidence, reports, ledgers, backups, assessment data, configuration, user data) first checks that another durable copy exists, or the person running it opts in. Every run's logs and teardown evidence go to one run store outside the deploym..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/guardrails.md",
+      "anchor": "9-never-leave-the-meter-running-without-an-opt-in",
+      "title": "9. Never leave the meter running without an opt-in",
+      "contracts": [],
+      "text": "Anything that bills by time or use is removed, stopped or on a schedule at the end of a run. It keeps billing only with -KeepRunning <until> (an expiry or a reason, recorded), which -Force never implies. Microsoft 365 licenses, Marketplace SaaS offers and other recurring commitments are recorded ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/guardrails.md",
       "anchor": "when-a-guardrail-gets-in-the-way",
       "title": "When a guardrail gets in the way",
       "contracts": [],
@@ -4154,7 +4291,43 @@
       "anchor": "",
       "title": "AI agents in the AVD repos",
       "contracts": [],
-      "text": "How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General facts about Claude, the Claude API, prompting and evals belong to the AI research knowledge base; this page keeps only ho..."
+      "text": "How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), avd-swarm's agents and judge, how they reach Claude, and the identities they run under. General research on Claude, the Claude API, prompting and evals is outside this project; this page keeps only how the AVD repos u..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/agents/README.md",
+      "anchor": "avd-buddy-as-an-installable-web-app",
+      "title": "avd-buddy as an installable web app",
+      "contracts": [],
+      "text": "Checked on 2026-10-20 for avd-swarm's app spec (proposed). The owner asked for a mobile app for the chatbot that can be an installable web app (PWA) for now. Nothing was built or run. - Static Web Apps' built-in sign-in keeps every token off the device. The platform runs the Entra flow and gives ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/agents/README.md",
+      "anchor": "avd-buddys-voice-teaching-humor-and-calm",
+      "title": "avd-buddy's voice: teaching, humor and calm",
+      "contracts": [],
+      "text": "Checked on 2026-10-20 for avd-swarm's voice spec (proposed). The owner asked for a chat front end that teaches first, is witty but never risque or controversial, and helps in stressful moments. Nothing was run. - The published voice guides agree on the shape and leave the safety to us. Microsoft'..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/agents/README.md",
+      "anchor": "fan-out-answers-split-fan-out-verify-merge",
+      "title": "Fan-out answers: split, fan out, verify, merge",
+      "contracts": [],
+      "text": "Mapped on 2026-10-20 from the common goal, split, fan-out workers, fresh-context verifier, merge and final-answer pattern onto avd-swarm (spec §4a, proposed) and the brain (operations-spec §4.4). General facts about multi-agent patterns belong to the AI research knowledge base; this keeps only ho..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/agents/README.md",
+      "anchor": "mcp-in-the-avd-repos",
+      "title": "MCP in the AVD repos",
+      "contracts": [],
+      "text": "Checked on 2026-10-20 for the v1 reviews (brain, avd-swarm). Proposed for v1: avd-swarm uses MCP as a client for reads, and neither repo builds an MCP server of its own; the brain's Concierge reaches operators as one of avd-swarm's tools. - Microsoft's Azure MCP Server is the AVD read tool. Its v..."
     },
     {
       "repo": "avd-second-brain",
@@ -4163,7 +4336,7 @@
       "anchor": "securing-the-agents-and-avd-security-signal",
       "title": "Securing the agents and AVD security signal",
       "contracts": [],
-      "text": "Checked on 2026-10-19 for avd-swarm's security tooling proposal (avd-swarm PR #14, proposed). The tools themselves (Prompt Shields, PyRIT, garak, decoy MCP tools, Sentinel MCP, Canarytokens) are surveyed in the AI knowledge base's Open-source AI tools for fighting bad actors; this section keeps o..."
+      "text": "Checked on 2026-10-19 for avd-swarm's security tooling proposal (avd-swarm PR #14, proposed). The tools themselves are documented upstream: Prompt Shields, PyRIT, garak, decoy MCP tools such as Beelzebub, Sentinel MCP custom tools and the Canarytokens Entra ID token; this section keeps only what ..."
     },
     {
       "repo": "avd-second-brain",
@@ -4172,7 +4345,7 @@
       "anchor": "where-it-lives-today",
       "title": "Where it lives today",
       "contracts": [],
-      "text": "- avd-swarm spec and identities - An optional computer-use agent on an isolated VM (avd-landing-zone decision 0015)"
+      "text": "- avd-swarm spec and identities - How avd-swarm answers a question (spec §4a): split, fan out, claim check, merge - An optional computer-use agent on an isolated VM (avd-landing-zone decision 0015)"
     },
     {
       "repo": "avd-second-brain",
@@ -4187,14 +4360,51 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/knowledge/assessment/README.md",
+      "anchor": "diagrams-from-what-is-deployed",
+      "title": "Diagrams from what is deployed",
+      "contracts": [
+        "C11"
+      ],
+      "text": "Checked 2026-10-20 for avd-current-state. Every ready-made generator draws real resource names, so none of its output can be shared under the redaction rules as is. ARI's diagram code was the closest fit, because it reads only the rows it is given; after a bake-off the owner chose a Mermaid write..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/assessment/README.md",
+      "anchor": "shared-contracts-that-work-with-or-without-the-upper-layers",
+      "title": "Shared contracts that work with or without the upper layers",
+      "contracts": [
+        "C11",
+        "C15",
+        "C17",
+        "C19",
+        "C21"
+      ],
+      "text": "Decided 2026-10-20 (decision 0021): the formats the foundation repos exchange (C11, C15, C17, C19 to C21) live in avd-assess contracts/, and this repo vendors them like every other consumer. What was learned in the design: - Pinned copies weren't enough on their own. The pair already ran without ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/assessment/README.md",
+      "anchor": "upstream-sources-for-a-baseline-assessment",
+      "title": "Upstream sources for a baseline assessment",
+      "contracts": [],
+      "text": "Checked 2026-10-20. Cite these by their own IDs and link them; don't restate them (decision 0011). - Azure/review-checklists (MIT) has an AVD checklist at checklists/avd_checklist.en.json, with a short ID (A01.01), pillar, severity and Learn link per item but no Resource Graph query, so the evide..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/assessment/README.md",
       "anchor": "where-it-lives-today",
       "title": "Where it lives today",
       "contracts": [
         "C4",
         "C11",
-        "C12"
+        "C12",
+        "C19",
+        "C21"
       ],
-      "text": "- The knowledge base spec: catalog, rules, calibration and the harvest - Contracts C4, C11 and C12: sizing evidence, current-state facts and forensic facts"
+      "text": "- The knowledge base spec: catalog, rules, calibration and the harvest - Contracts C4, C11 and C12: sizing evidence, current-state facts and forensic facts - avd-assess spec: a research index of AVD assessment methodology (collection, assessment, benchmarks, scoring), pinned references validated ..."
     },
     {
       "repo": "avd-second-brain",
@@ -4212,7 +4422,7 @@
       "anchor": "capping",
       "title": "Capping",
       "contracts": [],
-      "text": "- One auto-shutdown runbook, started both by a schedule and by the budget (avd-landing-zone decision 0011). Unverified: no lesson yet records the budget trigger in a real run."
+      "text": "- One auto-shutdown runbook, started both by a schedule and by the budget (avd-landing-zone decision 0011). Unverified: no lesson yet records the budget trigger in a real run. - The landing zone's budget lives and dies with it: Remove-AvdDemo.ps1 -IncludeLandingZone deletes budget-<prefix>-<envir..."
     },
     {
       "repo": "avd-second-brain",
@@ -4230,7 +4440,7 @@
       "anchor": "sandbox-runs",
       "title": "Sandbox runs",
       "contracts": [],
-      "text": "- Every sandbox run needs a cost estimate first, run-cost evidence, teardown evidence and a monthly reconciliation (avd-swarm spend process)."
+      "text": "- Every sandbox run needs a cost estimate first, run-cost evidence, teardown evidence and a monthly reconciliation (avd-swarm spend process). - A public lab must carry its own spend guard: a run that opens and closes through a private repo can't be run by anyone else. avd-swarm's spend guard refu..."
     },
     {
       "repo": "avd-second-brain",
@@ -4286,7 +4496,7 @@
       "anchor": "prior-art-check-kb-prior-art",
       "title": "Prior-art check (kb-prior-art)",
       "contracts": [],
-      "text": "Before building something new, check whether it's already solved: or run Actions > kb-prior-art with the topic. It searches, in order: this KB, each sibling KB in family.yaml, GitHub repositories, PowerShell and Bicep code, and issues and pull requests. If something useful turns up, record it on ..."
+      "text": "Before building something new, check whether it's already solved: or run Actions > kb-prior-art with the topic (one topic per line for several). It searches, in order: this KB, each sibling KB in family.yaml, GitHub repositories, PowerShell and Bicep code, and issues and pull requests. If somethi..."
     },
     {
       "repo": "avd-second-brain",
@@ -4295,7 +4505,7 @@
       "anchor": "staying-aligned-with-the-family",
       "title": "Staying aligned with the family",
       "contracts": [],
-      "text": "family.yaml lists every KB in the family, this one included (self: true): its repo, KB path, role, focus, what it's the source of truth for (owns) and the family format version. The AI KB is the hub: it owns the AI knowledge the others use. nerdio-hcl is the format's reference implementation. A s..."
+      "text": "family.yaml lists every KB in the family, this one included (self: true): its repo, KB path, role, focus, what it's the source of truth for (owns) and the family format version. 2ndbrain is the format's reference (see where the family format comes from). A sibling without a repo isn't linked yet...."
     },
     {
       "repo": "avd-second-brain",
@@ -4314,6 +4524,15 @@
       "title": "Weekly digest (kb-curator)",
       "contracts": [],
       "text": ".github/workflows/kb-curator.yml runs every Monday. It reads sources.toml, collects anything new from the last 8 days and opens an issue labelled kb-digest with a checklist grouped by source. Each source names the KB page its findings belong on. Items whose URL is already linked from the KB are l..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/curation.md",
+      "anchor": "where-the-family-format-comes-from",
+      "title": "Where the family format comes from",
+      "contracts": [],
+      "text": "- 2ndbrain is the template and the format reference. The public template repo nickprignano/2ndbrain owns the family knowledge base format, its scripts and its schemas (the reference row in family.yaml). The KB tooling here is adapted from it under Apache-2.0 (scripts/kb/NOTICE), and this KB watch..."
     },
     {
       "repo": "avd-second-brain",
@@ -4367,7 +4586,7 @@
       "anchor": "more-information",
       "title": "More Information",
       "contracts": [],
-      "text": "- Accepted by the owner on 2026-10-18, when the family knowledge base was set up. Moved here from docs/decisions/ and converted to MADR 4; the decision itself is unchanged."
+      "text": "- Narrowed by 0024 (2026-10-20): the repo keeps the estate brain and the KB plumbing; the factory knowledge, the foundation contracts and the docs check move to the repos that own them. - Accepted by the owner on 2026-10-18, when the family knowledge base was set up. Moved here from docs/decision..."
     },
     {
       "repo": "avd-second-brain",
@@ -4667,7 +4886,7 @@
       "anchor": "more-information",
       "title": "More Information",
       "contracts": [],
-      "text": "- Also recorded in: AI 0001 and Nerdio HCL kit 0021. - The owner chose this repo as the AVD KB's home on 2026-10-18. Plan and red team: the \"second brain family alignment\" plan in the project files."
+      "text": "- The format itself: 2ndbrain 0001. Also recorded in: Nerdio HCL kit 0021. - The owner chose this repo as the AVD KB's home on 2026-10-18. Plan and red team: the \"second brain family alignment\" plan in the project files."
     },
     {
       "repo": "avd-second-brain",
@@ -5027,7 +5246,7 @@
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
       "contracts": [],
-      "text": "Every family KB says decisions and lessons go into the KB, but nothing checked that any did: kb-validate checks the shape of what is written, never whether anything was. The family accepted a three-layer fix (AI 0011) and asked the AVD repos to pilot it (handoff issue #22). Does this KB adopt it,..."
+      "text": "Every family KB says decisions and lessons go into the KB, but nothing checked that any did: kb-validate checks the shape of what is written, never whether anything was. The family accepted a three-layer fix (the 2ndbrain format, SPEC section 3) and asked the AVD repos to pilot it (handoff issue ..."
     },
     {
       "repo": "avd-second-brain",
@@ -5036,7 +5255,7 @@
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
       "contracts": [],
-      "text": "Chosen option: \"Adopt all three layers in block mode\", because the AVD pilot is the one that tests block mode and repos without a KB of their own (avd-swarm, avd-landing-zone), and none of the layers calls a model. Also recorded in: AI 0011, the source of truth for the design, the pilot and what ..."
+      "text": "Chosen option: \"Adopt all three layers in block mode\", because the AVD pilot is the one that tests block mode and repos without a KB of their own (avd-swarm, avd-landing-zone), and none of the layers calls a model. The design is the 2ndbrain format's (SPEC section 3), the source of truth for the ..."
     },
     {
       "repo": "avd-second-brain",
@@ -5081,7 +5300,7 @@
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
       "contracts": [],
-      "text": "Work that starts in one Claude project often has to continue in another, and until now the owner pasted the prompt across and remembered what it waited on. The family accepted handoff issues (AI 0012). Does this repo receive handoffs that way?"
+      "text": "Work that starts in one Claude project often has to continue in another, and until now the owner pasted the prompt across and remembered what it waited on. The family accepted handoff issues (the 2ndbrain format). Does this repo receive handoffs that way?"
     },
     {
       "repo": "avd-second-brain",
@@ -5090,7 +5309,7 @@
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
       "contracts": [],
-      "text": "Chosen option: \"Receive handoffs as handoff issues\", because this repo is where the AVD project already looks, and an issue carries the prompt, what it waits on and the report back. Also recorded in: AI 0012, the source of truth for the issue shape, approval, pickup and report back. In this repo:..."
+      "text": "Chosen option: \"Receive handoffs as handoff issues\", because this repo is where the AVD project already looks, and an issue carries the prompt, what it waits on and the report back. The issue shape is the 2ndbrain format's handoff template. In this repo: - .github/ISSUE_TEMPLATE/handoff.md, uncha..."
     },
     {
       "repo": "avd-second-brain",
@@ -5100,6 +5319,486 @@
       "title": "More Information",
       "contracts": [],
       "text": "First use: the handoff that adopted 0013 and this decision (issue #22)."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "",
+      "title": "0015. GitHub work follows the family conventions, with knowledge base PRs able to merge themselves",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because knowledge base PRs land on green without the owner, and the owner's review goes to decisions, contracts and code. - Bad, because a wrong fact on a KB page can land without a human read; validation, the leak guard and gitleaks still run. - Bad, because GitHub can't tell the owner's..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Adopt the family conventions in each AVD repo, with auto-merge off until the owner's settings are in place - Keep merging every PR by hand"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Green PRs pile up waiting for the owner, most of them knowledge base pages that only need a skim. The family accepted a set of GitHub work conventions with auto-merge for a fixed class of low-risk PRs, and the owner approved its adoption in the AVD repos through handoff issues (0014). How do this..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"Adopt the family conventions\", because the low-risk class is decided by a workflow from the changed paths on the base branch, not by the thread that wrote the PR, and every other change still waits for the owner. The low-risk class, the fixed deny list, the setup order and how to ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0015-family-format-github-work-conventions.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "Adopted through handoff issues avd-second-brain #27, avd-swarm #17 and avd-landing-zone #62. Auto-merge turns on with a separate PR per repo after the owner turns on \"Allow auto-merge\" and the branch ruleset."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "",
+      "title": "0016. Never delete the last copy",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because a sandbox run's evidence survives its teardown, and a lesson can be checked against what was actually returned. - Good, because the preference and the switch read the same in every repo, so a reviewer can search for them. - Bad, because a teardown can now fail and leave billing re..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- A line in each repo's instructions only - One family rule with the same switch, the same accepted copies and a guard in each repo - Never delete data at all"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Every repo in the family has a teardown: the landing zone's cleanup, the Liquidware tier's Cleanup, the Stratusphere appliances, the avd-swarm spike, the image build's template, the spend runs. The sandbox rule says tear down right away, and the scripts did, together with whatever held the run's ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"One family rule\", because the same mistake was in five repos and a line nobody checks is how it got there. Never deleting at all fails the spend rule: a sandbox must still end with nothing billing. The rule. A script, workflow or agent step that deletes data or a resource holding ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0016-never-delete-the-last-copy.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "In each repo: - avd-landing-zone: the run recorder spec's R9 (PR #72) is the reference implementation, including the export of the Log Analytics AVD tables before cleanup and -Remove needing a checked -CopyTo. The image build keeps its template when the customization log could not be saved. - avd..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "",
+      "title": "0017. Never leave the meter running without an opt-in",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because nothing bills by accident between runs, and what bills on purpose has a reason and an end. - Good, because Microsoft 365 and Marketplace charges show up in the same place as Azure ones. - Bad, because the operator has to opt in to keep a long assessment window or a host up overnig..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Rely on the budget alert and the monthly statement - One family rule: stopped or removed by default, an opt-in with an expiry to keep anything billing, a check that lists what still bills, and a record of every recurring commitment - Block anything that bills between runs"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "The sandboxes are paid for out of pocket. Teardown stops most of the bill, but not all of it. The demo host pool isn't covered by the landing zone's auto shutdown. A NAT Gateway, a Premium file share, Bastion, a Stratusphere Hub with its Marketplace meter, and Defender plans bill whether anyone i..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"One family rule\", because a budget alert fires after the money is spent, and blocking everything between runs would also stop the run store, which decision 0016 keeps on purpose. The rule. Anything that bills by time or use is removed, stopped or on an automatic shutdown by defaul..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0017-never-leave-the-meter-running.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "- Microsoft Learn: Cancel your subscription in the Microsoft 365 admin center, Manage recurring billing, SaaS subscription lifecycle management, Cancel and delete your Azure subscription (SaaS offers must be cancelled by hand). - In each repo: the landing zone (demo pool outside auto shutdown, bu..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "",
+      "title": "0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [
+        "C8",
+        "C10",
+        "C17"
+      ],
+      "text": "- Good, because recovery gets the same evidence, approvals and teardown as any other change, and its results reach the brain as outcomes (C10), counts (C8) and the landing zone's run record (C17, use case recovery), with no contract change. - Good, because the brain can say, with citations, wheth..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Leave recovery to the landing zone's Cloud Shell blocks only - Give the brain its own recovery playbooks and executor - The landing zone owns recovery, avd-swarm runs it as catalog actions, the brain judges the results over time"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Azure Virtual Desktop has no native disaster recovery; the operator builds it from other Azure services and has to prove it by testing (Microsoft Learn, AVD BCDR concepts; multiregion BCDR guide: \"treat these examples as estimates... validate them through DR testing\"). avd-landing-zone's recovery..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"The landing zone owns recovery, avd-swarm runs it, the brain judges the results\", because it keeps one write path and one kill switch (0003) and one implementation of every restore. - Why avd-swarm. A recovery test creates resources and spends money, and a failover moves every use..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [
+        "C17"
+      ],
+      "text": "Pair: avd-swarm decision 0006 and its recovery spec. Builds on avd-landing-zone's recovery spec (draft PR #75), this repo's KB facts on backup and recovery (draft PR #39) and the recovery use case for C17 (draft PR #40). Revisit when the first real recovery test has run."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "",
+      "title": "0021. The foundation's contracts live in avd-assess",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because the landing zone and avd-current-state pair, with avd-assess, stays whole if the brain or avd-swarm changes or goes away. - Good, because the fail-open rules are written where every producer reads them. - Bad, because a foundation contract change now starts in avd-assess and reach..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- avd-assess holds the foundation's contracts - A new contracts-only repo - This repo stays the authority for every contract"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Decision 0005 made this repo the one registry of cross-repo formats. The foundation repos (avd-landing-zone, avd-current-state, avd-assess) already run without the brain, because they carry pinned copies, but the home of their own formats sat in the layer above them: changing or retiring the brai..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [
+        "C4",
+        "C8",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19",
+        "C20",
+        "C21",
+        "C22"
+      ],
+      "text": "Chosen option: \"avd-assess holds the foundation's contracts\" (owner, 2026-10-20), because avd-assess depends on nothing, never runs anything, and is already the standards both engines read; the formats they exchange are standards too, and no new repo is needed. - avd-assess contracts/ is the auth..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [
+        "C15"
+      ],
+      "text": "- Pair: avd-assess, same branch name, \"Hold the foundation contracts here\"; avd-swarm, a pointer update (it cites C15 IDs). Design: the foundation wiring note (2026-10-20), with the Group Policy model."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "",
+      "title": "0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [
+        "C18",
+        "C23",
+        "C24"
+      ],
+      "text": "- Good, because the brain can reopen a risk or an assumption when a fact it names changes, and close an action from the evidence of the change that did it, which no RAID template does. - Good, because the foundation repos and avd-swarm need no change: the brain reads what they already write. - Go..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [
+        "C18",
+        "C21",
+        "C23",
+        "C24",
+        "C25"
+      ],
+      "text": "- A sibling contract, C25 avd-raid-log/v1, one per estate in its vault, linked by ID to C18, C21, C23, C24 and avd-swarm plans - Extend C18 to v2 with RAID and action arrays, one per environment - GitHub issues in the estate's private vault repo as the store"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [
+        "C18",
+        "C21",
+        "C23",
+        "C24"
+      ],
+      "text": "The owner asked (2026-10-20) for the brain to be the living RAID log (risks, assumptions, issues, dependencies) and the action and decision tracker for an AVD environment. Decisions already have a home in the lifecycle record (C18, 0020), findings in C21, a person's dispositions and remediation i..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [
+        "C18",
+        "C25"
+      ],
+      "text": "Chosen option: \"a sibling contract, C25\", because RAID items are often estate-wide while C18 is one environment, because a working list that changes weekly shouldn't churn a history record, and because each can be absent without breaking the other. Decisions stay in C18 only. GitHub issues may be..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "Prior art: CAF Govern's risk register fields and review rhythm, Azure Advisor's recommendation states (marked done versus verified), and Well-Architected's advice to track recommendations in a backlog. Pair: none needed now; a plan naming the action it serves would be a paired avd-swarm change la..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md",
+      "anchor": "",
+      "title": "0023. Adopt an outside tool only when it is the best and open source; otherwise build our own",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- Good, because adopt-or-build is decided once, the same way in every repo, and a bake-off settles it instead of a name. - Good, because every dependency an adopter takes on stays open source. - Bad, because building our own means more code to keep; the parity checklist and the upstream offers ar..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Adopt an outside tool only when it is the best at the job and open source; otherwise build our own, or use another open source tool that is - Adopt whatever is best known, open source or not - Always build our own"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "The prior-art check before building (0012 and the AGENTS.md rule) keeps finding outside tools that overlap with ours: Azure Resource Inventory (ARI) for inventory and diagrams, WARA for the Well-Architected review, the agent governance toolkit for the gate, Azure SRE Agent for investigations. Eac..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [],
+      "text": "Chosen option: \"Adopt only the best, and only if open source\", because the family is free and open source and an adopter must be able to read, run and fork everything it depends on, and because a well-known tool that is second best at our job costs more to work around than to replace. The owner's..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "",
+      "title": "0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [
+        "C14"
+      ],
+      "text": "- Good, because the repo says one thing: what an estate is for, what went into it and what is open on it. - Good, because the foundation pair has nothing in the brain that it could come to depend on. - Bad, because readers of the old paths follow a stub for a while, and pinned consumers need a bu..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [],
+      "text": "- Narrow the repo to the estate brain and the KB plumbing, and move the rest to the repos that own it - Keep everything here and document which parts are the estate brain - Split the KB plumbing into a repo of its own as well"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [],
+      "text": "Decision 0001 made this repo the meeting point for the whole AVD lifecycle. It grew to match: the migration factory's engine knowledge, the foundation's schemas, docs consistency and a handbook for every repo, and project tracking, beside the estate vault and the why layer. The owner said on 2026..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [
+        "C3",
+        "C5",
+        "C6",
+        "C11",
+        "C12",
+        "C13",
+        "C16",
+        "C18",
+        "C21",
+        "C22",
+        "C24",
+        "C25"
+      ],
+      "text": "Chosen option: \"Narrow the repo to the estate brain and the KB plumbing\" (owner, 2026-10-20, on the restructure proposal and its defaults), because each piece then lives with the repo that owns its job, and the foundation never has a reason to read the brain. - The brain keeps five jobs. The why ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [],
+      "text": "- The audit, the gray areas G1 to G9 with their defaults, and the move steps R1 to R7: docs/restructure-proposal.md. - Decision 0018 (PR #41, where the public family ends) is on the private side. It closes unmerged, and its substance goes to the private log (G8)."
     },
     {
       "repo": "avd-second-brain",
@@ -5285,6 +5984,15 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/knowledge/fslogix/README.md",
+      "anchor": "backup-and-recovery",
+      "title": "Backup and recovery",
+      "contracts": [],
+      "text": "Checked against Microsoft Learn on 2026-10-20 (Azure Files backup support matrix, FSLogix BCDR options). - Azure Backup's snapshot tier keeps recovery points as share snapshots, which go with the share: a permanently deleted share loses them. The vaulted tier is the offsite copy; it supports SSD ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/fslogix/README.md",
       "anchor": "share-permissions",
       "title": "Share permissions",
       "contracts": [],
@@ -5348,10 +6056,28 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/knowledge/images/README.md",
+      "anchor": "optimization-wdot",
+      "title": "Optimization (WDOT)",
+      "contracts": [],
+      "text": "- The Windows Desktop Optimization Tool is the family's one image optimization tool. The landing zone runs release v1.1 by commit, hash-checked file by file, with a reviewed profile (scripts/image/wdot); avd-assess pins the same commit as its reference (references/wdot.yaml). - WDOT's LICENSE is ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/images/README.md",
       "anchor": "pipeline",
       "title": "Pipeline",
       "contracts": [],
       "text": "- avd-landing-zone builds one generic golden image with Azure Image Builder (avd-landing-zone decision 0013). Unverified: no lesson yet records a real build. - Ignore build output where it's written, never .json across the repo: the pipeline's data files are loaded at compile time and must be com..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/images/README.md",
+      "anchor": "rotation-bluegreen",
+      "title": "Rotation (blue/green)",
+      "contracts": [],
+      "text": "- The landing zone rotates hosts blue/green inside one host pool: a new host generation (a/b) from a promoted gallery version, then drain, wait and remove the old one, resumable through a host pool tag (image pipeline spec, section 6.5). Built offline as Invoke-AvdHostRotation.ps1 (avd-landing-zo..."
     },
     {
       "repo": "avd-second-brain",
@@ -5370,6 +6096,15 @@
       "title": "Bicep and Azure Verified Modules",
       "contracts": [],
       "text": "- An AVM module's nested defaults (zones, SKUs, locations) apply when the parent doesn't set them. Compile the template and walk the nested deployments before adopting a module (lesson 0001). - Don't assume where a module puts child resources. Private endpoints land in their target's resource gro..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/landing-zone/README.md",
+      "anchor": "publishing-the-deployment-portal",
+      "title": "Publishing the deployment portal",
+      "contracts": [],
+      "text": "- Set the repo's Settings > Pages > Source to GitHub Actions before relying on a Pages workflow. While the source is a branch folder (docs/), GitHub's own branch build runs after the next push and replaces what the workflow deployed, so the portal vanishes. Switching the source doesn't republish ..."
     },
     {
       "repo": "avd-second-brain",
@@ -5397,6 +6132,15 @@
       "title": "Scripts that run it",
       "contracts": [],
       "text": "- Give operators self-contained command blocks for Cloud Shell, with no placeholders to fill in. Long operations must survive a disconnect and say how to check on them (lesson 0015). - Anything that can take more than a few seconds prints a line before it starts, and \"fixed\" means done, not start..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/landing-zone/README.md",
+      "anchor": "well-architected-review",
+      "title": "Well-Architected review",
+      "contracts": [],
+      "text": "The landing zone's own review is an opt-in preflight section that only warns (avd-landing-zone decision 0009); avd-swarm's proposed chat review in avd-buddy reads its waf- results instead of repeating them and asks the operator only what reads can't show (avd-swarm waf-review spec). Checked on 20..."
     },
     {
       "repo": "avd-second-brain",
@@ -5465,10 +6209,37 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/knowledge/operations/README.md",
+      "anchor": "backup-and-disaster-recovery",
+      "title": "Backup and disaster recovery",
+      "contracts": [],
+      "text": "Checked against Microsoft Learn on 2026-10-20; the landing zone's design for it is the recovery spec (unverified: the recovery region setting and preflight checks are built, nothing has run against Azure). Microsoft's implementation guide is Multiregion BCDR for Azure Virtual Desktop. - AVD has n..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/operations/README.md",
+      "anchor": "checking-compliance-after-a-change",
+      "title": "Checking compliance after a change",
+      "contracts": [],
+      "text": "- Defender for Cloud's free Foundational CSPM gives the secure score and the Microsoft cloud security benchmark. Other regulatory standards, such as CIS or NIST, need the paid Defender CSPM plan, so a gate built on them needs a cost estimate first (CSPM plans, support matrix). - Don't wait on Def..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/operations/README.md",
       "anchor": "diagnosing",
       "title": "Diagnosing",
       "contracts": [],
       "text": "- When a real run fails in an external API, first report everything the API returned. Change behavior only once the evidence names the cause (lesson 0012)."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/operations/README.md",
+      "anchor": "learning-from-real-runs",
+      "title": "Learning from real runs",
+      "contracts": [],
+      "text": "What a real run did is worth keeping, and most of it is already kept by Azure. A run recorder and resume point for the landing zone is proposed, not built: run recorder spec. - Read the Activity Log after a run instead of exporting it: Azure keeps control-plane writes for 90 days at no charge, so..."
     },
     {
       "repo": "avd-second-brain",
@@ -5487,6 +6258,15 @@
       "title": "Tearing down and deploying again",
       "contracts": [],
       "text": "- Deleting a resource group only soft-deletes some of what's in it. A Log Analytics workspace comes back when one with the same name is created; delete it permanently or let the next deployment handle the recovered state (lesson 0023). - A purge-protected Key Vault is recovered, not waited out, a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/operations/README.md",
+      "anchor": "tracking-risks-actions-and-decisions",
+      "title": "Tracking risks, actions and decisions",
+      "contracts": [],
+      "text": "Proposed: the brain keeps each estate's RAID log and action tracker beside its lifecycle record (raid spec, decision 0022). Checked 2026-10-20: - CAF Govern's risk register gives the fields to use as they are: ID, status, category, description, probability, impact, priority (impact weighted highe..."
     },
     {
       "repo": "avd-second-brain",
@@ -5523,6 +6303,15 @@
       "title": "How to add to it",
       "contracts": [],
       "text": "Two ways in, both reviewed before anything merges: out of date or is missing), a Known error issue, or a Suggest an expert to follow issue. When a maintainer labels it kb-accepted, a workflow turns it into a pull request. See curation.md. and the versions it applies to. Mark anything you haven't ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/README.md",
+      "anchor": "if-something-private-is-already-public",
+      "title": "If something private is already public",
+      "contracts": [],
+      "text": "A removal PR fixes the current files, not what GitHub keeps. Checked 2026-10-21 in a sweep of the five public AVD repos: - Old commits stay reachable after a removal PR, and after a history rewrite too: through pull request refs, cached commit views by SHA, forks and clones. Only GitHub Support c..."
     },
     {
       "repo": "avd-second-brain",
@@ -5567,7 +6356,7 @@
       "anchor": "",
       "title": "Knowledge base roadmap",
       "contracts": [],
-      "text": "This KB is moving onto the family format in small pull requests, without moving the engine's data in knowledge/ or the lessons that live in the connected repos. Proposed to the family in step 2, waiting on the other three KBs: a stronger leak check and reviewed model-drafted entries (0009). The f..."
+      "text": "This KB finished moving onto the family format on 2026-10-19, in five steps: the foundation, the decisions in MADR 4, seed content from the connected repos' lessons, the experts study, and the guardrails in the README and CLAUDE.md. The engine's data in knowledge/ and the lessons in the connected..."
     },
     {
       "repo": "avd-second-brain",
@@ -5817,7 +6606,8 @@
       "anchor": "",
       "title": "Spec: an organizational second brain for AVD",
       "contracts": [
-        "C9"
+        "C9",
+        "C11"
       ],
       "text": "This is a personal project, not for production, provided as is. The design below is a proposal; nothing in it has run against a real tenant yet."
     },
@@ -5845,7 +6635,9 @@
       "path": "docs/operations-spec.md",
       "anchor": "11-phases",
       "title": "11. Phases",
-      "contracts": [],
+      "contracts": [
+        "C10"
+      ],
       "text": "Each phase ships on its own, is useful on its own, and is validated by a real run before the next starts."
     },
     {
@@ -5888,9 +6680,24 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/operations-spec.md",
+      "anchor": "30-the-base-pair-stands-alone",
+      "title": "3.0 The base pair stands alone",
+      "contracts": [
+        "C7",
+        "C10",
+        "C11"
+      ],
+      "text": "avd-landing-zone (portal-driven Cloud Shell deployment and operation) and avd-current-state (offline fact collection and validation) are a self-contained pair that works, and keeps working, with no brain and no avd-swarm. avd-landing-zone stays true to its original purpose. The brain is built on ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/operations-spec.md",
       "anchor": "31-tiers-adopt-as-much-as-you-need-red-team-s1",
       "title": "3.1 Tiers: adopt as much as you need (red-team S1)",
-      "contracts": [],
+      "contracts": [
+        "C10"
+      ],
       "text": "The brain is for the community, and one person maintains it. So it comes in tiers. Each tier is useful on its own and adds the fewest services that make it work. An adopter picks one with AVD_BRAIN_TIER (0 to 3, guarded with empty(...), lesson 0004). 0, the default, deploys nothing. What keeps th..."
     },
     {
@@ -5917,7 +6724,9 @@
       "path": "docs/operations-spec.md",
       "anchor": "41-overview",
       "title": "4.1 Overview",
-      "contracts": [],
+      "contracts": [
+        "C10"
+      ],
       "text": "All new resources go into one new resource group, rg-<prefix>-<env>-brain, deployed by a new module bicep/modules/brain.bicep, opt-in through AVD_BRAIN_TIER (§3.1). A landing zone at tier 0 behaves exactly as today. Network: two /27 subnets in the spoke's free range: snet-brain-jobs (10.x.2.64/27..."
     },
     {
@@ -5956,7 +6765,10 @@
       "path": "docs/operations-spec.md",
       "anchor": "45-act-and-verify-a-person-approves-every-change",
       "title": "4.5 Act and verify: a person approves every change",
-      "contracts": [],
+      "contracts": [
+        "C10",
+        "C17"
+      ],
       "text": "The rule: the brain never makes a change until a person has approved that exact change. - A change is any write: to Azure (control plane, data plane, Run Command, tags, power state, drain mode), to the default branch, to a deployment, or to the brain's own configuration and guardrails. The orches..."
     },
     {
@@ -6121,7 +6933,7 @@
       "contracts": [
         "C11"
       ],
-      "text": "- Pseudonymize at collection. The job and the orchestrator replace user principal names, user display names, client public IPs and client device names with keyed pseudonyms (user-3fa2c1d0), using HMAC-SHA256. - The key is a secret in the landing zone's Key Vault, generated at deployment and never..."
+      "text": "- Pseudonymize at collection. The job and the orchestrator replace user principal names, user display names, client public IPs and client device names with keyed pseudonyms (user-3fa2c1d0), using HMAC-SHA256. - The key is a secret in the brain's own Key Vault (never the landing zone's; red team V..."
     },
     {
       "repo": "avd-second-brain",
@@ -6167,6 +6979,160 @@
       "title": "Non-goals",
       "contracts": [],
       "text": "- No change without a person. The brain never writes to Azure, merges, deploys or changes its own configuration without a person first approving that exact change (§4.5). There is no autonomous mode and no \"approve all similar\". The only changes without approval of each run are pre-approved excep..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "",
+      "title": "The brain as the estate's living RAID log and tracker",
+      "contracts": [
+        "C18"
+      ],
+      "text": "Status: proposed (decision 0022). Spec only: no schema, function or vault change lands until the owner says yes and C18 (PR #45) is merged, because this builds on it."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "1-what-the-owner-asked-for",
+      "title": "1. What the owner asked for",
+      "contracts": [
+        "C10",
+        "C18",
+        "C21",
+        "C23",
+        "C24"
+      ],
+      "text": "The owner, 2026-10-20: the brain should be the living RAID log (risks, assumptions, issues, dependencies) plus the action and decision tracker for an AVD environment, in addition to its other jobs. Scope (owner, 2026-10-20): the AVD environment itself, meaning each operated estate and its environ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "10-questions-for-the-owner-each-has-a-default-the-build-follows",
+      "title": "10. Questions for the owner (each has a default the build follows)",
+      "contracts": [
+        "C10",
+        "C18",
+        "C25"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "2-prior-art-checked-2026-10-20",
+      "title": "2. Prior art (checked 2026-10-20)",
+      "contracts": [
+        "C18"
+      ],
+      "text": "The family's prior-art script couldn't reach GitHub search from this session (HTTP 403), so the check was done by hand: the family KBs on disk, Microsoft Learn and a web search. - CAF Govern, Assess cloud risks defines a risk register: ID (R01, R02, gaps left), management status (open or closed),..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "3-decision-a-sibling-record-c25-linked-by-id-to-c18",
+      "title": "3. Decision: a sibling record, C25, linked by ID to C18",
+      "contracts": [
+        "C18",
+        "C25"
+      ],
+      "text": "The owner confirmed R1 (2026-10-20): one RAID log for the estate, beside the lifecycle records. C25 avd-raid-log/v1, one file per estate in its vault, raid/raid.json, beside lifecycle/<env>.json. Decisions stay in C18 and are referenced, never copied. Why a sibling rather than more arrays inside ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "4-what-c25-holds",
+      "title": "4. What C25 holds",
+      "contracts": [
+        "C10",
+        "C14",
+        "C15",
+        "C17",
+        "C18",
+        "C21",
+        "C23",
+        "C24"
+      ],
+      "text": "One document per estate: schema, estate (est-), generatedUtc, pins (fact register version, brain commit), cadence, lastReview, and items[]. Every item shares: Per type: Link grammar (extends C18's evidence references, so one parser serves both): - lifecycle:<env>#dec-NNNN, lifecycle:<env>#evt-NNN..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "5-how-items-get-in-a-model-never-decides",
+      "title": "5. How items get in (a model never decides)",
+      "contracts": [
+        "C10",
+        "C18",
+        "C21",
+        "C23",
+        "C24"
+      ],
+      "text": "The brain proposes; a person accepts. Anything the brain drafts arrives with source: brain-proposal and status open only after the person keeps it; until then it is a proposal in the review, not an item."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "6-review-rhythm",
+      "title": "6. Review rhythm",
+      "contracts": [
+        "C9",
+        "C11",
+        "C12",
+        "C18",
+        "C21"
+      ],
+      "text": "CAF's two kinds, both: - Scheduled. cadence per estate (weekly, fortnightly, monthly, quarterly; default monthly). Get-RaidReview -AsOf <date> returns, in order: overdue actions; items past reviewBy; accepted risks whose decision is due; assumptions past validateBy; dependencies at-risk or near n..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "7-the-page-a-person-reads",
+      "title": "7. The page a person reads",
+      "contracts": [
+        "C18",
+        "C25"
+      ],
+      "text": "Get-RaidView (pure, offline) renders raid/RAID.md in the vault, regenerated on every write and never edited by hand, so the vault's Obsidian view, /brief and avd-buddy read the same thing: 1. Due now: overdue and due-this-week actions, with owner role and what they serve. 2. Risks by priority, wi..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "8-what-it-never-does",
+      "title": "8. What it never does",
+      "contracts": [
+        "C10",
+        "C11",
+        "C17",
+        "C18",
+        "C21",
+        "C23",
+        "C24",
+        "C25"
+      ],
+      "text": "- The foundation never reads it. avd-landing-zone, avd-current-state and avd-assess don't read, require or wait for a RAID log. It reads what they already write (C21, C23, C24, C17 run IDs, C11). Without a brain, review.json and plan.json are still the record. - avd-swarm needs no change. The lin..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/raid-spec.md",
+      "anchor": "9-build-steps-after-the-owners-yes-and-45",
+      "title": "9. Build steps, after the owner's yes and #45",
+      "contracts": [
+        "C10",
+        "C23",
+        "C24",
+        "C25"
+      ],
+      "text": "1. contracts/schemas/raid-log.schema.json, an example, Test-RaidLog, the Connectors tests (refusals for each rule in §4), and the C25 row in docs/contracts.md. 2. Get-RaidReview and Get-RaidView, offline, with fixtures. 3. The importers from C23 and C24, once avd-assess publishes those schemas, a..."
     },
     {
       "repo": "avd-second-brain",
@@ -6448,6 +7414,248 @@
     {
       "repo": "avd-second-brain",
       "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "",
+      "title": "Proposal: restructure avd-second-brain around the estate brain",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "1-what-the-brain-is-for",
+      "title": "1. What the brain is for",
+      "contracts": [
+        "C11",
+        "C12",
+        "C18",
+        "C21",
+        "C25"
+      ],
+      "text": "The owner's description (2026-10-20), which this proposal measures every file against: 1. The why of each AVD environment. Use cases, and the decisions made building, configuring, expanding, contracting and fixing it, from its birth onward (C18). 2. The living RAID log and action and decision tra..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "2-audit-what-is-here-today-and-where-it-belongs",
+      "title": "2. Audit: what is here today and where it belongs",
+      "contracts": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19",
+        "C20",
+        "C21",
+        "C22",
+        "C23",
+        "C24",
+        "C25"
+      ],
+      "text": "Verdicts: Keep, Move (to the named repo), Retire (frozen in place as history with a pointer; never deleted while it is the last copy), Owner (a gray area, section 4)."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "3-target-structure",
+      "title": "3. Target structure",
+      "contracts": [
+        "C4",
+        "C8",
+        "C10",
+        "C12",
+        "C14",
+        "C18",
+        "C25"
+      ],
+      "text": "Moving knowledge/ to guidance/ is a rename for clarity; it is optional and comes last (G9), because every pin and the guard name the old path."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "4-gray-areas-for-the-owner",
+      "title": "4. Gray areas for the owner",
+      "contracts": [
+        "C3",
+        "C5",
+        "C6",
+        "C14"
+      ],
+      "text": "Each has a default. The owner chose all of them (2026-10-20). - G1. C14 target state. The landing zone reads it, so it is arguably a foundation contract. Default: keep here, as 0021 decided; revisit when the factory producer is built. - G2. The migration factory's engine knowledge. Default: move ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "5-move-plan",
+      "title": "5. Move plan",
+      "contracts": [
+        "C16",
+        "C22",
+        "C24"
+      ],
+      "text": "Rules for every step: a step is one PR (paired where a contract or the swarm changes); a moved file is copied to its new home and merged there first, then replaced here by a stub that links to it, so the last copy is never deleted and history stays in both repos; pins and hashes are updated in th..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "6-sequence-against-the-open-prs",
+      "title": "6. Sequence against the open PRs",
+      "contracts": [
+        "C17",
+        "C18",
+        "C25"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/restructure-proposal.md",
+      "anchor": "decision-records-which-side-of-the-public-line",
+      "title": "Decision records: which side of the public line",
+      "contracts": [],
+      "text": "The working boundary (from the RAID thread, not yet confirmed by the owner): decisions that explain how the public repos, the contracts and the KB plumbing work stay public; the working log of building the project (risks, open actions, PR dependencies, what waits on the owner, anything on the pai..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "",
+      "title": "avd-second-brain v1 completeness review",
+      "contracts": [
+        "C17",
+        "C18"
+      ],
+      "text": "- The brain's purpose (the why layer: use cases and decisions over an environment's whole life) is being written by the \"why layer\" work (C18, decision 0020). This review doesn't restate it; it checks that the rest of the specs are complete and consistent around it."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "1-what-v1-is-proposed",
+      "title": "1. What v1 is (proposed)",
+      "contracts": [
+        "C1",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C17",
+        "C18"
+      ],
+      "text": "Tier 2 (approved fixes) is no longer the brain's: avd-swarm executes every change (decision 0003)."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "2-does-the-brain-need-an-mcp",
+      "title": "2. Does the brain need an MCP?",
+      "contracts": [],
+      "text": "No. The brain builds no MCP server (operations spec §3.1 now says so). Its Concierge reaches operators as one of avd-swarm's tools, and avd-swarm uses Microsoft's Azure MCP Server for its own reads and builds no MCP server of its own in v1 (avd-swarm spec §3). People and coding agents read the br..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "3-what-is-decided",
+      "title": "3. What is decided",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C15",
+        "C17"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "4-the-concierge-in-v1-proposed",
+      "title": "4. The Concierge in v1 (proposed)",
+      "contracts": [
+        "C1",
+        "C6",
+        "C7",
+        "C11",
+        "C12"
+      ],
+      "text": "avd-swarm's build step 2 gives its agents one link to the brain: the Concierge as a read tool. The operations spec makes the Concierge a Tier 3 Foundry agent, which v1 doesn't build. So in v1 the Concierge is a deterministic read service, with no model of its own, and it is brain code (red team V..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "5-contradictions-and-gaps",
+      "title": "5. Contradictions and gaps",
+      "contracts": [
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C12",
+        "C18"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "6-the-base-pair-check",
+      "title": "6. The base pair check",
+      "contracts": [
+        "C4",
+        "C5",
+        "C6",
+        "C11",
+        "C14",
+        "C17"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/v1-review.md",
+      "anchor": "7-decisions-only-the-owner-can-make",
+      "title": "7. Decisions only the owner can make",
+      "contracts": [
+        "C9",
+        "C11"
+      ],
+      "text": "One list for both repos. Each has a default that the work follows until answered. D11 to D17 came from the red team; D18 came later and is decided. 1. D1 Where the brain's Tier 1 runtime lives. Default: shipped from avd-second-brain as an opt-in deployable, not from avd-landing-zone. Needs a land..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
       "path": "docs/vault.md",
       "anchor": "",
       "title": "The estate vault",
@@ -6526,7 +7734,7 @@
       "anchor": "",
       "title": "avd-second-brain",
       "contracts": [],
-      "text": "The organizational second brain for Azure Virtual Desktop: one memory across the whole lifecycle, from assessing an estate with Stratusphere, through its current state and its deployment, to operating it. It remembers what each estate looked like and what broke. It also remembers what the organiz..."
+      "text": "Part of avd-ops, the open toolkit for Azure Virtual Desktop. The estate brain for Azure Virtual Desktop: it understands why each AVD environment is built and performs the way it does, and keeps its living RAID log. It records each environment's use cases and the decisions made building, configuri..."
     },
     {
       "repo": "avd-second-brain",
@@ -6603,7 +7811,9 @@
       "contracts": [
         "C8",
         "C9",
-        "C10"
+        "C10",
+        "C18",
+        "C25"
       ],
       "text": "Build order with avd-swarm (second red team AX-15, avd-swarm spec §9a): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. Everything after that (brain proposals through C9, ..."
     },
