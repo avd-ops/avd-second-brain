@@ -7,9 +7,8 @@ the issue template .github/ISSUE_TEMPLATE/handoff.md and the hooks in .claude/se
 are licensed under the Apache License, Version 2.0 (see LICENSE in this folder), not under the
 repository's MIT License.
 
-They are adapted from ai-brain (https://github.com/nickprignano/ai-brain), which adapted them from
-nerdio-hcl (https://github.com/nickprignano/nerdio-hcl). Both are Copyright 2026 Nick Prignano and
-their contributors, licensed under the Apache License, Version 2.0.
+They are adapted from 2ndbrain (https://github.com/nickprignano/2ndbrain),
+Copyright 2026 Nick Prignano, licensed under the Apache License, Version 2.0.
 
 Changes made here: this knowledge base's topics, upstream vendor (Microsoft), code search
 extensions (PowerShell and Bicep), examples and issue-form wording. Each changed file says so in

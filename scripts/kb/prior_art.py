@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Check for prior art before starting new work.
 
 Says first when the topic is in another project's lane (family.yaml `not_here`, decision 0012).
