@@ -105,6 +105,44 @@
           "type": "string",
           "pattern": "^(?!.*//)[A-Za-z0-9 .,:;()/+=%*-]{0,200}$",
           "description": "Dropped by harvests; never a name, an ID or a link"
+        },
+        "alternatives": {
+          "type": "array",
+          "maxItems": 6,
+          "description": "What the design ruled out and why (architecture Q5). Carried into the environment's lifecycle record (C18) at birth; readers that deploy ignore it",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "whyNot"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {},
+              "whyNot": {
+                "enum": [
+                  "cost",
+                  "performance",
+                  "user-experience",
+                  "capacity",
+                  "risk",
+                  "security",
+                  "compliance",
+                  "policy",
+                  "supportability",
+                  "complexity",
+                  "customer-requirement",
+                  "timing",
+                  "not-recorded",
+                  "other"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "pattern": "^(?!.*//)[A-Za-z0-9 .,:;()/+=%*-]{0,200}$"
+              }
+            }
+          }
         }
       }
     },

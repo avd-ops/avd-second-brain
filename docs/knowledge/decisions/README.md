@@ -21,8 +21,8 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0006](0006-family-kb-format.md) | Adopt the family KB format at docs/knowledge/, beside the engine's knowledge/ | Accepted |
 | [0007](0007-python-family-layer-powershell-engine.md) | Python for the family layer, PowerShell for the engine | Accepted |
 | [0008](0008-learned-knowledge-stays-where-it-happened.md) | Learned knowledge stays where it happened; this KB links and watches | Accepted |
-| [0009](0009-family-format-stronger-leak-check.md) | Family format: a stronger leak check and reviewed model-drafted entries | Proposed |
-| [0010](0010-family-model-selection-convention.md) | Follow the family's model-selection convention, as one of its four pilot projects | Proposed |
+| [0009](0009-family-format-stronger-leak-check.md) | Family format: a stronger leak check and reviewed model-drafted entries | Accepted |
+| [0010](0010-family-model-selection-convention.md) | Follow the family's model-selection convention, as one of its four pilot projects | Accepted |
 | [0011](0011-family-format-upstream-sources.md) | Family format: link to upstream sources of truth, check against them, and give back | Proposed |
 | [0012](0012-family-format-project-lanes.md) | Family format: project lanes, referrals and a no-HCL guard for the AVD repos | Proposed |
 | [0013](0013-family-format-enforced-kb-capture.md) | Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot | Accepted |
@@ -31,6 +31,7 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0016](0016-never-delete-the-last-copy.md) | Never delete the last copy | Accepted |
 | [0017](0017-never-leave-the-meter-running.md) | Never leave the meter running without an opt-in | Accepted |
 | [0019](0019-recovery-runs-through-the-swarm.md) | Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean | Proposed |
+| [0020](0020-the-brain-is-the-why-layer.md) | The brain is the why layer: one lifecycle record per environment, from its birth | Proposed |
 | [0021](0021-foundation-contracts-live-in-avd-assess.md) | The foundation's contracts live in avd-assess | Accepted |
 | [0022](0022-the-brain-keeps-the-raid-log.md) | The brain keeps each estate's RAID log and action tracker, beside the lifecycle record | Proposed |
 | [0023](0023-family-format-best-open-source-or-build.md) | Adopt an outside tool only when it is the best and open source; otherwise build our own | Accepted |
