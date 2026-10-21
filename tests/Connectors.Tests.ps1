@@ -219,6 +219,36 @@ Describe 'avd-sizing-evidence/v1 -> calibration' {
   }
 }
 
+Describe 'Foundation contracts vendored from avd-assess (decision 0021)' {
+  BeforeAll {
+    $script:contracts = Join-Path $script:root 'contracts'
+    $script:pins = Get-Content (Join-Path $script:contracts 'FOUNDATION-PINS.json') -Raw | ConvertFrom-Json
+  }
+
+  It 'pins a commit of avd-assess' {
+    $script:pins.source | Should -Be 'https://github.com/nickprignano/avd-assess'
+    $script:pins.assessCommit | Should -Match '^[0-9a-f]{40}$'
+  }
+
+  It 'every foundation file is byte-identical to avd-assess at the pinned commit' {
+    foreach ($p in $script:pins.files.PSObject.Properties) {
+      $file = Join-Path $script:contracts $p.Name
+      Test-Path -LiteralPath $file | Should -BeTrue -Because "$($p.Name) is pinned"
+      (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() | Should -Be $p.Value -Because "$($p.Name) is a copy; change it in avd-assess first"
+    }
+  }
+
+  It 'covers the foundation contracts and none of the brain''s own' {
+    $names = @($script:pins.files.PSObject.Properties.Name)
+    foreach ($f in 'fact-register.json', 'schemas/current-state-facts.schema.json', 'schemas/intake.schema.json', 'schemas/assess-method.schema.json', 'schemas/assessment.schema.json', 'schemas/run-record.schema.json') {
+      $names | Should -Contain $f
+    }
+    foreach ($f in 'schemas/target-state.schema.json', 'schemas/target-approval.schema.json', 'schemas/sizing-evidence.schema.json', 'schemas/doc-findings.schema.json') {
+      $names | Should -Not -Contain $f -Because 'the brain keeps its own contracts'
+    }
+  }
+}
+
 Describe 'Fact register (C15) and target-state manifest (C14)' {
   BeforeAll {
     $script:contracts = Join-Path $script:root 'contracts'
@@ -240,7 +270,9 @@ Describe 'Fact register (C15) and target-state manifest (C14)' {
 
   It 'the register matches its schema and every built fact resolves in its contract' {
     Test-Json -Path (Join-Path $script:contracts 'fact-register.json') -SchemaFile (Join-Path $script:contracts 'schemas/fact-register.schema.json') | Should -BeTrue
-    @(Test-FactRegister -Register $script:register -SchemaByContract @{ C11 = $script:c11 }) | Should -BeNullOrEmpty
+    $c19 = Get-Content (Join-Path $script:contracts 'schemas/intake.schema.json') -Raw | ConvertFrom-Json
+    @(Test-FactRegister -Register $script:register -SchemaByContract @{ C11 = $script:c11; C19 = $c19 }) | Should -BeNullOrEmpty
+    @($script:register.facts | Where-Object { $_.tier -eq 'intake' -and ($_.status -ne 'built' -or $_.contract -ne 'C19') }) | Should -BeNullOrEmpty -Because 'C19 gives every intake fact its path'
   }
   It 'puts every C12 group measure, the hourly series and the app catalog in the group-behavior class' {
     $c12 = @($script:register.facts | Where-Object { $_.id -like 'c12.group.*' })
@@ -361,5 +393,162 @@ Describe 'C13 avd-doc-findings/v1' {
     $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C13')[0]
     $c.Built | Should -BeTrue
     $c.Schemas | Should -Contain 'doc-findings.schema.json'
+  }
+}
+
+Describe 'C17 avd-run-record/v1' {
+  BeforeAll {
+    $script:c17 = Join-Path $script:root 'contracts'
+    $script:runSchema = Join-Path $script:c17 'schemas/run-record.schema.json'
+    $script:journalSchema = Join-Path $script:c17 'schemas/run-journal.schema.json'
+    $script:costSchema = Join-Path $script:c17 'schemas/run-cost.schema.json'
+    $script:examples = Join-Path $script:c17 'examples/run-record'
+    $script:useCases = @((Get-Content (Join-Path $script:c17 'run-use-cases.json') -Raw | ConvertFrom-Json).useCases.id)
+  }
+  It 'the example run, cost and every journal line match the schemas' {
+    Test-Json -Path (Join-Path $script:examples 'run.example.json') -SchemaFile $script:runSchema | Should -BeTrue
+    Test-Json -Path (Join-Path $script:examples 'cost.example.json') -SchemaFile $script:costSchema | Should -BeTrue
+    foreach ($line in Get-Content (Join-Path $script:examples 'journal.example.jsonl')) {
+      Test-Json -Json $line -SchemaFile $script:journalSchema | Should -BeTrue
+    }
+  }
+  It 'every use case in the examples is registered' {
+    $run = Get-Content (Join-Path $script:examples 'run.example.json') -Raw | ConvertFrom-Json
+    $script:useCases | Should -Contain $run.useCase
+    foreach ($k in $run.extensions.PSObject.Properties.Name) { if ($k -notlike 'x-*') { $script:useCases | Should -Contain $k } }
+    foreach ($line in Get-Content (Join-Path $script:examples 'journal.example.jsonl')) {
+      $e = $line | ConvertFrom-Json
+      if ($e.event -like 'x.*') { $script:useCases | Should -Contain $e.useCase }
+    }
+  }
+  It 'refuses a price on an estimate line that matched no single meter' {
+    $c = Get-Content (Join-Path $script:examples 'cost.example.json') -Raw | ConvertFrom-Json
+    $c.expected.lines[1].cost = 1.5
+    Test-Json -Json ($c | ConvertTo-Json -Depth 8) -SchemaFile $script:costSchema -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'refuses <name>' -ForEach @(
+    @{ name = 'an unregistered core event'; line = '{"v":1,"event":"deploy.done","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z"}' }
+    @{ name = 'an extension event without its use case'; line = '{"v":1,"event":"x.liquidware-tier.package","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z"}' }
+    @{ name = 'a check without a status'; line = '{"v":1,"event":"check","runId":"run-20261020-1652-k3p9","ts":"2026-10-20T16:52:00Z","area":"a","check":"c"}' }
+    @{ name = 'a run ID the portal would not generate'; line = '{"v":1,"event":"operator.note","runId":"my-run","ts":"2026-10-20T16:52:00Z","text":"x"}' }
+  ) {
+    Test-Json -Json $line -SchemaFile $script:journalSchema -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'contracts.md lists C17 as built, with its three schemas' {
+    $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C17')[0]
+    $c.Built | Should -BeTrue
+    foreach ($s in 'run-record.schema.json', 'run-journal.schema.json', 'run-cost.schema.json') { $c.Schemas | Should -Contain $s }
+    $c.Formats | Should -Contain 'avd-run-record/v1'
+  }
+}
+
+Describe 'C19 to C21: intake, the assessment method and its report' {
+  BeforeAll {
+    $script:schemas = Join-Path $script:root 'contracts/schemas'
+    $script:ex = Join-Path $script:root 'contracts/examples/assess'
+    $script:register = Get-Content (Join-Path $script:root 'contracts/fact-register.json') -Raw | ConvertFrom-Json
+    $script:reportSchema = Join-Path $script:schemas 'assessment.schema.json'
+    function Save-Changed {
+      param([string] $Name, [scriptblock] $Change)
+      $d = Get-Content (Join-Path $script:ex $Name) -Raw | ConvertFrom-Json
+      & $Change $d
+      $f = Join-Path $TestDrive "$([guid]::NewGuid().ToString('n').Substring(0, 6))-$Name"
+      $d | ConvertTo-Json -Depth 12 | Set-Content $f
+      $f
+    }
+    function Get-MethodCheck {
+      param([string] $Index = (Join-Path $script:ex 'index.example.json'), [string] $Method = (Join-Path $script:ex 'method.example.json'))
+      @((Test-AssessMethod -IndexFile $Index -MethodFile $Method -SchemaPath $script:schemas -Register $script:register).Findings | ForEach-Object Check)
+    }
+    function Get-ReportCheck {
+      param([string] $File)
+      $m = Get-Content (Join-Path $script:ex 'method.example.json') -Raw | ConvertFrom-Json
+      @((Test-AssessmentReport -File $File -SchemaFile $script:reportSchema -Method $m -Register $script:register).Findings | ForEach-Object Check)
+    }
+  }
+
+  It 'the intake example matches avd-intake/v1' {
+    Test-Json -Path (Join-Path $script:ex 'intake.example.json') -SchemaFile (Join-Path $script:schemas 'intake.schema.json') | Should -BeTrue
+  }
+  It 'intake has no field for <Why>' -ForEach @(
+    @{ Why = 'a domain name'; Change = { param($d) $d | Add-Member domain 'contoso.com' } }
+    @{ Why = 'a free-text identity answer'; Change = { param($d) $d.identityConstraints = 'we use AD at head office' } }
+    @{ Why = 'residency regions when residency is not required'; Change = { param($d) $d.residency.required = $false } }
+    @{ Why = 'a hub given by name'; Change = { param($d) $d.existingHub = 'hub-vnet-prod' } }
+  ) {
+    $f = Save-Changed 'intake.example.json' $Change
+    Test-Json -Path $f -SchemaFile (Join-Path $script:schemas 'intake.schema.json') -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'accepts the example index and method' {
+    Get-MethodCheck | Should -BeNullOrEmpty
+  }
+  It 'every decision in the register has one readiness row in the example method' {
+    $m = Get-Content (Join-Path $script:ex 'method.example.json') -Raw | ConvertFrom-Json
+    @($m.readiness.decision | Sort-Object) | Should -Be @($script:register.decisions.id | Sort-Object)
+  }
+  It 'refuses a method with <Why>' -ForEach @(
+    @{ Why = 'a claim no reference has'; Check = 'method:unknown-claim'; Change = { param($m) $m.checks[0].claims = @('ref:review-checklists-avd#Z99.99') } }
+    @{ Why = 'a gap that does not exist'; Check = 'method:unknown-claim'; Change = { param($m) $m.collection[0].claims = @('gap:telepathy') } }
+    @{ Why = 'a fact that is not registered'; Check = 'method:unknown-fact'; Change = { param($m) $m.checks[1].facts = @('c11.storage.colour') } }
+    @{ Why = 'a check on a fact not built yet'; Check = 'method:fact-not-citable'; Change = { param($m) $m.checks[1].facts = @('c12.group.users') } }
+    @{ Why = 'a decision that does not exist'; Check = 'method:unknown-decision'; Change = { param($m) $m.checks[0].informs = @('hostPool.colour') } }
+    @{ Why = 'a decision left without readiness'; Check = 'method:readiness-missing'; Change = { param($m) $m.readiness = @($m.readiness | Where-Object decision -ne 'region') } }
+    @{ Why = 'sizing called decidable from Azure alone'; Check = 'method:readiness-register'; Change = { param($m) ($m.readiness | Where-Object decision -eq 'hostPool.vmSize').readiness = 'decidable' } }
+    @{ Why = 'decidable with intake but no intake fact'; Check = 'method:readiness-facts'; Change = { param($m) ($m.readiness | Where-Object decision -eq 'hostPool.power').facts = @('c11.hostPool.startVmOnConnect') } }
+    @{ Why = 'a readiness fact that cannot support the decision'; Check = 'method:fact-cannot-support'; Change = { param($m) ($m.readiness | Where-Object decision -eq 'hostPool.type').facts = @('c11.hostPool.type', 'c11.policy.assignments') } }
+    @{ Why = 'an Azure fact said to come from intake'; Check = 'method:collection-source'; Change = { param($m) $m.collection[0].from = 'intake' } }
+    @{ Why = 'the same check twice'; Check = 'method:duplicate-check'; Change = { param($m) $m.checks[1].id = $m.checks[0].id } }
+    @{ Why = 'another register version'; Check = 'method:register-version'; Change = { param($m) $m.factRegister = 9 } }
+    @{ Why = 'a code expression in a rule'; Check = 'schema'; Change = { param($m) $m.checks[0].rule.expect = @{ startVmOnConnect = @{ script = '$true' } } } }
+    @{ Why = 'an overall score'; Check = 'schema'; Change = { param($m) $m.scoring.overall = $true } }
+  ) {
+    Get-MethodCheck -Method (Save-Changed 'method.example.json' $Change) | Should -Contain $Check
+  }
+  It 'refuses an index with <Why>' -ForEach @(
+    @{ Why = 'an observation of a claim no reference has'; Check = 'index:unknown-claim'; Change = { param($x) $x.observations[0].claim = 'ref:avd-prerequisites#rtt-under-5' } }
+    @{ Why = 'a pin that can move'; Check = 'schema'; Change = { param($x) $x.references[0].pin = 'https://github.com/MicrosoftDocs/windowsserverdocs/blob/main/x.md' } }
+    @{ Why = 'a verdict without evidence'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @() } }
+    @{ Why = 'evidence that is not pinned'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @('https://github.com/nickprignano/avd-landing-zone/blob/master/build/lessons/0003-region-latency.md') } }
+    @{ Why = 'an email in our own words'; Check = 'sensitive:email-or-upn'; Change = { param($x) $x.observations[0].observed = 'Measured by ops at fabrikam.net, see admin@fabrikam.net' } }
+  ) {
+    Get-MethodCheck -Index (Save-Changed 'index.example.json' $Change) | Should -Contain $Check
+  }
+  It 'scores a pillar as passing weight over assessed weight, warn at half' {
+    $m = Get-Content (Join-Path $script:ex 'method.example.json') -Raw | ConvertFrom-Json
+    $s = @(Get-AssessScore -Method $m -Result @([pscustomobject]@{ check = 'asm-personal-start-vm-on-connect'; outcome = 'warn' }, [pscustomobject]@{ check = 'asm-profile-storage-private-endpoint'; outcome = 'unknown' }))
+    ($s | Where-Object pillar -eq 'cost').score | Should -Be 0.5
+    $sec = $s | Where-Object pillar -eq 'security'
+    $sec.score | Should -BeNullOrEmpty
+    $sec.coverage | Should -Be 0
+  }
+  It 'accepts the example report against the example method, hash included' {
+    $m = Get-Content (Join-Path $script:ex 'method.example.json') -Raw | ConvertFrom-Json
+    $sha = (Get-FileHash (Join-Path $script:ex 'method.example.json') -Algorithm SHA256).Hash.ToLowerInvariant()
+    (Test-AssessmentReport -File (Join-Path $script:ex 'assessment.example.json') -SchemaFile $script:reportSchema -Method $m -MethodSha256 $sha -Register $script:register).Findings | Should -BeNullOrEmpty
+  }
+  It 'refuses a report with <Why>' -ForEach @(
+    @{ Why = 'a check missing'; Check = 'report:missing-check'; Change = { param($r) $r.results = @($r.results[0]) } }
+    @{ Why = 'a check the method does not have'; Check = 'report:unknown-check'; Change = { param($r) $r.results[1].check = 'asm-not-in-method' } }
+    @{ Why = 'a fact the check does not use'; Check = 'report:fact-not-in-check'; Change = { param($r) $r.results[1].facts = @('c11.hostPool.type') } }
+    @{ Why = 'an outcome better than its subjects'; Check = 'report:rollup'; Change = { param($r) $r.results[0].outcome = 'pass' } }
+    @{ Why = 'a guessed outcome with no subjects'; Check = 'report:rollup'; Change = { param($r) $r.results[1].subjects = @() } }
+    @{ Why = 'a score that does not recompute'; Check = 'report:score'; Change = { param($r) $r.pillars[0].score = 0.9 } }
+    @{ Why = 'sizing marked supported'; Check = 'report:decision-status'; Change = { param($r) ($r.decisions | Where-Object decision -eq 'hostPool.vmSize').status = 'supported' } }
+    @{ Why = 'region supported without intake'; Check = 'report:decision-status'; Change = { param($r) $r.inputs.intake = $null } }
+    @{ Why = 'a decision missing'; Check = 'report:decision'; Change = { param($r) $r.decisions = @($r.decisions | Where-Object decision -ne 'network') } }
+    @{ Why = 'another method version'; Check = 'report:method-version'; Change = { param($r) $r.method.version = 2 } }
+    @{ Why = 'a host pool name as a subject'; Check = 'schema'; Change = { param($r) $r.results[0].subjects[0].id = 'hp-finance' } }
+    @{ Why = 'free text'; Check = 'schema'; Change = { param($r) $r.results[0] | Add-Member note 'owner asked to keep it off' } }
+  ) {
+    Get-ReportCheck (Save-Changed 'assessment.example.json' $Change) | Should -Contain $Check
+  }
+  It 'contracts.md lists C19, C20 and C21 as built, with their schemas' {
+    $all = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw))
+    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json'); C21 = @('assessment.schema.json') }
+    foreach ($id in $want.Keys) {
+      $c = @($all | Where-Object Id -eq $id)[0]
+      $c.Built | Should -BeTrue -Because "$id has its schema and tests"
+      foreach ($s in $want[$id]) { $c.Schemas | Should -Contain $s }
+    }
   }
 }

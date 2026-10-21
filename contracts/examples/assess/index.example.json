@@ -1,0 +1,145 @@
+{
+  "schema": "avd-assess-index/v1",
+  "references": [
+    {
+      "id": "avd-prerequisites",
+      "title": "Prerequisites for Azure Virtual Desktop",
+      "url": "https://learn.microsoft.com/azure/virtual-desktop/prerequisites",
+      "pin": "Learn git_commit_id 98f726730d8d63d52a4fea0415ab8eaffffcd975, updated_at 2026-09-30",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks",
+        "collection"
+      ],
+      "claims": [
+        {
+          "id": "rtt-under-150",
+          "says": "Round-trip time from the client's network to the host pool's Azure region should be under 150 ms; put session hosts in the region closest to users.",
+          "kind": "published"
+        }
+      ]
+    },
+    {
+      "id": "review-checklists-avd",
+      "title": "Azure review checklists, Azure Virtual Desktop",
+      "url": "https://github.com/Azure/review-checklists",
+      "pin": "https://github.com/Azure/review-checklists/blob/f131b93418892102b00c247fd9cf685e3d356522/checklists/avd_checklist.en.json",
+      "read": "2026-10-20",
+      "license": "MIT",
+      "areas": [
+        "assessment"
+      ],
+      "notes": "130 items with short ID, category, WAF pillar, severity and Learn link. The AVD items have no Resource Graph query, so mapping evidence to them is ours (gap:checklist-mapping). Cite items by short ID, never by GUID.",
+      "claims": [
+        {
+          "id": "E01.05",
+          "says": "Consider Start VM on Connect for personal host pools (Cost, low)."
+        },
+        {
+          "id": "E02.02",
+          "says": "Send diagnostic settings for workspaces, host pools, application groups and host VMs to a Log Analytics workspace (Reliability, medium)."
+        },
+        {
+          "id": "F01.10",
+          "says": "Evaluate a private endpoint for the Azure Files share (Security, medium)."
+        },
+        {
+          "id": "F01.11",
+          "says": "Evaluate RDP Shortpath for clients on managed internal networks (Performance, medium)."
+        },
+        {
+          "id": "H03.05",
+          "says": "Keep the FSLogix profile storage in the same Azure region as the session hosts (Performance, high)."
+        },
+        {
+          "id": "H04.03",
+          "says": "Review and confirm the configured maximum FSLogix profile size (Cost, high)."
+        }
+      ]
+    },
+    {
+      "id": "session-host-sizing",
+      "title": "Session host virtual machine sizing guidelines",
+      "url": "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines",
+      "pin": "https://github.com/MicrosoftDocs/windowsserverdocs/blob/ad5a77c71f56256d9c306ddd93cc9e076c1a76c5/WindowsServerDocs/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines.md",
+      "read": "2026-10-20",
+      "license": "Microsoft Learn content (link only)",
+      "areas": [
+        "benchmarks"
+      ],
+      "claims": [
+        {
+          "id": "estimates-only",
+          "says": "The page's numbers are generic guidelines for initial performance estimates only.",
+          "kind": "guidance"
+        },
+        {
+          "id": "multisession-users-per-vcpu",
+          "says": "Multi-session maximum users per vCPU: light 6, medium 4, heavy 2, power 1.",
+          "kind": "prior"
+        },
+        {
+          "id": "multisession-vcpu-range",
+          "says": "Keep multi-session VMs between 6 and 24 vCPUs; four cores is the lowest for a stable multi-session VM.",
+          "kind": "published"
+        },
+        {
+          "id": "profile-storage-minimum",
+          "says": "Plan at least 30 GB of profile storage per user.",
+          "kind": "prior"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "region-latency-from-the-user",
+      "claim": "ref:avd-prerequisites#rtt-under-150",
+      "verdict": "extends",
+      "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "sizing-floor-not-measured",
+      "claim": "ref:session-host-sizing#multisession-vcpu-range",
+      "verdict": "not-yet-tested",
+      "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    },
+    {
+      "id": "users-per-vcpu-adopted",
+      "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
+      "verdict": "not-yet-tested",
+      "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
+      "evidence": [
+        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+      ],
+      "date": "2026-10-20"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "checklist-mapping",
+      "title": "mapping facts to review checklist items"
+    },
+    {
+      "id": "decision-readiness",
+      "title": "decision readiness"
+    },
+    {
+      "id": "intake",
+      "title": "intake"
+    },
+    {
+      "id": "scoring",
+      "title": "scoring"
+    }
+  ]
+}

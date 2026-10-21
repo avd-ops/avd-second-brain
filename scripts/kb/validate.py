@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Validate the knowledge base: front matter, decision records, YAML data, links and leak patterns.
 
     python3 scripts/kb/validate.py

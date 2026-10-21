@@ -1,0 +1,23 @@
+{
+  "schema": "avd-run-cost/v1",
+  "runId": "run-20261020-1652-k3p9",
+  "currency": "USD",
+  "cap": 10,
+  "gate": { "rule": "expected total at most half the cap", "limit": 5, "passed": true },
+  "expected": {
+    "pricedAt": "2026-10-20T16:50:00Z",
+    "source": "Get-AvdCostEstimate (retail prices API)",
+    "hours": 3,
+    "lines": [
+      { "item": "Session host VM", "match": "exact", "meter": "D2as v5", "unitPrice": 0.096, "unit": "1 Hour", "quantity": 3, "cost": 0.29 },
+      { "item": "Run store blobs", "match": "several", "cost": null, "metersSeen": ["Hot LRS Data Stored", "Hot LRS Write Operations"] }
+    ],
+    "total": 0.29,
+    "unpriced": 1
+  },
+  "actuals": [
+    { "readAt": "2026-10-21T08:00:00Z", "settled": false, "total": 0.41, "byMeter": [ { "meter": "D2as v5", "cost": 0.30 }, { "meter": "Premium SSD Managed Disks", "cost": 0.11 } ] },
+    { "readAt": "2026-10-24T08:00:00Z", "settled": true, "total": 0.42, "byMeter": [ { "meter": "D2as v5", "cost": 0.30 }, { "meter": "Premium SSD Managed Disks", "cost": 0.12 } ] }
+  ],
+  "comparison": { "difference": 0.13, "unexpectedMeters": ["Premium SSD Managed Disks"], "billingAfterTeardown": false }
+}
