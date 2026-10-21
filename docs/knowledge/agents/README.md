@@ -3,7 +3,7 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 sources:
   - https://github.com/microsoft/PyRIT
   - https://github.com/NVIDIA/garak
@@ -28,6 +28,13 @@ sources:
   - https://learn.microsoft.com/azure/static-web-apps/apis-overview
   - https://learn.microsoft.com/azure/static-web-apps/apis-functions
   - https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/
+  - https://learn.microsoft.com/azure/logic-apps/automation/dynamic-workflow-automation-introduction
+  - https://learn.microsoft.com/azure/logic-apps/automation/compare-automation-services
+  - https://learn.microsoft.com/azure/sre-agent/pricing-billing
+  - https://learn.microsoft.com/azure/sre-agent/deploy-iac
+  - https://learn.microsoft.com/azure/api-management/mcp-server-overview
+  - https://learn.microsoft.com/azure/api-management/llm-token-limit-policy
+  - https://learn.microsoft.com/azure/api-management/ai-gateway-overview
 ---
 
 # AI agents in the AVD repos
@@ -51,6 +58,17 @@ Checked on 2026-10-20 for the v1 reviews ([brain](../../v1-review.md), [avd-swar
 - **SRE Agent can't be stopped from writing by a hook.** Its hooks fire on Stop and PostToolUse only, so a hook sees a tool call after it ran; a user-defined hook that returns allow even overrides a global deny. The deny that holds is its **tool access policy at global scope** (only the global scope can deny; custom-agent and thread scopes can only allow), and the control to rely on is still Azure RBAC on its identity ([tool access policies](https://learn.microsoft.com/azure/sre-agent/tool-access-policies), [agent hooks](https://learn.microsoft.com/azure/sre-agent/agent-hooks)).
 - **Azure RBAC conditions don't limit control-plane deletes by tag.** Conditions apply to storage data actions and to role assignment management (delegation conditions can limit `roleAssignments/write` and `delete` to named principals or roles). A "delete only what is tagged" identity has to be scoped by resource group instead, and Azure Policy's `denyAction` on `delete` protects tagged resources ([ABAC conditions](https://learn.microsoft.com/azure/role-based-access-control/conditions-overview), [delegation conditions](https://learn.microsoft.com/azure/role-based-access-control/delegate-role-assignments-overview), [denyAction](https://learn.microsoft.com/azure/governance/policy/concepts/effect-deny-action)).
 - **MCP approval is never the write approval.** An MCP or Foundry tool approval answers inside the conversation; every change still goes through avd-swarm's plan, gate and GitHub Environment.
+
+## Native Azure automation services: Logic Apps Automation, SRE Agent, API Management
+
+Checked on 2026-10-21 when the owner asked whether these native services could replace something we build. Prices are North Central US list prices from the Azure retail prices API. Nothing was deployed or run. Verdicts: SRE Agent stays the optional add-on in avd-swarm spec 3a (a 30-day sandbox pilot is proposed); Logic Apps Automation is reference only; API Management is watched until avd-swarm runs models from Azure.
+
+- **Logic Apps Automation (auto.azure.com) is a preview with a standing meter.** Its environment bills $0.0504 an hour in North Central US (about $37 a month) whether or not anything runs, plus execution-seconds, connector actions and AI credits. Its model picks each next step at run time, and Microsoft points predictable processes at Logic Apps Standard or Consumption instead ([overview](https://learn.microsoft.com/azure/logic-apps/automation/dynamic-workflow-automation-introduction), [compare](https://learn.microsoft.com/azure/logic-apps/automation/compare-automation-services)).
+- **Logic Apps Automation workflows can't be kept as code yet.** The docs show browser authoring only (chat assistant, designer, templates) and no Git, export or Bicep path, so a public repo can't hold what runs. Look again at GA or when an export appears. It isn't an AVD endpoint either: session hosts and clients never contact auto.azure.com.
+- **SRE Agent bills until it is deleted.** Always-on is 4 AAU an hour per agent ($0.10 per AAU, about $292 a month), and a stopped agent still pays it; deleting is the only way to stop. New customers get a 30-day evaluation that waives always-on, though the pricing page's FAQ says otherwise, so check the meter on day one. Active use is tokens metered as AAU, for example 100 AAU per 1M input tokens on Claude Opus 4.6 and 35 on GPT 5.2 ([pricing](https://learn.microsoft.com/azure/sre-agent/pricing-billing)).
+- **SRE Agent deploys as code.** Microsoft's microsoft/sre-agent templates deploy the `Microsoft.App/agents` resource, its identity and role assignments from Bicep; hooks, code repositories and knowledge files still go through the data plane ([deploy as code](https://learn.microsoft.com/azure/sre-agent/deploy-iac)). Its command guardrails always block delete and Key Vault commands.
+- **API Management's MCP and token-limit features skip the Consumption tier.** Consumption gives 1M calls a month free and then $0.035 per 10K calls, but it can't expose MCP servers or run `llm-token-limit`. Developer (about $48 a month, no SLA), Basic v2 (about $150 a month) and up can. `llm-token-limit` handles Anthropic Messages only on the v2 tiers ([MCP servers](https://learn.microsoft.com/azure/api-management/mcp-server-overview), [llm-token-limit](https://learn.microsoft.com/azure/api-management/llm-token-limit-policy)).
+- **The AI Gateway tier's runtime keys are secrets that reach everything.** The preview tier (East US 2 and Sweden Central, pricing not announced) authenticates clients with an `api-key` header, and each key can call every model and tool on the gateway. That conflicts with keyless identities and per-agent allowlists, so it isn't a fit until Entra client authentication arrives ([AI Gateway tier](https://learn.microsoft.com/azure/api-management/ai-gateway-overview)).
 
 ## Securing the agents and AVD security signal
 
