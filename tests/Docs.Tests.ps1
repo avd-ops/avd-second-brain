@@ -180,14 +180,19 @@ Describe 'D4 contracts' {
 Describe 'D5 paired decisions' {
   BeforeAll {
     function New-PairRepo {
-      param($Name, $Path, $Status, $Pair)
-      New-TestRepo -Name $Name -File @{ $Path = "---`nstatus: $Status`n---`n# Decision`n`n- **Pair:** [theirs](https://github.com/nickprignano/$Pair)`n" }
+      param($Name, $Path, $Status, $Pair, $Owner = 'avd-ops')
+      New-TestRepo -Name $Name -File @{ $Path = "---`nstatus: $Status`n---`n# Decision`n`n- **Pair:** [theirs](https://github.com/$Owner/$Pair)`n" }
     }
   }
   It 'passes a pair that links both ways with the same status' {
     $a = New-PairRepo 'avd-a' 'docs/decisions/0001-x.md' 'accepted' 'avd-b/blob/main/docs/decisions/0002-y.md'
     $b = New-PairRepo 'avd-b' 'docs/decisions/0002-y.md' 'accepted' 'avd-a/blob/main/docs/decisions/0001-x.md'
     @(Test-DocDecisionPair -Repo $a, $b).Count | Should -Be 0
+  }
+  It 'reads links that still use the owner from before the org move' {
+    $a = New-PairRepo 'avd-a' 'docs/decisions/0001-x.md' 'accepted' 'avd-b/blob/main/docs/decisions/0002-y.md' -Owner 'nickprignano'
+    $b = New-PairRepo 'avd-b' 'docs/decisions/0002-y.md' 'proposed' 'avd-a/blob/main/docs/decisions/0001-x.md'
+    (Test-DocDecisionPair -Repo $a, $b).truth | Should -Match 'is proposed'
   }
   It 'flags a status mismatch, a missing link back and a broken link' {
     $a = New-PairRepo 'avd-a' 'docs/decisions/0001-x.md' 'accepted' 'avd-b/blob/main/docs/decisions/0002-y.md'

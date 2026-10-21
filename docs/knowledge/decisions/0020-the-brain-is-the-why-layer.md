@@ -22,7 +22,7 @@ Most of the pieces exist but don't connect into a why. C11 and C12 say what an e
 
 Chosen option: "A pseudonymous lifecycle record per environment", because it reuses every existing contract by reference instead of copying it, keeps tenant data in the vault, and gives the agents a why they can cite and the checks a gap they can find.
 
-- **Brain = why, avd-swarm = how.** The brain keeps the use cases, the decisions (chosen, alternatives with why not, drivers, evidence, watched facts) and the events that carried them out, across assess, design, build, configure, expand, contract, fix, recover and retire. avd-swarm records how each change was done (its plan, gate, approval and C10 outcome) and every plan says which decision it carries out. Paired with [avd-swarm decision 0007](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0007-every-plan-says-why.md).
+- **Brain = why, avd-swarm = how.** The brain keeps the use cases, the decisions (chosen, alternatives with why not, drivers, evidence, watched facts) and the events that carried them out, across assess, design, build, configure, expand, contract, fix, recover and retire. avd-swarm records how each change was done (its plan, gate, approval and C10 outcome) and every plan says which decision it carries out. Paired with [avd-swarm decision 0007](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0007-every-plan-says-why.md).
 - **One record per environment, born once.** `avd-lifecycle-record/v1` ([contracts](../../contracts.md) C18), filed in the estate vault under `lifecycle/`, never in `knowledge/`. Its first decisions come from the approved C14 manifest (`ConvertFrom-TargetStateDecision`).
 - **Reuse, don't rebuild.** Facts by C15 register ID, runs by C17 run ID, plans by avd-swarm plan ID, manifests by hash, lessons by C7 citation, the vault's ADRs by number. The record adds only what none of them has: the use cases, the alternatives and the link from each change to its decision.
 - **Gaps are findings.** A change no decision explains and an accepted decision with no alternatives are warnings the brain puts in front of a person. A watched fact that changes reopens its decision (`Get-LifecycleReview`) as a Notice, never an action.
@@ -38,6 +38,6 @@ Chosen option: "A pseudonymous lifecycle record per environment", because it reu
 
 ## More Information
 
-- **Pair:** [avd-swarm decision 0007](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0007-every-plan-says-why.md) says the same from the other side. The two change together (decision 0003).
+- **Pair:** [avd-swarm decision 0007](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0007-every-plan-says-why.md) says the same from the other side. The two change together (decision 0003).
 - Built offline: the schema, the example, `Test-LifecycleRecord`, `Get-LifecycleExplanation`, `Get-LifecycleReview`, `ConvertFrom-TargetStateDecision` and their tests in `tests/Connectors.Tests.ps1`. The writers from C17, the vault's `/capture` and avd-swarm's C10 are specified, not built, and follow the build order (avd-swarm spec §9a).
 - C14 carries alternatives too: the owner answered [architecture](../../architecture.md) Q5 yes on 2026-10-21, so each manifest decision may list what the design ruled out, and the record starts with it.

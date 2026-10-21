@@ -2,7 +2,7 @@
 
 Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desktop.
 
-The estate brain for **Azure Virtual Desktop**: it understands why each AVD environment is built and performs the way it does, and keeps its living RAID log. It records each environment's use cases and the decisions made building, configuring, expanding, contracting and fixing it, from its birth (decision 0020, [PR #45](https://github.com/nickprignano/avd-second-brain/pull/45)). It also tracks the risks, assumptions, issues, dependencies and actions that are open on it. It sits on top of the foundation (avd-assess, avd-current-state, avd-landing-zone), which works without it, and [avd-swarm](https://github.com/nickprignano/avd-swarm) acts on what it proposes. Scope: [decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md).
+The estate brain for **Azure Virtual Desktop**: it understands why each AVD environment is built and performs the way it does, and keeps its living RAID log. It records each environment's use cases and the decisions made building, configuring, expanding, contracting and fixing it, from its birth (decision 0020, [PR #45](https://github.com/avd-ops/avd-second-brain/pull/45)). It also tracks the risks, assumptions, issues, dependencies and actions that are open on it. It sits on top of the foundation (avd-assess, avd-current-state, avd-landing-zone), which works without it, and [avd-swarm](https://github.com/avd-ops/avd-swarm) acts on what it proposes. Scope: [decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md).
 
 > [!WARNING]
 > **Personal project. Research and learning only. Not for production. No warranty.**
@@ -20,9 +20,9 @@ The estate brain for **Azure Virtual Desktop**: it understands why each AVD envi
 | Repo | Lifecycle stage | Gives the brain | Takes from the brain |
 |---|---|---|---|
 | [avd-liquidware](https://github.com/nickprignano/avd-liquidware) | The Stratusphere instrument (moving from the assessment project) and the optional ProfileUnity tier | Lessons; Liquidware facts once built | The manifest's `liquidware` block, later |
-| [avd-current-state](https://github.com/nickprignano/avd-current-state) | Inventory and validate (collector, validator) | Evidence packages, ingested into a customer's estate vault; the redacted facts snapshot (C11) | The fact register (C15), for manifest coverage |
-| [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) | Deploy and operate (landing zone, operations brain) | Lessons, decisions, day-2 sizing evidence | Workload tiers, calibration, catalog, shared runbooks, target-state manifests (C14) |
-| [avd-swarm](https://github.com/nickprignano/avd-swarm) | Act and control (agents, approvals, the executor, the kill switch) | Insights and grading (C8), action outcomes and the kill switch position (C10), lessons and decisions | Playbook run proposals (C9), docs findings (C13), the knowledge base at a pinned commit (C6) |
+| [avd-current-state](https://github.com/avd-ops/avd-current-state) | Inventory and validate (collector, validator) | Evidence packages, ingested into a customer's estate vault; the redacted facts snapshot (C11) | The fact register (C15), for manifest coverage |
+| [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) | Deploy and operate (landing zone, operations brain) | Lessons, decisions, day-2 sizing evidence | Workload tiers, calibration, catalog, shared runbooks, target-state manifests (C14) |
+| [avd-swarm](https://github.com/avd-ops/avd-swarm) | Act and control (agents, approvals, the executor, the kill switch) | Insights and grading (C8), action outcomes and the kill switch position (C10), lessons and decisions | Playbook run proposals (C9), docs findings (C13), the knowledge base at a pinned commit (C6) |
 <!-- generated:connections end -->
 
 Assessment and design run in a separate project that isn't connected here; it gives the brain engagement harvests, measured sizing, forensic facts (C12) and target-state manifests (C14, as buckets), and takes the catalog, rules, calibration and the fact register (C15). The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [docs/contracts.md](docs/contracts.md).
@@ -38,14 +38,14 @@ Assessment and design run in a separate project that isn't connected here; it gi
 | **Family knowledge base** (`docs/knowledge/`, `scripts/kb/`) | Topic pages, decision records (MADR 4), known errors, upstream asks, sources and experts, and the tooling that keeps them current. One of the sibling knowledge bases that share a format | [docs/knowledge/README.md](docs/knowledge/README.md), [guardrails](docs/guardrails.md) | Built |
 | **Docs consistency** | The check every repo calls, as part of the sweep plumbing (the handbook is retired; avd-ops holds each repo's page) | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Built; stays ([decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)) |
 
-**Build order with avd-swarm** (second red team AX-15, [avd-swarm spec §9a](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
+**Build order with avd-swarm** (second red team AX-15, [avd-swarm spec §9a](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
 
 ## Quick start
 
 PowerShell 7.4 (Azure Cloud Shell has it). No modules.
 
 ```powershell
-git clone https://github.com/nickprignano/avd-second-brain.git
+git clone https://github.com/avd-ops/avd-second-brain.git
 Set-Location avd-second-brain
 
 # Ask the brain, across this repo and the connected repos

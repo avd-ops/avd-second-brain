@@ -528,7 +528,7 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
     @{ Why = 'an observation of a claim no reference has'; Check = 'index:unknown-claim'; Change = { param($x) $x.observations[0].claim = 'ref:avd-prerequisites#rtt-under-5' } }
     @{ Why = 'a pin that can move'; Check = 'schema'; Change = { param($x) $x.references[0].pin = 'https://github.com/MicrosoftDocs/windowsserverdocs/blob/main/x.md' } }
     @{ Why = 'a verdict without evidence'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @() } }
-    @{ Why = 'evidence that is not pinned'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @('https://github.com/nickprignano/avd-landing-zone/blob/master/build/lessons/0003-region-latency.md') } }
+    @{ Why = 'evidence that is not pinned'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @('https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0003-region-latency.md') } }
     @{ Why = 'an email in our own words'; Check = 'sensitive:email-or-upn'; Change = { param($x) $x.observations[0].observed = 'Measured by ops at fabrikam.net, see admin@fabrikam.net' } }
   ) {
     Get-MethodCheck -Index (Save-Changed 'index.example.json' $Change) | Should -Contain $Check

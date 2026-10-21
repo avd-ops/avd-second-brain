@@ -212,34 +212,34 @@ kb_page = "fslogix/README.md"
 [[source]]
 name = "avd-landing-zone: lessons"
 kind = "github_commits"
-repo = "nickprignano/avd-landing-zone"
+repo = "avd-ops/avd-landing-zone"
 path = "docs/lessons"
 kb_page = "troubleshooting/README.md"
 
 [[source]]
 name = "avd-landing-zone: decisions"
 kind = "github_commits"
-repo = "nickprignano/avd-landing-zone"
+repo = "avd-ops/avd-landing-zone"
 path = "docs/decisions"
 kb_page = "landing-zone/README.md"
 
 [[source]]
 name = "avd-swarm: decisions"
 kind = "github_commits"
-repo = "nickprignano/avd-swarm"
+repo = "avd-ops/avd-swarm"
 path = "docs/decisions"
 kb_page = "operations/README.md"
 
 [[source]]
 name = "avd-current-state: changes"
 kind = "github_commits"
-repo = "nickprignano/avd-current-state"
+repo = "avd-ops/avd-current-state"
 kb_page = "assessment/README.md"
 
 [[source]]
 name = "avd-assess: changes"
 kind = "github_commits"
-repo = "nickprignano/avd-assess"
+repo = "avd-ops/avd-assess"
 # The foundation standards (references, gaps, method.json) other repos cite.
 kb_page = "assessment/README.md"
 
@@ -322,13 +322,13 @@ kb_page = "curation.md"
 [[source]]
 name = "avd-ops KB: decisions"
 kind = "github_commits"
-repo = "nickprignano/avd-ops"
+repo = "avd-ops/avd-ops"
 path = "docs/knowledge/decisions"
 kb_page = "curation.md"
 
 [[source]]
 name = "avd-ops KB: changes"
 kind = "github_commits"
-repo = "nickprignano/avd-ops"
+repo = "avd-ops/avd-ops"
 path = "docs/knowledge"
 kb_page = "curation.md"

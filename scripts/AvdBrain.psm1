@@ -1464,7 +1464,7 @@ function Get-DocDecision {
     foreach ($l in $md.Lines) {
       if ($l.Text -notmatch '(?i)\*\*Pair:\*\*|also recorded in') { continue }
       $kind = if ($l.Text -match '(?i)\*\*Pair:\*\*') { 'pair' } else { 'also' }
-      foreach ($m in [regex]::Matches($l.Text, '\]\(https://github\.com/nickprignano/([\w.-]+)/blob/[^/)]+/([^)#\s]+)')) {
+      foreach ($m in [regex]::Matches($l.Text, '\]\(https://github\.com/(?:avd-ops|nickprignano)/([\w.-]+)/blob/[^/)]+/([^)#\s]+)')) {
         $pairs += [pscustomobject]@{ Kind = $kind; Repo = $m.Groups[1].Value; Path = $m.Groups[2].Value; Line = $l.Number }
       }
     }
