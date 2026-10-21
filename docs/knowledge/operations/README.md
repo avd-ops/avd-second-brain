@@ -78,6 +78,18 @@ Checked against Microsoft Learn on 2026-10-20; the landing zone's design for it 
 - A Key Vault backup restores only into a vault in the same subscription and geography, so it can't carry secrets to a new subscription. Regenerate secrets on recovery instead of copying them.
 - Only some Entra objects are soft deleted for 30 days (users, Microsoft 365 and cloud security groups, app registrations, service principals, administrative units, Conditional Access policies, named locations); the rest are hard deleted. Keep Conditional Access and similar configuration as JSON in git and redeploy the last known-good version ([Recover from deletions](https://learn.microsoft.com/entra/architecture/recover-from-deletions)).
 
+## Tripwires in an estate
+
+*Proposed:* a free, estate-scoped tripwire kit (a decoy Key Vault secret, key asks on the profile storage account, a tamper check), detected by avd-swarm's watchdog and optionally by the landing zone ([avd-swarm tripwires spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/tripwires.md)). Directory decoys are tenant-level and out of scope. Checked against Microsoft Learn on 2026-10-21:
+
+- Key Vault logs `SecretGet`, `SecretBackup`, `SecretSet`, `SecretUpdate`, `SecretDelete` and `SecretPurge` in its `AuditEvent` category, including failed and firewall-denied requests; `AZKVAuditLogs` carries `RequestUri`, `ResultSignature` and `IsAddressAuthorized`, and logs can arrive about ten minutes late ([logging](https://learn.microsoft.com/azure/key-vault/general/logging), [table](https://learn.microsoft.com/azure/azure-monitor/reference/tables/azkvauditlogs)). Without `logAnalyticsDestinationType: 'Dedicated'` a diagnostic setting writes to `AzureDiagnostics` instead.
+- Listing a vault's secrets through ARM (`Microsoft.KeyVault/vaults/secrets`) returns metadata only and logs no `SecretGet`, so Reader can check a decoy exists without tripping it, and an attacker with Reader can see every secret name the same way.
+- Activity Log, service health and resource health alerts are free; log search alerts bill by evaluation frequency ([cost optimization](https://learn.microsoft.com/azure/azure-monitor/fundamentals/best-practices-cost#alert-cost-optimization)).
+- `listKeys` on a storage account is a control-plane action, so it succeeds even with shared key access off. The Azure portal uses Shared Key for file shares by default, and vault-tier Azure Files backup needs key access ([prevent Shared Key](https://learn.microsoft.com/azure/storage/common/shared-key-authorization-prevent), [backup support matrix](https://learn.microsoft.com/azure/backup/azure-file-share-support-matrix)), so either one calls `listKeys` legitimately.
+- A redeploy PUTs every resource again and the Activity Log records a write for each, so a tripwire on "any write to the alert" fires at every deploy; check state instead.
+- An action group can't call an endpoint as its own managed identity for webhooks; a Secure webhook signs in as Azure Monitor's first-party service principal against an app registration you make ([action groups](https://learn.microsoft.com/azure/azure-monitor/alerts/action-groups)).
+- The Sentinel Deception (Honey Tokens) solution plants Key Vault decoys but needs Sentinel and is community supported ([Learn](https://learn.microsoft.com/azure/sentinel/monitor-key-vault-honeytokens)).
+
 ## Moving a repo to another GitHub owner
 
 Learned moving the public family repos into the avd-ops organization on 2026-10-21 ([GitHub's transfer docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) and the runs that day).
