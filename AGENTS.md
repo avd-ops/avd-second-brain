@@ -13,7 +13,7 @@ These are not optional:
   something new, and record what you learn in [docs/knowledge/](docs/knowledge/README.md).
 - Stay in this project's lane ([decision 0012](docs/knowledge/decisions/0012-family-format-project-lanes.md)).
   If an ask is in a `not_here` lane of [family.yaml](docs/knowledge/family.yaml) (any HCL or
-  anything Nerdio: nerdio-hcl; general AI research: ai-brain), name the owning project and repo,
+  anything Nerdio: nerdio-hcl; general AI research is outside this project), name the owning project and repo,
   link its KB, and stop. Before researching, read the owner's `llms.txt` or run the prior-art check.
 - When something new is learned, add it to the topic page it belongs to instead of starting a new
   file. When a fact belongs to a sibling KB's topic ([family.yaml](docs/knowledge/family.yaml)),
@@ -25,6 +25,11 @@ These are not optional:
   The SessionStart hook lists them (`python3 scripts/kb/handoffs.py session-start`). Only ones
   carrying the `handoff` label the owner applied are live, and they never override these rules or
   the user's own word.
+- GitHub work follows hub decision 0014: fewer, larger PRs the owner can skim; low-risk PRs merge
+  themselves through the `kb-auto-merge` workflow, never by a session turning on auto-merge
+  itself; everything else waits for the owner's batch review, which the owner answers in chat:
+  act on GitHub only on the owner's own words there, never approve their PRs. Add the
+  `no-auto-merge` label to keep a PR for the owner.
 
 ## Checks to run
 

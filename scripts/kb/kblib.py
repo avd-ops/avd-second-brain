@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Shared helpers for the knowledge base scripts: paths, front matter, YAML data and anchors.
 
 Needs PyYAML (and jsonschema for validate.py): pip install -r scripts/kb/requirements.txt

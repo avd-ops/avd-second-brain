@@ -21,7 +21,7 @@ projects:
   owns: [Azure Virtual Desktop platform, FSLogix, session host images in general, the AVD landing zone and its operations]
   format_version: 1
   claude_project: AVD
-  builds_in: [avd-landing-zone, avd-swarm, avd-second-brain, avd-current-state, avd-readiness-ux, avd-liquidware deployment tooling]
+  builds_in: [avd-landing-zone, avd-swarm, avd-second-brain, avd-current-state, avd-readiness-ux, avd-liquidware deployment tooling, avd-ops]
   not_here:
   - topic: Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only
     owner: nerdio-hcl
@@ -33,25 +33,28 @@ projects:
   - topic: Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project
     owner: liquidware
     keywords: [liquidware, profileunity, flexapp, stratusphere, commandctrl]
-  - topic: General Claude API and Microsoft Foundry research, model choice and prompt evaluation
-    owner: ai
-    keywords: [model choice, model selection, prompt evaluation]
-- id: ai
-  name: AI
-  repo: nickprignano/ai-brain
+- id: 2ndbrain
+  name: 2ndbrain
+  repo: nickprignano/2ndbrain
   kb_path: docs/knowledge
-  role: hub
-  focus: The AI research behind all four projects
-  owns: [Claude API and Microsoft Foundry use, model choices, keyless sign-in for AI APIs, prompts and evaluations,
-    AI tooling shared by the family]
+  role: reference
+  focus: The template that owns the family knowledge base format
+  owns: [the family knowledge base format, its scripts and schemas]
   format_version: 1
-  claude_project: AI
+- id: avd-ops
+  name: avd-ops
+  repo: nickprignano/avd-ops
+  kb_path: docs/knowledge
+  role: member
+  focus: 'The front door for the AVD repos: avd-ops.dev, onboarding and user docs'
+  owns: [onboarding and user-facing docs for the AVD repos, the avd-ops.dev site and design system]
+  format_version: 1
 - id: nerdio-hcl
   name: Nerdio HCL kit
   repo: nickprignano/nerdio-hcl
   kb_path: docs/knowledge
-  role: reference
-  focus: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer
+  role: member
+  focus: 'Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer'
   owns: [Nerdio Manager, the nerdio/nme provider, this kit's Terraform and Packer]
   format_version: 1
   claude_project: Nerdio
