@@ -97,6 +97,18 @@ errors:
   source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0016-analyzer-version.md
   status: verified
   added: '2026-10-18'
+- id: psscriptanalyzer-severity-hides-parse-errors
+  symptom: "A PowerShell script that doesn't parse (for example `Variable reference is not valid. ':' was
+    not followed by a valid variable name character`) passes CI's PSScriptAnalyzer step"
+  cause: "The analyzer reports parse errors under their own severity, `ParseError`, so settings with
+    `Severity = @('Error', 'Warning')` filter them out; `\"$name: text\"` in a string reads as a
+    drive-qualified variable and stops the whole file from parsing"
+  fix: "Add `'ParseError'` to `Severity` in PSScriptAnalyzerSettings.psd1, write `\"${name}: text\"`,
+    and keep a Pester test that parses every script"
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/run-anywhere.md
+  applies_to: PSScriptAnalyzer 1.23.0, PowerShell 7.4
+  status: verified
+  added: '2026-10-21'
 - id: bicep-bcp178-loop-names
   symptom: Bicep error BCP178 in a for-loop over resources
   cause: A for-loop can't use runtime values for resource names
