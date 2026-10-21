@@ -59,7 +59,7 @@ The rule that holds it together, the same as the landing zone's: **models and sc
 | Memory | Holds | Home | Read by |
 |---|---|---|---|
 | **App catalog** | Public products: normalized name, match patterns for inventory names, category, multi-session verdict, default delivery, evidence | `knowledge/catalog/apps.json` | Stage 4 app rationalization; the app test plan; people |
-| **Rules** | The engine's thresholds and decision tables: workload tiers, delivery, quality gate, calibration policy. Each rule has a version and a history with a reason per change | `knowledge/rules/*.json` | Stages 3–5 |
+| **Rules** | The thresholds the brain learns against: workload tiers (the sizing prior) and the calibration policy. The factory's own delivery table and quality gate moved to the factory (decision 0024). Each rule has a version and a history with a reason per change | `knowledge/rules/*.json` | Stages 3–5 |
 | **Calibration** | One observation per host pool per wave: predicted vs measured sessions per host, by tier and VM family | `knowledge/calibration/sizing.json` | Stage 4 sizing, through `Get-SizingCalibration` |
 | **Engagements** | A pseudonymous record per engagement: estate shape (in buckets), sources, outcome, and what it contributed to the brain | `knowledge/engagements/eng-<yyyy>-<mm>-<4 chars>.json` | Cross-references, measures (§11), people |
 | **Lessons and decisions** | What real runs taught and why the design is what it is | `docs/lessons/`, `docs/knowledge/decisions/` | People and Claude Code |
@@ -117,11 +117,11 @@ What a harvest proposes:
 
 | Stage | Reads | Behavior |
 |---|---|---|
-| 3 Quality gate | `rules/quality-gate.json` | Thresholds come from the rule, and the gate's report prints the rule's ID and version |
+| 3 Quality gate | The factory's own quality-gate rule (moved there, decision 0024) | Thresholds come from the rule, and the gate's report prints the rule's ID and version |
 | 4 App rationalization | `catalog/apps.json` through `Resolve-BrainApp` (the engine ports it) | Inventory names resolve by match pattern, most specific pattern first. Unresolved apps go to the LLM normalizer and to the app test plan |
-| 4 Delivery | `rules/delivery.json` | The delivery decision table (factory §6.2) |
+| 4 Delivery | The factory's own delivery rule (moved there, decision 0024) | The delivery decision table (factory §6.2) |
 | 4 Sizing | `rules/workload-tiers.json`, `calibration/sizing.json`, `rules/calibration.json` | Microsoft's users-per-vCPU guidance as the prior, then the calibration factor for the tier and VM family when it has enough observations. The design report states the factor, its count and whether it applied |
-| 5 Design report | All of the above | Every decision that used the brain cites the entry (`knowledge/catalog/apps.json#microsoft/teams/2`, `knowledge/rules/quality-gate.json@v1`) |
+| 5 Design report | All of the above | Every decision that used the brain cites the entry (`knowledge/catalog/apps.json#microsoft/teams/2`, `knowledge/rules/workload-tiers.json@v1`) |
 
 **Pinning.** Each engagement's manifest records the brain commit it was designed with (`brainCommit`). A re-run on fresh data uses the same commit unless a person moves it, so the brain changing mid-engagement never changes a signed-off design silently.
 

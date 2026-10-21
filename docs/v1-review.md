@@ -98,7 +98,7 @@ avd-swarm's build step 2 gives its agents one link to the brain: the Concierge a
 
 ## 7. Decisions only the owner can make
 
-One list for both repos. Each has a default that the work follows until answered. D11 to D17 came from the red team; D18 came later and is decided.
+One list for both repos. The work follows each default below. D8, D10 and D18 are answered; an answer that changes a default changes its line here, and the open items are tracked outside the public repos ([decision 0024](knowledge/decisions/0024-the-brain-is-the-estate-brain.md)). D11 to D17 came from the red team.
 
 1. **D1 Where the brain's Tier 1 runtime lives.** Default: shipped from avd-second-brain as an opt-in deployable, not from avd-landing-zone. Needs a landing zone PR that moves decision 0012's runtime out and keeps `docs/second-brain.md` as a pointer.
 2. **D2 What v1 is.** Default: avd-swarm build steps 1 to 3; the brain's Tier 1, the deterministic Concierge and the switch read.

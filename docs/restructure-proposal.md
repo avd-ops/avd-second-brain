@@ -34,8 +34,8 @@ Verdicts: **Keep**, **Move** (to the named repo), **Retire** (frozen in place as
 | C22, C23, C24 (proposed) | Check catalog, assessment review, remediation plan | Move | avd-assess `contracts/`, never registered here |
 | C14 target state | The design the landing zone reads | Owner (G1) | Kept here by 0021 |
 | C16 Stratusphere instrument | Between avd-liquidware and the assessment factory; never reaches the brain | Move | avd-liquidware, with its producer |
-| `knowledge/rules/workload-tiers.json` | The sizing prior | Move | avd-assess `baselines.yaml` already holds the same prior with citations; keep one copy there (R3: calibration and the tests read it first) |
-| `knowledge/rules/delivery.json`, `quality-gate.json` | The factory's stage 4 and stage 3 rules | Move (G2) | The private assessment factory repo (copied, its decision 0004) |
+| `knowledge/rules/workload-tiers.json` | The sizing prior | Keep (revised in R3) | C14 manifests cite it by version and calibration reads its target utilization, so it stays as the brain's prior; its users-per-vCPU values follow avd-assess `baselines.yaml` |
+| The delivery and quality-gate rules | The factory's stage 4 and stage 3 rules | Move (G2) | The private assessment factory repo (copied, its decision 0004) |
 | `knowledge/engagements/`, C3, C5, C6, the `harvest` skill, [knowledge-spec.md](knowledge-spec.md), decision 0002 | How estates feed the catalog and calibration, and how the factory reads them | Keep (G2, revised) | They serve the guidance that stays; the spec gets a note that the stage rules moved |
 | `knowledge/catalog/apps.json` | App compatibility verdicts with evidence | Owner (G3) | Guidance (keep) or a standard (avd-assess) |
 | `knowledge/runbooks/` | Shared runbooks copied into new vaults | Keep | Guidance for vaults |
@@ -110,11 +110,11 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 |---|---|---|
 | R0 | This proposal (doc only) | Owner review |
 | R1 | Decision 0024 "The brain is the estate brain", narrowing 0001; rewrite README and architecture.md; retire roadmap.md | Done in the proposal's PR |
-| R2 | Foundation contracts: finish #54, move the pinned copies under `contracts/foundation/` with the `FOUNDATION-PINS.json` paths and the pin-hash tests in `tests/Connectors.Tests.ps1` in the same PR; C22 to C24 point to avd-assess | #54 |
-| R3 | Baselines: drop `workload-tiers` and `quality-gate` after avd-assess holds them; calibration reads avd-assess's prior | R2, avd-assess PR |
+| R2 | Foundation contracts: #54 merged (pinned copies in `contracts/`, listed in `FOUNDATION-PINS.json`). The folder split is held: the docs check compares other repos' vendored schemas against `contracts/schemas/` by name | Done; split held |
+| R3 | Drop the brain's copies of the factory's delivery and quality-gate rules (the factory holds them); tests use workload-tiers instead. workload-tiers stays (C14 cites it) | Done |
 | R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |
 | R5 | Factory stage rules copied to the private factory repo (its #13, merged); assess spec copied to avd-assess (#16, merged) and stubbed here; C16 needs nothing (the Liquidware project lands it with its producer); the brain's rule copies go once the tests stop reading them | Done, except the rule copies |
-| R6 | Trim operations-spec; settle v1-review decisions into specs (G5) | #44 merged |
+| R6 | v1 review section 7 states the defaults in force; open items are tracked privately | Done |
 | R7 | Optional rename to `guidance/` (G9) | Everything else |
 
 ## 6. Sequence against the open PRs
