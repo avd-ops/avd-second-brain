@@ -112,11 +112,11 @@ def main() -> int:
     ap.add_argument("--files", required=True, help="changed paths, one per line")
     args = ap.parse_args()
     try:
-        event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+        event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
         pr = event.get("pull_request") or {}
         owner = os.environ.get("AUTO_MERGE_OWNER") or os.environ.get("HANDOFF_OWNER") \
             or (event.get("repository") or {}).get("owner", {}).get("login", "")
-        files = [ln.strip() for ln in Path(args.files).read_text().splitlines() if ln.strip()]
+        files = [ln.strip() for ln in Path(args.files).read_text(encoding="utf-8").splitlines() if ln.strip()]
         ok, reason = verdict(pr, files, owner, load_config())
     except Exception as exc:  # fail closed: anything unreadable means a person merges it
         ok, reason = False, f"check failed: {exc}"
@@ -124,7 +124,7 @@ def main() -> int:
     lines = f"eligible={'true' if ok else 'false'}\nreason={reason}\n"
     out = os.environ.get("GITHUB_OUTPUT")
     if out:
-        with open(out, "a") as f:
+        with open(out, "a", encoding="utf-8") as f:
             f.write(lines)
     print(("Auto-merge: " if ok else "No auto-merge: ") + reason)
     return 0
