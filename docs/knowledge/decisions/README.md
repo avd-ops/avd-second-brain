@@ -36,4 +36,6 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0022](0022-the-brain-keeps-the-raid-log.md) | The brain keeps each estate's RAID log and action tracker, beside the lifecycle record | Proposed |
 | [0023](0023-family-format-best-open-source-or-build.md) | Adopt an outside tool only when it is the best and open source; otherwise build our own | Accepted |
 | [0024](0024-the-brain-is-the-estate-brain.md) | The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing | Accepted |
+| [0025](0025-avd-native-terraform-kit.md) | An AVD-native Terraform kit lives in its own HCL-lane repo, beside the landing zone | Proposed |
+| [0026](0026-runs-check-and-clean-before-they-spend.md) | Runs check and clean up before they spend, and the setup is the desired state | Accepted |
 <!-- END GENERATED: decision-index -->
