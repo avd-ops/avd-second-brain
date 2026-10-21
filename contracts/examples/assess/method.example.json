@@ -1,0 +1,46 @@
+{
+  "schema": "avd-assess-method/v1",
+  "version": 1,
+  "factRegister": 1,
+  "collection": [
+    { "fact": "c11.hostPool.type", "from": "resource-graph", "table": "Resources", "type": "microsoft.desktopvirtualization/hostpools", "property": "properties.hostPoolType", "claims": ["gap:checklist-mapping"] },
+    { "fact": "c11.hostPool.startVmOnConnect", "from": "resource-graph", "table": "Resources", "type": "microsoft.desktopvirtualization/hostpools", "property": "properties.startVMOnConnect", "claims": ["ref:review-checklists-avd#E01.05"] },
+    { "fact": "c11.storage.privateEndpoint", "from": "resource-graph", "table": "Resources", "type": "microsoft.storage/storageaccounts", "property": "properties.privateEndpointConnections", "claims": ["ref:review-checklists-avd#F01.10"] },
+    { "fact": "intake.workingHours", "from": "intake", "claims": ["gap:intake"] }
+  ],
+  "checks": [
+    {
+      "id": "asm-personal-start-vm-on-connect",
+      "title": "Personal host pools use Start VM on Connect",
+      "pillar": "cost",
+      "severity": "low",
+      "claims": ["ref:review-checklists-avd#E01.05"],
+      "facts": ["c11.hostPool.type", "c11.hostPool.startVmOnConnect"],
+      "rule": { "each": "/subscriptions/*/hostPools/*", "where": { "type": { "eq": "Personal" } }, "expect": { "startVmOnConnect": { "eq": true } }, "onFail": "warn" },
+      "informs": ["hostPool.power"]
+    },
+    {
+      "id": "asm-profile-storage-private-endpoint",
+      "title": "Profile storage is reached through a private endpoint",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": ["ref:review-checklists-avd#F01.10"],
+      "facts": ["c11.storage.privateEndpoint"],
+      "rule": { "each": "/subscriptions/*/storageAccounts/*", "expect": { "privateEndpoint": { "eq": true } } },
+      "informs": ["network"]
+    }
+  ],
+  "readiness": [
+    { "decision": "identity", "readiness": "decidable-with-intake", "facts": ["intake.identityConstraints", "c11.network.customDnsVirtualNetworks"], "claims": ["gap:decision-readiness"] },
+    { "decision": "region", "readiness": "decidable-with-intake", "facts": ["c11.subscription.regions", "c11.hostPool.region", "intake.residency", "intake.preferredRegions"], "claims": ["ref:avd-prerequisites#rtt-under-150"] },
+    { "decision": "network", "readiness": "decidable-with-intake", "facts": ["c11.network.virtualNetworks", "c11.network.defaultRoutes", "c11.network.privateEndpoints", "intake.existingHub"], "claims": ["gap:decision-readiness"] },
+    { "decision": "hostPool.type", "readiness": "decidable", "facts": ["c11.hostPool.type"], "claims": ["gap:decision-readiness"] },
+    { "decision": "hostPool.appGroup", "readiness": "decidable", "facts": ["c11.hostPool.preferredAppGroupType", "c11.hostPool.appGroups"], "claims": ["gap:decision-readiness"] },
+    { "decision": "hostPool.vmSize", "readiness": "needs-measurement", "facts": ["c12.group.perUser.p95CpuPercentOfCore", "c12.group.perUser.p95MemoryMiB"], "claims": ["ref:session-host-sizing#multisession-vcpu-range", "ref:session-host-sizing#estimates-only"] },
+    { "decision": "hostPool.maxSessions", "readiness": "needs-measurement", "facts": ["c12.group.perHost.peakSessionsPerHost"], "claims": ["ref:session-host-sizing#multisession-users-per-vcpu"] },
+    { "decision": "hostPool.hosts", "readiness": "needs-measurement", "facts": ["c12.group.users", "c12.group.concurrency.peak"], "claims": ["gap:decision-readiness"] },
+    { "decision": "hostPool.power", "readiness": "decidable-with-intake", "facts": ["c11.hostPool.startVmOnConnect", "intake.workingHours"], "claims": ["ref:review-checklists-avd#E01.05"] },
+    { "decision": "hostPool.profileQuotaGiB", "readiness": "needs-measurement", "facts": ["c12.group.profile.p95SizeGiB"], "claims": ["ref:session-host-sizing#profile-storage-minimum"] }
+  ],
+  "scoring": { "model": "severity-weighted/v1", "weights": { "high": 3, "medium": 2, "low": 1 }, "warnFactor": 0.5, "overall": false }
+}

@@ -1,4 +1,4 @@
-# From nickprignano/ai-brain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
+# From nickprignano/2ndbrain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
 """List this repo's open handoff issues at the start of a Claude Code session (decision 0012).
 
 Stdlib-only, so a repo without the KB scripts can copy this one file:

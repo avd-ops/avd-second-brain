@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """List knowledge base pages that need a look: stale, unverified, or reported broken.
 
     python3 scripts/kb/freshness.py --max-age-days 90 --output freshness.md

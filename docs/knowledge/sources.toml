@@ -237,6 +237,29 @@ kind = "github_commits"
 repo = "nickprignano/avd-current-state"
 kb_page = "assessment/README.md"
 
+[[source]]
+name = "avd-assess: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-assess"
+# The foundation standards (references, gaps, method.json) other repos cite.
+kb_page = "assessment/README.md"
+
+[[source]]
+name = "Azure Monitor Baseline Alerts: AVD pattern"
+kind = "github_commits"
+repo = "Azure/azure-monitor-baseline-alerts"
+path = "patterns/avd"
+# Pinned in avd-assess references/amba-avd.yaml; a change may move its thresholds.
+kb_page = "assessment/README.md"
+
+[[source]]
+name = "AVD Insights workbooks"
+kind = "github_commits"
+repo = "microsoft/Application-Insights-Workbooks"
+path = "Workbooks/Windows Virtual Desktop"
+# Pinned in avd-assess references/avd-insights-workbooks.yaml; the queries define each Insights measure.
+kb_page = "assessment/README.md"
+
 # --- The family (family.yaml) ---------------------------------------------------
 # Two sources per sibling, required by validate.py: its decisions, and everything else in its KB.
 
@@ -270,16 +293,16 @@ path = "docs/knowledge"
 kb_page = "curation.md"
 
 [[source]]
-name = "AI research KB: decisions"
+name = "2ndbrain format: decisions"
 kind = "github_commits"
-repo = "nickprignano/ai-brain"
+repo = "nickprignano/2ndbrain"
 path = "docs/knowledge/decisions"
 kb_page = "curation.md"
 
 [[source]]
-name = "AI research KB: changes"
+name = "2ndbrain format: changes"
 kind = "github_commits"
-repo = "nickprignano/ai-brain"
+repo = "nickprignano/2ndbrain"
 path = "docs/knowledge"
 kb_page = "curation.md"
 
@@ -294,5 +317,19 @@ kb_page = "curation.md"
 name = "Liquidware KB: changes"
 kind = "github_commits"
 repo = "nickprignano/avd-liquidware"
+path = "docs/knowledge"
+kb_page = "curation.md"
+
+[[source]]
+name = "avd-ops KB: decisions"
+kind = "github_commits"
+repo = "nickprignano/avd-ops"
+path = "docs/knowledge/decisions"
+kb_page = "curation.md"
+
+[[source]]
+name = "avd-ops KB: changes"
+kind = "github_commits"
+repo = "nickprignano/avd-ops"
 path = "docs/knowledge"
 kb_page = "curation.md"

@@ -3,7 +3,7 @@ title: "Keeping the knowledge base current"
 summary: "How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment"
 topic: curation
 status: verified
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-21
 ---
 
 # Keeping the knowledge base current
@@ -58,12 +58,20 @@ Before building something new, check whether it's already solved:
 GITHUB_TOKEN=$(gh auth token) python3 scripts/kb/prior_art.py "fslogix entra kerberos"
 ```
 
-or run **Actions > kb-prior-art** with the topic. It searches, in order: this KB, each sibling KB
-in [family.yaml](family.yaml), GitHub repositories, PowerShell and Bicep code, and issues and pull
-requests. If something useful turns up, record it on the relevant topic page, so the next person
-doesn't search again.
+or run **Actions > kb-prior-art** with the topic (one topic per line for several). It searches, in
+order: this KB, each sibling KB in [family.yaml](family.yaml), GitHub repositories, PowerShell and
+Bicep code, and issues and pull requests. If something useful turns up, record it on the relevant
+topic page, so the next person doesn't search again.
 
-The digest and prior-art scripts use only the Python standard library (3.11+).
+From a build container, GitHub search answers HTTP 403 even with full network access (seen
+2026-10-20 and 2026-10-21), so a session there can't run the script itself. It dispatches
+**kb-prior-art** instead and reads the run's log or its `prior-art` artifact, which holds one
+Markdown report per topic. The workflow is read-only. Until 2026-10-21 it failed at import because
+it skipped `pip install -r scripts/kb/requirements.txt` (`kblib` needs PyYAML). Code search allows about 10 calls a
+minute and each topic makes several, so the script waits and retries on a rate limit (429, or a 403
+that says the limit is spent); any other 403 fails at once.
+
+The digest and prior-art scripts need Python 3.11+ and `scripts/kb/requirements.txt`.
 
 ## Feedback loop (`kb-feedback`)
 
@@ -112,8 +120,8 @@ text, `last_reviewed` and `status`. Run it locally with `python3 scripts/kb/fres
 
 [family.yaml](family.yaml) lists every KB in the family, this one included (`self: true`): its
 repo, KB path, role, focus, what it's the source of truth for (`owns`) and the family format version.
-The AI KB is the hub: it owns the AI knowledge the others use. nerdio-hcl is the format's reference
-implementation. A sibling without a `repo` isn't linked yet. `build.py` turns the file into the
+2ndbrain is the format's reference (see [where the family format comes from](#where-the-family-format-comes-from)).
+A sibling without a `repo` isn't linked yet. `build.py` turns the file into the
 "Related knowledge bases" table in the [KB README](README.md#related-knowledge-bases) and a section
 in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in every KB.
 
@@ -136,6 +144,24 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
   all of them have merged. The freshness check flags a sibling whose version differs.
 - **Cross-project decisions.** A decision that affects more than one project is recorded in each
   affected KB, and each copy says "Also recorded in ..." with links.
+
+## Where the family format comes from
+
+- **2ndbrain is the template and the format reference.** The public template repo
+  [nickprignano/2ndbrain](https://github.com/nickprignano/2ndbrain) owns the family knowledge base
+  format, its scripts and its schemas (the `reference` row in [family.yaml](family.yaml)). The KB
+  tooling here is adapted from it under Apache-2.0 ([scripts/kb/NOTICE](../../scripts/kb/NOTICE)),
+  and this KB watches its decisions and KB folders in [sources.toml](sources.toml).
+- **The lanes extension is local.** The `claude_project`, `builds_in` and `not_here` fields and
+  their checks ([decision 0012](decisions/0012-family-format-project-lanes.md)) are this KB's own
+  extension of the format, kept when the scripts are re-ported from 2ndbrain.
+- **nerdio-hcl is related, not family.** It is a separate project. Its row stays so the lanes can
+  refer Terraform, Packer, HCL and Nerdio asks to it and its prior art can be linked, but it is not
+  the format source and the AVD repos never depend on it.
+- **avd-ops is the front door.** [avd-ops](https://avd-ops.dev/)
+  ([nickprignano/avd-ops](https://github.com/nickprignano/avd-ops)) is the brand in front of every
+  public AVD repo and holds the onboarding and user-facing docs; this KB keeps the facts, gotchas
+  and decisions behind them. Each AVD repo's README says so in one line under its title.
 
 ## Upstream: link out, check against, give back
 

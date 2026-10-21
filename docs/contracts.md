@@ -1,6 +1,8 @@
 # Contracts between the repos and the brain
 
-What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. Overview: [architecture.md](architecture.md) §4.
+What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows.
+
+**The foundation's contracts live in avd-assess** ([decision 0021](knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md)): C11, C15, C17, C19, C20 and C21 are authored in [avd-assess `contracts/`](https://github.com/nickprignano/avd-assess/tree/main/contracts) and vendored here byte-identical (`contracts/FOUNDATION-PINS.json`), so the landing zone, avd-current-state and avd-assess work the same with or without the brain and avd-swarm. A change to one of them starts there, follows its fail-open rules ([contracts/README.md](https://github.com/nickprignano/avd-assess/blob/main/contracts/README.md)), and reaches this repo as a pin bump. Their sections below stay as the brain's reading of them. Overview: [architecture.md](architecture.md) §4.
 
 | # | Contract | Producer | Consumer | Format | Status |
 |---|---|---|---|---|---|
@@ -22,8 +24,11 @@ What each repo gives the brain and takes from it, in a form that can be tested. 
 | C16 | Stratusphere instrument outputs | avd-liquidware (the Stratusphere instrument, moving there from avd-readiness-stratusphere) | avd-readiness-stratusphere's ingest and quality gate | `stratusphere-instrument/v1`: preflight, appliance and rollout reports, local only (they hold machine names) | Proposed: the schema lands with its producer |
 | C17 | Run records | Every family repo that records a run: avd-landing-zone first ([run recorder spec](https://github.com/nickprignano/avd-landing-zone/blob/master/build/specs/run-recorder-spec.md)), then the use cases in `contracts/run-use-cases.json` | The operator (resume, teardown, copies), the run report, and the brain only through public-level field reports | `avd-run-record/v1` (`run-record.schema.json`), its journal lines (`run-journal.schema.json`) and `avd-run-cost/v1` (`run-cost.schema.json`); examples in `contracts/examples/run-record/` | Schemas built; producer being built in avd-landing-zone |
 | C18 | Lifecycle record: why an environment is the way it is | The brain, from approved C14 manifests (`ConvertFrom-TargetStateDecision`), the operator's decisions and ADRs, C17 runs and avd-swarm's C10 outcomes | The brain's agents (`Get-LifecycleExplanation`, `Get-LifecycleReview`), the vault's `/ask` and `/brief`, and the harvest as buckets only; avd-swarm only through the brain | `avd-lifecycle-record/v1` (`lifecycle-record.schema.json`); example `contracts/examples/lifecycle-record.example.json` | Schema, checks and the explain and review functions built (offline); writers specified |
+| C19 | Intake | The operator, once per estate (`intake.json` beside their landing zone parameters) | avd-current-state's `-Assess`; the brain's agents, for the `intake.*` facts | `avd-intake/v1` (`contracts/schemas/intake.schema.json`): residency, preferred regions, existing hub, identity lane and working hours, as enums, regions and clock times, no names or free text | Schema built, with the register's five `intake.*` facts; no writer yet (the operator copies the example) |
+| C20 | Assessment method | avd-assess: `index.json` (generated from its references, observations and gaps) and `method.json` (collection map, checks, readiness, scoring) | avd-current-state (a pinned, byte-identical copy of `method.json`); the brain (`Test-AssessMethod`, search) | `avd-assess-index/v1` (`assess-index.schema.json`) and `avd-assess-method/v1` (`assess-method.schema.json`); examples in `contracts/examples/assess/` | Schemas and check built; `index.json` published, `method.json` waits on avd-assess phase 3 |
+| C21 | Assessment report | avd-current-state's `-Assess`, with the pinned method | The estate vault and the brain's agents, as evidence beside C11 | `avd-assessment/v1` (`assessment.schema.json`): one outcome per check, the fact IDs and pseudonyms it used, pillar scores with coverage and each decision's readiness; no names, IDs or free text | Schema and check built; producer waits on avd-current-state phase 4 |
 
-C8 to C10 connect the brain to avd-swarm ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C13 is the same split for the repos' own text: the brain decides what is inconsistent, avd-swarm drafts the fix ([decision 0004](knowledge/decisions/0004-docs-consistency.md)), and a change to it is a pair of PRs. C14 and C15 sit on top of the fact layer: a manifest is a design whose every decision cites C11, C12 or intake facts by their register ID, and the register is the one list of those IDs. C17 is the one shape for a recorded run, whichever repo ran it, so a run of the landing zone, an image build, the Liquidware tier or an avd-swarm plan can be resumed, copied, costed and torn down the same way. C16 is between two producers and never reaches the brain; it is listed here because this repo is the one registry of cross-repo formats ([avd-readiness-stratusphere boundaries spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/boundaries-spec.md)). C11 and C12 are the fact layer under both: C11 the Azure-side inventory every estate gets, C12 the forensic tier when a question needs measured performance. A change to either is three PRs: here, the producer (avd-current-state or avd-readiness-stratusphere) and avd-swarm (its gate rule). C18 is the why on top of all of them: one record per environment of its use cases, the decisions made about it (with what else was considered and why not) and the events that carried them out, from its birth onwards. avd-swarm records the how (its plans and their C10 outcomes), and the brain keeps and explains the why ([decision 0020](knowledge/decisions/0020-the-brain-is-the-why-layer.md)).
+C8 to C10 connect the brain to avd-swarm ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)): the brain proposes, avd-swarm acts. A change to one of them is a pair of PRs, one here and one in avd-swarm, each linking the other. C13 is the same split for the repos' own text: the brain decides what is inconsistent, avd-swarm drafts the fix ([decision 0004](knowledge/decisions/0004-docs-consistency.md)), and a change to it is a pair of PRs. C14 and C15 sit on top of the fact layer: a manifest is a design whose every decision cites C11, C12 or intake facts by their register ID, and the register is the one list of those IDs. C17 is the one shape for a recorded run, whichever repo ran it, so a run of the landing zone, an image build, the Liquidware tier or an avd-swarm plan can be resumed, copied, costed and torn down the same way. C16 is between two producers and never reaches the brain; it is listed here because this repo is the registry of cross-repo formats outside the foundation ([avd-readiness-stratusphere boundaries spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/boundaries-spec.md)). C11 and C12 are the fact layer under both: C11 the Azure-side inventory every estate gets, C12 the forensic tier when a question needs measured performance. A change to either is three PRs: here, the producer (avd-current-state or avd-readiness-stratusphere) and avd-swarm (its gate rule). C18 is the why on top of all of them: one record per environment of its use cases, the decisions made about it (with what else was considered and why not) and the events that carried them out, from its birth onwards. avd-swarm records the how (its plans and their C10 outcomes), and the brain keeps and explains the why ([decision 0020](knowledge/decisions/0020-the-brain-is-the-why-layer.md)).
 
 ## C1. Evidence packages → vault
 
@@ -92,6 +97,91 @@ Consumers read the JSON files directly, validated against `knowledge/schemas/`, 
 
 `sources/sources.json` lists each repo, the ref to follow, and the Markdown paths worth searching. `scripts/Sync-BrainSources.ps1` checks them out into `.sources/` (git-ignored) and records each commit in `.sources/lock.json`, so a citation names the exact text: `avd-landing-zone@5f10290:docs/gotchas.md`.
 
+## C8. `avd-swarm-insights/v1` (specified)
+
+What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches `knowledge/`, and it goes there only by a PR a person merges ([avd-swarm spec §6c](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#6c-what-feeds-the-second-brain)).
+
+**Shape** (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1):
+
+```json
+{
+  "schema": "avd-swarm-insights/v1",
+  "period": { "start": "2027-01-01", "end": "2027-01-31" },
+  "release": "v0.3.0",
+  "questions": [ { "topic": "hosts.agent-health", "asked": 41, "answered": 37, "unanswered": 4, "thumbsDown": 3 } ],
+  "outcomes": [ { "action": "restart-avd-agent", "verified": 9, "failed": 1, "rolledBack": 0,
+                  "rejected": { "wrong-target": 1, "not-now": 2 } } ],
+  "incidents": [ { "category": "gate.refused", "trigger": "rate", "count": 2, "stoppedBy": "gate" } ],
+  "grading": [ { "judge": "answers", "seeded": 120, "caught": 116, "alarms": 0 } ],
+  "spend": { "runs": 4, "refused": { "over-run-cap": 1 }, "medianActualToEstimate": 0.92, "teardownsWithLeftovers": 0 },
+  "docs": { "findingsDrafted": 6, "merged": 5, "rejected": 1 }
+}
+```
+
+**Rules.**
+- **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9, owned by this repo since `knowledge/` consumes it; default: the agents' areas plus avd-current-state's validator check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
+- **The negative side counts as much as the positive** (incidents, rejections, failed verifications, judge alarms), so guardrail defaults learn from what went wrong.
+- **A person carries it across.** The adopter's private repo produces it; a person attaches it to a harvest PR here. The brain never pulls from an adopter, and no swarm identity writes to this repo.
+- `Test-BrainKnowledge` and the leak check run over it like any harvest input; a finding means the exporter is wrong, never that a pattern should loosen.
+
+## C9. Playbook run proposal (specified, after v1)
+
+How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it ([avd-swarm spec §5](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#5-write-path)).
+
+**Shape:**
+
+```json
+{
+  "schema": "avd-playbook-proposal/v1",
+  "id": "prop-...",
+  "createdUtc": "2027-01-12T08:14:00Z",
+  "expiresUtc": "2027-01-12T08:44:00Z",
+  "playbook": { "id": "restart-avd-agent", "version": 3, "sha256": "..." },
+  "episode": { "id": "ep-...", "signature": "wvd-agent-unhealthy:upgrade-failed", "agentClassified": false },
+  "targetHints": ["/subscriptions/.../virtualMachines/..."],
+  "parameters": { "sessionHostId": { "from": "episode.scope.sessionHost" } },
+  "evidence": [ { "fact": "c11.hostPools.loadBalancer@hp-3fa2c1d0", "at": "2027-01-11T22:00:00Z" },
+                { "ref": "blob://evidence/sha256-...", "kind": "kql" } ],
+  "critic": { "verdict": "agree | dissent", "claims": [ { "claim": "...", "citations": ["..."] } ] }
+}
+```
+
+**Rules.**
+- **Targets are hints.** The brain's in-tenant runtime knows resource IDs from live signals (episodes, §6.2 of the operations spec); its agents reason over pseudonyms (C11, C12). avd-swarm re-resolves every target live and refuses a proposal whose hints don't match what it resolves.
+- **Parameters are bound from the episode,** never by a model, and re-resolved by avd-swarm's gate. A playbook can add preconditions to avd-swarm's catalog action; it can never drop one (avd-swarm spec §5a).
+- **Evidence is cited by fact register ID (C15)** or by evidence hash. avd-swarm's gate refuses evidence older than its freshness limits and IDs the pinned register doesn't have or still marks `proposed`.
+- **The Critic's output travels as claims,** never as the Diagnose agent's reasoning, and the approver sees a dissent beside the plan.
+- **An `agentClassified` episode** always needs a person's approval of that run and is never eligible for a standing exception.
+- **Transport and identity are open** (second red team AX-8). Default: the brain's in-tenant runtime calls avd-swarm's `propose_playbook_run` function with its own managed identity, through an app role that allows submitting proposals and nothing else; it never writes avd-swarm's plan store. Built after avd-swarm's v1, with its own red team pass.
+- At `halt-actions` and above the brain sends no proposals (C10).
+
+## C10. Action outcomes and switch position (specified)
+
+What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so.
+
+**The switch position is read, not sent (v1, avd-swarm build step 2).** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the brain's runtime reads it with Reader on that resource group only (avd-swarm identities.md). A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position.
+
+- **In v1** the brain's only model call is Tier 1's Diagnose, which runs as Claude Code in GitHub Actions with its own client. So the `brain-diagnose` workflow's first step reads the flag and exits at `halt-agents` or above, or when it can't read it. Its spend is capped by the action's max turns and a workspace limit, and reconciled by the daily job (red team V1-8).
+- **From Tier 3** the brain's model calls go through the metered, flag-checking model client avd-swarm owns, consumed as a pinned package, never a copy.
+- **Without avd-swarm** (red team V1-9; owner decision D13 in the [v1 review](v1-review.md)). Default: the brain's deployable creates the same tag on its own resource group, and a person sets it from Cloud Shell. One flag, two possible homes: when avd-swarm is present, its flag wins and the brain's is ignored. The alternative is that a brain without a swarm runs only with `AVD_BRAIN_MODEL=none`.
+
+**Outcomes come later (avd-swarm build step 4)**, with C8 and C9 (red team V1-7).
+
+**Outcomes are a filtered copy of avd-swarm's change events.** The brain's runtime is registered in avd-swarm's observer registry as a **subscriber**: it receives the change-workflow events (governance §2.2) and has no `verdict` or `trip` call. The events carry resource IDs, parameters and approvers, and every brain store holds pseudonyms only (operations spec §9.4), so **the subscriber filters on ingest** (red team V1-12): it pseudonymizes targets with the `resources` subkey, drops parameters and approvers, and keeps only the fields below. Group actions never carry a UPN; user object IDs stay inside avd-swarm's plan store (closes GQ4). What it keeps:
+
+| Field | Value |
+|---|---|
+| `planId`, `proposalId` | The plan, and the C9 proposal it came from, if any |
+| `targets` | Pseudonyms (`hp-`, `vm-`), so an outcome joins C11 facts and episodes even for an operator-requested plan with no proposal |
+| `action`, `playbook` | Catalog action ID; playbook ID and version, if any |
+| `outcome` | `verified`, `failed`, `rolled-back`, `rejected`, `expired` |
+| `reasonCategory` | For rejections, from avd-swarm's fixed list |
+| `why` | When the plan carries one (avd-swarm decision 0007, "every plan says why"): its lifecycle `kind` (C18's event kinds: build, configure, expand, contract, fix, recover, retire), its `useCases` (`uc-NN`) and its `decision` (`dec-NNNN`), IDs and fixed words only, so the brain can tie the outcome to C18's lifecycle record |
+| `times` | Proposed, approved, started, verified |
+| `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; regressions as `(control, target pseudonym)` |
+
+It stays in the adopter's tenant (operations memory, architecture §3); it never reaches this repo except as C8 counts through a harvest.
+
 ## C11. `avd-current-state-facts/v1`
 
 The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The vault's `/ask` and `/brief` commands are a person's tools inside their private vault, outside this.) avd-swarm never reads a package, a vault or a snapshot file; it gets facts only from the brain, as answers with citations and as C9 evidence.
@@ -109,7 +199,7 @@ collector + validator packages ──C1──► estate vault (private; names an
 
 **What it can't hold.** The schema has no field for a name, a resource ID, an object ID, an IP address, a tag, a user, a check's scope or detail, or a recommendation, and every string has a pattern. A custom role counts as `other`; a value that doesn't fit its pattern becomes `other` and is counted in `redactedValues`. A validator check name that contains a collected name becomes `redacted`. The producer scans the result for GUIDs, email addresses, UNC paths and IPv4 addresses and refuses to write it if it finds one; the importer runs the brain's guard over it again and refuses on any finding.
 
-**Pseudonyms.** `sub-`, `hp-`, `st-` and `est-` (the tenant) followed by the first 8 hex characters of HMAC-SHA256 over the kind and the lowercased resource ID, keyed with the estate's **`resources` subkey**. The same key gives the same pseudonyms on every run, so the brain sees one host pool's trend without its name. The brain keeps no mapping: whoever needs the real target recomputes the pseudonym over live resource IDs with the key, in the tenant. With an operations brain deployed, the key is derived from the landing zone's Key Vault `resources` secret with HKDF-SHA256 ([operations spec](operations-spec.md) §9.4). It is not the `users` subkey, which rotates every 12 months to crypto-shred user pseudonyms: resource IDs aren't personal data, so a host pool's trend line survives that rotation (second red team AX-16). Without an operations brain, the key is a file beside the vault (`.brain/facts.key`, ignored by the vault template's `.gitignore`), backed up like any secret and never committed. The producer (avd-current-state) moves to the derived subkey when it is next changed; until then its file key is already separate from any user key.
+**Pseudonyms.** `sub-`, `hp-`, `st-` and `est-` (the tenant) followed by the first 8 hex characters of HMAC-SHA256 over the kind and the lowercased resource ID, keyed with the estate's **`resources` subkey**. The same key gives the same pseudonyms on every run, so the brain sees one host pool's trend without its name. The brain keeps no mapping: whoever needs the real target recomputes the pseudonym over live resource IDs with the key, in the tenant. With an operations brain deployed, the key is derived with HKDF-SHA256 from the `resources` secret in **the brain's own Key Vault**, created by the brain's deployable, never a secret inside the landing zone's deployment ([operations spec](operations-spec.md) §9.4; red team V1-13, owner decision D12). avd-swarm's gate gets `get` on that `resources` secret only, to recompute pseudonyms over live resource IDs when it checks a C9 proposal; without a brain there is no C9 and no such check. It is not the `users` subkey, which rotates every 12 months to crypto-shred user pseudonyms: resource IDs aren't personal data, so a host pool's trend line survives that rotation (second red team AX-16). Without an operations brain, the key is a file beside the vault (`.brain/facts.key`, ignored by the vault template's `.gitignore`), backed up like any secret and never committed. The producer (avd-current-state) moves to the derived subkey when it is next changed; until then its file key is already separate from any user key.
 
 **Freshness.** A snapshot is evidence of the moment its packages were collected (`collectedUtc`, `generatedUtc` per validator run), not of now. The brain cites it with that time: `facts:<estate>@<generatedUtc>#/subscriptions/0/hostPools/1`. avd-swarm's gate refuses a C9 proposal whose only evidence is a snapshot older than its freshness limit (avd-swarm governance §2.1, 7 days by default) and resolves every target live before approval; a snapshot is a reason to propose, never the target list.
 
@@ -177,6 +267,8 @@ intake ───────┘        (rules at pins.brainCommit)              
 ```
 
 **Pseudonymous, not public.** Host pools by pseudonym (`hp-` existing, `tp-NN` target, `persona-N`), apps by catalog ID, regions and VM sizes by public name; no tenant, subscription, group or object ID, user, machine or address, and a `note` of at most 200 characters with no links. A manifest lives in the engagement folder and the customer's private repo. **It never enters `knowledge/`:** a harvest projects it onto the engagement record's buckets, and `Test-BrainKnowledge` fails on any estate pseudonym (`est-`, `hp-`, `st-`, `sub-`) in `knowledge/`.
+
+**What the design ruled out.** Any decision may list `alternatives`: each a value, a `whyNot` reason category (C18's list) and an optional short note. They are what the factory's rules or a person ruled out (the next VM size, one host fewer). Readers that deploy ignore them; the lifecycle record starts with them at birth (C18), so the why includes the options that lost. Optional, so manifests without them stay valid (architecture Q5).
 
 **Approval is a second file.** `avd-target-approval/v1` holds the manifest file's SHA-256 (over its exact bytes), the approval time and the decisions a person accepted at `confidence: low`. Who approved is the commit that added it in the customer's repo. Readers refuse a manifest without a matching approval.
 
@@ -251,10 +343,29 @@ Evidence cites facts by register ID (C15), rules (`rule:workload-tiers@v1`), the
 
 | Source | Becomes | Status |
 |---|---|---|
-| An approved C14 manifest | The design decisions at birth (`ConvertFrom-TargetStateDecision`), one per register decision; a person adds the alternatives | Built (offline) |
+| An approved C14 manifest | The design decisions at birth (`ConvertFrom-TargetStateDecision`), one per register decision, with the alternatives the design ruled out when the manifest lists them | Built (offline) |
 | A landing-zone run (C17), read from the operator's run store by the operator | A born, build, configure or retire event with its `run` ID | Specified |
 | An operator's decision, or a vault ADR | A decision with `source: adr` or `operator`, citing `adr:ADR-NNNN` | Specified (the vault's `/capture` drafts it) |
 | An avd-swarm plan's `why` and its C10 outcome | The event, and the plan's decision accepted (verified) or reverted (rolled back) | Specified, with the C10 feed (avd-swarm spec §6f) |
 | Two C11 snapshots or C12 windows | Drift events and the input to `Get-LifecycleReview` | Specified |
 
 **The landing zone and avd-current-state never depend on it.** avd-landing-zone and avd-current-state stay a self-contained pair that deploys, inventories and validates with no brain and no avd-swarm. C18 only reads what they already emit (C17 run IDs, C11 snapshots); nothing in either repo reads, requires or waits for a lifecycle record, and no change to C18 is a change to them.
+
+## C19. `avd-intake/v1`
+
+`intake.json`: what telemetry can't know about an estate, answered once by the operator. Each field is one `intake.*` fact in the register (C15), at the same path: `/residency` (required or not, and the regions), `/preferredRegions` (up to three, most preferred first), `/existingHub` (`none`, `azure-hub`, `vwan`, `other`), `/identityConstraints` (`entra-only`, `hybrid-ad`, `entra-ds`, `undecided`) and `/workingHours` (start, end, days, IANA time zone). The estate is the same keyed pseudonym as its C11 snapshot. There is no field for a name, a domain, an address, an ID or free text. Why each question matters is avd-assess's [intake gap](https://github.com/nickprignano/avd-assess/blob/main/gaps/intake.md).
+
+## C20. `avd-assess-index/v1` and `avd-assess-method/v1`
+
+avd-assess is the family's assessment methodology ([assess spec](assess-spec.md)). It publishes two JSON documents, so no reader needs a YAML parser:
+
+- **`index.json`** (`assess-index.schema.json`), generated from its `references/`, `observations/` and `gaps/` and checked fresh by its CI. A reference is pinned to an immutable version (a GitHub commit, or a Learn page's own `git_commit_id` and `updated_at`) and carries claims in our words; an observation tests one claim, with a verdict and pinned public evidence; a gap is method we wrote where no source exists.
+- **`method.json`** (`assess-method.schema.json`): the collection map (fact, source, table, property), the checks (a pointer, a filter and tests, no code; four outcomes, `unknown` never guessed), one readiness row per C14 decision, and the scoring (`severity-weighted/v1`, no overall number).
+
+`Test-AssessMethod` checks both against the register: every claim and gap cited exists, a check uses only **built** facts and a readiness row only built or specified ones that can evidence its decision, every decision has one readiness row, and readiness agrees with the register's `decidableFrom` (`decidable` needs `azure`, `decidable-with-intake` needs `intake`, `needs-measurement` needs `forensic`). The guard runs over our own words; a source's own public IDs (an APRL ID) are pattern-checked instead.
+
+## C21. `avd-assessment/v1`
+
+One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, and every decision's readiness and status (`supported`, `needs-intake`, `needs-measurement`, `missing-facts`). `Test-AssessmentReport` checks it against the method: one row per check, only that check's facts, each outcome its subjects' worst (`gap`, `warn`, `unknown`, `pass`; no subjects is `unknown`), the pillars recomputed by `Get-AssessScore`, and each status allowed by its readiness and whether intake was answered. Reports are filed in the estate vault beside their snapshot, never in this repo.
+
+`tests/Connectors.Tests.ps1` checks the C19 to C21 examples (`contracts/examples/assess/`) and refuses what each must not hold.

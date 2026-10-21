@@ -40,4 +40,4 @@ Chosen option: "A pseudonymous lifecycle record per environment", because it reu
 
 - **Pair:** [avd-swarm decision 0007](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0007-every-plan-says-why.md) says the same from the other side. The two change together (decision 0003).
 - Built offline: the schema, the example, `Test-LifecycleRecord`, `Get-LifecycleExplanation`, `Get-LifecycleReview`, `ConvertFrom-TargetStateDecision` and their tests in `tests/Connectors.Tests.ps1`. The writers from C17, the vault's `/capture` and avd-swarm's C10 are specified, not built, and follow the build order (avd-swarm spec §9a).
-- Open: whether C14 should carry alternatives so the record starts complete ([architecture](../../architecture.md) Q5).
+- C14 carries alternatives too: the owner answered [architecture](../../architecture.md) Q5 yes on 2026-10-21, so each manifest decision may list what the design ruled out, and the record starts with it.

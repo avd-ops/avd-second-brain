@@ -1,10 +1,12 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Fetchers for the KB curator. Standard library only, so it runs on any CI runner."""
 
 from __future__ import annotations
 
 import json
 import os
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -39,7 +41,33 @@ def github(path: str, params: dict | None = None):
     url = f"{GITHUB_API}{path}"
     if params:
         url += "?" + urllib.parse.urlencode(params)
-    return json.loads(http_get(url, headers))
+    for attempt in range(RATE_LIMIT_RETRIES + 1):
+        try:
+            return json.loads(http_get(url, headers))
+        except urllib.error.HTTPError as exc:
+            wait = rate_limit_wait(exc, attempt)
+            if wait is None or attempt == RATE_LIMIT_RETRIES:
+                raise
+            time.sleep(wait)
+
+
+# Search allows about 10 code searches a minute; a prior-art run makes several in a row.
+RATE_LIMIT_RETRIES = 3
+
+
+def rate_limit_wait(exc: urllib.error.HTTPError, attempt: int) -> float | None:
+    """Seconds to wait before retrying a rate-limited GitHub call, or None if it isn't one.
+
+    A 429, or a 403 that says the limit is spent, is a rate limit. Any other 403 (a blocked
+    network, a missing permission) is not, so it fails at once.
+    """
+    remaining = exc.headers.get("x-ratelimit-remaining") if exc.headers else None
+    if exc.code != 429 and not (exc.code == 403 and (remaining == "0" or exc.headers.get("retry-after"))):
+        return None
+    retry_after = exc.headers.get("retry-after") if exc.headers else None
+    if retry_after and retry_after.isdigit():
+        return min(float(retry_after), 60.0)
+    return min(10.0 * (2 ** attempt), 60.0)
 
 
 def parse_date(value: str) -> datetime:

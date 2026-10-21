@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 name: Knowledge base feedback
 description: Tell us what worked, broke, went out of date or is missing in docs/knowledge/.
 title: "KB feedback: "

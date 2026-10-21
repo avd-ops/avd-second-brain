@@ -35,4 +35,5 @@ Chosen option: "One brain for the whole lifecycle, in its own repository", becau
 
 ## More Information
 
+- Narrowed by [0024](0024-the-brain-is-the-estate-brain.md) (2026-10-20): the repo keeps the estate brain and the KB plumbing; the factory knowledge, the foundation contracts and the docs check move to the repos that own them.
 - Accepted by the owner on 2026-10-18, when the family knowledge base was set up. Moved here from `docs/decisions/` and converted to MADR 4; the decision itself is unchanged.

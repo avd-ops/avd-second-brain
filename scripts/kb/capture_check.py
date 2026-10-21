@@ -1,4 +1,4 @@
-# From nickprignano/ai-brain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
+# From nickprignano/2ndbrain (Apache-2.0), unchanged; see scripts/kb/NOTICE.
 """Ask for a knowledge base entry when code changes without one (decision 0011).
 
 Two modes, both git-only and stdlib-only, so a repo without the KB scripts can copy this one file:

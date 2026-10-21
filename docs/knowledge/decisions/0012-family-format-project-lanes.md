@@ -11,7 +11,7 @@ decision-makers: [owner]
 The owner runs separate Claude projects over one family of repos: AVD (avd-landing-zone and the
 repos around it, native Azure, Entra and Microsoft 365 automation, with Liquidware as the only
 upgrade), Nerdio (nerdio-hcl, everything Nerdio, built with Terraform, Packer and other
-open-source tools), Liquidware (product knowledge and real-user assessments) and AI (ai-brain).
+open-source tools) and Liquidware (product knowledge and real-user assessments).
 Much of the ground overlaps, and the hard line between AVD and Nerdio is the toolchain: no HCL in
 the avd-landing-zone ecosystem. `family.yaml` says what each KB `owns`, but nothing says what a
 project must not build, which Claude project an ask belongs to, or checks either. Two costs
@@ -67,6 +67,7 @@ new file to keep in sync.
   HCL and open-source tools, connected through shared interfaces, never a dependency.
 - The AVD project builds avd-liquidware's deployment tooling; Liquidware product knowledge and
   assessments with real users belong to the Liquidware project.
-- Format source: ai-brain (its decision 0007) adopts this first; nerdio-hcl and avd-liquidware
-  follow, then every `family.yaml` bumps `format_version` together.
-- Separate from ai-brain's knowledge-capture closeout decision.
+- Format source: the 2ndbrain format ([2ndbrain](https://github.com/nickprignano/2ndbrain)) owns
+  the shared format; these lane fields are this KB's local extension of it, which avd-liquidware
+  follows, and every `family.yaml` bumps `format_version` together.
+- Separate from the knowledge-capture closeout ([0013](0013-family-format-enforced-kb-capture.md)).
