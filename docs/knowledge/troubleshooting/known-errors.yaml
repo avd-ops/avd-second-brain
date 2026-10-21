@@ -195,3 +195,15 @@ errors:
   source: https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md
   status: verified
   added: '2026-10-18'
+- id: strictmode-count-typed-object
+  symptom: 'A script under `Set-StrictMode -Version Latest` stops with `The property ''Count'' cannot be
+    found on this object` when a cmdlet returns exactly one item (for example one subscription from
+    `Get-AzSubscription`)'
+  cause: A single typed .NET object has no `.Count` in strict mode (a PSCustomObject does), so tests
+    built on PSCustomObject fakes pass; and a function that returns its list with the unary comma
+    (`return , $list`) gets wrapped twice by `@(...)` at the call site
+  fix: Wrap pipeline results in `@()` before counting; assign a comma-returned list directly, without
+    `@()`; and run the whole script in a test against fakes that return typed objects
+  source: https://github.com/nickprignano/avd-current-state/pull/23
+  status: verified
+  added: '2026-10-21'
