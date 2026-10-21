@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-10-18
 decision-makers: [owner]
 ---
@@ -38,3 +38,4 @@ For the pilot, the AVD repos:
 
 - Revisit at the family's pilot review on 2026-12-01.
 - Any app here that calls Claude is a paired change with avd-swarm (decision [0003](0003-brain-thinks-swarm-acts.md)), because models and identity are on its paired list.
+- Accepted by the owner on 2026-10-21. Pair: [avd-swarm decision 0008](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0008-family-model-selection-convention.md).
