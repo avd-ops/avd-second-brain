@@ -34,5 +34,5 @@ Chosen option: "Add the family format at `docs/knowledge/`, beside `knowledge/`"
 
 ## More Information
 
-- Also recorded in: [AI 0001](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0001-adopt-family-kb-format.md) and [Nerdio HCL kit 0021](https://github.com/nickprignano/nerdio-hcl/blob/main/docs/knowledge/decisions/0021-knowledge-base-family.md).
+- The format itself: [2ndbrain 0001](https://github.com/nickprignano/2ndbrain/blob/main/docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md). Also recorded in: [Nerdio HCL kit 0021](https://github.com/nickprignano/nerdio-hcl/blob/main/docs/knowledge/decisions/0021-knowledge-base-family.md).
 - The owner chose this repo as the AVD KB's home on 2026-10-18. Plan and red team: the "second brain family alignment" plan in the project files.

@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 name: kb-curator
 
 # Weekly digest of new releases, docs and community repos from docs/knowledge/sources.toml,

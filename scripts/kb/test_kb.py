@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 """Tests for the knowledge base scripts. Run: python3 -m unittest discover -s scripts/kb"""
 
 from __future__ import annotations
@@ -286,6 +286,39 @@ class AnchorTests(unittest.TestCase):
         body = "# A\n## Post-deployment checks with Playwright\n## 8. Deployment troubleshooting\n## A\n"
         self.assertEqual(kblib.anchors(body), {
             "a", "post-deployment-checks-with-playwright", "8-deployment-troubleshooting", "a-1"})
+
+
+class RateLimitTests(unittest.TestCase):
+    """GitHub search retries only rate limits; a blocked network (403 without limit headers) fails at once."""
+
+    def _err(self, code, headers):
+        import email.message
+        import urllib.error
+        msg = email.message.Message()
+        for k, v in headers.items():
+            msg[k] = v
+        return urllib.error.HTTPError("https://api.github.com/search/code", code, "x", msg, None)
+
+    def test_waits(self):
+        import sources
+        self.assertEqual(sources.rate_limit_wait(self._err(429, {"Retry-After": "7"}), 0), 7.0)
+        self.assertEqual(sources.rate_limit_wait(self._err(429, {}), 1), 20.0)
+        self.assertEqual(sources.rate_limit_wait(self._err(403, {"X-RateLimit-Remaining": "0"}), 5), 60.0)
+        self.assertIsNone(sources.rate_limit_wait(self._err(403, {}), 0))
+        self.assertIsNone(sources.rate_limit_wait(self._err(404, {}), 0))
+
+    def test_retries_then_succeeds(self):
+        import sources
+        calls = [self._err(429, {"Retry-After": "0"}), b'{"items": []}']
+
+        def fake(url, headers):
+            item = calls.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return item
+
+        with mock.patch.object(sources, "http_get", side_effect=fake), mock.patch.object(sources.time, "sleep"):
+            self.assertEqual(sources.github("/search/code", {"q": "x"}), {"items": []})
 
 
 if __name__ == "__main__":

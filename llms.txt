@@ -23,7 +23,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [Upstream drafts](docs/knowledge/microsoft/drafts/README.md): Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it (status: plan)
 - [Upstream asks for Microsoft](docs/knowledge/microsoft/upstream-contributions.md): Gaps, API asks and doc fixes we could raise with Microsoft, with evidence (status: verified)
 - [Known errors](docs/knowledge/troubleshooting/README.md): Errors hit deploying and running AVD: symptom, cause, fix and source (status: verified)
-- [Knowledge base roadmap](docs/knowledge/roadmap.md): How this KB is being moved onto the family format, step by step, and what's still to come (status: plan)
+- [Knowledge base roadmap](docs/knowledge/roadmap.md): Settled: this KB is on the family format; open work is tracked outside the public repo (status: plan)
 - [Keeping the knowledge base current](docs/knowledge/curation.md): How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment (status: verified)
 - [Experts we follow](docs/knowledge/experts.md): How we choose which AVD, FSLogix and Entra experts the KB follows: the method, the scores and the list (status: verified)
 
@@ -56,11 +56,17 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0015. GitHub work follows the family conventions, with knowledge base PRs able to merge themselves](docs/knowledge/decisions/0015-family-format-github-work-conventions.md): accepted
 - [0016. Never delete the last copy](docs/knowledge/decisions/0016-never-delete-the-last-copy.md): accepted
 - [0017. Never leave the meter running without an opt-in](docs/knowledge/decisions/0017-never-leave-the-meter-running.md): accepted
+- [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): proposed
+- [0021. The foundation's contracts live in avd-assess](docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): accepted
+- [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): proposed
+- [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): accepted
+- [0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md): accepted
 
 ## Related knowledge bases
 
-- [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge): The AI research behind all four projects. Source of truth for: Claude API and Microsoft Foundry use; model choices; keyless sign-in for AI APIs; prompts and evaluations; AI tooling shared by the family
-- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer. Source of truth for: Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer
+- [2ndbrain](https://github.com/nickprignano/2ndbrain/tree/main/docs/knowledge): The template that owns the family knowledge base format. Source of truth for: the family knowledge base format; its scripts and schemas
+- [avd-ops](https://github.com/nickprignano/avd-ops/tree/main/docs/knowledge): The front door for the AVD repos: avd-ops.dev, onboarding and user docs. Source of truth for: onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system
+- [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge): Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer. Source of truth for: Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer
 - [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge): Liquidware products on virtual desktops, starting with Stratusphere UX in Azure. Source of truth for: Liquidware products; Stratusphere UX appliances; the Connector ID Key; the Stratusphere API; this repo's Bicep and PowerShell
 
 ## Not built here
@@ -70,7 +76,6 @@ Refer these to the project that owns them, and read its KB before researching (d
 - Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
 - Nerdio Manager, its provider and scripted actions: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
 - Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project: [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge), the Liquidware Claude project
-- General Claude API and Microsoft Foundry research, model choice and prompt evaluation: [AI](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge), the AI Claude project
 
 ## Optional
 

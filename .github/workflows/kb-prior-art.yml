@@ -1,14 +1,17 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
+# Adapted from nickprignano/2ndbrain (Apache-2.0) and changed for avd-second-brain; see scripts/kb/NOTICE.
 name: kb-prior-art
 
 # Run a prior-art check from the Actions tab: searches the KB, sibling KBs, GitHub repos, code
-# and issues for a topic and writes the report to the job summary.
+# and issues for one or more topics and writes the report to the job summary, the log and a
+# prior-art artifact. It runs on GitHub, so it works when the session that needs it can't reach
+# GitHub search (build containers get HTTP 403 there): dispatch it and read the log or artifact.
+# Read-only: it writes nothing to the repo.
 
 on:
   workflow_dispatch:
     inputs:
       query:
-        description: What are you about to build? (e.g. "fslogix entra kerberos")
+        description: What are you about to build? One topic per line for several (e.g. "fslogix entra kerberos")
         required: true
 
 permissions:
@@ -22,8 +25,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install -q -r scripts/kb/requirements.txt
       - name: Search
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           QUERY: ${{ inputs.query }}
-        run: python3 scripts/kb/prior_art.py "$QUERY"
+        run: |
+          mkdir -p prior-art
+          n=0
+          while IFS= read -r q; do
+            q="$(printf '%s' "$q" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            [ -z "$q" ] && continue
+            n=$((n + 1))
+            python3 scripts/kb/prior_art.py "$q" | tee "prior-art/$(printf '%02d' "$n").md"
+          done <<< "$QUERY"
+          [ "$n" -gt 0 ] || { echo "No topic given."; exit 1; }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prior-art
+          path: prior-art/

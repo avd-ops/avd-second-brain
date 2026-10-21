@@ -796,6 +796,180 @@ function Test-TargetState {
   [pscustomobject]@{ Document = $doc; Findings = @($findings) }
 }
 
+# --- Assessment method (docs/assess-spec.md, contracts C19 to C21) --------------------------------
+# avd-assess publishes the method (C20: index.json and method.json); avd-current-state runs it and
+# writes a report (C21). These take the parsed documents and return findings, so they run offline.
+
+function Test-AssessMethod {
+  # Contract C20: avd-assess's index.json and method.json. Schemas first, then the guard over the
+  # text that is ours (claims, observations, titles), then what a schema can't say: every claim and
+  # gap cited exists, every fact is registered (built for a check, at least specified for readiness),
+  # every decision is in the register, and readiness agrees with the register's decidableFrom.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] [string] $IndexFile,
+    [Parameter(Mandatory)] [string] $MethodFile,
+    [Parameter(Mandatory)] [string] $SchemaPath,
+    [Parameter(Mandatory)] $Register
+  )
+  $ix = Test-BrainJson -File $IndexFile -SchemaFile (Join-Path $SchemaPath 'assess-index.schema.json') -Display 'index.json'
+  $me = Test-BrainJson -File $MethodFile -SchemaFile (Join-Path $SchemaPath 'assess-method.schema.json') -Display 'method.json'
+  $findings = @($ix.Findings) + @($me.Findings)
+  if (-not $ix.Document -or -not $me.Document) { return [pscustomobject]@{ Index = $ix.Document; Method = $me.Document; Findings = $findings } }
+  $index = $ix.Document; $method = $me.Document
+
+  # Source IDs (an APRL GUID is a public ID) are pattern-checked by the schema; the guard reads our words.
+  $words = @(foreach ($r in @($index.references)) { $r.title; Get-BrainProperty $r 'notes'; foreach ($c in @($r.claims)) { $c.says } }) +
+  @(foreach ($o in @($index.observations)) { $o.observed }) + @(foreach ($c in @($method.checks)) { $c.title })
+  $findings += @(Get-BrainSensitiveText -Text (@($words | Where-Object { $_ }) -join "`n") -Path 'avd-assess')
+
+  $cites = @{}
+  foreach ($dup in @($index.references.id | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'index:duplicate-reference' 'index.json' "Reference '$($dup.Name)' is listed twice." }
+  foreach ($r in @($index.references)) {
+    foreach ($dup in @($r.claims.id | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'index:duplicate-claim' 'index.json' "ref:$($r.id) lists claim '$($dup.Name)' twice." }
+    foreach ($c in @($r.claims)) { $cites["ref:$($r.id)#$($c.id)"] = $true }
+  }
+  foreach ($g in @($index.gaps)) { $cites["gap:$($g.id)"] = $true }
+  foreach ($o in @($index.observations)) {
+    if (-not $cites.ContainsKey($o.claim)) { $findings += Get-BrainFinding Error 'index:unknown-claim' 'index.json' "Observation '$($o.id)' tests $($o.claim), which no reference has." }
+  }
+
+  $facts = @{}; foreach ($f in @($Register.facts)) { $facts[$f.id] = $f }
+  $decisions = @{}; foreach ($d in @($Register.decisions)) { $decisions[$d.id] = $d }
+  if ($method.factRegister -ne $Register.version) {
+    $findings += Get-BrainFinding Error 'method:register-version' 'method.json' "Uses fact register v$($method.factRegister); this register is v$($Register.version)."
+  }
+  $checkCite = { param($Where, $Ref) if (-not $cites.ContainsKey($Ref)) { Get-BrainFinding Error 'method:unknown-claim' 'method.json' "$Where cites $Ref, which the index doesn't have." } }
+  $checkFact = {
+    param($Where, $Id, [string[]] $Allowed)
+    $f = $facts[$Id]
+    if (-not $f) { Get-BrainFinding Error 'method:unknown-fact' 'method.json' "$Where uses '$Id', which isn't in the fact register." }
+    elseif ($f.status -notin $Allowed) { Get-BrainFinding Error 'method:fact-not-citable' 'method.json' "$Where uses '$Id', which is $($f.status); it needs to be $($Allowed -join ' or ')." }
+  }
+
+  foreach ($row in @($method.collection)) {
+    $findings += @(& $checkFact "collection $($row.fact)" $row.fact @('built', 'specified'))
+    foreach ($c in @($row.claims)) { $findings += @(& $checkCite "collection $($row.fact)" $c) }
+    $f = $facts[$row.fact]
+    if ($f -and (($row.from -eq 'intake') -ne ($f.tier -eq 'intake'))) { $findings += Get-BrainFinding Error 'method:collection-source' 'method.json' "$($row.fact) is tier $($f.tier); it can't come from $($row.from)." }
+  }
+  foreach ($dup in @($method.checks.id | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'method:duplicate-check' 'method.json' "Check '$($dup.Name)' is listed twice." }
+  foreach ($c in @($method.checks)) {
+    foreach ($ref in @($c.claims)) { $findings += @(& $checkCite $c.id $ref) }
+    foreach ($id in @($c.facts)) { $findings += @(& $checkFact $c.id $id @('built')) }
+    foreach ($d in @($c.informs)) { if (-not $decisions.ContainsKey($d)) { $findings += Get-BrainFinding Error 'method:unknown-decision' 'method.json' "$($c.id) informs '$d', which isn't a decision in the register." } }
+  }
+  foreach ($dup in @($method.readiness.decision | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'method:duplicate-readiness' 'method.json' "Decision '$($dup.Name)' has two readiness rows." }
+  foreach ($d in @($Register.decisions)) {
+    if ($d.id -notin @($method.readiness.decision)) { $findings += Get-BrainFinding Error 'method:readiness-missing' 'method.json' "Decision '$($d.id)' has no readiness row." }
+  }
+  $needTier = @{ 'decidable' = 'azure'; 'decidable-with-intake' = 'intake'; 'needs-measurement' = 'forensic' }
+  foreach ($row in @($method.readiness)) {
+    $d = $decisions[$row.decision]
+    if (-not $d) { $findings += Get-BrainFinding Error 'method:unknown-decision' 'method.json' "Readiness row '$($row.decision)' isn't a decision in the register."; continue }
+    foreach ($c in @($row.claims)) { $findings += @(& $checkCite "readiness $($row.decision)" $c) }
+    foreach ($id in @($row.facts)) {
+      $findings += @(& $checkFact "readiness $($row.decision)" $id @('built', 'specified'))
+      if ($facts[$id] -and $row.decision -notin @($facts[$id].evidences)) { $findings += Get-BrainFinding Error 'method:fact-cannot-support' 'method.json' "Readiness $($row.decision) uses '$id', which the register doesn't list as evidence for it." }
+    }
+    $tier = $needTier[$row.readiness]
+    if ($tier -notin @($d.decidableFrom)) { $findings += Get-BrainFinding Error 'method:readiness-register' 'method.json' "$($row.decision) is $($row.readiness), but the register says it is decidable only from $(@($d.decidableFrom) -join ', ')." }
+    elseif (-not @($row.facts | Where-Object { $facts[$_] -and $facts[$_].tier -eq $tier }).Count) { $findings += Get-BrainFinding Error 'method:readiness-facts' 'method.json' "$($row.decision) is $($row.readiness) but names no $tier fact." }
+  }
+  [pscustomobject]@{ Index = $index; Method = $method; Findings = @($findings) }
+}
+
+function Get-AssessScore {
+  # The method's scoring (severity-weighted/v1) over a report's results: per pillar, the passing
+  # severity weight over the assessed weight (warn counts warnFactor), and coverage, the share of
+  # checks that aren't unknown. A pillar with nothing assessed scores null. Only builds data.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Method,
+    [Parameter(Mandatory)] [AllowEmptyCollection()] [object[]] $Result
+  )
+  $outcome = @{}; foreach ($r in $Result) { $outcome[$r.check] = $r.outcome }
+  $s = $Method.scoring
+  foreach ($g in @($Method.checks | Group-Object pillar | Sort-Object Name)) {
+    $assessed = 0; $weight = 0.0; $passed = 0.0
+    foreach ($c in $g.Group) {
+      $o = $outcome[$c.id]
+      if (-not $o -or $o -eq 'unknown') { continue }
+      $w = [double](Get-BrainProperty $s.weights $c.severity)
+      $assessed++; $weight += $w
+      if ($o -eq 'pass') { $passed += $w } elseif ($o -eq 'warn') { $passed += $w * $s.warnFactor }
+    }
+    [pscustomobject]@{
+      pillar = $g.Name; checks = $g.Count; assessed = $assessed
+      score = if ($weight) { [Math]::Round($passed / $weight, 3) } else { $null }
+      coverage = [Math]::Round($assessed / $g.Count, 3)
+    }
+  }
+}
+
+function Test-AssessmentReport {
+  # Contract C21: an avd-assessment/v1 report against the method it pins. Schema first, then the
+  # guard, then: the pins match, every check has exactly one row with only that check's facts, each
+  # row's outcome is its subjects' worst, the pillars recompute, and every decision's status fits
+  # its readiness and whether intake was answered.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] [string] $File,
+    [Parameter(Mandatory)] [string] $SchemaFile,
+    [Parameter(Mandatory)] $Method,
+    [string] $MethodSha256,
+    [Parameter(Mandatory)] $Register
+  )
+  $display = Split-Path $File -Leaf
+  $r = Test-BrainJson -File $File -SchemaFile $SchemaFile -Display $display
+  if (-not $r.Document) { return $r }
+  $doc = $r.Document
+  $findings = @(Get-BrainSensitiveText -Text (Get-Content -LiteralPath $File -Raw) -Path $display)
+  if ($doc.method.version -ne $Method.version) { $findings += Get-BrainFinding Error 'report:method-version' $display "Ran method v$($doc.method.version); this method is v$($Method.version)." }
+  if ($MethodSha256 -and $doc.method.sha256 -ne $MethodSha256) { $findings += Get-BrainFinding Error 'report:method-hash' $display "Pins method.json $($doc.method.sha256.Substring(0, 12)); the copy given is $($MethodSha256.Substring(0, 12))." }
+  if ($doc.method.factRegister -ne $Register.version) { $findings += Get-BrainFinding Error 'report:register-version' $display "Uses fact register v$($doc.method.factRegister); this register is v$($Register.version)." }
+
+  $checks = @{}; foreach ($c in @($Method.checks)) { $checks[$c.id] = $c }
+  $rank = @{ gap = 3; warn = 2; unknown = 1; pass = 0 }
+  foreach ($dup in @($doc.results.check | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'report:duplicate-check' $display "Check '$($dup.Name)' has two rows." }
+  foreach ($id in $checks.Keys) { if ($id -notin @($doc.results.check)) { $findings += Get-BrainFinding Error 'report:missing-check' $display "Check '$id' has no row." } }
+  foreach ($row in @($doc.results)) {
+    $c = $checks[$row.check]
+    if (-not $c) { $findings += Get-BrainFinding Error 'report:unknown-check' $display "Row '$($row.check)' isn't a check in method v$($Method.version)."; continue }
+    foreach ($f in @($row.facts)) { if ($f -notin @($c.facts)) { $findings += Get-BrainFinding Error 'report:fact-not-in-check' $display "$($row.check) lists '$f', which the check doesn't use." } }
+    $worst = 'unknown'
+    $subjects = @($row.subjects)
+    if ($subjects.Count) { $worst = ($subjects.outcome | Sort-Object { $rank[$_] } -Descending | Select-Object -First 1) }
+    if ($row.outcome -ne $worst) { $findings += Get-BrainFinding Error 'report:rollup' $display "$($row.check) says $($row.outcome); its subjects roll up to $worst." }
+  }
+
+  $want = @(Get-AssessScore -Method $Method -Result @($doc.results))
+  $have = @{}; foreach ($p in @($doc.pillars)) { $have[$p.pillar] = $p }
+  foreach ($w in $want) {
+    $h = $have[$w.pillar]
+    $same = $h -and $h.checks -eq $w.checks -and $h.assessed -eq $w.assessed -and [Math]::Abs([double]$h.coverage - $w.coverage) -lt 0.001 -and
+    (($null -eq $h.score -and $null -eq $w.score) -or ($null -ne $h.score -and $null -ne $w.score -and [Math]::Abs([double]$h.score - $w.score) -lt 0.001))
+    if (-not $same) { $findings += Get-BrainFinding Error 'report:score' $display "Pillar $($w.pillar) should be score $($w.score), coverage $($w.coverage) over $($w.checks) checks." }
+  }
+  foreach ($p in $have.Keys) { if ($p -notin @($want.pillar)) { $findings += Get-BrainFinding Error 'report:score' $display "Pillar $p has no checks in the method." } }
+
+  $readiness = @{}; foreach ($x in @($Method.readiness)) { $readiness[$x.decision] = $x.readiness }
+  $intake = $null -ne (Get-BrainProperty $doc.inputs 'intake')
+  $allowed = @{
+    'decidable'             = @('supported', 'missing-facts')
+    'decidable-with-intake' = if ($intake) { @('supported', 'missing-facts') } else { @('needs-intake') }
+    'needs-measurement'     = @('needs-measurement')
+  }
+  foreach ($d in @($Register.decisions)) {
+    $rows = @($doc.decisions | Where-Object decision -eq $d.id)
+    if ($rows.Count -ne 1) { $findings += Get-BrainFinding Error 'report:decision' $display "Decision '$($d.id)' has $($rows.Count) rows; it needs one."; continue }
+    $row = $rows[0]
+    if ($row.readiness -ne $readiness[$d.id]) { $findings += Get-BrainFinding Error 'report:decision' $display "$($d.id) says $($row.readiness); the method says $($readiness[$d.id])." }
+    elseif ($row.status -notin $allowed[$row.readiness]) { $findings += Get-BrainFinding Error 'report:decision-status' $display "$($d.id) is $($row.readiness) and says $($row.status); it can only be $($allowed[$row.readiness] -join ' or ')." }
+  }
+  [pscustomobject]@{ Document = $doc; Findings = @($findings) }
+}
+
 # --- Docs consistency (docs/docs-spec.md, contract C13) ----------------------------------------
 # Get-Doc* functions read a repo or build data and text from it; Test-Doc* functions take that data
 # and return findings in the avd-doc-findings/v1 shape. Scripts are parsed, never run.
@@ -1892,7 +2066,7 @@ function Test-DocConsistency {
 Export-ModuleMember -Function Get-BrainSensitiveText, Test-BrainCatalog, Test-BrainRule, Test-BrainCalibration,
   Test-BrainEngagement, Test-BrainKnowledge, Resolve-BrainApp, Get-SizingCalibration, Search-BrainKnowledge,
   Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence, Test-CurrentStateFacts,
-  Test-SchemaPath, Test-FactRegister, Test-TargetState,
+  Test-SchemaPath, Test-FactRegister, Test-TargetState, Test-AssessMethod, Get-AssessScore, Test-AssessmentReport,
   Get-DocFinding, Get-DocMarkdownLine, Get-DocScriptInfo, Get-DocBicepInfo, Get-DocRepo, Get-DocContract, Get-DocDecision,
   Get-DocFact, Get-DocTextHash, Test-DocLink, Test-DocEntryPoint, Test-DocParameter, Test-DocContract, Test-DocDecisionPair,
   Test-DocChangelog, Test-DocConnectionTable, Test-DocTerm, Test-DocKnowledgeCitation, Test-DocGenerated, Test-DocPrivate,

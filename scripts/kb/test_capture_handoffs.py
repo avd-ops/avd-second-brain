@@ -1,4 +1,4 @@
-# Adapted from nickprignano/ai-brain (Apache-2.0): the CaptureTests and HandoffTests from its
+# Adapted from nickprignano/2ndbrain (Apache-2.0): the CaptureTests and HandoffTests from its
 # test_kb.py, unchanged; see scripts/kb/NOTICE.
 """Tests for the Stop hook and kb-capture check (decision 0013) and the handoff list (decision 0014)."""
 
