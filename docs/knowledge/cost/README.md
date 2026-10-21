@@ -18,6 +18,7 @@ What AVD and its test sandboxes cost and how spend stays capped: the retail pric
 ## Capping
 
 - One auto-shutdown runbook, started both by a schedule and by the budget ([avd-landing-zone decision 0011](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0011-auto-shutdown.md)). *Unverified:* no lesson yet records the budget trigger in a real run.
+- The landing zone's budget lives and dies with it: `Remove-AvdDemo.ps1 -IncludeLandingZone` deletes `budget-<prefix>-<environment>`, so a torn-down sandbox subscription has no spend alert at all ([Remove-AvdDemo.ps1](https://github.com/nickprignano/avd-landing-zone/blob/master/scripts/ops/Remove-AvdDemo.ps1)). Give a sandbox subscription a standing budget of its own that no teardown touches, and have the daily spend check flag a subscription without one.
 
 ## Sandbox runs
 
