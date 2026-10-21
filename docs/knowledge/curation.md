@@ -3,7 +3,7 @@ title: "Keeping the knowledge base current"
 summary: "How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment"
 topic: curation
 status: verified
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-21
 ---
 
 # Keeping the knowledge base current
@@ -58,12 +58,18 @@ Before building something new, check whether it's already solved:
 GITHUB_TOKEN=$(gh auth token) python3 scripts/kb/prior_art.py "fslogix entra kerberos"
 ```
 
-or run **Actions > kb-prior-art** with the topic. It searches, in order: this KB, each sibling KB
-in [family.yaml](family.yaml), GitHub repositories, PowerShell and Bicep code, and issues and pull
-requests. If something useful turns up, record it on the relevant topic page, so the next person
-doesn't search again.
+or run **Actions > kb-prior-art** with the topic (one topic per line for several). It searches, in
+order: this KB, each sibling KB in [family.yaml](family.yaml), GitHub repositories, PowerShell and
+Bicep code, and issues and pull requests. If something useful turns up, record it on the relevant
+topic page, so the next person doesn't search again.
 
-The digest and prior-art scripts use only the Python standard library (3.11+).
+From a build container, GitHub search answers HTTP 403 even with full network access (seen
+2026-10-20 and 2026-10-21), so a session there can't run the script itself. It dispatches
+**kb-prior-art** instead and reads the run's log or its `prior-art` artifact, which holds one
+Markdown report per topic. The workflow is read-only. Until 2026-10-21 it failed at import because
+it skipped `pip install -r scripts/kb/requirements.txt` (`kblib` needs PyYAML).
+
+The digest and prior-art scripts need Python 3.11+ and `scripts/kb/requirements.txt`.
 
 ## Feedback loop (`kb-feedback`)
 
