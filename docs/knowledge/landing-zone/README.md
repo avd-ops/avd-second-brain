@@ -3,7 +3,7 @@ title: "Landing zone"
 summary: "Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell"
 topic: landing-zone
 status: verified
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 sources:
   - https://learn.microsoft.com/azure/well-architected/reliability/checklist
   - https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations
@@ -12,6 +12,8 @@ sources:
   - https://learn.microsoft.com/security/benchmark/azure/baselines/azure-virtual-desktop-security-baseline
   - https://github.com/Azure/review-checklists
   - https://github.com/Azure/Well-Architected-Reliability-Assessment
+  - https://learn.microsoft.com/azure/bastion/bastion-sku-comparison
+  - https://learn.microsoft.com/azure/bastion/configuration-settings
 ---
 
 # Landing zone
@@ -50,6 +52,16 @@ The landing zone's scope is Entra ID only, greenfield and private by default ([a
 - Check each Az and Graph cmdlet call against its documented parameter sets, and keep mocks no more permissive than the real cmdlet ([lesson 0014](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0014-cmdlet-parameter-sets.md)). Emit items from functions instead of returning one array ([lesson 0009](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0009-array-unrolling.md)).
 - Lint with the PSScriptAnalyzer version CI installs; use approved verbs and singular nouns ([lesson 0016](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0016-analyzer-version.md)). Offline tests provide every external tool they touch ([lesson 0020](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0020-hermetic-harness.md)).
 - Never make a person remember a secret the platform can generate and reset, such as the break-glass password ([lesson 0002](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0002-break-glass-password.md)).
+
+## Working from a VM inside the landing zone
+
+Cloud Shell sits outside the landing zone's network, so it can't reach private endpoints such as the private Key Vault or an SMB-only profile share, and its sessions time out. avd-landing-zone offers an opt-in jumpbox reached through Azure Bastion Developer ([avd-landing-zone decision 0018](https://github.com/nickprignano/avd-landing-zone/blob/master/build/decisions/0018-jumpbox-bastion-developer.md)). What Microsoft Learn says about the Developer SKU, read on 2026-10-21 ([SKU comparison](https://learn.microsoft.com/azure/bastion/bastion-sku-comparison), [configuration settings](https://learn.microsoft.com/azure/bastion/configuration-settings), [Entra ID authentication](https://learn.microsoft.com/azure/bastion/bastion-entra-id-authentication)):
+
+- **Bastion is not always billed by the hour.** Developer has no hourly or outbound data charge, needs no AzureBastionSubnet or public IP, and deploys in seconds from a shared pool. "No Bastion because it costs money" holds only for Basic and higher.
+- **One connection at a time, same VNet only.** Developer doesn't follow peering, so it reaches only VMs in the VNet it references: put the jumpbox in the spoke, not in a hub.
+- **Portal only, and no Microsoft Entra sign-in.** No native client, custom ports, shareable links or file transfer; Entra sign-in needs Basic in the portal and Standard for the native client. With Developer the OS account is local: set a one-time password through the management plane (the VM access extension's protected settings) on each connect instead of storing one.
+- **Only in some regions.** The list includes North Central US, Central US and East US 2, but not East US, South Central US or West US 2 and 3; check it before choosing a recovery region. Microsoft calls Developer unsuitable for production.
+- *Unverified:* not yet seen in a real run. A sandbox run is to confirm the deployment, the role a connection needs and the one-time password flow.
 
 ## Publishing the deployment portal
 
