@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-The operations spec ([operations-spec.md](../../operations-spec.md)) gave the brain its own way to act: an orchestrator that runs approved plans, one executor identity per playbook, a kill switch (EX-0004) and a watchdog. [avd-swarm](https://github.com/nickprignano/avd-swarm) was then specified with the same pieces: a plan store, an approval environment, a write identity, a governance gate, an external observer and a four-position kill switch. Two write paths, two kill switches and two front ends for one estate would drift apart, and each would be half as tested. Which of the two acts on an estate?
+The operations spec ([operations-spec.md](../../operations-spec.md)) gave the brain its own way to act: an orchestrator that runs approved plans, one executor identity per playbook, a kill switch (EX-0004) and a watchdog. [avd-swarm](https://github.com/avd-ops/avd-swarm) was then specified with the same pieces: a plan store, an approval environment, a write identity, a governance gate, an external observer and a four-position kill switch. Two write paths, two kill switches and two front ends for one estate would drift apart, and each would be half as tested. Which of the two acts on an estate?
 
 ## Considered Options
 
@@ -39,5 +39,5 @@ Chosen option: "The brain thinks, avd-swarm acts and controls", because one writ
 
 ## More Information
 
-- **Pair:** [avd-swarm decision 0003](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0003-swarm-acts-brain-thinks.md) says the same from the other side. The two change together.
+- **Pair:** [avd-swarm decision 0003](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0003-swarm-acts-brain-thinks.md) says the same from the other side. The two change together.
 - Accepted by the owner on 2026-10-18, together with avd-swarm decision 0003. Moved here from `docs/decisions/` and converted to MADR 4; the decision itself is unchanged.

@@ -22,7 +22,7 @@ request, then a person files it under their own account and sets `status: raised
 <!-- BEGIN GENERATED: feature_gaps (edit the YAML, then run scripts/kb/build.py) -->
 | Gap | Evidence | Why it matters | Status |
 |---|---|---|---|
-| AVM nat-gateway: public IPs default to zones 1-3 even when the NAT Gateway is non-zonal | https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0001-nat-gateway-pip-zones.md | Deploying to a region without availability zones fails with LocationNotSupportAvailabilityZones unless the caller overrides a nested default it can't see from the parent module | candidate (Check the current module version in Azure/bicep-registry-modules before raising) |
+| AVM nat-gateway: public IPs default to zones 1-3 even when the NAT Gateway is non-zonal | https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0001-nat-gateway-pip-zones.md | Deploying to a region without availability zones fails with LocationNotSupportAvailabilityZones unless the caller overrides a nested default it can't see from the parent module | candidate (Check the current module version in Azure/bicep-registry-modules before raising) |
 <!-- END GENERATED: feature_gaps -->
 
 ## API asks
@@ -30,7 +30,7 @@ request, then a person files it under their own account and sets `status: raised
 <!-- BEGIN GENERATED: api_asks (edit the YAML, then run scripts/kb/build.py) -->
 | Ask | Evidence | Why it matters | Status |
 |---|---|---|---|
-| Microsoft Graph's service principal doesn't list every delegated permission it issues | https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md | Tooling that looks scopes up in oauth2PermissionScopes reports a real delegated permission as missing | candidate |
+| Microsoft Graph's service principal doesn't list every delegated permission it issues | https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md | Tooling that looks scopes up in oauth2PermissionScopes reports a real delegated permission as missing | candidate |
 <!-- END GENERATED: api_asks -->
 
 ## Docs and packaging
@@ -38,6 +38,6 @@ request, then a person files it under their own account and sets `status: raised
 <!-- BEGIN GENERATED: docs_packaging (edit the YAML, then run scripts/kb/build.py) -->
 | Item | Evidence | Suggested fix | Status |
 |---|---|---|---|
-| Azure Files: say that Entra Kerberos sessions are denied when AES-256-GCM is the only SMB channel encryption | https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md | A note in the Entra Kerberos and SMB security settings pages | candidate (Check the current docs before raising) |
+| Azure Files: say that Entra Kerberos sessions are denied when AES-256-GCM is the only SMB channel encryption | https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md | A note in the Entra Kerberos and SMB security settings pages | candidate (Check the current docs before raising) |
 | AVD prerequisites: FSLogix on Entra joined hosts no longer needs hybrid users | https://github.com/avd-ops/avd-assess/blob/main/observations/fslogix-cloud-only-users-work.yaml | Say on both AVD pages that cloud-only and external identities work in the Azure public cloud, and link the Entra Kerberos page | candidate (Pages checked 2026-10-21 (avd-assess references avd-prerequisites, avd-entra-joined-hosts); check again before raising) |
 <!-- END GENERATED: docs_packaging -->

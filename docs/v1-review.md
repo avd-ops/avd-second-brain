@@ -1,7 +1,7 @@
 # avd-second-brain v1 completeness review
 
-- **Date:** 2026-10-20. Reviewed `main` at `6f0a199` and the open drafts that change the specs: #29 (claims on every edge), #34 (Well-Architected sources), #37 (decisions 0016 and 0017), #40 (C17 recovery use case), #41 (decision 0018), the recovery decision 0019 and the "why layer" work (C18, decision 0020). Paired with [avd-swarm's v1 review](https://github.com/nickprignano/avd-swarm/blob/main/docs/v1-review.md).
-- **Status:** Proposed, ready to lock once the owner answers §7 (each decision has a default the work follows). Red-teamed on 2026-10-20: findings V1-1 to V1-38, with where each landed, in [avd-swarm's v1 review §8](https://github.com/nickprignano/avd-swarm/blob/main/docs/v1-review.md#8-red-team-of-the-v1-specs-2026-10-20). Offline review only: nothing was deployed, run or spent.
+- **Date:** 2026-10-20. Reviewed `main` at `6f0a199` and the open drafts that change the specs: #29 (claims on every edge), #34 (Well-Architected sources), #37 (decisions 0016 and 0017), #40 (C17 recovery use case), #41 (decision 0018), the recovery decision 0019 and the "why layer" work (C18, decision 0020). Paired with [avd-swarm's v1 review](https://github.com/avd-ops/avd-swarm/blob/main/docs/v1-review.md).
+- **Status:** Proposed, ready to lock once the owner answers §7 (each decision has a default the work follows). Red-teamed on 2026-10-20: findings V1-1 to V1-38, with where each landed, in [avd-swarm's v1 review §8](https://github.com/avd-ops/avd-swarm/blob/main/docs/v1-review.md#8-red-team-of-the-v1-specs-2026-10-20). Offline review only: nothing was deployed, run or spent.
 - **The brain's purpose** (the why layer: use cases and decisions over an environment's whole life) is being written by the "why layer" work (C18, decision 0020). This review doesn't restate it; it checks that the rest of the specs are complete and consistent around it.
 
 ## 1. What v1 is (proposed)
@@ -17,7 +17,7 @@ Tier 2 (approved fixes) is no longer the brain's: avd-swarm executes every chang
 
 ## 2. Does the brain need an MCP?
 
-No. The brain builds no MCP server (operations spec §3.1 now says so). Its Concierge reaches operators as one of avd-swarm's tools, and avd-swarm uses Microsoft's Azure MCP Server for its own reads and builds no MCP server of its own in v1 ([avd-swarm spec §3](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#3-architecture)). People and coding agents read the brain through what already exists: `llms.txt`, the family KB and `Find-BrainKnowledge.ps1`.
+No. The brain builds no MCP server (operations spec §3.1 now says so). Its Concierge reaches operators as one of avd-swarm's tools, and avd-swarm uses Microsoft's Azure MCP Server for its own reads and builds no MCP server of its own in v1 ([avd-swarm spec §3](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md#3-architecture)). People and coding agents read the brain through what already exists: `llms.txt`, the family KB and `Find-BrainKnowledge.ps1`.
 
 ## 3. What is decided
 

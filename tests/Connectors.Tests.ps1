@@ -226,7 +226,7 @@ Describe 'Foundation contracts vendored from avd-assess (decision 0021)' {
   }
 
   It 'pins a commit of avd-assess' {
-    $script:pins.source | Should -Be 'https://github.com/nickprignano/avd-assess'
+    $script:pins.source | Should -Be 'https://github.com/avd-ops/avd-assess'
     $script:pins.assessCommit | Should -Match '^[0-9a-f]{40}$'
   }
 
@@ -496,6 +496,9 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
     $f = Save-Changed 'intake.example.json' $Change
     Test-Json -Path $f -SchemaFile (Join-Path $script:schemas 'intake.schema.json') -ErrorAction SilentlyContinue | Should -BeFalse
   }
+  It 'the map example matches avd-assess-map/v1' {
+    Test-Json -Path (Join-Path $script:ex 'map.example.json') -SchemaFile (Join-Path $script:schemas 'assess-map.schema.json') | Should -BeTrue
+  }
   It 'accepts the example index and method' {
     Get-MethodCheck | Should -BeNullOrEmpty
   }
@@ -525,7 +528,7 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
     @{ Why = 'an observation of a claim no reference has'; Check = 'index:unknown-claim'; Change = { param($x) $x.observations[0].claim = 'ref:avd-prerequisites#rtt-under-5' } }
     @{ Why = 'a pin that can move'; Check = 'schema'; Change = { param($x) $x.references[0].pin = 'https://github.com/MicrosoftDocs/windowsserverdocs/blob/main/x.md' } }
     @{ Why = 'a verdict without evidence'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @() } }
-    @{ Why = 'evidence that is not pinned'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @('https://github.com/nickprignano/avd-landing-zone/blob/master/build/lessons/0003-region-latency.md') } }
+    @{ Why = 'evidence that is not pinned'; Check = 'schema'; Change = { param($x) $x.observations[0].evidence = @('https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0003-region-latency.md') } }
     @{ Why = 'an email in our own words'; Check = 'sensitive:email-or-upn'; Change = { param($x) $x.observations[0].observed = 'Measured by ops at fabrikam.net, see admin@fabrikam.net' } }
   ) {
     Get-MethodCheck -Index (Save-Changed 'index.example.json' $Change) | Should -Contain $Check
@@ -561,7 +564,7 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
   }
   It 'contracts.md lists C19, C20 and C21 as built, with their schemas' {
     $all = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw))
-    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json'); C21 = @('assessment.schema.json') }
+    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json', 'assess-map.schema.json'); C21 = @('assessment.schema.json') }
     foreach ($id in $want.Keys) {
       $c = @($all | Where-Object Id -eq $id)[0]
       $c.Built | Should -BeTrue -Because "$id has its schema and tests"

@@ -34,6 +34,6 @@ Chosen option: "The check and generator here, avd-swarm drafting the fixes, the 
 
 ## More Information
 
-- **Pair:** [avd-swarm decision 0004](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0004-scribe-drafts-docs.md) says the same from the other side. The two change together.
+- **Pair:** [avd-swarm decision 0004](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0004-scribe-drafts-docs.md) says the same from the other side. The two change together.
 - Moved here from `docs/decisions/` and converted to MADR 4; the decision itself is unchanged.
 - **Narrowed by [0024](0024-the-brain-is-the-estate-brain.md)** (owner, 2026-10-21): the handbook (`wiki/` and its agent index) is retired, and avd-ops holds each repo's page. The check, the generator for reference pages, README blocks and changelogs, the sweep and C13 stay here.
