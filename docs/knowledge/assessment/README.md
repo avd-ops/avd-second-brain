@@ -25,6 +25,7 @@ Checked 2026-10-20. Cite these by their own IDs and link them; don't restate the
 - The [Azure Proactive Resiliency Library v2](https://github.com/Azure/Azure-Proactive-Resiliency-Library-v2) (MIT) has AVD recommendations under `azure-resources/DesktopVirtualization/` (host pools, scaling plans, workspaces); the [WARA module](https://github.com/Azure/Well-Architected-Reliability-Assessment) runs it (Reliability only; `Start-WARACollector -AVD` writes JSON).
 - Microsoft Assessments has an [Azure Virtual Desktop workload assessment](https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations#specialized-well-architected-reviews), a Well-Architected questionnaire. Links under `well-architected/azure-virtual-desktop/` now redirect into the AVD product docs.
 - Windows desktop optimization: the [Windows Desktop Optimization Tool](https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool) (WDOT, MIT) supersedes VDOT, which has no license; Learn's [Optimizing Windows configuration for VDI desktops](https://learn.microsoft.com/windows-server/remote/remote-desktop-services/remote-desktop-services-vdi-optimize-configuration) explains the settings. The landing zone's image build pins WDOT with a reviewed profile.
+- Azure Resource Graph: only session hosts are in the `DesktopVirtualizationResources` table; host pools, application groups, workspaces and scaling plans are in `Resources` ([table reference](https://learn.microsoft.com/azure/governance/resource-graph/reference/supported-tables-resources)). A collector that reads only `DesktopVirtualizationResources` sees no host pool settings.
 - None of them joins recommendations to a redacted fact snapshot or says which target-state decisions the evidence supports; that join is what the family adds.
 
 ## Diagrams from what is deployed
@@ -43,3 +44,11 @@ Checked 2026-10-20 for avd-current-state. Every ready-made generator draws real 
   - A broken peering held by a spoke wasn't drawn; ARI drew the spoke only as the hub's peer. It showed when the hub held it.
   - The network step catches errors and drops them, so a bad row can yield a partial diagram silently. Check the output for every expected VNet.
   - ARI special-cases NICs named `aks-*` and `gwhost*`; pseudonyms lose those prefixes.
+
+## Shared contracts that work with or without the upper layers
+
+Decided 2026-10-20 ([decision 0021](../decisions/0021-foundation-contracts-live-in-avd-assess.md)): the formats the foundation repos exchange (C11, C15, C17, C19 to C21) live in [avd-assess `contracts/`](https://github.com/nickprignano/avd-assess/tree/main/contracts), and this repo vendors them like every other consumer. What was learned in the design:
+
+- **Pinned copies weren't enough on their own.** The pair already ran without the brain, but its schemas' home was in the layer above, so the foundation couldn't evolve its formats without it. Putting the authority with the standards removed that authoring-time dependency.
+- **The model is Group Policy, local and domain.** The foundation's baseline is local policy and works alone, with the pinned copies as the cached policy; the brain's and avd-swarm's guidance is a domain GPO, applied on top when present and valid, skipped and logged when not. The operator's explicit choice wins over both, every applied value records its source, and guidance never lowers a floor (read-only collection, only the landing zone writes, secrets recreated, the swarm's gate).
+- **Fail open means dropping guidance, never applying an unchecked value.** The rules every foundation schema follows are in avd-assess `contracts/README.md`.

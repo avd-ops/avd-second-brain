@@ -7,6 +7,8 @@ What the organization has learned across engagements and estates, in a form the 
 | `knowledge.json` | The scope: `public` here, `organization` in a private fork | `schemas/knowledge.schema.json` |
 | `catalog/apps.json` | Public products: match patterns for inventory names, category, multi-session verdict, delivery, evidence | `schemas/app-catalog.schema.json` |
 | `rules/*.json` | The engine's thresholds and decision tables, each with a version and a reason for every change | `schemas/rule.schema.json` |
+
+The factory's stage rules (`rules/delivery.json`, `rules/quality-gate.json`) now live in the private assessment factory repo (its decision 0004, [decision 0024](../docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)). The copies here stay until the brain's tests stop reading them; change the factory's copy, not these.
 | `calibration/sizing.json` | Predicted vs measured sessions per host, per wave (organization scope only) | `schemas/calibration.schema.json` |
 | `engagements/eng-*.json` | One pseudonymous record per engagement (organization scope only) | `schemas/engagement.schema.json` |
 | `denylist.sha256` | SHA-256 of the lowercase names of your customers, one per line (organization scope only) | — |

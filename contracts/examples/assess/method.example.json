@@ -3,9 +3,9 @@
   "version": 1,
   "factRegister": 1,
   "collection": [
-    { "fact": "c11.hostPool.type", "from": "resource-graph", "table": "DesktopVirtualizationResources", "property": "properties.hostPoolType", "claims": ["gap:checklist-mapping"] },
-    { "fact": "c11.hostPool.startVmOnConnect", "from": "resource-graph", "table": "DesktopVirtualizationResources", "property": "properties.startVMOnConnect", "claims": ["ref:review-checklists-avd#E01.05"] },
-    { "fact": "c11.storage.privateEndpoint", "from": "resource-graph", "table": "Resources", "property": "properties.privateEndpointConnections", "claims": ["ref:review-checklists-avd#F01.10"] },
+    { "fact": "c11.hostPool.type", "from": "resource-graph", "table": "Resources", "type": "microsoft.desktopvirtualization/hostpools", "property": "properties.hostPoolType", "claims": ["gap:checklist-mapping"] },
+    { "fact": "c11.hostPool.startVmOnConnect", "from": "resource-graph", "table": "Resources", "type": "microsoft.desktopvirtualization/hostpools", "property": "properties.startVMOnConnect", "claims": ["ref:review-checklists-avd#E01.05"] },
+    { "fact": "c11.storage.privateEndpoint", "from": "resource-graph", "table": "Resources", "type": "microsoft.storage/storageaccounts", "property": "properties.privateEndpointConnections", "claims": ["ref:review-checklists-avd#F01.10"] },
     { "fact": "intake.workingHours", "from": "intake", "claims": ["gap:intake"] }
   ],
   "checks": [
