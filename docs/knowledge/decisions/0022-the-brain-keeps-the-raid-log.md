@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-The owner asked (2026-10-20) for the brain to be the living RAID log (risks, assumptions, issues, dependencies) and the action and decision tracker for an AVD environment. Decisions already have a home in the lifecycle record (C18, [0020](https://github.com/nickprignano/avd-second-brain/pull/45)), findings in C21, a person's dispositions and remediation items in the proposed C23 and C24, and the why of a change in avd-swarm's plans. Nothing holds risks, assumptions, issues, dependencies and actions with an owner, a due date and a status, linked to those records. Where does that register live, and how does it stay optional? The scope is the AVD environment itself; the owner keeps the project's own RAID log privately, outside this repo (2026-10-20).
+The owner asked (2026-10-20) for the brain to be the living RAID log (risks, assumptions, issues, dependencies) and the action and decision tracker for an AVD environment. Decisions already have a home in the lifecycle record (C18, [0020](https://github.com/avd-ops/avd-second-brain/pull/45)), findings in C21, a person's dispositions and remediation items in the proposed C23 and C24, and the why of a change in avd-swarm's plans. Nothing holds risks, assumptions, issues, dependencies and actions with an owner, a due date and a status, linked to those records. Where does that register live, and how does it stay optional? The scope is the AVD environment itself; the owner keeps the project's own RAID log privately, outside this repo (2026-10-20).
 
 ## Considered Options
 

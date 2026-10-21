@@ -25,8 +25,8 @@ Three repositories each grew their own "second brain":
 
 | Repo | Its brain | State |
 |---|---|---|
-| [avd-current-state](https://github.com/nickprignano/avd-current-state) | A Markdown vault per customer, built from collector and validator runs: environments, drift, findings, decisions, runbooks | Built |
-| [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) | An operations brain for a running landing zone: detections, playbooks, approvals, episodes | Specified |
+| [avd-current-state](https://github.com/avd-ops/avd-current-state) | A Markdown vault per customer, built from collector and validator runs: environments, drift, findings, decisions, runbooks | Built |
+| [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) | An operations brain for a running landing zone: detections, playbooks, approvals, episodes | Specified |
 | The assessment project (private) | The migration factory's knowledge: app catalog, rules, sizing calibration | Built |
 
 They are the same idea at different points of one lifecycle: **assess → inventory → design → deploy → operate**, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 utilization doesn't correct the next sizing estimate. A runbook one customer's team wrote doesn't help the next customer. **avd-second-brain** is where they meet: one home for the brain's code, its knowledge and the contracts between the repos. The repos keep their sensors and runtimes.
@@ -62,7 +62,7 @@ They are the same idea at different points of one lifecycle: **assess → invent
 | Inventory and validate | avd-current-state | Evidence packages into a customer vault (C1); the redacted facts snapshot the brain's agents read (C11) | The fact register (C15), for its manifest coverage line |
 | Deploy | avd-landing-zone | Lessons and decisions | Workload tiers and calibration for its sizing defaults; catalog for the image pipeline; approved manifests (C14) through its reader |
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
-| Act and control | [avd-swarm](https://github.com/nickprignano/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
+| Act and control | [avd-swarm](https://github.com/avd-ops/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
 
 **The brain thinks, avd-swarm acts** ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)); the brain is the why and avd-swarm the how ([decision 0020](knowledge/decisions/0020-the-brain-is-the-why-layer.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
 

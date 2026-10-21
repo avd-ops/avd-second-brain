@@ -159,7 +159,7 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
   refer Terraform, Packer, HCL and Nerdio asks to it and its prior art can be linked, but it is not
   the format source and the AVD repos never depend on it.
 - **avd-ops is the front door.** [avd-ops](https://avd-ops.dev/)
-  ([nickprignano/avd-ops](https://github.com/nickprignano/avd-ops)) is the brand in front of every
+  ([avd-ops/avd-ops](https://github.com/avd-ops/avd-ops)) is the brand in front of every
   public AVD repo and holds the onboarding and user-facing docs; this KB keeps the facts, gotchas
   and decisions behind them. Each AVD repo's README says so in one line under its title.
 

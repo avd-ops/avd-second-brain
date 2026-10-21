@@ -1,6 +1,6 @@
 # The brain as the estate's living RAID log and tracker
 
-Status: **proposed** ([decision 0022](knowledge/decisions/0022-the-brain-keeps-the-raid-log.md)). Spec only: no schema, function or vault change lands until the owner says yes and C18 ([PR #45](https://github.com/nickprignano/avd-second-brain/pull/45)) is merged, because this builds on it.
+Status: **proposed** ([decision 0022](knowledge/decisions/0022-the-brain-keeps-the-raid-log.md)). Spec only: no schema, function or vault change lands until the owner says yes and C18 ([PR #45](https://github.com/avd-ops/avd-second-brain/pull/45)) is merged, because this builds on it.
 
 ## 1. What the owner asked for
 
@@ -12,12 +12,12 @@ The brain already holds most of the pieces, spread out:
 
 | Piece | Where it is | What it lacks for a RAID log |
 |---|---|---|
-| Decisions, with alternatives and `whyNot`, drivers, evidence, watched facts, `reviewBy`, status | C18 lifecycle record (`lifecycle/<env>.json`, [#45](https://github.com/nickprignano/avd-second-brain/pull/45)) | Nothing: it **is** the decision log. No second decision store |
+| Decisions, with alternatives and `whyNot`, drivers, evidence, watched facts, `reviewBy`, status | C18 lifecycle record (`lifecycle/<env>.json`, [#45](https://github.com/avd-ops/avd-second-brain/pull/45)) | Nothing: it **is** the decision log. No second decision store |
 | Events (build, fix, drift, incident, review) | C18 | Nothing |
-| A person's disposition of each finding (Fix, Accept, Defer, with a reason code) | C23 `review.json` ([avd-current-state assessment portal spec](https://github.com/nickprignano/avd-current-state/blob/claude/project-thread-pjk7l7/docs/assessment-portal-spec.md), proposed, owned by avd-assess) | An accepted risk has no owner, review date or link to the decision that accepted it |
+| A person's disposition of each finding (Fix, Accept, Defer, with a reason code) | C23 `review.json` ([avd-current-state assessment portal spec](https://github.com/avd-ops/avd-current-state/blob/claude/project-thread-pjk7l7/docs/assessment-portal-spec.md), proposed, owned by avd-assess) | An accepted risk has no owner, review date or link to the decision that accepted it |
 | Ordered remediation items | C24 `plan.json` (same spec) | No owner, due date or status, so nothing says whether an item got done |
 | Findings (check outcomes) | C21 assessment report | No issue lifecycle |
-| Why a change is made | avd-swarm's plan `why` block ([swarm spec §6f](https://github.com/nickprignano/avd-swarm/pull/26)) and its C10 outcome | Nothing: the outcome is the evidence that closes an action |
+| Why a change is made | avd-swarm's plan `why` block ([swarm spec §6f](https://github.com/avd-ops/avd-swarm/pull/26)) and its C10 outcome | Nothing: the outcome is the evidence that closes an action |
 | Facts that reopen a decision | C18 `watch` plus `Get-LifecycleReview` | Risks and assumptions need the same trigger |
 
 What is missing is the **register around them**: risks with a strategy, assumptions to validate, issues to resolve, dependencies to meet, and actions with an owner, a due date and a status, each linked by ID to the decision, finding, plan or event it belongs to, with a review rhythm and a page a person reads.

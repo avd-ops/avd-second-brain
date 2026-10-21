@@ -1,2 +1,10 @@
+# Line endings stay LF in the repo whatever the clone's core.autocrlf (avd-ops docs/run-anywhere.md).
+* text=auto
+*.sh text eol=lf
+
 # The C14 examples are hashed byte for byte (target-approval.example.json pins the manifest's SHA-256).
 contracts/examples/*.json -text
+# The foundation contracts are hashed byte for byte too (contracts/FOUNDATION-PINS.json).
+contracts/*.json -text
+contracts/schemas/** -text
+contracts/examples/** -text

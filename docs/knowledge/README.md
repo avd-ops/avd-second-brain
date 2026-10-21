@@ -50,7 +50,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | Knowledge base | Role | Focus | Source of truth for |
 |---|---|---|---|
 | [2ndbrain](https://github.com/nickprignano/2ndbrain/tree/main/docs/knowledge) | reference | The template that owns the family knowledge base format | the family knowledge base format; its scripts and schemas |
-| [avd-ops](https://github.com/nickprignano/avd-ops/tree/main/docs/knowledge) | member | The front door for the AVD repos: avd-ops.dev, onboarding and user docs | onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system |
+| [avd-ops](https://github.com/avd-ops/avd-ops/tree/main/docs/knowledge) | member | The front door for the AVD repos: avd-ops.dev, onboarding and user docs | onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system |
 | [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge) | member | Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer | Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer |
 | [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge) | member | Liquidware products on virtual desktops, starting with Stratusphere UX in Azure | Liquidware products; Stratusphere UX appliances; the Connector ID Key; the Stratusphere API; this repo's Bicep and PowerShell |
 <!-- END GENERATED: family -->

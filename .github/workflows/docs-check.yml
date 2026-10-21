@@ -8,7 +8,7 @@ name: docs-check
 #     docs:
 #       permissions:
 #         contents: read
-#       uses: nickprignano/avd-second-brain/.github/workflows/docs-check.yml@<sha>
+#       uses: avd-ops/avd-second-brain/.github/workflows/docs-check.yml@<sha>
 #       with:
 #         repo-name: avd-landing-zone
 #         brain-ref: <sha>
@@ -52,7 +52,7 @@ jobs:
         if: inputs.repo-name != '' && inputs.repo-name != 'avd-second-brain'
         uses: actions/checkout@v4
         with:
-          repository: nickprignano/avd-second-brain
+          repository: avd-ops/avd-second-brain
           ref: ${{ inputs.brain-ref }}
           path: brain
 
