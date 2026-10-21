@@ -37,6 +37,7 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 ## Where it lives today
 
 - [avd-swarm spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) and [identities](https://github.com/nickprignano/avd-swarm/blob/main/docs/identities.md)
+- [How avd-swarm answers a question](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) (spec §4a): split, fan out, claim check, merge
 - [An optional computer-use agent on an isolated VM](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0015-foundry-cua.md) (avd-landing-zone decision 0015)
 
 ## MCP in the AVD repos
@@ -81,3 +82,13 @@ Checked on 2026-10-20 for [avd-swarm's app spec](https://github.com/nickprignano
 - **Managed functions have no managed identity or Key Vault references** ([comparison](https://learn.microsoft.com/azure/static-web-apps/apis-functions)). An API that calls other Azure services without secrets needs a linked ("bring your own") Functions app, which needs the Standard plan.
 - **Web push on iPhone and iPad works only after Add to Home Screen, on iOS and iPadOS 16.4 or later** ([WebKit](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/)), needs a tap to opt in, and vendors report deliveries that stop silently. Treat push as a convenience with an empty payload, never the only signal for an approval.
 - **Lighthouse no longer has a PWA category,** so installability needs its own tests (manifest fields, service worker offline behavior), for example in Playwright.
+
+## Fan-out answers: split, fan out, verify, merge
+
+Mapped on 2026-10-20 from the common goal, split, fan-out workers, fresh-context verifier, merge and final-answer pattern onto avd-swarm (spec §4a, proposed) and the brain (operations-spec §4.4). General facts about multi-agent patterns belong to the [AI research knowledge base](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge); this keeps only how the AVD repos apply it.
+
+- **A verifier is only fresh if its input is narrow.** Passing a worker's whole output (reasoning plus answer) to a second model lets the reasoning argue the verifier into agreeing. The AVD repos pass claims only: a value, its unit and the tool call IDs it cites. The swarm's claim check, its eval judge and the brain's Critic all see claims and evidence, never the reasoning that produced them.
+- **Most of the check is code, not a model.** A claim that reads one value from one tool output is checked by matching the value in that saved output, at no token cost; only an inference across several outputs needs a model verifier. That keeps the pattern affordable at one operator's volume.
+- **Verify before the merge, then check the merge.** A merge done by a model can reintroduce what the check removed, so after the merge code checks that every factual sentence cites a supported claim.
+- **Fan-out multiplies tokens.** avd-swarm caps it at 3 specialists and one round per question, each with its own share of the metered per-question reservation, and splits workers by domain rather than by angle; the "check" and "find gaps" angles are built into the claim check and each specialist's list of what it couldn't answer.
+- **A verifier never approves a change.** Plans keep the deterministic gate, live re-reads and a person's approval; the claim check judges answers only.
