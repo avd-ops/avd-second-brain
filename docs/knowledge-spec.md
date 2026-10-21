@@ -2,7 +2,7 @@
 
 - **Status:** Proposed (see [decision 0002](knowledge/decisions/0002-knowledge-base.md)). Phase 1 (the knowledge base, its schemas and its guards) is built; nothing in it has been fed by a real engagement yet.
 - **Date:** 2026-10-16
-- **Builds on:** the migration factory's [spec](https://github.com/nickprignano/avd-readiness-stratusphere/blob/main/docs/factory-spec.md) §10.5 (Learn), where this design started (in avd-readiness-stratusphere). Part of avd-second-brain: the [architecture](architecture.md) shows how this layer connects to the estate vaults and the operations brain. "Factory §n" below refers to the factory spec.
+- **Builds on:** the migration factory's spec §10.5 (Learn), where this design started (in the assessment project, private). Part of avd-second-brain: the [architecture](architecture.md) shows how this layer connects to the estate vaults and the operations brain. "Factory §n" below refers to the factory spec.
 
 > Personal project. Not affiliated with, endorsed by or supported by the author's employer, Liquidware or Microsoft. Stratusphere, Azure Virtual Desktop, Entra and FSLogix are trademarks of their owners.
 
@@ -154,7 +154,7 @@ The full picture, with every flow and contract, is in [architecture.md](architec
 |---|---|---|
 | `avd-landing-zone` (its second brain) | Day-2 evidence: AVD Insights baselines as `avd-sizing-evidence/v1` ([contracts](contracts.md) C4), imported as calibration observations by `scripts/Import-SizingEvidence.ps1` | The catalog's verdicts for the image pipeline; the calibration factors for its own sizing defaults |
 | `avd-current-state` (through an estate vault) | Brownfield facts for engagement records (in buckets), recurring findings, runbook and lesson candidates (`scripts/Get-VaultHarvest.ps1`) | Shared runbooks, seeded into vaults at `-Init` |
-| avd-readiness-stratusphere stage 0 | Lessons from real appliance and rollout runs | — |
+| The assessment project, stage 0 | Lessons from real appliance and rollout runs | — |
 
 Only the harvest moves knowledge between them, so the same scope and review rules apply whichever repo the evidence came from.
 

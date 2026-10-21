@@ -4,7 +4,7 @@
 
 Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations.
 
-The evidence comes from the factory's verify stage (avd-readiness-stratusphere) or from the landing zone's operations brain (avd-landing-zone), in the format of contracts/schemas/sizing-evidence.schema.json. Each host pool becomes one observation: predicted sessions per host against sessions per host extrapolated to the target utilization of knowledge/rules/workload-tiers.json. Host pools without an engagement or tier, or too lightly loaded to extrapolate (knowledge/rules/calibration.json), are listed and skipped. Without -Apply it only prints. -Apply appends the observations to knowledge/calibration/sizing.json and runs the guard; it refuses in a public knowledge base, where observations don't belong (docs/knowledge-spec.md §5).
+The evidence comes from the factory's verify stage (the assessment project) or from the landing zone's operations brain (avd-landing-zone), in the format of contracts/schemas/sizing-evidence.schema.json. Each host pool becomes one observation: predicted sessions per host against sessions per host extrapolated to the target utilization of knowledge/rules/workload-tiers.json. Host pools without an engagement or tier, or too lightly loaded to extrapolate (knowledge/rules/calibration.json), are listed and skipped. Without -Apply it only prints. -Apply appends the observations to knowledge/calibration/sizing.json and runs the guard; it refuses in a public knowledge base, where observations don't belong (docs/knowledge-spec.md §5).
 
 ## Parameters
 

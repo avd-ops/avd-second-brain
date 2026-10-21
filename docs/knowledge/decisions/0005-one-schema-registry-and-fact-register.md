@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-The owner asked on 2026-10-18 for avd-readiness-stratusphere to become assessment only, producing ready-to-migrate manifests that avd-landing-zone deploys; for the Stratusphere instrument to move to avd-liquidware; for avd-current-state to feed and upsell into the assessment; and for a shared schema and a shared fact register, all feeding this brain. Until now each contract's schema lived here, but the repos named the same facts differently, the factory's manifest (`factory.avd/v1`) existed only as YAML in a spec, and nothing tied a manifest's numbers to the evidence behind them. How do the repos agree on formats and on the names of facts?
+The owner asked on 2026-10-18 for the assessment project to become assessment only, producing ready-to-migrate manifests that avd-landing-zone deploys; for the Stratusphere instrument to move to avd-liquidware; for avd-current-state to feed and upsell into the assessment; and for a shared schema and a shared fact register, all feeding this brain. Until now each contract's schema lived here, but the repos named the same facts differently, the factory's manifest (`factory.avd/v1`) existed only as YAML in a spec, and nothing tied a manifest's numbers to the evidence behind them. How do the repos agree on formats and on the names of facts?
 
 ## Considered Options
 
@@ -27,11 +27,11 @@ Chosen option: "One registry of cross-repo formats and one fact register, in thi
 ### Consequences
 
 - Renaming a C11 field now means changing the register in the same PR, or CI fails.
-- C14 and C15 change in the same set of PRs as their producers and readers: avd-readiness-stratusphere, avd-landing-zone and avd-current-state, plus avd-swarm for anything it cites.
+- C14 and C15 change in the same set of PRs as their producers and readers: the assessment project, avd-landing-zone and avd-current-state, plus avd-swarm for anything it cites.
 - avd-swarm doesn't read manifests yet. Deploying one through the swarm is its own spec: catalog action, roles and gate rows.
 - `knowledge/` now refuses estate pseudonyms, which also catches a C11 snapshot pasted into a runbook.
 
 ## More Information
 
-- **Pair:** avd-readiness-stratusphere decision 0003 (the repo boundaries), avd-swarm spec §6d. The set merges together or not at all.
+- **Pair:** the assessment project's decision 0003 (the repo boundaries), avd-swarm spec §6d. The set merges together or not at all.
 - Moved here from `docs/decisions/` and converted to MADR 4; the decision itself is unchanged.

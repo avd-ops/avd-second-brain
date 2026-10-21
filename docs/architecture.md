@@ -27,7 +27,7 @@ Three repositories each grew their own "second brain":
 |---|---|---|
 | [avd-current-state](https://github.com/nickprignano/avd-current-state) | A Markdown vault per customer, built from collector and validator runs: environments, drift, findings, decisions, runbooks | Built |
 | [avd-landing-zone](https://github.com/nickprignano/avd-landing-zone) | An operations brain for a running landing zone: detections, playbooks, approvals, episodes | Specified |
-| [avd-readiness-stratusphere](https://github.com/nickprignano/avd-readiness-stratusphere) | The migration factory's knowledge: app catalog, rules, sizing calibration | Built |
+| The assessment project (private) | The migration factory's knowledge: app catalog, rules, sizing calibration | Built |
 
 They are the same idea at different points of one lifecycle: **assess → inventory → design → deploy → operate**, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 utilization doesn't correct the next sizing estimate. A runbook one customer's team wrote doesn't help the next customer. **avd-second-brain** is where they meet: one home for the brain's code, its knowledge and the contracts between the repos. The repos keep their sensors and runtimes.
 
@@ -53,8 +53,8 @@ They are the same idea at different points of one lifecycle: **assess → invent
 
 | Stage | Repo (sensor or runtime) | Feeds the brain | Reads from the brain |
 |---|---|---|---|
-| Assess and design | avd-readiness-stratusphere | Engagement harvests; sizing evidence from the verify stage; the forensic facts tier for performance and sizing (C12); target-state manifests for the landing zone (C14), harvested as buckets only; lessons | Catalog, rules, calibration (pinned by commit); the fact register (C15) |
-| Instrument | [avd-liquidware](https://github.com/nickprignano/avd-liquidware) (the Stratusphere UX appliances and Connector ID Key rollout, moving there from avd-readiness-stratusphere; the optional ProfileUnity tier) | Lessons; `liquidware.*` facts once built (proposed in C15) | Its block of the manifest (C14), later |
+| Assess and design | The assessment project (private) | Engagement harvests; sizing evidence from the verify stage; the forensic facts tier for performance and sizing (C12); target-state manifests for the landing zone (C14), harvested as buckets only; lessons | Catalog, rules, calibration (pinned by commit); the fact register (C15) |
+| Instrument | [avd-liquidware](https://github.com/nickprignano/avd-liquidware) (the Stratusphere UX appliances and Connector ID Key rollout, moving there from the assessment project; the optional ProfileUnity tier) | Lessons; `liquidware.*` facts once built (proposed in C15) | Its block of the manifest (C14), later |
 | Inventory and validate | avd-current-state | Evidence packages into a customer vault (C1); the redacted facts snapshot the brain's agents read (C11) | The fact register (C15), for its manifest coverage line |
 | Deploy | avd-landing-zone | Lessons and decisions | Workload tiers and calibration for its sizing defaults; catalog for the image pipeline; approved manifests (C14) through its reader |
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
@@ -72,7 +72,7 @@ The brain has three stores. They differ in **whose data they hold**, and so in w
 | **Estate vault** (`vault/`) | One customer's estate: subscriptions, resources, drift, findings, their decisions and runbooks | A private repository per customer or organization, built by `vault/avd_second_brain.ps1` | Private, tenant data |
 | **Operations memory** | Signals, episodes, evidence of a running landing zone | The adopter's tenant (Blob, Cosmos DB) and private landing-zone fork ([operations spec](operations-spec.md) §4.3) | Private, tenant data |
 
-The factory's engagement folders (`output/engagements/` in avd-readiness-stratusphere) are a fourth, temporary store, on the customer's side.
+The factory's engagement folders (`output/engagements/` in the assessment project) are a fourth, temporary store, on the customer's side.
 
 **Knowledge moves up only by a reviewed PR, after it is generalized.** Tenant data never leaves the vault, the tenant or the engagement folder. What crosses is a bucket, a VM family, a check name, a public product, a rule change with its reason, or a runbook with the customer taken out.
 
@@ -89,8 +89,8 @@ The factory's engagement folders (`output/engagements/` in avd-readiness-stratus
 | 8 | avd-swarm → brain | `avd-swarm-insights/v1` ([contracts](contracts.md) C8), action outcomes and the switch position (C10) | Specified |
 | 9 | Brain → avd-swarm | Playbook run proposals ([contracts](contracts.md) C9); the Concierge as a read tool | Specified |
 | 10 | avd-current-state → brain agents → avd-swarm | `avd-current-state-facts/v1` ([contracts](contracts.md) C11): the fact layer the brain's agents read, filed in the vault by `scripts/Import-CurrentStateFacts.ps1`; avd-swarm sees it only as the brain's cited evidence | Built (offline) |
-| 11 | avd-readiness-stratusphere → brain agents → avd-swarm | `avd-forensic-facts/v1` ([contracts](contracts.md) C12): measured demand, concurrency, logon and profile aggregates per host pool or persona, the forensic tier under C11 | Specified |
-| 12 | avd-readiness-stratusphere → avd-landing-zone | `avd-target-state/v1` with its approval ([contracts](contracts.md) C14): the design, every decision citing register facts (C15); the landing zone's reader prints the preflight and `deploy.sh` commands | Schemas, checks and reader built; producer specified |
+| 11 | The assessment project → brain agents → avd-swarm | `avd-forensic-facts/v1` ([contracts](contracts.md) C12): measured demand, concurrency, logon and profile aggregates per host pool or persona, the forensic tier under C11 | Specified |
+| 12 | The assessment project → avd-landing-zone | `avd-target-state/v1` with its approval ([contracts](contracts.md) C14): the design, every decision citing register facts (C15); the landing zone's reader prints the preflight and `deploy.sh` commands | Schemas, checks and reader built; producer specified |
 | 7 | Every repo's lessons and decisions → search | `scripts/Sync-BrainSources.ps1` checks out the repos in `sources/sources.json`; `scripts/Find-BrainKnowledge.ps1` searches them, the knowledge base and optionally a vault, and cites `<repo>@<commit>:<path>` | Built |
 
 Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's `lz-cloudnative` renderer tags each host pool with `avdbrain-engagement` and `avdbrain-tier` ([contracts](contracts.md) C5); a host pool without them yields no observation, because there is no prediction to compare with.

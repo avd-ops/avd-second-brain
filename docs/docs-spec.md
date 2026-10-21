@@ -39,7 +39,7 @@ Revisit a separate repo only if the wiki becomes a public site in its own right:
 ### Non-goals
 - A GitHub wiki that people edit (red team W1). The wiki is generated output.
 - Rewriting existing prose for style. The check finds contradictions, not taste.
-- tenant-swarm (private). It is not a connected source, and nothing from it is indexed here.
+- Private repos. They are not connected sources, and nothing from them is indexed here.
 - Private evidence (`/mnt/project-files/evidence/`, spike outputs, vaults). Never indexed, never published.
 
 ## 4. Sources of truth: who wins when two texts disagree
@@ -177,5 +177,5 @@ Nothing here creates an Azure resource. A later GitHub Pages site for `wiki/` is
 
 - **DQ1.** Should the per-repo changelog start at the next merged PR, or be backfilled from merged PR titles? Default: start at the next PR, with one "Earlier history: see merged pull requests" line.
 - **DQ2.** Should `wiki/` also be published as a site (GitHub Pages from this repo, free now that it is public)? Default: not in D0; GitHub renders `wiki/` already.
-- **DQ3.** Should avd-readiness-stratusphere's factory docs be in scope from D0, or after its phase 1? Default: from D0 for D1–D3 only.
+- **DQ3.** Should the assessment project's factory docs be in scope from D0, or after its phase 1? Default: from D0 for D1–D3 only.
 - **DQ4.** Until avd-swarm's Scribe exists (D1), the findings issues are fixed by hand or in a Claude Code session. Is that acceptable for the first weeks? Default: yes.

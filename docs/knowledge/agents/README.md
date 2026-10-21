@@ -38,7 +38,6 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 
 - [avd-swarm spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) and [identities](https://github.com/nickprignano/avd-swarm/blob/main/docs/identities.md)
 - [How avd-swarm answers a question](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md) (spec §4a): split, fan out, claim check, merge
-- [An optional computer-use agent on an isolated VM](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0015-foundry-cua.md) (avd-landing-zone decision 0015)
 
 ## MCP in the AVD repos
 

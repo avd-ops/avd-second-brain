@@ -1,29 +1,24 @@
 {
   "sources": [
     {
-      "name": "avd-readiness-stratusphere",
-      "ref": "main",
-      "commit": null
-    },
-    {
       "name": "avd-liquidware",
       "ref": "main",
-      "commit": "6459693722392fd65edb110cc80a11ed35ff4fa6"
+      "commit": "c96a24bfd071ac1970397a582bf53635576eec43"
     },
     {
       "name": "avd-current-state",
       "ref": "main",
-      "commit": "17fe96ac9a041077b8383be8359c4a835404514c"
+      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8"
     },
     {
       "name": "avd-landing-zone",
       "ref": "master",
-      "commit": "326a3c5c66a808d58f2a56c5ff06987368ebee1c"
+      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff"
     },
     {
       "name": "avd-swarm",
       "ref": "main",
-      "commit": "8a08980b884c99ba0b1ffc4e95eea84a1591c4db"
+      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b"
     }
   ]
 }

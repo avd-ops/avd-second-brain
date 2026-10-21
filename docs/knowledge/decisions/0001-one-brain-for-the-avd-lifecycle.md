@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-Three repositories grew separate second brains: avd-current-state a Markdown vault per customer (built), avd-landing-zone an operations brain for a running landing zone (specified, its decision 0012), and avd-readiness-stratusphere the migration factory's knowledge base (built, its decision 0002). They cover one lifecycle (assess, inventory, design, deploy, operate) but couldn't share what they learn: pilot results didn't reach the image pipeline, day-2 utilization didn't correct sizing, one customer's runbook didn't help the next. Where should the brain live so that all three can learn from each other?
+Three repositories grew separate second brains: avd-current-state a Markdown vault per customer (built), avd-landing-zone an operations brain for a running landing zone (specified, its decision 0012), and the assessment project (private) the migration factory's knowledge base (built, its decision 0002). They cover one lifecycle (assess, inventory, design, deploy, operate) but couldn't share what they learn: pilot results didn't reach the image pipeline, day-2 utilization didn't correct sizing, one customer's runbook didn't help the next. Where should the brain live so that all three can learn from each other?
 
 ## Considered Options
 
@@ -19,11 +19,11 @@ Three repositories grew separate second brains: avd-current-state a Markdown vau
 
 Chosen option: "One brain for the whole lifecycle, in its own repository", because it is the only option where what one stage learns reaches the others.
 
-- **avd-second-brain** is the one home for the brain: the knowledge base (from avd-readiness-stratusphere), the estate vault tool and template (from avd-current-state), the operations brain's spec and red team (from avd-landing-zone), and the contracts between them. The source repos keep their sensors and runtimes and point here.
+- **avd-second-brain** is the one home for the brain: the knowledge base (from the assessment project), the estate vault tool and template (from avd-current-state), the operations brain's spec and red team (from avd-landing-zone), and the contracts between them. The source repos keep their sensors and runtimes and point here.
 - Three layers by whose data they hold: **knowledge** (generalized; public here, organization in a private fork), **estate vaults** (one customer's tenant data, private), **operations memory** (in the tenant). Knowledge moves up only by a reviewed PR after it is generalized, and the guard checks every file.
 - The repos connect through seven contracts ([contracts.md](../../contracts.md)), each with a schema or a test: evidence packages into the vault; vault harvest; engagement harvest; `avd-sizing-evidence/v1` into calibration; host pool attribution tags; reading the knowledge base at a pinned commit; searchable docs across repos with commit-pinned citations.
 - The operations brain's runtime (Bicep module, detections, playbooks, executor, kill switch) stays in avd-landing-zone, because it deploys into the landing zone.
-- The repo is public, like the repos it connects. It started **private** and went public on 2026-10-18, at the owner's choice. Anything that must stay private goes to tenant-swarm or a separate private repo, never here. Its `knowledge/` stays in the `public` scope throughout, so the guard keeps it publishable at any time. Organizations fork it privately for their knowledge; customers keep their vaults in their own private repositories.
+- The repo is public, like the repos it connects. It started **private** and went public on 2026-10-18, at the owner's choice. Anything that must stay private goes to a separate private repo, never here. Its `knowledge/` stays in the `public` scope throughout, so the guard keeps it publishable at any time. Organizations fork it privately for their knowledge; customers keep their vaults in their own private repositories.
 
 ### Consequences
 
