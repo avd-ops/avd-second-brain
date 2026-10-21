@@ -1,0 +1,129 @@
+{
+  "schema": "avd-assess-map/v1",
+  "pillars": [
+    {
+      "id": "use-cases",
+      "title": "Use cases and personas",
+      "scope": "Who uses the estate for what, the persona library, and what moves a persona.",
+      "method": "methods/use-cases.md",
+      "checklist": [
+        "C02.01",
+        "C02.04"
+      ],
+      "status": "mapped"
+    },
+    {
+      "id": "capacity",
+      "title": "Capacity, compute and density",
+      "scope": "Region placement, VM size and family, host count, sessions per host, GPU, workload benchmark, load balancing, OS disks.",
+      "method": "methods/targets-benchmarks.md",
+      "checklist": [
+        "C01",
+        "C03"
+      ],
+      "status": "partial"
+    }
+  ],
+  "landingZone": {
+    "commit": "ae5c2877d53d9af8e1efbf47b85cfdef06c51364",
+    "source": "https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep",
+    "parameters": [
+      "namePrefix",
+      "environmentName",
+      "location"
+    ],
+    "notDimensions": {}
+  },
+  "dimensions": [
+    {
+      "id": "compute.vm-size",
+      "area": "compute",
+      "pillar": "capacity",
+      "title": "Session host VM size and family",
+      "decides": "The vCPU, memory and family of each host pool's VMs.",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c11.hostPool.vmSizes",
+          "c12.group.perHost.p95CpuPercent",
+          "c12.group.perHost.p95MemoryPercent"
+        ]
+      },
+      "baseline": {
+        "standing": "prior",
+        "claims": [
+          "ref:session-host-sizing#multisession-minimums",
+          "ref:session-host-sizing#multisession-vcpu-range",
+          "ref:session-host-sizing#single-session-minimums",
+          "ref:review-checklists-avd#C01.05",
+          "ref:review-checklists-avd#C01.10"
+        ],
+        "says": "Multi-session hosts of 8 vCPU and 16 GB or more, between 6 and 24 vCPU and never over 32 cores; single-session from 2 vCPU and 8 GB. Estimates to replace with a workload test."
+      },
+      "observations": [
+        "obs:sizing-floor-not-measured"
+      ],
+      "measure": "fact",
+      "landingZone": [
+        "sessionHostVmSize"
+      ]
+    },
+    {
+      "id": "compute.memory-per-user",
+      "area": "compute",
+      "pillar": "capacity",
+      "title": "Memory per user",
+      "decides": "Whether memory or CPU limits a host, and so the family (general purpose or memory-optimized).",
+      "home": {
+        "decision": "hostPool.vmSize",
+        "facts": [
+          "c12.group.perUser.p95MemoryMiB",
+          "c12.group.perUser.p50MemoryMiB"
+        ]
+      },
+      "baseline": {
+        "standing": "gap",
+        "claims": [
+          "ref:session-host-sizing#memory-limits-density",
+          "gap:deployment-dimensions",
+          "gap:sample-check"
+        ],
+        "says": "The source says memory can limit density but gives no memory per user; the estate's own measurement sets it."
+      },
+      "measure": "measured",
+      "landingZone": [
+        "sessionHostVmSize"
+      ]
+    }
+  ],
+  "baselines": {
+    "window": [
+      {
+        "id": "days",
+        "rule": "At least 7 days that include the estate's busiest working days; longer when use has a monthly peak.",
+        "claims": [
+          "ref:advisor-vm-rightsize#lookback",
+          "gap:baseline-profile"
+        ],
+        "standing": "published"
+      }
+    ]
+  },
+  "useCases": [
+    {
+      "id": "task-worker",
+      "kind": "persona",
+      "title": "Task worker",
+      "summary": "Structured, repetitive work in a few line-of-business apps or forms, often in shifts; the densest pooled hosts."
+    }
+  ],
+  "goldStandards": [
+    {
+      "metric": "rtt-to-region",
+      "claim": "ref:avd-prerequisites#rtt-under-150",
+      "standing": "gold",
+      "since": "2026-10-20",
+      "why": "Our run measured latency from the user and confirmed the region choice depends on it (obs:region-latency-from-the-user)."
+    }
+  ]
+}

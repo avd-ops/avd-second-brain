@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "avd-intake/v1: what telemetry can't know about an estate (intake.json)",
-  "description": "Contract C19. The operator answers these once per estate, in intake.json beside their landing zone parameters. It gives the fact register's five intake.* facts their paths. Every answer is an enum, a public Azure region or a clock time: the schema has no field for a name, a domain, an address, an ID or free text. Why each question matters is in avd-assess methods/collection.md and gaps/intake.md.",
+  "description": "Contract C19. The operator answers these once per estate, in intake.json beside their landing zone parameters. It gives the fact register's intake.* facts their paths; hostSharing and avdMfa are optional. Every answer is an enum, a public Azure region or a clock time: the schema has no field for a name, a domain, an address, an ID or free text. Why each question matters is in avd-assess methods/collection.md and gaps/intake.md.",
   "type": "object",
   "required": ["schema", "estate", "answeredOn", "residency", "preferredRegions", "existingHub", "identityConstraints", "workingHours"],
   "additionalProperties": false,
@@ -53,6 +53,14 @@
         "days": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] } },
         "timeZone": { "type": "string", "pattern": "^(UTC|[A-Z][A-Za-z]+(/[A-Z][A-Za-z_+-]+){1,2})$", "description": "An IANA time zone name, for example America/Chicago" }
       }
+    },
+    "hostSharing": {
+      "description": "Fact intake.hostSharing (optional). Who shares a session host, which decides between pooled, personal and a separate tenant (avd-assess methods/security.md).",
+      "enum": ["one-org-standard", "needs-admin", "multi-org", "undecided"]
+    },
+    "avdMfa": {
+      "description": "Fact intake.avdMfa (optional). Whether sign-in to AVD requires multifactor authentication, until a directory read can see it.",
+      "enum": ["required", "not-required", "unknown"]
     }
   }
 }
