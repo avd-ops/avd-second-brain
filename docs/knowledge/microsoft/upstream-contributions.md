@@ -39,4 +39,5 @@ request, then a person files it under their own account and sets `status: raised
 | Item | Evidence | Suggested fix | Status |
 |---|---|---|---|
 | Azure Files: say that Entra Kerberos sessions are denied when AES-256-GCM is the only SMB channel encryption | https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md | A note in the Entra Kerberos and SMB security settings pages | candidate (Check the current docs before raising) |
+| AVD prerequisites: FSLogix on Entra joined hosts no longer needs hybrid users | https://github.com/avd-ops/avd-assess/blob/main/observations/fslogix-cloud-only-users-work.yaml | Say on both AVD pages that cloud-only and external identities work in the Azure public cloud, and link the Entra Kerberos page | candidate (Pages checked 2026-10-21 (avd-assess references avd-prerequisites, avd-entra-joined-hosts); check again before raising) |
 <!-- END GENERATED: docs_packaging -->
