@@ -8,7 +8,11 @@
 
 - [avd-second-brain](../README.md): Part of avd-ops, the open toolkit for Azure Virtual Desktop. The estate brain for Azure Virtual Desktop: it understands why each AVD environment is built and performs the way it does, and keeps its living RAID log. It records each environment's use cases and the decisions made building, configuri...
 - [Architecture: the estate brain](../docs/architecture.md): 
+- [Architecture: the estate brain](../docs/architecture.md): 
+- [Architecture: the estate brain](../docs/architecture.md): 
 - [Spec: avd-assess, a research index for AVD assessment](../docs/assess-spec.md): Moved to avd-assess: docs/assess-spec.md, the repo it designs (decision 0024). The full text as it was here is in this file's history (commit 38033b9). Contracts C19 to C21 are described in contracts.md.
+- [Contracts between the repos and the brain](../docs/contracts.md): What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an...
+- [Contracts between the repos and the brain](../docs/contracts.md): What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an...
 - [Contracts between the repos and the brain](../docs/contracts.md): What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an...
 - [Decisions have moved](../docs/decisions/README.md): This repo's decision records now live in docs/knowledge/decisions/, in MADR 4 format, as part of the family knowledge base. The file names are unchanged, so a link to docs/decisions/<file> works again if you change it to docs/knowledge/decisions/<file>.
 - [Red team: the docs consistency spec (2026-10-18)](../docs/docs-redteam.md): Reviewed: docs-spec.md and avd-swarm spec §6e at the commits that add them. Each finding has a severity, what goes wrong, and the change to the spec. Status says whether the spec now reflects it. Severity: C critical (a leak or a path around review), H high (a guarantee the spec makes but can't k...
@@ -37,6 +41,7 @@
 - [0016. Never delete the last copy](../docs/knowledge/decisions/0016-never-delete-the-last-copy.md): 
 - [0017. Never leave the meter running without an opt-in](../docs/knowledge/decisions/0017-never-leave-the-meter-running.md): 
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](../docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): 
+- [0020. The brain is the why layer: one lifecycle record per environment, from its birth](../docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md): 
 - [0021. The foundation's contracts live in avd-assess](../docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): 
 - [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](../docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): 
 - [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](../docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): 
@@ -107,6 +112,7 @@
 - [0016. Never delete the last copy](../docs/knowledge/decisions/0016-never-delete-the-last-copy.md): accepted
 - [0017. Never leave the meter running without an opt-in](../docs/knowledge/decisions/0017-never-leave-the-meter-running.md): accepted
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](../docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): proposed
+- [0020. The brain is the why layer: one lifecycle record per environment, from its birth](../docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md): proposed
 - [0021. The foundation's contracts live in avd-assess](../docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): accepted
 - [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](../docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): proposed
 - [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](../docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): accepted

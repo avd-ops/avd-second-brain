@@ -18,7 +18,7 @@
     {
       "name": "avd-swarm",
       "ref": "main",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b"
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff"
     }
   ]
 }

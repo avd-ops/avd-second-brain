@@ -31,6 +31,10 @@ Three repositories each grew their own "second brain":
 
 They are the same idea at different points of one lifecycle: **assess → inventory → design → deploy → operate**, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 utilization doesn't correct the next sizing estimate. A runbook one customer's team wrote doesn't help the next customer. **avd-second-brain** is where they meet: one home for the brain's code, its knowledge and the contracts between the repos. The repos keep their sensors and runtimes.
 
+**The brain is the why.** For every environment, from the day it is born, the brain understands why it is built and performs the way it does: the use cases it serves, and the decisions made in designing, building, configuring, expanding, contracting, fixing and recovering it, each with what else was considered and why not, and the change that carried it out. avd-swarm is the how: the plans, approvals and runs that make each change. The why is a lifecycle record per environment ([contracts](contracts.md) C18, [decision 0020](knowledge/decisions/0020-the-brain-is-the-why-layer.md)) that links the facts (C11, C12), the design (C14), the runs (C17) and avd-swarm's outcomes (C10) instead of copying them.
+
+**The landing zone and avd-current-state come first and stand alone.** They are a self-contained pair that deploys, inventories and validates with no brain and no avd-swarm. The brain and avd-swarm are built on top: they read what the pair emits, and the pair never depends on them.
+
 ## 2. The lifecycle and who does what
 
 ```
@@ -60,7 +64,7 @@ They are the same idea at different points of one lifecycle: **assess → invent
 | Operate | avd-landing-zone (operations brain, [spec](operations-spec.md)) | Sizing evidence from day-2 baselines; episodes that became lessons | The same, plus shared runbooks |
 | Act and control | [avd-swarm](https://github.com/nickprignano/avd-swarm) (agents, approval, executor, kill switch) | Insights, incidents and grading scores (C8); action outcomes and switch position (C10) | Playbook run proposals (C9), knowledge with citations (C6, C7) |
 
-**The brain thinks, avd-swarm acts** ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
+**The brain thinks, avd-swarm acts** ([decision 0003](knowledge/decisions/0003-brain-thinks-swarm-acts.md)); the brain is the why and avd-swarm the how ([decision 0020](knowledge/decisions/0020-the-brain-is-the-why-layer.md)). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs.
 
 ## 3. Layers and scopes
 
@@ -69,7 +73,7 @@ The brain has three stores. They differ in **whose data they hold**, and so in w
 | Layer | Holds | Lives in | Visibility |
 |---|---|---|---|
 | **Knowledge** (`knowledge/`) | Generalized, cross-customer knowledge: public products, rules with their history, calibration, shared runbooks, pseudonymous engagement records | This repo (public scope) and an organization's private fork (organization scope) | Public: no engagement trail. Organization: no customer data. The guard enforces both ([knowledge spec](knowledge-spec.md) §5) |
-| **Estate vault** (`vault/`) | One customer's estate: subscriptions, resources, drift, findings, their decisions and runbooks | A private repository per customer or organization, built by `vault/avd_second_brain.ps1` | Private, tenant data |
+| **Estate vault** (`vault/`) | One customer's estate: subscriptions, resources, drift, findings, their decisions and runbooks, and each environment's lifecycle record (C18, pseudonymous, under `lifecycle/`) | A private repository per customer or organization, built by `vault/avd_second_brain.ps1` | Private, tenant data |
 | **Operations memory** | Signals, episodes, evidence of a running landing zone | The adopter's tenant (Blob, Cosmos DB) and private landing-zone fork ([operations spec](operations-spec.md) §4.3) | Private, tenant data |
 
 The factory's engagement folders (`output/engagements/` in the assessment project) are a fourth, temporary store, on the customer's side.
@@ -89,8 +93,14 @@ The factory's engagement folders (`output/engagements/` in the assessment projec
 | 8 | avd-swarm → brain | `avd-swarm-insights/v1` ([contracts](contracts.md) C8), action outcomes and the switch position (C10) | Specified |
 | 9 | Brain → avd-swarm | Playbook run proposals ([contracts](contracts.md) C9); the Concierge as a read tool | Specified |
 | 10 | avd-current-state → brain agents → avd-swarm | `avd-current-state-facts/v1` ([contracts](contracts.md) C11): the fact layer the brain's agents read, filed in the vault by `scripts/Import-CurrentStateFacts.ps1`; avd-swarm sees it only as the brain's cited evidence | Built (offline) |
+<<<<<<< HEAD
 | 11 | The assessment project → brain agents → avd-swarm | `avd-forensic-facts/v1` ([contracts](contracts.md) C12): measured demand, concurrency, logon and profile aggregates per host pool or persona, the forensic tier under C11 | Specified |
 | 12 | The assessment project → avd-landing-zone | `avd-target-state/v1` with its approval ([contracts](contracts.md) C14): the design, every decision citing register facts (C15); the landing zone's reader prints the preflight and `deploy.sh` commands | Schemas, checks and reader built; producer specified |
+=======
+| 11 | The assessment project → brain agents → avd-swarm | `avd-forensic-facts/v1` ([contracts](contracts.md) C12): measured demand, concurrency, logon and profile aggregates per host pool or persona, the forensic tier under C11 | Specified |
+| 12 | The assessment project → avd-landing-zone | `avd-target-state/v1` with its approval ([contracts](contracts.md) C14): the design, every decision citing register facts (C15); the landing zone's reader prints the preflight and `deploy.sh` commands | Schemas, checks and reader built; producer specified |
+| 13 | Manifests, runs, plans and facts → lifecycle record → why | `avd-lifecycle-record/v1` ([contracts](contracts.md) C18): one record per environment of its use cases, decisions and events; `ConvertFrom-TargetStateDecision` starts it from the approved manifest, `Get-LifecycleExplanation` answers why, `Get-LifecycleReview` reopens decisions whose watched facts changed | Schema, checks and functions built (offline); writers specified |
+>>>>>>> origin/main
 | 7 | Every repo's lessons and decisions → search | `scripts/Sync-BrainSources.ps1` checks out the repos in `sources/sources.json`; `scripts/Find-BrainKnowledge.ps1` searches them, the knowledge base and optionally a vault, and cites `<repo>@<commit>:<path>` | Built |
 
 Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's `lz-cloudnative` renderer tags each host pool with `avdbrain-engagement` and `avdbrain-tier` ([contracts](contracts.md) C5); a host pool without them yields no observation, because there is no prediction to compare with.
@@ -128,3 +138,4 @@ avd-second-brain/
 - **Q2. One organization fork, or one per practice?** The knowledge spec recommends one per organization.
 - **Q3. Vault per customer, or one vault per organization with environments from many customers?** The vault keys environments by subscription, so both work; per customer keeps access simpler.
 - **Q4. Shared playbooks.** The operations brain's playbooks are generic by design. Should verified playbooks and their run statistics become shared knowledge like runbooks? Probably, once two adopters run the same playbook.
+- ~~**Q5. Should C14 carry alternatives?**~~ **Answered (owner, 2026-10-21): yes.** Each C14 decision may list `alternatives` (value, `whyNot` reason category, short note), and `ConvertFrom-TargetStateDecision` carries them into the lifecycle record (C18) at birth. The field is optional: avd-landing-zone's reader ignores it and picks up the schema at its next re-pin; the factory emits it when its design stage is built.

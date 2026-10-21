@@ -315,9 +315,9 @@ function Test-BrainKnowledge {
   foreach ($f in @(Get-ChildItem -LiteralPath $brain -Recurse -File | Where-Object { $_.FullName -ne $denyFile })) {
     $text = Get-Content -LiteralPath $f.FullName -Raw
     Get-BrainSensitiveText -Text $text -Path (& $rel $f.FullName) -DenyHash $denyHash
-    # Estate pseudonyms (C11, C12, C14) link a record to a tenant: knowledge holds buckets, never these.
-    foreach ($m in [regex]::Matches($text, '\b(est|hp|st|sub)-[0-9a-f]{8}\b')) {
-      Get-BrainFinding Error 'sensitive:estate-pseudonym' (& $rel $f.FullName) "Holds an estate pseudonym ($($m.Value.Substring(0, 3))***). Harvest buckets, never pseudonyms (contracts C14)."
+    # Estate pseudonyms (C11, C12, C14, C18) link a record to a tenant: knowledge holds buckets, never these.
+    foreach ($m in [regex]::Matches($text, '\b(est|env|hp|st|sub)-[0-9a-f]{8}\b')) {
+      Get-BrainFinding Error 'sensitive:estate-pseudonym' (& $rel $f.FullName) "Holds an estate pseudonym ($($m.Value.Substring(0, 3))***). Harvest buckets, never pseudonyms (contracts C14, C18)."
     }
   }
 }
@@ -726,6 +726,26 @@ function Test-FactRegister {
   }
 }
 
+function Get-TargetStateDecision {
+  # Every decision in a C14 manifest, with its decision ID from the register (C15) and its JSON pointer.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Manifest,
+    [Parameter(Mandatory)] $Register
+  )
+  foreach ($d in @($Register.decisions)) {
+    $segs = @($d.manifestPath.Trim('/') -split '/')
+    $nodes = @([pscustomobject]@{ Node = $Manifest; Pointer = '' })
+    foreach ($s in $segs) {
+      $nodes = @(foreach ($n in $nodes) {
+          if ($s -eq '*') { $i = 0; foreach ($item in @($n.Node)) { [pscustomobject]@{ Node = $item; Pointer = "$($n.Pointer)/$i" }; $i++ } }
+          else { $v = Get-BrainProperty $n.Node $s; if ($null -ne $v) { [pscustomobject]@{ Node = $v; Pointer = "$($n.Pointer)/$s" } } }
+        })
+    }
+    foreach ($n in $nodes) { [pscustomobject]@{ Decision = $d.id; Pointer = $n.Pointer; Value = $n.Node } }
+  }
+}
+
 function Test-TargetState {
   # Contract C14: an avd-target-state/v1 manifest. Schema first, then the guard, then what a schema
   # can't say: every citation is a registered, citable fact that can support that decision, with the
@@ -753,19 +773,7 @@ function Test-TargetState {
   }
   $needsSubject = @('hostPool', 'group', 'storageAccount', 'host')
 
-  # Every decision in the manifest, with its decision ID from the register.
-  $found = @()
-  foreach ($d in @($Register.decisions)) {
-    $segs = @($d.manifestPath.Trim('/') -split '/')
-    $nodes = @([pscustomobject]@{ Node = $doc; Pointer = '' })
-    foreach ($s in $segs) {
-      $nodes = @(foreach ($n in $nodes) {
-          if ($s -eq '*') { $i = 0; foreach ($item in @($n.Node)) { [pscustomobject]@{ Node = $item; Pointer = "$($n.Pointer)/$i" }; $i++ } }
-          else { $v = Get-BrainProperty $n.Node $s; if ($null -ne $v) { [pscustomobject]@{ Node = $v; Pointer = "$($n.Pointer)/$s" } } }
-        })
-    }
-    foreach ($n in $nodes) { $found += [pscustomobject]@{ Decision = $d.id; Pointer = $n.Pointer; Value = $n.Node } }
-  }
+  $found = @(Get-TargetStateDecision -Manifest $doc -Register $Register)
   foreach ($x in $found) {
     foreach ($ref in @($x.Value.evidence)) {
       $id, $subject = $ref -split '@', 2
@@ -794,6 +802,245 @@ function Test-TargetState {
     $findings += Get-BrainFinding Error 'manifest:gaps' $display "lz-cloudnative can't express: $(@($doc.target.gaps) -join ', '). Route to another renderer or remove the requirement."
   }
   [pscustomobject]@{ Document = $doc; Findings = @($findings) }
+}
+
+# --- Lifecycle record (contract C18): why an environment is built and performs the way it does --
+# The brain keeps the why (use cases, decisions with their alternatives and drivers, the events that
+# carried them out); avd-swarm records the how (plans and their outcomes, C10). Pure functions over
+# a record already read from the vault.
+
+$script:LifecycleTopic = @('identity', 'network', 'region', 'image', 'apps', 'profiles', 'scaling', 'power', 'sizing',
+  'security', 'access', 'monitoring', 'backup', 'recovery', 'cost', 'liquidware', 'governance', 'other')
+$script:LifecycleChangeKind = @('build', 'configure', 'expand', 'contract', 'fix', 'recover', 'retire', 'drift')
+
+function Get-LifecycleSubjectSet {
+  # A subject and every design subject (tp-, persona-) a born or build event mapped onto it.
+  param($Record, [string] $Subject)
+  $set = @{ $Subject = $true }
+  foreach ($e in @($Record.events)) {
+    foreach ($m in @(Get-BrainProperty $e 'maps')) { if ($m -and $m.to -eq $Subject) { $set[$m.from] = $true } }
+  }
+  $set
+}
+
+function Test-LifecycleRecord {
+  # Contract C18: an avd-lifecycle-record/v1 document. Schema first, then the guard, then what a
+  # schema can't say: references resolve, cited facts are registered and citable with the subject
+  # their grain needs, cited rules exist, one birth, supersede chains are consistent. Warnings mark
+  # the gaps the brain asks a person to fill: a change no decision explains, a decision with no
+  # alternatives. Returns the document and the findings.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] [string] $File,
+    [Parameter(Mandatory)] [string] $SchemaFile,
+    [Parameter(Mandatory)] $Register,
+    [string] $RulesPath
+  )
+  $display = Split-Path $File -Leaf
+  $r = Test-BrainJson -File $File -SchemaFile $SchemaFile -Display $display
+  if (-not $r.Document) { return $r }
+  $doc = $r.Document
+  $findings = @(Get-BrainSensitiveText -Text (Get-Content -LiteralPath $File -Raw) -Path $display)
+  if ($doc.pins.factRegister -ne $Register.version) {
+    $findings += Get-BrainFinding Error 'lifecycle:register-version' $display "Pins fact register v$($doc.pins.factRegister); this register is v$($Register.version)."
+  }
+  $facts = @{}
+  foreach ($f in @($Register.facts)) { $facts[$f.id] = $f }
+  $registerDecisions = @($Register.decisions | ForEach-Object { $_.id })
+  $rules = @{}
+  if ($RulesPath) {
+    foreach ($rf in @(Get-ChildItem -LiteralPath $RulesPath -Filter *.json -File)) { $rd = Get-Content -LiteralPath $rf.FullName -Raw | ConvertFrom-Json; $rules[$rd.id] = [int]$rd.version }
+  }
+  $needsSubject = @('hostPool', 'group', 'storageAccount', 'host')
+
+  $useCases = @{}; $decisions = @{}; $events = @{}
+  foreach ($kind in @(@{ Items = @($doc.useCases); Map = $useCases; Name = 'Use case' }, @{ Items = @($doc.decisions); Map = $decisions; Name = 'Decision' }, @{ Items = @($doc.events); Map = $events; Name = 'Event' })) {
+    foreach ($x in $kind.Items) {
+      if ($kind.Map.ContainsKey($x.id)) { $findings += Get-BrainFinding Error 'lifecycle:duplicate-id' $display "$($kind.Name) '$($x.id)' is listed twice." }
+      $kind.Map[$x.id] = $x
+    }
+  }
+
+  $checkRef = {
+    param([string] $Where, [string] $Ref)
+    if ($Ref -like 'rule:*') {
+      if (-not $RulesPath) { return }
+      $rid, $rv = $Ref.Substring(5) -split '@v', 2
+      if (-not $rules.ContainsKey($rid)) { Get-BrainFinding Error 'lifecycle:unknown-rule' $display "$Where cites rule '$rid', which isn't in knowledge/rules/." }
+      elseif ([int]$rv -gt $rules[$rid]) { Get-BrainFinding Error 'lifecycle:future-rule' $display "$Where cites $Ref; the newest is v$($rules[$rid])." }
+      return
+    }
+    if ($Ref -like 'evt-*') {
+      if (-not $events.ContainsKey($Ref)) { Get-BrainFinding Error 'lifecycle:unknown-event' $display "$Where cites $Ref, which the record doesn't have." }
+      return
+    }
+    if ($Ref -notmatch '^(c11|c12|intake|liquidware)\.') { return }
+    $id, $subject = $Ref -split '@', 2
+    $f = $facts[$id]
+    if (-not $f) { Get-BrainFinding Error 'lifecycle:unknown-fact' $display "$Where cites '$id', which isn't in the fact register."; return }
+    if ($f.status -eq 'proposed') { Get-BrainFinding Error 'lifecycle:proposed-fact' $display "$Where cites '$id', which is only proposed." }
+    if ($f.grain -in $needsSubject -and -not $subject) { Get-BrainFinding Error 'lifecycle:missing-subject' $display "$Where cites '$id' (grain $($f.grain)) without naming which one (@hp-..., @tp-...)." }
+  }
+
+  foreach ($d in @($doc.decisions)) {
+    $where = $d.id
+    if ($d.topic -notin $script:LifecycleTopic -and $d.topic -notin $registerDecisions) {
+      $findings += Get-BrainFinding Error 'lifecycle:unknown-topic' $display "$where has topic '$($d.topic)', which is neither a lifecycle topic nor a fact register decision."
+    }
+    foreach ($u in @(Get-BrainProperty $d 'useCases')) { if ($u -and -not $useCases.ContainsKey($u)) { $findings += Get-BrainFinding Error 'lifecycle:unknown-use-case' $display "$where serves $u, which the record doesn't have." } }
+    foreach ($ref in @($d.evidence) + @(Get-BrainProperty $d 'watch')) { if ($ref) { $findings += @(& $checkRef $where $ref) } }
+    $old = Get-BrainProperty $d 'supersedes'
+    if ($old) {
+      if (-not $decisions.ContainsKey($old)) { $findings += Get-BrainFinding Error 'lifecycle:unknown-decision' $display "$where supersedes $old, which the record doesn't have." }
+      elseif ($decisions[$old].status -ne 'superseded') { $findings += Get-BrainFinding Error 'lifecycle:supersede-status' $display "$where supersedes $old, but $old is still '$($decisions[$old].status)'." }
+      elseif ($decisions[$old].date -gt $d.date) { $findings += Get-BrainFinding Error 'lifecycle:supersede-order' $display "$where ($($d.date)) supersedes $old, which is dated later ($($decisions[$old].date))." }
+    }
+    if ($d.status -eq 'accepted' -and -not @(Get-BrainProperty $d 'alternatives').Where({ $_ }).Count) {
+      $findings += Get-BrainFinding Warning 'lifecycle:no-alternatives' $display "$where records no alternative. What else was considered, and why not, is half of why."
+    }
+  }
+  foreach ($old in @($doc.decisions | Where-Object status -eq 'superseded')) {
+    if (-not @($doc.decisions | Where-Object { (Get-BrainProperty $_ 'supersedes') -eq $old.id }).Count) {
+      $findings += Get-BrainFinding Error 'lifecycle:superseded-by-nothing' $display "$($old.id) is superseded, but no decision supersedes it."
+    }
+  }
+
+  $born = @($doc.events | Where-Object kind -eq 'born')
+  if ($born.Count -ne 1) { $findings += Get-BrainFinding Error 'lifecycle:born' $display "An environment is born once; this record has $($born.Count) born events." }
+  elseif (@($doc.events | Where-Object { $_.utc -lt $born[0].utc }).Count) { $findings += Get-BrainFinding Error 'lifecycle:born' $display "Events come before $($born[0].id), the birth." }
+  foreach ($e in @($doc.events)) {
+    $where = $e.id
+    $carried = @(Get-BrainProperty $e 'decisions' | Where-Object { $_ })
+    foreach ($id in $carried) {
+      if (-not $decisions.ContainsKey($id)) { $findings += Get-BrainFinding Error 'lifecycle:unknown-decision' $display "$where carries out $id, which the record doesn't have." }
+      elseif ($decisions[$id].status -eq 'rejected') { $findings += Get-BrainFinding Warning 'lifecycle:rejected-decision-applied' $display "$where carries out $id, which was rejected." }
+    }
+    foreach ($u in @(Get-BrainProperty $e 'useCases')) { if ($u -and -not $useCases.ContainsKey($u)) { $findings += Get-BrainFinding Error 'lifecycle:unknown-use-case' $display "$where serves $u, which the record doesn't have." } }
+    foreach ($ref in @(Get-BrainProperty $e 'evidence') + @(Get-BrainProperty $e 'change' | ForEach-Object { $_.fact })) { if ($ref) { $findings += @(& $checkRef $where $ref) } }
+    if ($e.kind -in $script:LifecycleChangeKind -and -not $carried.Count) {
+      $findings += Get-BrainFinding Warning 'lifecycle:unexplained-change' $display "$where is a $($e.kind) that no decision explains. Record the decision, or say it was not decided."
+    }
+  }
+  [pscustomobject]@{ Document = $doc; Findings = @($findings) }
+}
+
+function Get-LifecycleExplanation {
+  # Why is <subject> the way it is: the use cases it serves, the decisions in force about it (with
+  # what else was considered and why not), the events that changed it in time order with the
+  # decisions they carried out, and the changes nothing explains. Design subjects a born event
+  # mapped onto it (tp-01 -> hp-...) count as the same subject. Every item carries its citation.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Record,
+    [Parameter(Mandatory)] [string] $Subject,
+    [string] $Topic
+  )
+  $set = Get-LifecycleSubjectSet -Record $Record -Subject $Subject
+  $cite = { param($Id) "lifecycle:$($Record.environment)#$Id" }
+  $touches = {
+    param($Item)
+    foreach ($s in @(Get-BrainProperty $Item 'subjects')) { if ($s -and $set.ContainsKey($s)) { return $true } }
+    foreach ($c in @(Get-BrainProperty $Item 'change')) { if ($c -and $set.ContainsKey(($c.fact -split '@', 2)[1])) { return $true } }
+    $false
+  }
+  $byId = @{}
+  foreach ($d in @($Record.decisions)) { $byId[$d.id] = $d }
+  $decisions = @($Record.decisions | Where-Object { (& $touches $_) -or -not @(Get-BrainProperty $_ 'subjects').Where({ $_ }).Count } |
+      Where-Object { -not $Topic -or $_.topic -eq $Topic })
+  $events = @($Record.events | Where-Object { & $touches $_ } | Sort-Object utc)
+  $useCaseIds = @{}
+  foreach ($u in @($Record.useCases)) { if (@($u.hostPools | Where-Object { $set.ContainsKey($_) }).Count) { $useCaseIds[$u.id] = $true } }
+  foreach ($x in $decisions + $events) { foreach ($u in @(Get-BrainProperty $x 'useCases')) { if ($u) { $useCaseIds[$u] = $true } } }
+
+  [pscustomobject]@{
+    Subject     = $Subject
+    Aliases     = @($set.Keys | Where-Object { $_ -ne $Subject } | Sort-Object)
+    UseCases    = @($Record.useCases | Where-Object { $useCaseIds.ContainsKey($_.id) } | ForEach-Object {
+        [pscustomobject]@{ Id = $_.id; Kind = $_.kind; Tier = $_.tier; Users = $_.users; Status = $_.status; Citation = & $cite $_.id } })
+    InForce     = @($decisions | Where-Object status -eq 'accepted' | ForEach-Object {
+        [pscustomobject]@{ Id = $_.id; Topic = $_.topic; Phase = $_.phase; Chosen = $_.chosen; Alternatives = @(Get-BrainProperty $_ 'alternatives' | Where-Object { $_ })
+          Drivers = @($_.drivers); Evidence = @($_.evidence); Supersedes = Get-BrainProperty $_ 'supersedes'; Citation = & $cite $_.id } })
+    History     = @($events | ForEach-Object {
+        $e = $_
+        [pscustomobject]@{ Id = $e.id; Utc = if ($e.utc -is [datetime]) { $e.utc.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') } else { $e.utc }; Kind = $e.kind; Actor = $e.actor; Outcome = $e.outcome
+          Why = @(Get-BrainProperty $e 'decisions' | Where-Object { $_ -and $byId.ContainsKey($_) } | ForEach-Object { [pscustomobject]@{ Id = $_; Topic = $byId[$_].topic; Chosen = $byId[$_].chosen; Status = $byId[$_].status; Citation = & $cite $_ } })
+          Run = Get-BrainProperty $e 'run'; Plan = Get-BrainProperty $e 'plan'; Citation = & $cite $e.id } })
+    Unexplained = @($events | Where-Object { $_.kind -in $script:LifecycleChangeKind -and -not @(Get-BrainProperty $_ 'decisions').Where({ $_ }).Count } | ForEach-Object { & $cite $_.id })
+  }
+}
+
+function Get-LifecycleReview {
+  # Decisions to revisit: accepted decisions that watch a fact which has changed (Changed: fact
+  # references such as c12.group.concurrency.peak@hp-5e6f7a8b, from comparing two C11 snapshots or
+  # C12 windows), and decisions whose review date has come. A watch without a subject matches the
+  # fact on any subject. Returns one item per decision and reason, with its citation.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Record,
+    [string[]] $Changed = @(),
+    [string] $AsOf
+  )
+  foreach ($d in @($Record.decisions | Where-Object status -eq 'accepted')) {
+    foreach ($w in @(Get-BrainProperty $d 'watch' | Where-Object { $_ })) {
+      $wid, $wsub = $w -split '@', 2
+      foreach ($c in $Changed) {
+        $cid, $csub = $c -split '@', 2
+        if ($cid -eq $wid -and (-not $wsub -or $wsub -eq $csub)) {
+          [pscustomobject]@{ Decision = $d.id; Topic = $d.topic; Reason = 'watched-fact-changed'; Fact = $c; Citation = "lifecycle:$($Record.environment)#$($d.id)" }
+        }
+      }
+    }
+    $reviewBy = Get-BrainProperty $d 'reviewBy'
+    if ($AsOf -and $reviewBy -and $reviewBy -le $AsOf) {
+      [pscustomobject]@{ Decision = $d.id; Topic = $d.topic; Reason = 'review-date'; Fact = $null; Citation = "lifecycle:$($Record.environment)#$($d.id)" }
+    }
+  }
+}
+
+function ConvertFrom-TargetStateDecision {
+  # The design decisions of an approved C14 manifest as C18 decisions, so an environment's record
+  # starts at its birth with the why the factory worked out. A decision the manifest gives no
+  # alternatives keeps a Test-LifecycleRecord warning until a person adds them. Call it only for a manifest with a
+  # matching approval (C14); the approval is what makes these decisions 'accepted'. A manifest's
+  # alternatives (what the design ruled out, and why) come across as they are.
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)] $Manifest,
+    [Parameter(Mandatory)] [ValidatePattern('^[0-9a-f]{64}$')] [string] $ManifestSha256,
+    [Parameter(Mandatory)] $Register,
+    [int] $FirstNumber = 1
+  )
+  $n = $FirstNumber
+  $sha = $ManifestSha256.Substring(0, 12)
+  # ConvertFrom-Json turns an ISO time into a DateTime; take the date either way.
+  $g = $Manifest.generatedUtc
+  $date = if ($g -is [datetime]) { $g.ToUniversalTime().ToString('yyyy-MM-dd') } else { ([string]$g).Substring(0, 10) }
+  foreach ($x in @(Get-TargetStateDecision -Manifest $Manifest -Register $Register)) {
+    $v = $x.Value
+    $subjects = @()
+    if ($x.Pointer -match '^/hostPools/(\d+)/') { $subjects = @($Manifest.hostPools[[int]$Matches[1]].id) }
+    $rule = Get-BrainProperty $v 'rule'
+    $override = Get-BrainProperty $v 'override'
+    $drivers = @('evidence')
+    if ($rule) { $drivers += 'rule' }
+    if ($override) { $drivers += @{ 'customer-requirement' = 'customer-requirement'; policy = 'policy'; cost = 'cost'; risk = 'risk'; other = 'other' }[$override.reason] }
+    $evidence = @("manifest:$sha#$($x.Decision)")
+    if ($rule) { $evidence += "rule:$rule" }
+    $evidence += @($v.evidence)
+    $d = [ordered]@{
+      id = 'dec-{0:d4}' -f $n; date = $date; phase = 'design'; topic = $x.Decision
+      chosen = $v.value; drivers = @($drivers | Select-Object -Unique); evidence = @($evidence | Select-Object -First 20)
+      confidence = $v.confidence; status = 'accepted'; source = 'target-state'
+      decidedBy = if ($rule -and -not $override) { 'factory-rule' } else { 'approver' }
+    }
+    if ($subjects.Count) { $d.subjects = $subjects }
+    $alternatives = @(Get-BrainProperty $v 'alternatives' | Where-Object { $_ })
+    if ($alternatives.Count) { $d.alternatives = $alternatives }
+    $note = Get-BrainProperty $v 'note'
+    if ($note) { $d.note = $note }
+    [pscustomobject]$d
+    $n++
+  }
 }
 
 # --- Assessment method (docs/assess-spec.md, contracts C19 to C21) --------------------------------
@@ -2066,7 +2313,8 @@ function Test-DocConsistency {
 Export-ModuleMember -Function Get-BrainSensitiveText, Test-BrainCatalog, Test-BrainRule, Test-BrainCalibration,
   Test-BrainEngagement, Test-BrainKnowledge, Resolve-BrainApp, Get-SizingCalibration, Search-BrainKnowledge,
   Get-BrainSource, Get-VaultHarvest, ConvertFrom-SizingEvidence, Test-CurrentStateFacts,
-  Test-SchemaPath, Test-FactRegister, Test-TargetState, Test-AssessMethod, Get-AssessScore, Test-AssessmentReport,
+  Test-SchemaPath, Test-FactRegister, Get-TargetStateDecision, Test-TargetState, Test-AssessMethod, Get-AssessScore, Test-AssessmentReport,
+  Test-LifecycleRecord, Get-LifecycleExplanation, Get-LifecycleReview, ConvertFrom-TargetStateDecision,
   Get-DocFinding, Get-DocMarkdownLine, Get-DocScriptInfo, Get-DocBicepInfo, Get-DocRepo, Get-DocContract, Get-DocDecision,
   Get-DocFact, Get-DocTextHash, Test-DocLink, Test-DocEntryPoint, Test-DocParameter, Test-DocContract, Test-DocDecisionPair,
   Test-DocChangelog, Test-DocConnectionTable, Test-DocTerm, Test-DocKnowledgeCitation, Test-DocGenerated, Test-DocPrivate,

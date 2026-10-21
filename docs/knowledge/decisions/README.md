@@ -31,6 +31,7 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0016](0016-never-delete-the-last-copy.md) | Never delete the last copy | Accepted |
 | [0017](0017-never-leave-the-meter-running.md) | Never leave the meter running without an opt-in | Accepted |
 | [0019](0019-recovery-runs-through-the-swarm.md) | Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean | Proposed |
+| [0020](0020-the-brain-is-the-why-layer.md) | The brain is the why layer: one lifecycle record per environment, from its birth | Proposed |
 | [0021](0021-foundation-contracts-live-in-avd-assess.md) | The foundation's contracts live in avd-assess | Accepted |
 | [0022](0022-the-brain-keeps-the-raid-log.md) | The brain keeps each estate's RAID log and action tracker, beside the lifecycle record | Proposed |
 | [0023](0023-family-format-best-open-source-or-build.md) | Adopt an outside tool only when it is the best and open source; otherwise build our own | Accepted |

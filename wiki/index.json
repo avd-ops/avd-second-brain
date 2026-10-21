@@ -19,7 +19,7 @@
     {
       "name": "avd-swarm",
       "ref": "main",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b"
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff"
     }
   ],
   "chunks": [
@@ -3502,6 +3502,56 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
+      "anchor": "",
+      "title": "Architecture: the estate brain",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "",
+      "title": "Architecture: the estate brain",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "0-what-the-brain-is-for",
+      "title": "0. What the brain is for",
+      "contracts": [
+        "C4",
+        "C11",
+        "C12",
+        "C18",
+        "C21",
+        "C25"
+      ],
+      "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "0-what-the-brain-is-for",
+      "title": "0. What the brain is for",
+      "contracts": [
+        "C4",
+        "C11",
+        "C12",
+        "C18",
+        "C21",
+        "C25"
+      ],
+      "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
       "anchor": "0-what-the-brain-is-for",
       "title": "0. What the brain is for",
       "contracts": [
@@ -3520,7 +3570,46 @@
       "path": "docs/architecture.md",
       "anchor": "1-why-one-brain-decision-0001-history",
       "title": "1. Why one brain (decision 0001, history)",
-      "contracts": [],
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C17",
+        "C18"
+      ],
+      "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "1-why-one-brain-decision-0001-history",
+      "title": "1. Why one brain (decision 0001, history)",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C17",
+        "C18"
+      ],
+      "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "1-why-one-brain-decision-0001-history",
+      "title": "1. Why one brain (decision 0001, history)",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C17",
+        "C18"
+      ],
       "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
     },
     {
@@ -3541,7 +3630,47 @@
         "C14",
         "C15"
       ],
-      "text": "The brain thinks, avd-swarm acts (decision 0003). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is the one both obey. They change in pairs."
+      "text": "The brain thinks, avd-swarm acts (decision 0003); the brain is the why and avd-swarm the how (decision 0020). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is th..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "2-the-lifecycle-and-who-does-what",
+      "title": "2. The lifecycle and who does what",
+      "contracts": [
+        "C1",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15"
+      ],
+      "text": "The brain thinks, avd-swarm acts (decision 0003); the brain is the why and avd-swarm the how (decision 0020). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is th..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "2-the-lifecycle-and-who-does-what",
+      "title": "2. The lifecycle and who does what",
+      "contracts": [
+        "C1",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15"
+      ],
+      "text": "The brain thinks, avd-swarm acts (decision 0003); the brain is the why and avd-swarm the how (decision 0020). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is th..."
     },
     {
       "repo": "avd-second-brain",
@@ -3549,7 +3678,31 @@
       "path": "docs/architecture.md",
       "anchor": "3-layers-and-scopes",
       "title": "3. Layers and scopes",
-      "contracts": [],
+      "contracts": [
+        "C18"
+      ],
+      "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "3-layers-and-scopes",
+      "title": "3. Layers and scopes",
+      "contracts": [
+        "C18"
+      ],
+      "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "3-layers-and-scopes",
+      "title": "3. Layers and scopes",
+      "contracts": [
+        "C18"
+      ],
       "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
     },
     {
@@ -3568,9 +3721,74 @@
         "C11",
         "C12",
         "C14",
-        "C15"
+        "C15",
+        "C18"
       ],
-      "text": "Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is no prediction to com..."
+      "text": "<<<<<<< HEAD ======= Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "4-the-flows",
+      "title": "4. The flows",
+      "contracts": [
+        "C4",
+        "C5",
+        "C6",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15",
+        "C18"
+      ],
+      "text": "<<<<<<< HEAD ======= Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "4-the-flows",
+      "title": "4. The flows",
+      "contracts": [
+        "C4",
+        "C5",
+        "C6",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15",
+        "C18"
+      ],
+      "text": "<<<<<<< HEAD ======= Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "5-principles",
+      "title": "5. Principles",
+      "contracts": [
+        "C11"
+      ],
+      "text": "The three repos already agreed on these; the brain keeps them in one place. 1. Real runs are the source of truth. Evidence beats documents, and documents beat a model's guess. 2. Knowledge is code. Schemas, a guard in CI, versioned rules with a reason for every change. 3. Models propose, people a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "5-principles",
+      "title": "5. Principles",
+      "contracts": [
+        "C11"
+      ],
+      "text": "The three repos already agreed on these; the brain keeps them in one place. 1. Real runs are the source of truth. Evidence beats documents, and documents beat a model's guess. 2. Knowledge is code. Schemas, a guard in CI, versioned rules with a reason for every change. 3. Models propose, people a..."
     },
     {
       "repo": "avd-second-brain",
@@ -3601,9 +3819,64 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
+      "anchor": "6-repository-layout",
+      "title": "6. Repository layout",
+      "contracts": [
+        "C4",
+        "C11",
+        "C13",
+        "C17"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "6-repository-layout",
+      "title": "6. Repository layout",
+      "contracts": [
+        "C4",
+        "C11",
+        "C13",
+        "C17"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
       "anchor": "7-open-questions",
       "title": "7. Open questions",
-      "contracts": [],
+      "contracts": [
+        "C14",
+        "C18"
+      ],
+      "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "7-open-questions",
+      "title": "7. Open questions",
+      "contracts": [
+        "C14",
+        "C18"
+      ],
+      "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/architecture.md",
+      "anchor": "7-open-questions",
+      "title": "7. Open questions",
+      "contracts": [
+        "C14",
+        "C18"
+      ],
       "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
     },
     {
@@ -3642,11 +3915,92 @@
         "C15",
         "C16",
         "C17",
+        "C18",
         "C19",
         "C20",
         "C21"
       ],
       "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "",
+      "title": "Contracts between the repos and the brain",
+      "contracts": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19",
+        "C20",
+        "C21"
+      ],
+      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "",
+      "title": "Contracts between the repos and the brain",
+      "contracts": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19",
+        "C20",
+        "C21"
+      ],
+      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c1-evidence-packages--vault",
+      "title": "C1. Evidence packages → vault",
+      "contracts": [],
+      "text": "The vault reads collector packages (manifest.json with SubscriptionDetails) and validator packages (manifest.json with Verdict), as folders or ZIPs, in any order. From the collector it reads avd-host-pools, avd-session-hosts, virtual-machines, avd-workspaces, avd-application-groups and arm-resour..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c1-evidence-packages--vault",
+      "title": "C1. Evidence packages → vault",
+      "contracts": [],
+      "text": "The vault reads collector packages (manifest.json with SubscriptionDetails) and validator packages (manifest.json with Verdict), as folders or ZIPs, in any order. From the collector it reads avd-host-pools, avd-session-hosts, virtual-machines, avd-workspaces, avd-application-groups and arm-resour..."
     },
     {
       "repo": "avd-second-brain",
@@ -3670,6 +4024,62 @@
         "C18"
       ],
       "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c10-action-outcomes-and-switch-position-specified",
+      "title": "C10. Action outcomes and switch position (specified)",
+      "contracts": [
+        "C8",
+        "C9",
+        "C11",
+        "C18"
+      ],
+      "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c10-action-outcomes-and-switch-position-specified",
+      "title": "C10. Action outcomes and switch position (specified)",
+      "contracts": [
+        "C8",
+        "C9",
+        "C11",
+        "C18"
+      ],
+      "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c11-avd-current-state-factsv1",
+      "title": "C11. avd-current-state-facts/v1",
+      "contracts": [
+        "C1",
+        "C2",
+        "C9",
+        "C11"
+      ],
+      "text": "The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The va..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c11-avd-current-state-factsv1",
+      "title": "C11. avd-current-state-facts/v1",
+      "contracts": [
+        "C1",
+        "C2",
+        "C9",
+        "C11"
+      ],
+      "text": "The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The va..."
     },
     {
       "repo": "avd-second-brain",
@@ -3704,6 +4114,54 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c12-avd-forensic-factsv1-specified",
+      "title": "C12. avd-forensic-facts/v1 (specified)",
+      "contracts": [
+        "C4",
+        "C5",
+        "C11",
+        "C12",
+        "C15"
+      ],
+      "text": "The forensic tier of the fact layer. C11 says what an estate is configured as, from Azure's control plane, for free. It can't say what users do: how many are on at 10:00, how hard they push a host, how long logon takes, how big profiles are, where latency hurts. That is Stratusphere UX telemetry,..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c12-avd-forensic-factsv1-specified",
+      "title": "C12. avd-forensic-facts/v1 (specified)",
+      "contracts": [
+        "C4",
+        "C5",
+        "C11",
+        "C12",
+        "C15"
+      ],
+      "text": "The forensic tier of the fact layer. C11 says what an estate is configured as, from Azure's control plane, for free. It can't say what users do: how many are on at 10:00, how hard they push a host, how long logon takes, how big profiles are, where latency hurts. That is Stratusphere UX telemetry,..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c13-avd-doc-findingsv1",
+      "title": "C13. avd-doc-findings/v1",
+      "contracts": [],
+      "text": "What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in docs-spec.md §6 and §9. Built in phase D0: scripts/Test-DocConsistency.ps1 -JsonPath writes it, the nightly docs-sweep workflow keeps it a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c13-avd-doc-findingsv1",
+      "title": "C13. avd-doc-findings/v1",
+      "contracts": [],
+      "text": "What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in docs-spec.md §6 and §9. Built in phase D0: scripts/Test-DocConsistency.ps1 -JsonPath writes it, the nightly docs-sweep workflow keeps it a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c13-avd-doc-findingsv1",
       "title": "C13. avd-doc-findings/v1",
       "contracts": [],
@@ -3717,9 +4175,60 @@
       "title": "C14. avd-target-state/v1 and avd-target-approval/v1",
       "contracts": [
         "C11",
-        "C12"
+        "C12",
+        "C18"
       ],
       "text": "What the assessment produces and the landing zone deploys: one design, every deployed value a decision (value, evidence, confidence, optionally rule, boundBy, override). It replaces the factory spec's factory.avd/v1, which was never built. Design and reasons: the assessment project's boundaries s..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c14-avd-target-statev1-and-avd-target-approvalv1",
+      "title": "C14. avd-target-state/v1 and avd-target-approval/v1",
+      "contracts": [
+        "C11",
+        "C12",
+        "C18"
+      ],
+      "text": "What the assessment produces and the landing zone deploys: one design, every deployed value a decision (value, evidence, confidence, optionally rule, boundBy, override). It replaces the factory spec's factory.avd/v1, which was never built. Design and reasons: the assessment project's boundaries s..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c14-avd-target-statev1-and-avd-target-approvalv1",
+      "title": "C14. avd-target-state/v1 and avd-target-approval/v1",
+      "contracts": [
+        "C11",
+        "C12",
+        "C18"
+      ],
+      "text": "What the assessment produces and the landing zone deploys: one design, every deployed value a decision (value, evidence, confidence, optionally rule, boundBy, override). It replaces the factory spec's factory.avd/v1, which was never built. Design and reasons: the assessment project's boundaries s..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c15-avd-fact-registerv1",
+      "title": "C15. avd-fact-register/v1",
+      "contracts": [
+        "C11",
+        "C12"
+      ],
+      "text": "contracts/fact-register.json: the decisions a manifest makes (with the manifest path and the tiers whose facts alone can support each) and the facts any repo may cite (ID, tier, contract and JSON path, grain, unit, privacy class, status, and the decisions it can evidence). Test-FactRegister keeps..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c15-avd-fact-registerv1",
+      "title": "C15. avd-fact-register/v1",
+      "contracts": [
+        "C11",
+        "C12"
+      ],
+      "text": "contracts/fact-register.json: the decisions a manifest makes (with the manifest path and the tiers whose facts alone can support each) and the facts any repo may cite (ID, tier, contract and JSON path, grain, unit, privacy class, status, and the decisions it can evidence). Test-FactRegister keeps..."
     },
     {
       "repo": "avd-second-brain",
@@ -3746,10 +4255,124 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c16-stratusphere-instrumentv1-proposed",
+      "title": "C16. stratusphere-instrument/v1 (proposed)",
+      "contracts": [],
+      "text": "The output files of the Stratusphere instrument that the assessment project reads: the deployment preflight's manifest.json and current-state.json, the appliance check report (with each role's address), and the Connector ID Key rollout report (per machine: name, resource ID, subscription ID, stat..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c16-stratusphere-instrumentv1-proposed",
+      "title": "C16. stratusphere-instrument/v1 (proposed)",
+      "contracts": [],
+      "text": "The output files of the Stratusphere instrument that the assessment project reads: the deployment preflight's manifest.json and current-state.json, the appliance check report (with each role's address), and the Connector ID Key rollout report (per machine: name, resource ID, subscription ID, stat..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
       "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
       "contracts": [],
       "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
+      "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
+      "contracts": [],
+      "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
+      "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
+      "contracts": [],
+      "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c18-avd-lifecycle-recordv1",
+      "title": "C18. avd-lifecycle-record/v1",
+      "contracts": [
+        "C7",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15",
+        "C17",
+        "C18"
+      ],
+      "text": "Why one environment is built and performs the way it does, from the day it is born. The facts (C11, C12) say what an environment is and how it behaves; the runs (C17) and avd-swarm's plans (C10) say what was done to it. Neither says why: which use cases it serves, what was decided at each step, w..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c18-avd-lifecycle-recordv1",
+      "title": "C18. avd-lifecycle-record/v1",
+      "contracts": [
+        "C7",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15",
+        "C17",
+        "C18"
+      ],
+      "text": "Why one environment is built and performs the way it does, from the day it is born. The facts (C11, C12) say what an environment is and how it behaves; the runs (C17) and avd-swarm's plans (C10) say what was done to it. Neither says why: which use cases it serves, what was decided at each step, w..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c18-avd-lifecycle-recordv1",
+      "title": "C18. avd-lifecycle-record/v1",
+      "contracts": [
+        "C7",
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C15",
+        "C17",
+        "C18"
+      ],
+      "text": "Why one environment is built and performs the way it does, from the day it is born. The facts (C11, C12) say what an environment is and how it behaves; the runs (C17) and avd-swarm's plans (C10) say what was done to it. Neither says why: which use cases it serves, what was decided at each step, w..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c19-avd-intakev1",
+      "title": "C19. avd-intake/v1",
+      "contracts": [
+        "C11",
+        "C15"
+      ],
+      "text": "intake.json: what telemetry can't know about an estate, answered once by the operator. Each field is one intake. fact in the register (C15), at the same path: /residency (required or not, and the regions), /preferredRegions (up to three, most preferred first), /existingHub (none, azure-hub, vwan,..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c19-avd-intakev1",
+      "title": "C19. avd-intake/v1",
+      "contracts": [
+        "C11",
+        "C15"
+      ],
+      "text": "intake.json: what telemetry can't know about an estate, answered once by the operator. Each field is one intake. fact in the register (C15), at the same path: /residency (required or not, and the regions), /preferredRegions (up to three, most preferred first), /existingHub (none, azure-hub, vwan,..."
     },
     {
       "repo": "avd-second-brain",
@@ -3771,6 +4394,46 @@
       "title": "C2. Vault → knowledge",
       "contracts": [],
       "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c2-vault--knowledge",
+      "title": "C2. Vault → knowledge",
+      "contracts": [],
+      "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c2-vault--knowledge",
+      "title": "C2. Vault → knowledge",
+      "contracts": [],
+      "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c20-avd-assess-indexv1-and-avd-assess-methodv1",
+      "title": "C20. avd-assess-index/v1 and avd-assess-method/v1",
+      "contracts": [
+        "C14"
+      ],
+      "text": "avd-assess is the family's assessment methodology (assess spec). It publishes two JSON documents, so no reader needs a YAML parser: - index.json (assess-index.schema.json), generated from its references/, observations/ and gaps/ and checked fresh by its CI. A reference is pinned to an immutable v..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c20-avd-assess-indexv1-and-avd-assess-methodv1",
+      "title": "C20. avd-assess-index/v1 and avd-assess-method/v1",
+      "contracts": [
+        "C14"
+      ],
+      "text": "avd-assess is the family's assessment methodology (assess spec). It publishes two JSON documents, so no reader needs a YAML parser: - index.json (assess-index.schema.json), generated from its references/, observations/ and gaps/ and checked fresh by its CI. A reference is pinned to an immutable v..."
     },
     {
       "repo": "avd-second-brain",
@@ -3800,10 +4463,76 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c21-avd-assessmentv1",
+      "title": "C21. avd-assessment/v1",
+      "contracts": [
+        "C11",
+        "C19",
+        "C21"
+      ],
+      "text": "One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c21-avd-assessmentv1",
+      "title": "C21. avd-assessment/v1",
+      "contracts": [
+        "C11",
+        "C19",
+        "C21"
+      ],
+      "text": "One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, a..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c3-engagement--knowledge",
       "title": "C3. Engagement → knowledge",
       "contracts": [],
       "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c3-engagement--knowledge",
+      "title": "C3. Engagement → knowledge",
+      "contracts": [],
+      "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c3-engagement--knowledge",
+      "title": "C3. Engagement → knowledge",
+      "contracts": [],
+      "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c4-avd-sizing-evidencev1",
+      "title": "C4. avd-sizing-evidence/v1",
+      "contracts": [
+        "C5"
+      ],
+      "text": "One document per period (and wave, for the factory). There's no field for a name: no host pool, host, resource or user name can travel in it. Conversion. Sessions per host at the target utilization (knowledge/rules/workload-tiers.json, 0.8) = peak sessions per host × target ÷ the higher of p95 CP..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c4-avd-sizing-evidencev1",
+      "title": "C4. avd-sizing-evidence/v1",
+      "contracts": [
+        "C5"
+      ],
+      "text": "One document per period (and wave, for the factory). There's no field for a name: no host pool, host, resource or user name can travel in it. Conversion. Sessions per host at the target utilization (knowledge/rules/workload-tiers.json, 0.8) = peak sessions per host × target ÷ the higher of p95 CP..."
     },
     {
       "repo": "avd-second-brain",
@@ -3829,6 +4558,42 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c5-host-pool-tags",
+      "title": "C5. Host pool tags",
+      "contracts": [],
+      "text": "They hold no customer data: the engagement ID is pseudonymous by construction."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c5-host-pool-tags",
+      "title": "C5. Host pool tags",
+      "contracts": [],
+      "text": "They hold no customer data: the engagement ID is pseudonymous by construction."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c6-reading-the-knowledge-base",
+      "title": "C6. Reading the knowledge base",
+      "contracts": [],
+      "text": "Consumers read the JSON files directly, validated against knowledge/schemas/, at a commit they record (the factory's manifest field brainCommit). They cite entries as knowledge/catalog/apps.json#<id> and knowledge/rules/<id>.json@v<version>. Calibration factors are computed with Get-SizingCalibra..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c6-reading-the-knowledge-base",
+      "title": "C6. Reading the knowledge base",
+      "contracts": [],
+      "text": "Consumers read the JSON files directly, validated against knowledge/schemas/, at a commit they record (the factory's manifest field brainCommit). They cite entries as knowledge/catalog/apps.json#<id> and knowledge/rules/<id>.json@v<version>. Calibration factors are computed with Get-SizingCalibra..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c6-reading-the-knowledge-base",
       "title": "C6. Reading the knowledge base",
       "contracts": [],
@@ -3847,10 +4612,74 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
+      "anchor": "c7-searchable-docs",
+      "title": "C7. Searchable docs",
+      "contracts": [],
+      "text": "sources/sources.json lists each repo, the ref to follow, and the Markdown paths worth searching. scripts/Sync-BrainSources.ps1 checks them out into .sources/ (git-ignored) and records each commit in .sources/lock.json, so a citation names the exact text: avd-landing-zone@5f10290:docs/gotchas.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c7-searchable-docs",
+      "title": "C7. Searchable docs",
+      "contracts": [],
+      "text": "sources/sources.json lists each repo, the ref to follow, and the Markdown paths worth searching. scripts/Sync-BrainSources.ps1 checks them out into .sources/ (git-ignored) and records each commit in .sources/lock.json, so a citation names the exact text: avd-landing-zone@5f10290:docs/gotchas.md."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
       "anchor": "c8-avd-swarm-insightsv1-specified",
       "title": "C8. avd-swarm-insights/v1 (specified)",
       "contracts": [],
       "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c8-avd-swarm-insightsv1-specified",
+      "title": "C8. avd-swarm-insights/v1 (specified)",
+      "contracts": [],
+      "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c8-avd-swarm-insightsv1-specified",
+      "title": "C8. avd-swarm-insights/v1 (specified)",
+      "contracts": [],
+      "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c9-playbook-run-proposal-specified-after-v1",
+      "title": "C9. Playbook run proposal (specified, after v1)",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C15"
+      ],
+      "text": "How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it (avd-swarm spec §5). Shape: Rules. - Targets are hints...."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/contracts.md",
+      "anchor": "c9-playbook-run-proposal-specified-after-v1",
+      "title": "C9. Playbook run proposal (specified, after v1)",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C15"
+      ],
+      "text": "How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it (avd-swarm spec §5). Shape: Rules. - Targets are hints...."
     },
     {
       "repo": "avd-second-brain",
@@ -5580,6 +6409,83 @@
     {
       "repo": "avd-second-brain",
       "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "",
+      "title": "0020. The brain is the why layer: one lifecycle record per environment, from its birth",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [
+        "C14"
+      ],
+      "text": "- Good, because \"why is it like this\" gets an answer with citations, and \"what changed that nobody decided\" becomes a check. - Good, because a decision whose reason has gone away (the peak it was sized for, the round-trip time that picked the region) comes back for review. - Good, because general..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "considered-options",
+      "title": "Considered Options",
+      "contracts": [
+        "C14",
+        "C18"
+      ],
+      "text": "- A pseudonymous lifecycle record per environment (contract C18) that links use cases, decisions and events to the facts, runs, plans and manifests that already exist - Keep the why in the vault's free-text ADRs and let a model read them - Extend C14 so the manifest carries every later decision too"
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "context-and-problem-statement",
+      "title": "Context and Problem Statement",
+      "contracts": [
+        "C10",
+        "C11",
+        "C12",
+        "C14",
+        "C17"
+      ],
+      "text": "The owner set the brain's role on 2026-10-20: avd-second-brain is the layer that understands why AVD is built and performing the way it is, including its use cases and the decisions made in building, configuring, expanding, contracting and fixing the environment, from the time it is born onwards;..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "decision-outcome",
+      "title": "Decision Outcome",
+      "contracts": [
+        "C7",
+        "C10",
+        "C11",
+        "C14",
+        "C15",
+        "C17",
+        "C18"
+      ],
+      "text": "Chosen option: \"A pseudonymous lifecycle record per environment\", because it reuses every existing contract by reference instead of copying it, keeps tenant data in the vault, and gives the agents a why they can cite and the checks a gap they can find. - Brain = why, avd-swarm = how. The brain ke..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md",
+      "anchor": "more-information",
+      "title": "More Information",
+      "contracts": [
+        "C10",
+        "C14",
+        "C17"
+      ],
+      "text": "- Built offline: the schema, the example, Test-LifecycleRecord, Get-LifecycleExplanation, Get-LifecycleReview, ConvertFrom-TargetStateDecision and their tests in tests/Connectors.Tests.ps1. The writers from C17, the vault's /capture and avd-swarm's C10 are specified, not built, and follow the bui..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
       "path": "docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md",
       "anchor": "",
       "title": "0021. The foundation's contracts live in avd-assess",
@@ -6338,6 +7244,15 @@
       "title": "How to add to it",
       "contracts": [],
       "text": "Two ways in, both reviewed before anything merges: out of date or is missing), a Known error issue, or a Suggest an expert to follow issue. When a maintainer labels it kb-accepted, a workflow turns it into a pull request. See curation.md. and the versions it applies to. Mark anything you haven't ..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/knowledge/README.md",
+      "anchor": "if-something-private-is-already-public",
+      "title": "If something private is already public",
+      "contracts": [],
+      "text": "A removal PR fixes the current files, not what GitHub keeps. Checked 2026-10-21 in a sweep of the five public AVD repos: - Old commits stay reachable after a removal PR, and after a history rewrite too: through pull request refs, cached commit views by SHA, forks and clones. Only GitHub Support c..."
     },
     {
       "repo": "avd-second-brain",
@@ -7721,6 +8636,17 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/vault.md",
+      "anchor": "lifecycle-records-the-why-for-the-brains-agents",
+      "title": "Lifecycle records: the why for the brain's agents",
+      "contracts": [
+        "C18"
+      ],
+      "text": "The ADRs say why, in full, for people. The brain's agents read only pseudonymous data, so each environment also gets a lifecycle record, lifecycle/<environment>.json (avd-lifecycle-record/v1, contract C18): its use cases, every decision with what else was considered and why not, and the events th..."
+    },
+    {
+      "repo": "avd-second-brain",
+      "commit": "",
+      "path": "docs/vault.md",
       "anchor": "limits",
       "title": "Limits",
       "contracts": [],
@@ -7750,7 +8676,9 @@
       "path": "docs/vault.md",
       "anchor": "what-it-gives-you",
       "title": "What it gives you",
-      "contracts": [],
+      "contracts": [
+        "C18"
+      ],
       "text": ""
     },
     {
@@ -7845,7 +8773,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "",
       "title": "avd-buddy as an installable web app",
@@ -7854,7 +8782,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "1-what-it-is-in-one-paragraph",
       "title": "1. What it is, in one paragraph",
@@ -7863,7 +8791,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "10-voice-and-calm",
       "title": "10. Voice and calm",
@@ -7872,7 +8800,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "11-design",
       "title": "11. Design",
@@ -7881,7 +8809,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "12-testing",
       "title": "12. Testing",
@@ -7890,7 +8818,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "13-phases",
       "title": "13. Phases",
@@ -7899,7 +8827,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "14-prior-art",
       "title": "14. Prior art",
@@ -7908,7 +8836,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "15-open-questions",
       "title": "15. Open questions",
@@ -7917,7 +8845,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "2-rules",
       "title": "2. Rules",
@@ -7926,7 +8854,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "3-screens",
       "title": "3. Screens",
@@ -7935,7 +8863,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "4-sign-in-with-entra",
       "title": "4. Sign-in with Entra",
@@ -7944,7 +8872,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "5-installable",
       "title": "5. Installable",
@@ -7953,7 +8881,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "6-the-icon-as-a-swappable-asset",
       "title": "6. The icon, as a swappable asset",
@@ -7962,7 +8890,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "61-one-source-one-setting",
       "title": "6.1 One source, one setting",
@@ -7971,7 +8899,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "62-the-owners-icon-by-an-accepted-risk-decision",
       "title": "6.2 The owner's icon, by an accepted-risk decision",
@@ -7980,7 +8908,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "7-push-notifications-later-opt-in-and-empty",
       "title": "7. Push notifications: later, opt-in, and empty",
@@ -7989,7 +8917,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "8-privacy-and-security",
       "title": "8. Privacy and security",
@@ -7998,7 +8926,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-app.md",
       "anchor": "9-hosting-performance-and-accessibility",
       "title": "9. Hosting, performance and accessibility",
@@ -8007,7 +8935,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "",
       "title": "avd-buddy's voice: a teacher with a sense of humor",
@@ -8016,7 +8944,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "1-purpose-leave-the-operator-more-capable",
       "title": "1. Purpose: leave the operator more capable",
@@ -8025,7 +8953,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "10-open-questions",
       "title": "10. Open questions",
@@ -8034,7 +8962,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "2-the-voice",
       "title": "2. The voice",
@@ -8043,7 +8971,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "3-teaching",
       "title": "3. Teaching",
@@ -8054,7 +8982,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "4-two-modes-and-how-avd-buddy-picks-one",
       "title": "4. Two modes, and how avd-buddy picks one",
@@ -8063,7 +8991,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "5-what-may-be-funny-and-what-never-is",
       "title": "5. What may be funny, and what never is",
@@ -8072,7 +9000,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "6-where-humor-lives-a-separate-flavor-layer",
       "title": "6. Where humor lives: a separate flavor layer",
@@ -8083,7 +9011,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "7-accessibility-and-translation",
       "title": "7. Accessibility and translation",
@@ -8092,7 +9020,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "8-evaluation",
       "title": "8. Evaluation",
@@ -8101,7 +9029,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "9-prior-art",
       "title": "9. Prior art",
@@ -8110,7 +9038,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/buddy-voice.md",
       "anchor": "examples",
       "title": "Examples",
@@ -8119,7 +9047,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "",
       "title": "0001. Operate the AVD estate through chat agents that read freely and change nothing without a person's approval",
@@ -8128,7 +9056,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -8137,7 +9065,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8146,7 +9074,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "context",
       "title": "Context",
@@ -8155,7 +9083,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8164,7 +9092,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "",
       "title": "0002. A governance gate, an external observer hook and a kill switch that fail closed",
@@ -8173,7 +9101,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -8182,7 +9110,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8191,7 +9119,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "context",
       "title": "Context",
@@ -8200,7 +9128,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8209,7 +9137,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "",
       "title": "0003. avd-swarm is the actor and control layer; the second brain is its intelligence layer",
@@ -8218,7 +9146,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8227,7 +9155,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "context",
       "title": "Context",
@@ -8236,7 +9164,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8249,7 +9177,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "supersedes",
       "title": "Supersedes",
@@ -8258,7 +9186,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "",
       "title": "0004. Scribe drafts docs fixes; the brain decides what is inconsistent",
@@ -8267,7 +9195,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8278,7 +9206,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "context",
       "title": "Context",
@@ -8287,7 +9215,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8298,7 +9226,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "",
       "title": "0005. The write path runs in a private adopter repo; solo mode replaces a second person",
@@ -8307,7 +9235,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8316,7 +9244,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "context",
       "title": "Context",
@@ -8325,7 +9253,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8334,7 +9262,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "",
       "title": "0006. avd-swarm runs the landing zone's recovery tests and failover as catalog actions",
@@ -8343,7 +9271,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8356,7 +9284,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "context",
       "title": "Context",
@@ -8365,7 +9293,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8374,7 +9302,51 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "path": "docs/decisions/0007-every-plan-says-why.md",
+      "anchor": "",
+      "title": "0007. avd-swarm is the how; every plan says why, and the brain keeps it",
+      "contracts": [
+        "C18"
+      ],
+      "text": ""
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "path": "docs/decisions/0007-every-plan-says-why.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [
+        "C10"
+      ],
+      "text": "- One more required block per plan. Agents draft it from the request and the brain's answer; a person approves it. - The brain can answer \"why is it like this?\" for changes the swarm made, and flag the ones nobody decided. - C10 grows by four fields (plan ID, event kind, use cases, decision ID), ..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "path": "docs/decisions/0007-every-plan-says-why.md",
+      "anchor": "context",
+      "title": "Context",
+      "contracts": [],
+      "text": "The owner set the roles on 2026-10-20: the second brain understands why AVD is built and performing the way it is, from each environment's birth onwards (its use cases and the decisions made in building, configuring, expanding, contracting and fixing it); \"swarm is the how\". A plan today says wha..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "path": "docs/decisions/0007-every-plan-says-why.md",
+      "anchor": "decision",
+      "title": "Decision",
+      "contracts": [
+        "C9",
+        "C10",
+        "C18"
+      ],
+      "text": "- avd-swarm is the how. Plans, the gate, approval, the executor, verification, rollback and the kill switch stay here (decision 0003). The brain keeps and explains the why in its lifecycle record (C18). - Every plan carries a why block (spec §6f): the lifecycle event kind (build, configure, expan..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "",
       "title": "Governance, the external observer and the kill switch",
@@ -8383,7 +9355,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "1-why",
       "title": "1. Why",
@@ -8392,7 +9364,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "2-three-parts",
       "title": "2. Three parts",
@@ -8401,20 +9373,21 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "21-governance-gate",
       "title": "2.1 Governance gate",
       "contracts": [
         "C9",
         "C11",
-        "C12"
+        "C12",
+        "C18"
       ],
       "text": "Every plan passes the gate before it is shown for approval, and again in the job before it runs. The gate is deterministic code with the policy in Git (governance/policy.yml, a protected path). No model is involved. Write the policy in Rego or Cedar and evaluate it through Microsoft's Agent Gover..."
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "22-external-observer-hook",
       "title": "2.2 External observer hook",
@@ -8423,7 +9396,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "23-kill-switch",
       "title": "2.3 Kill switch",
@@ -8434,7 +9407,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "24-watchdog-rules",
       "title": "2.4 Watchdog rules",
@@ -8443,7 +9416,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "25-compliance-gate-defender-for-cloud",
       "title": "2.5 Compliance gate (Defender for Cloud)",
@@ -8454,7 +9427,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "26-solo-mode-and-team-mode-r19",
       "title": "2.6 Solo mode and team mode (R19)",
@@ -8463,7 +9436,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "3-relationship-to-the-second-brain",
       "title": "3. Relationship to the second brain",
@@ -8474,7 +9447,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/governance.md",
       "anchor": "4-open-questions",
       "title": "4. Open questions",
@@ -8483,7 +9456,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/identities.md",
       "anchor": "",
       "title": "Identities: who runs what, with which rights",
@@ -8492,7 +9465,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/identities.md",
       "anchor": "1-the-identities",
       "title": "1. The identities",
@@ -8503,7 +9476,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/identities.md",
       "anchor": "2-decisions",
       "title": "2. Decisions",
@@ -8512,7 +9485,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/identities.md",
       "anchor": "3-setup-script-to-build-s1",
       "title": "3. Setup script (to build, S1)",
@@ -8521,7 +9494,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "",
       "title": "avd-swarm prior art review (as of 2026-10-17)",
@@ -8530,7 +9503,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "1-microsoft",
       "title": "1. Microsoft",
@@ -8539,7 +9512,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "2-avd-management-tools",
       "title": "2. AVD management tools",
@@ -8548,7 +9521,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "3-published-patterns-and-open-source",
       "title": "3. Published patterns and open source",
@@ -8557,7 +9530,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "4-chat-to-manage-azure-and-entra-end-to-end",
       "title": "4. \"Chat to manage Azure and Entra\" end to end",
@@ -8566,7 +9539,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/prior-art.md",
       "anchor": "recommendations-for-the-spec",
       "title": "Recommendations for the spec",
@@ -8575,7 +9548,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "",
       "title": "Spec: recovery tests and failover, run by avd-swarm",
@@ -8586,7 +9559,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -8595,7 +9568,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "10-phases",
       "title": "10. Phases",
@@ -8604,7 +9577,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -8613,7 +9586,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "3-the-recovery-agent",
       "title": "3. The Recovery agent",
@@ -8625,7 +9598,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "4-catalog-actions",
       "title": "4. Catalog actions",
@@ -8636,7 +9609,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "5-identities",
       "title": "5. Identities",
@@ -8645,7 +9618,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "6-governance",
       "title": "6. Governance",
@@ -8654,7 +9627,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "61-gate",
       "title": "6.1 Gate",
@@ -8663,7 +9636,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "62-kill-switch",
       "title": "6.2 Kill switch",
@@ -8672,7 +9645,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "63-watchdog",
       "title": "6.3 Watchdog",
@@ -8681,7 +9654,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "64-when-avd-swarm-itself-is-down",
       "title": "6.4 When avd-swarm itself is down",
@@ -8690,7 +9663,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "65-events",
       "title": "6.5 Events",
@@ -8699,7 +9672,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "7-what-goes-back-to-the-brain",
       "title": "7. What goes back to the brain",
@@ -8713,7 +9686,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "8-scope-and-the-hooks-later-work-builds-on",
       "title": "8. Scope and the hooks later work builds on",
@@ -8725,7 +9698,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "9-open-questions-for-the-owner",
       "title": "9. Open questions for the owner",
@@ -8734,7 +9707,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "goals",
       "title": "Goals",
@@ -8743,7 +9716,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/recovery.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -8752,7 +9725,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/redteam.md",
       "anchor": "",
       "title": "Red team: avd-swarm spec and governance (2026-10-17)",
@@ -8761,7 +9734,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/redteam.md",
       "anchor": "findings",
       "title": "Findings",
@@ -8770,7 +9743,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/redteam.md",
       "anchor": "not-resolved-here",
       "title": "Not resolved here",
@@ -8781,7 +9754,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/redteam.md",
       "anchor": "second-red-team-2026-10-19-avd-swarm-with-the-second-brain",
       "title": "Second red team (2026-10-19): avd-swarm with the second brain",
@@ -8793,7 +9766,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/redteam.md",
       "anchor": "what-held-up",
       "title": "What held up",
@@ -8802,7 +9775,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "",
       "title": "spikes/s1a/infra/main.bicep",
@@ -8811,7 +9784,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "outputs",
       "title": "Outputs",
@@ -8820,7 +9793,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8829,7 +9802,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-Invoke-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/Invoke-Spike.ps1",
@@ -8838,7 +9811,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-Invoke-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8847,7 +9820,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Connect-SpikeAgent.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Connect-SpikeAgent.ps1",
@@ -8856,7 +9829,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Connect-SpikeAgent.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8865,7 +9838,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeEstimate.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Get-SpikeEstimate.ps1",
@@ -8874,7 +9847,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeEstimate.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8883,7 +9856,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeToken.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Get-SpikeToken.ps1",
@@ -8892,7 +9865,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeToken.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8901,7 +9874,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Remove-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Remove-Spike.ps1",
@@ -8910,7 +9883,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Remove-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8919,7 +9892,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Start-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Start-Spike.ps1",
@@ -8928,7 +9901,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/reference/spikes-s1a-scripts-Start-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -8937,7 +9910,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "",
       "title": "AI security tooling: defending the swarm, and security signal for operators",
@@ -8946,7 +9919,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "1-ranked-recommendation",
       "title": "1. Ranked recommendation",
@@ -8955,7 +9928,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "2-a-gap-this-review-found-proposed-r26",
       "title": "2. A gap this review found (proposed R26)",
@@ -8964,7 +9937,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "3-prompt-shields-in-the-model-client",
       "title": "3. Prompt Shields in the model client",
@@ -8978,7 +9951,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "4-decoy-tools-and-the-unknown-tool-tripwire",
       "title": "4. Decoy tools and the unknown-tool tripwire",
@@ -8987,7 +9960,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "5-red-teaming-our-own-agents",
       "title": "5. Red-teaming our own agents",
@@ -8998,7 +9971,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "6-security-signal-for-operators-avd-hunts",
       "title": "6. Security signal for operators: AVD hunts",
@@ -9007,7 +9980,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "61-what-exists-upstream",
       "title": "6.1 What exists upstream",
@@ -9016,7 +9989,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "62-the-hunts",
       "title": "6.2 The hunts",
@@ -9025,7 +9998,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "63-two-ways-to-run-them",
       "title": "6.3 Two ways to run them",
@@ -9034,7 +10007,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "7-licenses",
       "title": "7. Licenses",
@@ -9043,7 +10016,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "8-the-first-pr",
       "title": "8. The first PR",
@@ -9054,7 +10027,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/security-tooling.md",
       "anchor": "9-open-questions",
       "title": "9. Open questions",
@@ -9063,7 +10036,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "",
       "title": "Spec: avd-swarm, an agent-based Azure and Entra self-management platform, with avd-buddy as its chat front end",
@@ -9072,7 +10045,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -9082,13 +10055,14 @@
         "C10",
         "C11",
         "C12",
-        "C13"
+        "C13",
+        "C18"
       ],
       "text": "avd-swarm is an agent-based platform for managing Azure and Entra ID without the portals, starting with AVD. A coordinator agent answers questions and hands work to specialist agents covering the whole AVD lifecycle: readiness, deployment, hosts, images, users and access, and cost. avd-buddy is i..."
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "10-open-questions",
       "title": "10. Open questions",
@@ -9099,7 +10073,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -9108,7 +10082,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "3-architecture",
       "title": "3. Architecture",
@@ -9120,7 +10094,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "3a-azure-sre-agent-an-optional-add-on-proposed-2026-10-20",
       "title": "3a. Azure SRE Agent, an optional add-on (proposed 2026-10-20)",
@@ -9132,7 +10106,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "4-agents",
       "title": "4. Agents",
@@ -9144,7 +10118,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "4a-how-a-question-is-answered-split-fan-out-check-merge",
       "title": "4a. How a question is answered: split, fan out, check, merge",
@@ -9158,7 +10132,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "5-write-path",
       "title": "5. Write path",
@@ -9169,7 +10143,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "5a-action-safety-rules-ported-from-the-brains-playbooks",
       "title": "5a. Action safety rules (ported from the brain's playbooks)",
@@ -9181,7 +10155,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "5b-where-the-write-path-runs-the-project-and-its-adopters",
       "title": "5b. Where the write path runs: the project and its adopters",
@@ -9190,7 +10164,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6-identity-and-data",
       "title": "6. Identity and data",
@@ -9199,7 +10173,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6a-governance-observer-and-kill-switch",
       "title": "6a. Governance, observer and kill switch",
@@ -9208,7 +10182,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6b-self-improvement-from-conversations",
       "title": "6b. Self-improvement from conversations",
@@ -9217,7 +10191,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6c-what-feeds-the-second-brain",
       "title": "6c. What feeds the second brain",
@@ -9226,13 +10200,14 @@
         "C7",
         "C8",
         "C9",
-        "C10"
+        "C10",
+        "C18"
       ],
       "text": "What avd-swarm learns also feeds avd-second-brain, so the factory, the landing zone and future estates benefit. The brain's rule holds: only generalized knowledge enters knowledge/, only by a PR a person merges, and never transcripts or tenant data. Both sides count: what went well and what peopl..."
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6d-facts-from-avd-current-state",
       "title": "6d. Facts from avd-current-state",
@@ -9248,7 +10223,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "6e-scribe-drafting-docs-fixes-from-the-brains-findings",
       "title": "6e. Scribe: drafting docs fixes from the brain's findings",
@@ -9260,7 +10235,20 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "path": "docs/spec.md",
+      "anchor": "6f-every-plan-says-why-brain-contract-c18",
+      "title": "6f. Every plan says why (brain contract C18)",
+      "contracts": [
+        "C9",
+        "C10",
+        "C18"
+      ],
+      "text": "avd-swarm is the how; the brain is the why (decision 0007, brain decision 0020). The brain keeps one lifecycle record per environment, from its birth: the use cases it serves, every decision about it with what else was considered and why not, and the events that carried them out (brain contract C..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "7-cost",
       "title": "7. Cost",
@@ -9269,7 +10257,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "7a-spend-control-placeholder",
       "title": "7a. Spend control (placeholder)",
@@ -9278,7 +10266,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "8-scope",
       "title": "8. Scope",
@@ -9287,7 +10275,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "9-phases",
       "title": "9. Phases",
@@ -9296,7 +10284,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "9a-build-order-proposed-2026-10-19-after-the-second-red-team",
       "title": "9a. Build order (proposed 2026-10-19, after the second red team)",
@@ -9309,7 +10297,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "goals",
       "title": "Goals",
@@ -9318,7 +10306,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -9327,7 +10315,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spec.md",
       "anchor": "the-base-pair-stands-alone-invariant",
       "title": "The base pair stands alone (invariant)",
@@ -9336,7 +10324,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "",
       "title": "Spend as a built-in function",
@@ -9345,7 +10333,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "1-why",
       "title": "1. Why",
@@ -9354,7 +10342,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "2-one-public-guard-records-you-keep",
       "title": "2. One public guard, records you keep",
@@ -9363,7 +10351,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "3-what-it-adds-to-avd-swarm",
       "title": "3. What it adds to avd-swarm",
@@ -9372,7 +10360,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "31-cost-agent-spec-4",
       "title": "3.1 Cost agent (spec §4)",
@@ -9381,7 +10369,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "32-plans-that-cost-money-carry-a-run-governance-21-budget-rule",
       "title": "3.2 Plans that cost money carry a run (governance §2.1, Budget rule)",
@@ -9390,7 +10378,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "33-stopping-spend-is-never-blocked",
       "title": "3.3 Stopping spend is never blocked",
@@ -9399,7 +10387,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "34-watchdog-and-observer-events-governance-22-24",
       "title": "3.4 Watchdog and observer events (governance §2.2, §2.4)",
@@ -9408,7 +10396,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "35-avd-buddy",
       "title": "3.5 avd-buddy",
@@ -9417,7 +10405,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "36-insights-to-the-brain-spec-6c",
       "title": "3.6 Insights to the brain (spec §6c)",
@@ -9426,7 +10414,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "37-token-spend-metered-as-it-happens-capped-outside-r22",
       "title": "3.7 Token spend: metered as it happens, capped outside (R22)",
@@ -9435,7 +10423,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "4-phases",
       "title": "4. Phases",
@@ -9444,7 +10432,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spend.md",
       "anchor": "5-open-questions",
       "title": "5. Open questions",
@@ -9453,7 +10441,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "",
       "title": "S1a spike: does the S1 stack actually work?",
@@ -9462,7 +10450,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "1-what-it-answers",
       "title": "1. What it answers",
@@ -9471,7 +10459,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "2-what-it-deploys",
       "title": "2. What it deploys",
@@ -9480,7 +10468,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "3-cost-estimate-spendmd-format-kind-other",
       "title": "3. Cost estimate (spend.md format, kind other)",
@@ -9489,7 +10477,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "4-steps",
       "title": "4. Steps",
@@ -9498,7 +10486,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "5-result-filled-in-after-the-run",
       "title": "5. Result (filled in after the run)",
@@ -9507,7 +10495,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "6-what-you-need-before-it-can-start",
       "title": "6. What you need before it can start",
@@ -9516,7 +10504,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/spikes/s1a.md",
       "anchor": "7-fallback-without-foundry--provider-anthropic",
       "title": "7. Fallback without Foundry (-Provider Anthropic)",
@@ -9525,7 +10513,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "",
       "title": "avd-swarm v1 completeness review",
@@ -9534,7 +10522,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "1-what-v1-is-proposed",
       "title": "1. What v1 is (proposed)",
@@ -9545,7 +10533,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "2-does-avd-swarm-have-or-need-an-mcp",
       "title": "2. Does avd-swarm have or need an MCP?",
@@ -9554,7 +10542,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "3-what-is-decided",
       "title": "3. What is decided",
@@ -9567,7 +10555,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "4-contradictions-found",
       "title": "4. Contradictions found",
@@ -9580,7 +10568,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "5-gaps-for-v1-with-defaults",
       "title": "5. Gaps for v1, with defaults",
@@ -9589,7 +10577,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "6-the-base-pair-check",
       "title": "6. The base pair check",
@@ -9601,7 +10589,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "7-decisions-only-the-owner-can-make",
       "title": "7. Decisions only the owner can make",
@@ -9610,7 +10598,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/v1-review.md",
       "anchor": "8-red-team-of-the-v1-specs-2026-10-20",
       "title": "8. Red team of the v1 specs (2026-10-20)",
@@ -9622,7 +10610,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "",
       "title": "Spec: a chat-driven Well-Architected review in avd-buddy",
@@ -9631,7 +10619,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -9643,7 +10631,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "10-phases",
       "title": "10. Phases",
@@ -9656,7 +10644,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "11-prior-art",
       "title": "11. Prior art",
@@ -9668,7 +10656,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "12-open-questions",
       "title": "12. Open questions",
@@ -9677,7 +10665,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -9686,7 +10674,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "3-how-the-conversation-goes",
       "title": "3. How the conversation goes",
@@ -9695,7 +10683,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "4-checks-microsofts-lists-our-mapping",
       "title": "4. Checks: Microsoft's lists, our mapping",
@@ -9709,7 +10697,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "5-no-score-of-our-own",
       "title": "5. No score of our own",
@@ -9718,7 +10706,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "6-evidence-the-review-record-and-what-avd-buddy-shows",
       "title": "6. Evidence, the review record and what avd-buddy shows",
@@ -9730,7 +10718,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "6a-how-avd-buddy-shows-it-design-pass",
       "title": "6a. How avd-buddy shows it (design pass)",
@@ -9739,7 +10727,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "7-what-the-second-brain-gives-and-takes",
       "title": "7. What the second brain gives and takes",
@@ -9756,7 +10744,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "8-from-finding-to-fix",
       "title": "8. From finding to fix",
@@ -9765,7 +10753,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "9-evals-safety-and-limits",
       "title": "9. Evals, safety and limits",
@@ -9774,7 +10762,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "goals",
       "title": "Goals",
@@ -9783,7 +10771,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "docs/waf-review.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -9792,7 +10780,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "README.md",
       "anchor": "",
       "title": "avd-swarm",
@@ -9803,7 +10791,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "README.md",
       "anchor": "contributing",
       "title": "Contributing",
@@ -9812,7 +10800,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "README.md",
       "anchor": "entry-points",
       "title": "Entry points",
@@ -9821,7 +10809,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "README.md",
       "anchor": "license",
       "title": "License",
@@ -9830,7 +10818,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "2a090c8920d4e3d9e736fd2a8d22593a39373e6b",
+      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
       "path": "README.md",
       "anchor": "try-it-in-a-lab",
       "title": "Try it in a lab",

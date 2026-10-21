@@ -1,0 +1,208 @@
+{
+  "schema": "avd-lifecycle-record/v1",
+  "estate": "est-2540bffa",
+  "environment": "env-7d41c0e2",
+  "engagement": "eng-2026-11-a7f3",
+  "born": "2026-12-07",
+  "generatedUtc": "2027-03-02T10:00:00Z",
+  "pins": {
+    "factRegister": 1
+  },
+  "useCases": [
+    {
+      "id": "uc-01",
+      "kind": "knowledge-worker",
+      "tier": "medium",
+      "users": "51-200",
+      "persona": "persona-1",
+      "hostPools": ["tp-01", "hp-5e6f7a8b"],
+      "apps": ["microsoft/m365-apps/16", "microsoft/teams/2"],
+      "status": "active",
+      "since": "2026-12-07"
+    },
+    {
+      "id": "uc-02",
+      "kind": "contractor",
+      "tier": "medium",
+      "users": "11-50",
+      "hostPools": ["hp-5e6f7a8b"],
+      "apps": ["microsoft/m365-apps/16"],
+      "status": "active",
+      "since": "2027-02-15",
+      "note": "Seasonal contractors share the knowledge worker pool"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec-0001",
+      "date": "2026-11-30",
+      "phase": "design",
+      "topic": "region",
+      "chosen": "eastus2",
+      "alternatives": [
+        { "value": "centralus", "whyNot": "user-experience", "note": "Higher p95 round trip for most users" }
+      ],
+      "drivers": ["evidence", "user-experience"],
+      "evidence": ["manifest:4f0c9a1b2d3e#region", "c11.hostPool.region@hp-ac5fc5e3", "c12.group.rttMsP95@hp-ac5fc5e3"],
+      "confidence": "medium",
+      "watch": ["c12.group.rttMsP95@hp-5e6f7a8b"],
+      "status": "accepted",
+      "source": "target-state",
+      "decidedBy": "approver"
+    },
+    {
+      "id": "dec-0002",
+      "date": "2026-11-30",
+      "phase": "design",
+      "topic": "hostPool.vmSize",
+      "subjects": ["tp-01"],
+      "useCases": ["uc-01"],
+      "chosen": "Standard_E8as_v5",
+      "alternatives": [
+        { "value": "Standard_D8as_v5", "whyNot": "capacity", "note": "Memory binds before CPU at this tier" }
+      ],
+      "drivers": ["use-case", "evidence", "rule"],
+      "evidence": ["manifest:4f0c9a1b2d3e#hostPool.vmSize", "rule:workload-tiers@v1", "c12.group.perUser.p95MemoryMiB@hp-ac5fc5e3"],
+      "confidence": "high",
+      "watch": ["c12.group.perUser.p95MemoryMiB@hp-5e6f7a8b", "c12.group.perHost.p95MemoryPercent@hp-5e6f7a8b"],
+      "status": "accepted",
+      "source": "target-state",
+      "decidedBy": "factory-rule"
+    },
+    {
+      "id": "dec-0003",
+      "date": "2026-11-30",
+      "phase": "design",
+      "topic": "hostPool.hosts",
+      "subjects": ["tp-01"],
+      "useCases": ["uc-01"],
+      "chosen": 8,
+      "alternatives": [
+        { "value": 7, "whyNot": "risk", "note": "No spare host during ramp-up" }
+      ],
+      "drivers": ["use-case", "evidence", "capacity"],
+      "evidence": ["manifest:4f0c9a1b2d3e#hostPool.hosts", "c12.group.concurrency.peak@hp-ac5fc5e3"],
+      "confidence": "high",
+      "watch": ["c12.group.concurrency.peak@hp-5e6f7a8b"],
+      "status": "superseded",
+      "source": "target-state",
+      "decidedBy": "approver"
+    },
+    {
+      "id": "dec-0004",
+      "date": "2026-12-08",
+      "phase": "configure",
+      "topic": "profiles",
+      "subjects": ["hp-5e6f7a8b", "st-0a9b8c7d"],
+      "useCases": ["uc-01"],
+      "chosen": "AzureFiles-EntraKerberos",
+      "alternatives": [
+        { "value": "AzureFiles-ADDS", "whyNot": "complexity", "note": "Needs domain controllers the estate is retiring" }
+      ],
+      "drivers": ["use-case", "supportability"],
+      "evidence": ["manifest:4f0c9a1b2d3e#identity", "adr:ADR-0003"],
+      "confidence": "high",
+      "status": "accepted",
+      "source": "adr",
+      "decidedBy": "owner"
+    },
+    {
+      "id": "dec-0005",
+      "date": "2026-12-11",
+      "phase": "fix",
+      "topic": "profiles",
+      "subjects": ["st-0a9b8c7d"],
+      "useCases": ["uc-01"],
+      "chosen": { "smbChannelEncryption": "AES-128-GCM AES-256-GCM" },
+      "alternatives": [
+        { "value": { "smbChannelEncryption": "AES-256-GCM" }, "whyNot": "supportability", "note": "Session hosts negotiated AES-128-GCM; profile loads were denied" }
+      ],
+      "drivers": ["incident", "lesson"],
+      "evidence": ["evt-0003", "doc:avd-landing-zone@326a3c5:build/lessons/0028-smb-channel-encryption-entra-kerberos.md"],
+      "confidence": "high",
+      "status": "accepted",
+      "source": "operator",
+      "decidedBy": "operator"
+    },
+    {
+      "id": "dec-0006",
+      "date": "2027-02-10",
+      "phase": "expand",
+      "topic": "hostPool.hosts",
+      "subjects": ["hp-5e6f7a8b"],
+      "useCases": ["uc-01", "uc-02"],
+      "chosen": 10,
+      "alternatives": [
+        { "value": "new-host-pool", "whyNot": "cost", "note": "Same tier and apps; a second pool doubles the spare capacity" },
+        { "value": 9, "whyNot": "risk" }
+      ],
+      "drivers": ["use-case", "capacity"],
+      "evidence": ["c11.hostPool.sessionHosts.sessions@hp-5e6f7a8b", "plan:plan-7c1e2a9d4b"],
+      "confidence": "medium",
+      "watch": ["c12.group.concurrency.peak@hp-5e6f7a8b"],
+      "reviewBy": "2027-05-15",
+      "status": "accepted",
+      "supersedes": "dec-0003",
+      "source": "swarm-plan",
+      "decidedBy": "approver"
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-0001",
+      "utc": "2026-12-07T15:20:00Z",
+      "kind": "born",
+      "decisions": ["dec-0001", "dec-0002", "dec-0003"],
+      "useCases": ["uc-01"],
+      "subjects": ["hp-5e6f7a8b"],
+      "maps": [{ "from": "tp-01", "to": "hp-5e6f7a8b" }],
+      "actor": "landing-zone-run",
+      "run": "run-20261207-1520-q7m2",
+      "outcome": "verified"
+    },
+    {
+      "id": "evt-0002",
+      "utc": "2026-12-08T11:05:00Z",
+      "kind": "configure",
+      "decisions": ["dec-0004"],
+      "subjects": ["st-0a9b8c7d"],
+      "actor": "landing-zone-run",
+      "run": "run-20261208-1105-x4c9",
+      "outcome": "verified"
+    },
+    {
+      "id": "evt-0003",
+      "utc": "2026-12-10T08:40:00Z",
+      "kind": "incident",
+      "useCases": ["uc-01"],
+      "subjects": ["hp-5e6f7a8b", "st-0a9b8c7d"],
+      "actor": "unknown",
+      "outcome": "observed",
+      "note": "Profile containers fail to attach at sign-in: access denied"
+    },
+    {
+      "id": "evt-0004",
+      "utc": "2026-12-11T16:30:00Z",
+      "kind": "fix",
+      "decisions": ["dec-0005"],
+      "subjects": ["st-0a9b8c7d"],
+      "actor": "operator",
+      "outcome": "verified",
+      "evidence": ["evt-0003"]
+    },
+    {
+      "id": "evt-0005",
+      "utc": "2027-02-12T21:00:00Z",
+      "kind": "expand",
+      "decisions": ["dec-0006"],
+      "useCases": ["uc-02"],
+      "subjects": ["hp-5e6f7a8b"],
+      "actor": "swarm-plan",
+      "plan": "plan-7c1e2a9d4b",
+      "outcome": "verified",
+      "change": [
+        { "fact": "c11.hostPool.sessionHosts.total@hp-5e6f7a8b", "before": 8, "after": 10 }
+      ]
+    }
+  ]
+}
