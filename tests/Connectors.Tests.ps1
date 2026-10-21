@@ -366,6 +366,23 @@ Describe 'Entry points' {
   }
 }
 
+Describe 'C8 avd-swarm-insights/v1 (specified)' {
+  # No schema until avd-swarm's Improve exporter is built; until then the contract text is what avd-swarm follows.
+  BeforeAll {
+    $text = Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw
+    $script:c8 = [regex]::Match($text, '(?s)## C8\..*?(?=\n## C9\.)').Value
+  }
+  It 'is specified, with no schema yet' {
+    $c = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw) | Where-Object Id -eq 'C8')[0]
+    $c.Built | Should -BeFalse
+  }
+  It 'names the untrusted-text incident category <category> (avd-swarm red team R26)' -ForEach @(
+    @{ category = 'injection.suspected' }, @{ category = 'decoy.tripped' }, @{ category = 'injection.unscanned' }
+  ) {
+    $script:c8 | Should -Match ([regex]::Escape("``$category``"))
+  }
+}
+
 Describe 'C13 avd-doc-findings/v1' {
   BeforeAll {
     $script:c13 = Join-Path $script:root 'contracts/schemas/doc-findings.schema.json'
