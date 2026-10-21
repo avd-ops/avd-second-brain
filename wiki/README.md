@@ -8,9 +8,9 @@ One map of the AVD repos for people and agents: what each repo does in the lifec
 |---|---|---|
 | [avd-second-brain](avd-second-brain.md) | The brain: knowledge, contracts, the docs check | this commit |
 | [avd-readiness-stratusphere](avd-readiness-stratusphere.md) | Assess and design: the migration factory (estate model, quality gate, analysis, the target-state manifest) | not read (private or unreachable) |
-| [avd-liquidware](avd-liquidware.md) | Deploy Liquidware products in Azure: the Stratusphere UX instrument (moving from avd-readiness-stratusphere), and the optional ProfileUnity, FlexApp and CommandCTRL tier | `6459693` |
-| [avd-current-state](avd-current-state.md) | Inventory and validate: the collector and the deployment validator | `17fe96a` |
-| [avd-landing-zone](avd-landing-zone.md) | Deploy and operate: the cloud-native landing zone and its operations brain | `326a3c5` |
-| [avd-swarm](avd-swarm.md) | Act and control: the agents, the approval path, the executor and the kill switch (decision 0003) | `8a08980` |
+| [avd-liquidware](avd-liquidware.md) | Deploy Liquidware products in Azure: the Stratusphere UX instrument (moving from avd-readiness-stratusphere), and the optional ProfileUnity, FlexApp and CommandCTRL tier | `0232637` |
+| [avd-current-state](avd-current-state.md) | Inventory and validate: the collector and the deployment validator | `7e70fad` |
+| [avd-landing-zone](avd-landing-zone.md) | Deploy and operate: the cloud-native landing zone and its operations brain | `d8772a3` |
+| [avd-swarm](avd-swarm.md) | Act and control: the agents, the approval path, the executor and the kill switch (decision 0003) | `d5c87cd` |
 
 Contracts between the repos: [docs/contracts.md](../docs/contracts.md). Decisions: [docs/knowledge/decisions](../docs/knowledge/decisions/README.md).
