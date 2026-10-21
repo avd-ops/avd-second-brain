@@ -5,6 +5,13 @@ topic: agents
 status: partial
 last_reviewed: 2026-10-21
 sources:
+  - https://github.com/robusta-dev/holmesgpt
+  - https://github.com/Azure/azure-api-mcp
+  - https://github.com/maximhq/bifrost
+  - https://github.com/BerriAI/litellm
+  - https://github.com/IBM/mcp-context-forge
+  - https://github.com/microsoft/agent-governance-toolkit
+  - https://learn.microsoft.com/azure/sre-agent/sub-agents
   - https://github.com/microsoft/PyRIT
   - https://github.com/NVIDIA/garak
   - https://github.com/beelzebub-labs/beelzebub
@@ -69,6 +76,18 @@ Checked on 2026-10-21 when the owner asked whether these native services could r
 - **SRE Agent deploys as code.** Microsoft's microsoft/sre-agent templates deploy the `Microsoft.App/agents` resource, its identity and role assignments from Bicep; hooks, code repositories and knowledge files still go through the data plane ([deploy as code](https://learn.microsoft.com/azure/sre-agent/deploy-iac)). Its command guardrails always block delete and Key Vault commands.
 - **API Management's MCP and token-limit features skip the Consumption tier.** Consumption gives 1M calls a month free and then $0.035 per 10K calls, but it can't expose MCP servers or run `llm-token-limit`. Developer (about $48 a month, no SLA), Basic v2 (about $150 a month) and up can. `llm-token-limit` handles Anthropic Messages only on the v2 tiers ([MCP servers](https://learn.microsoft.com/azure/api-management/mcp-server-overview), [llm-token-limit](https://learn.microsoft.com/azure/api-management/llm-token-limit-policy)).
 - **The AI Gateway tier's runtime keys are secrets that reach everything.** The preview tier (East US 2 and Sweden Central, pricing not announced) authenticates clients with an `api-key` header, and each key can call every model and tool on the gateway. That conflicts with keyless identities and per-agent allowlists, so it isn't a fit until Entra client authentication arrives ([AI Gateway tier](https://learn.microsoft.com/azure/api-management/ai-gateway-overview)).
+
+## Open-source core, optional adapters: what the prior-art check found (2026-10-21)
+
+Checked on 2026-10-21 when the owner dropped the SRE Agent pilot as cost-prohibitive and asked for open-source alternatives inside avd-swarm, with paid Microsoft services as optional adapters ([avd-swarm core-and-adapters.md](https://github.com/avd-ops/avd-swarm/blob/main/docs/core-and-adapters.md), proposed; decision 0023 applied). Licenses were read from each repo's LICENSE file at source. Nothing was deployed or run. Verdict: none of the projects below does avd-swarm's job (keyless Entra identities end to end, the kill switch flag before every call, pseudonymized facts, no Kubernetes, Cloud Shell), so avd-swarm builds and they are the parity checklist.
+
+- **HolmesGPT (Apache-2.0, CNCF sandbox) is the open-source investigator to measure against.** Read-only by design, toolsets declared in YAML with per-toolset instructions, any LLM provider, alert fetch and write-back, and an Operator mode (alpha) with `HealthCheck`, `ScheduledHealthCheck` and `TriggeredHealthCheck` as Kubernetes resources, each run costing at least one model call. It needs a Kubernetes cluster and a Helm chart, which fails the family's Cloud Shell and cost rules for one operator ([repo](https://github.com/robusta-dev/holmesgpt)).
+- **Its Azure reads go through Azure's `azure-api-mcp` (MIT), not the Azure MCP Server.** A Go server that wraps the Azure CLI with a `--readonly` mode, read-only patterns and managed or workload identity sign-in. A second Microsoft-maintained Azure MCP server to know about; avd-swarm keeps the Azure MCP Server (`microsoft/mcp`, MIT) because its `virtualdesktop` namespace and per-tool `--read-only` annotations are what the allowlists already use ([repo](https://github.com/Azure/azure-api-mcp)).
+- **LLM gateways with budgets exist, but their identity model is keys.** Bifrost (Apache-2.0) governs by virtual keys with hierarchical dollar budgets (customer, team, key, provider), rate limits and per-key MCP tool allowlists with default deny; LiteLLM's core is MIT while its `enterprise/` directory (SSO, JWT auth, audit logs) is separately licensed. A virtual key is a secret, which the family rules forbid, and neither does Anthropic workload identity federation or reads a kill switch flag, so avd-swarm's metered client stays its own and these are the checklist for budget hierarchy, default deny and audit ([Bifrost](https://github.com/maximhq/bifrost), [LiteLLM](https://github.com/BerriAI/litellm)).
+- **IBM's MCP Context Forge (Apache-2.0) is the MCP gateway checklist:** federation of MCP servers, REST-to-MCP, per-server policy. avd-swarm's tool layer, published as an MCP server with Entra app-role auth, is measured against what it logs and refuses ([repo](https://github.com/IBM/mcp-context-forge)).
+- **The Agent Governance Toolkit (MIT) is in public preview at v4.1.0** with a Rust policy core, YAML, OPA and Cedar policies, an MCP security gateway (tool poisoning, typosquatting, hidden instructions) and an in-process kill switch in its SRE package; avd-swarm uses it only as the gate's allow-or-deny evaluator, vendored and offline, within governance section 2.1's limits ([repo](https://github.com/microsoft/agent-governance-toolkit)).
+- **SRE Agent's runbooks are Markdown or text knowledge files**, up to 50 MB each and 1,000 per custom agent, indexed for the agent to query; custom agents are YAML (name, system prompt, handoff description, tools, connectors) and get the whole conversation on handoff, and their mode (Review or Autonomous) is set per response plan or scheduled task, not in the YAML ([custom agents](https://learn.microsoft.com/azure/sre-agent/sub-agents)). avd-swarm's runbooks-as-code format keeps the steps fixed in front matter and treats the Markdown as untrusted text.
+- **Logic Apps Automation stays reference only** (see the section above): its workflow chooses the next step at run time, and Microsoft points predictable, scheduled jobs at Logic Apps Standard or Consumption ([compare](https://learn.microsoft.com/azure/logic-apps/automation/compare-automation-services)). avd-swarm's scheduled checks run as GitHub Actions `schedule` jobs in the adopter's private repo with an OIDC read-only identity.
 
 ## Securing the agents and AVD security signal
 

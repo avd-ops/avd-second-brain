@@ -3,7 +3,7 @@ title: "Assessment and sizing"
 summary: "How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence"
 topic: assessment
 status: plan
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Assessment and sizing
@@ -52,6 +52,8 @@ Checked 2026-10-20 for avd-current-state. Every ready-made generator draws real 
   - Graphviz gave the best layout but needs its binary; PSGraph writes attributes in hashtable order, so its DOT text differs between runs even when the SVG doesn't. Diagrammer.Core ships Windows Graphviz binaries and its exporter hung on Linux.
 - Mermaid icons (checked 2026-10-20, Mermaid 11.4.1 offline): flowchart icon shapes (`node@{ icon: "pack:name" }`, 11.3 and later) render only where page JavaScript registers the pack (`mermaid.registerIconPacks`). An icon whose pack isn't registered draws as a grey "?" box. GitHub runs its own Mermaid build and a repository can't register a pack, so a GitHub copy should carry no icon syntax; icons belong in a page or SVG we render. When inlining several Azure SVGs into one pack, prefix the IDs inside each icon, or their gradients collide.
 - Microsoft's [Azure architecture icons](https://learn.microsoft.com/azure/architecture/icons/) may be used in architecture diagrams, training and documentation, and copied or distributed only for that use; Microsoft reserves all other rights, and the icons may not be cropped, flipped, rotated or distorted. That isn't an open license, so the SVGs stay out of MIT repos: the operator supplies the downloaded zip, and an open set such as [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT) is the default.
+- Theming Mermaid in the avd-ops look (checked 2026-10-21, Mermaid 11.4.1, avd-current-state `Get-AvdcsMermaidTheme`): the `base` theme takes the design system's hex tokens through `themeVariables`, so a theme can be generated from the pinned stylesheet for light and dark. An init directive (`%%{init: ...}%%`) with a quoted value inside a value (a font list, CSS) breaks: with escaped double quotes the label font fell back to monospace, and with single quotes both the fonts and `themeCSS` were dropped, while the colors applied either way. Keep the directive to colors and spacing, and put fonts and `themeCSS` (node and cluster corner radii) in `mermaid.initialize()` on a page we render. Load the fonts before `mermaid.run()`, or labels are measured in a fallback font and cut off. A `themeCSS` rule on `.node rect` also rounds stadium shapes, so pick one node shape language per diagram.
+- A report page that must open offline under a strict Content-Security-Policy (`default-src 'none'`, no script) can still carry the design system: inline the vendored stylesheets with each font as a `data:` URI and the mark as an image `data:` URI. About 200 KB a page with six WOFF2 files. A `@media print` block that resets the tokens to their light values gives a light PDF even when the system theme is dark.
 
 ## Shared contracts that work with or without the upper layers
 

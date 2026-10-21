@@ -25,3 +25,10 @@ docs_packaging:
     fix: "A note in the Entra Kerberos and SMB security settings pages"
     status: candidate
     note: "Check the current docs before raising"
+  - id: avd-fslogix-cloud-only-prerequisites
+    title: "AVD prerequisites: FSLogix on Entra joined hosts no longer needs hybrid users"
+    evidence: "https://github.com/avd-ops/avd-assess/blob/main/observations/fslogix-cloud-only-users-work.yaml"
+    why: "The prerequisites and Entra joined session host pages say FSLogix needs hybrid accounts, while the Azure Files Entra Kerberos and FSLogix profile container pages support cloud-only users, and the landing zone runs that way; readers of the older pages plan AD DS they don't need"
+    fix: "Say on both AVD pages that cloud-only and external identities work in the Azure public cloud, and link the Entra Kerberos page"
+    status: candidate
+    note: "Pages checked 2026-10-21 (avd-assess references avd-prerequisites, avd-entra-joined-hosts); check again before raising"
