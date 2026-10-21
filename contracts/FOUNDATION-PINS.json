@@ -1,7 +1,7 @@
 {
   "description": "Foundation contracts (C11, C15, C17, C19, C20, C21) vendored from avd-assess, their authority since decision 0021. Each must be byte-identical to the file at assessCommit; tests/Connectors.Tests.ps1 checks the hashes. To update: copy the files from avd-assess at a new commit, then update assessCommit and the hashes in the same PR. The other files in contracts/ are this repo's own.",
   "source": "https://github.com/nickprignano/avd-assess",
-  "assessCommit": "cbbc0ba566bb42d69acb6ff778b6f78ee19276b5",
+  "assessCommit": "7748e74fb51cc6c720698b3a99f7a7a8a2a3e1b4",
   "files": {
     "examples/assess/assessment.example.json": "5eacd525c2021d5aa501bbbc6adb75e77c476f31a0deed95bd313898f8b8399a",
     "examples/assess/index.example.json": "74e1842775a9e5a08088456d5fc34fd0546c1f45076ec860279721a38f66d7ac",
@@ -11,7 +11,7 @@
     "examples/run-record/journal.example.jsonl": "426c82a90e99d43235dd1c42bb14e9643d1772c0459b9388f0860fe050435902",
     "examples/run-record/run.example.json": "8cf91d7332883a6733bcedcbab72b347e51bd0917402f86fe68bc7244244bebe",
     "fact-register.json": "38ef7792900537f876b032457cf9ddb2459a392b8f2ec1ebb8db65c5508ab24e",
-    "run-use-cases.json": "79ef51bfd86bc4959775ef9fdf92b89cfc88de7524c358672350096424d6060f",
+    "run-use-cases.json": "e9d981d5584df77d3d806dcb248b0a1159c250af8a349a081288ad0e29ac6714",
     "schemas/assess-index.schema.json": "94d5d5312ea4147a37470d27a70dcd41044a1b050c4ec1d50f0fd7ae535d668a",
     "schemas/assess-method.schema.json": "4cc7c96cb05cb1d9d03eac0aa6079e41cf94d128c68d8c3dbc4fc12019c72a51",
     "schemas/assessment.schema.json": "0d8e763a84f726a5dc37f8fbe8f01d7d16b21149b0d784ee2efb5c85cc239c7e",
