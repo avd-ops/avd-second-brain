@@ -1,6 +1,6 @@
 # The estate vault
 
-> **Moved from [avd-current-state](https://github.com/nickprignano/avd-current-state)** (`second-brain/` and `avd_second_brain.ps1` at commit `6245020`). The collector and validator stay there and produce the evidence packages; the vault that remembers them lives here, in `vault/`. It is the **estate** layer of avd-second-brain ([architecture](architecture.md)): it holds one customer's tenant data and never leaves their private repository. Two things connect it to the rest of the brain: `-Init` seeds it with the organization's shared runbooks (`knowledge/runbooks/`), and `scripts/Get-VaultHarvest.ps1` proposes what may cross back into the knowledge base, generalized.
+> **Moved from [avd-current-state](https://github.com/avd-ops/avd-current-state)** (`second-brain/` and `avd_second_brain.ps1` at commit `6245020`). The collector and validator stay there and produce the evidence packages; the vault that remembers them lives here, in `vault/`. It is the **estate** layer of avd-second-brain ([architecture](architecture.md)): it holds one customer's tenant data and never leaves their private repository. Two things connect it to the rest of the brain: `-Init` seeds it with the organization's shared runbooks (`knowledge/runbooks/`), and `scripts/Get-VaultHarvest.ps1` proposes what may cross back into the knowledge base, generalized.
 
 
 An organisational second brain for an Azure Virtual Desktop estate: one place that remembers
@@ -132,7 +132,7 @@ Get-LifecycleExplanation -Record $r.Document -Subject hp-5e6f7a8b    # why this 
 
 ## Limits
 
-- The vault knows only what the collector and validator saw. Their [limitations](https://github.com/nickprignano/avd-current-state/blob/main/README.md#limitations)
+- The vault knows only what the collector and validator saw. Their [limitations](https://github.com/avd-ops/avd-current-state/blob/main/README.md#limitations)
   apply: no OS-level, Intune, Entra ID or effective-network state.
 - Environments are keyed by subscription ID. A subscription's folder name is fixed the first
   time it is seen, so a later rename keeps its history.

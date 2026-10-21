@@ -20,7 +20,7 @@ Azure Virtual Desktop has no native disaster recovery; the operator builds it fr
 
 Chosen option: "The landing zone owns recovery, avd-swarm runs it, the brain judges the results", because it keeps one write path and one kill switch ([0003](0003-brain-thinks-swarm-acts.md)) and one implementation of every restore.
 
-- **Why avd-swarm.** A recovery test creates resources and spends money, and a failover moves every user to another pool: both are changes, so they go through the gate, a person's approval of the exact plan, the observer and the kill switch like every other change. The how is in [avd-swarm's recovery spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/recovery.md) and its decision 0006.
+- **Why avd-swarm.** A recovery test creates resources and spends money, and a failover moves every user to another pool: both are changes, so they go through the gate, a person's approval of the exact plan, the observer and the kill switch like every other change. The how is in [avd-swarm's recovery spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/recovery.md) and its decision 0006.
 - **Why not the brain.** The brain never holds a write credential (0003). Its part is the long view: which tier each estate holds, whether tests keep passing, whether the measured recovery time is growing, and what the family learns from a failure.
 - **A tier counts as met only when a test proved it.** The brain treats a tier claimed without a passing test, measured in the landing zone's run record, as unmet, the same rule as the landing zone's (its recovery spec D3).
 - **Recovery never depends on avd-swarm being up.** In a region outage avd-swarm may be down too; the landing zone's Cloud Shell blocks stay the primary path, and avd-swarm fails closed.
@@ -35,4 +35,4 @@ Chosen option: "The landing zone owns recovery, avd-swarm runs it, the brain jud
 
 ## More Information
 
-Pair: [avd-swarm decision 0006](https://github.com/nickprignano/avd-swarm/blob/main/docs/decisions/0006-recovery-tests-and-failover.md) and its [recovery spec](https://github.com/nickprignano/avd-swarm/blob/main/docs/recovery.md). Builds on avd-landing-zone's recovery spec (draft PR #75), this repo's KB facts on backup and recovery (draft PR #39) and the `recovery` use case for C17 (draft PR #40). Revisit when the first real recovery test has run.
+Pair: [avd-swarm decision 0006](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0006-recovery-tests-and-failover.md) and its [recovery spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/recovery.md). Builds on avd-landing-zone's recovery spec (draft PR #75), this repo's KB facts on backup and recovery (draft PR #39) and the `recovery` use case for C17 (draft PR #40). Revisit when the first real recovery test has run.

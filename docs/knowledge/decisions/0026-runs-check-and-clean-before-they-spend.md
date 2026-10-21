@@ -43,7 +43,7 @@ would make its write access unbounded, so a missing grant always ends in a comma
    [decision 0016](0016-never-delete-the-last-copy.md) protects.
 3. **Retry only what is transient.** Throttling (429), 5xx and timeouts are retried with backoff,
    a bounded number of times, and each retry prints a line. Everything else fails at once with
-   the full error ([avd-landing-zone lesson 0012](https://github.com/nickprignano/avd-landing-zone/blob/master/docs/lessons/0012-diagnose-first.md)).
+   the full error ([avd-landing-zone lesson 0012](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0012-diagnose-first.md)).
 4. **Operator commands run in either shell.** Cloud Shell can open in bash or PowerShell. A block
    given to an operator is one `bash -c '...'` line, or a script run as `bash <file>` or
    `pwsh -File <file>`, which both shells accept. A block that needs one shell says so in its
