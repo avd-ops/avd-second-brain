@@ -98,8 +98,8 @@
 - [0006. Adopt the family KB format at docs/knowledge/, beside the engine's knowledge/](../docs/knowledge/decisions/0006-family-kb-format.md): accepted
 - [0007. Python for the family layer, PowerShell for the engine](../docs/knowledge/decisions/0007-python-family-layer-powershell-engine.md): accepted
 - [0008. Learned knowledge stays where it happened; this KB links and watches](../docs/knowledge/decisions/0008-learned-knowledge-stays-where-it-happened.md): accepted
-- [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): proposed
-- [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): proposed
+- [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): accepted
+- [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): accepted
 - [0011. Family format: link to upstream sources of truth, check against them, and give back](../docs/knowledge/decisions/0011-family-format-upstream-sources.md): proposed
 - [0012. Family format: project lanes, referrals and a no-HCL guard for the AVD repos](../docs/knowledge/decisions/0012-family-format-project-lanes.md): proposed
 - [0013. Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot](../docs/knowledge/decisions/0013-family-format-enforced-kb-capture.md): accepted

@@ -4,28 +4,28 @@
     {
       "name": "avd-liquidware",
       "ref": "main",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43"
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c"
     },
     {
       "name": "avd-current-state",
       "ref": "main",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8"
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0"
     },
     {
       "name": "avd-landing-zone",
       "ref": "master",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff"
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562"
     },
     {
       "name": "avd-swarm",
       "ref": "main",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff"
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897"
     }
   ],
   "chunks": [
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "",
       "title": "AVD Tooling for Azure Commercial",
@@ -34,7 +34,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "assessment-portal",
       "title": "Assessment portal",
@@ -47,7 +47,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "az-modules",
       "title": "Az Modules",
@@ -56,7 +56,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "azure-cloud-shell",
       "title": "Azure Cloud Shell",
@@ -65,7 +65,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "both-scripts",
       "title": "Both scripts",
@@ -74,7 +74,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "collected-datasets",
       "title": "Collected Datasets",
@@ -83,7 +83,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "contributing",
       "title": "Contributing",
@@ -92,7 +92,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "current-state-collector",
       "title": "Current State Collector",
@@ -101,7 +101,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "current-state-collector-1",
       "title": "Current State Collector",
@@ -110,7 +110,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "current-state-collector-2",
       "title": "Current State Collector",
@@ -119,7 +119,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "deployment-validator",
       "title": "Deployment Validator",
@@ -128,16 +128,16 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "deployment-validator-1",
       "title": "Deployment Validator",
       "contracts": [],
-      "text": "- Endpoint probes reflect the machine running the script, not a session host, unless you run it on one. - Policy initiatives are not expanded. Deny effects inside an assigned initiative are reported as unexpanded, not evaluated. - Quota reflects the moment of the run. Another deployment can consu..."
+      "text": "- Endpoint probes reflect the machine running the script, not a session host, unless you run it on one. - Policy effects are read, not simulated. Initiatives are expanded and parameterized effects are resolved, but policy conditions, exemptions and effects set by other template expressions are no..."
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "deployment-validator-2",
       "title": "Deployment Validator",
@@ -146,7 +146,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "entry-points",
       "title": "Entry points",
@@ -155,7 +155,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "facts-snapshot-for-the-brain-and-avd-swarm",
       "title": "Facts snapshot for the brain and avd-swarm",
@@ -166,7 +166,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "from-inventory-to-a-deployment-ready-manifest",
       "title": "From inventory to a deployment-ready manifest",
@@ -178,7 +178,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "license",
       "title": "License",
@@ -187,7 +187,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "limitations",
       "title": "Limitations",
@@ -196,7 +196,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "output-package",
       "title": "Output Package",
@@ -205,7 +205,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "output-package-1",
       "title": "Output Package",
@@ -214,7 +214,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -223,7 +223,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "post-deployment-checks",
       "title": "Post-Deployment Checks",
@@ -232,7 +232,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "preflight-checks",
       "title": "Preflight Checks",
@@ -241,7 +241,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "prerequisites",
       "title": "Prerequisites",
@@ -250,7 +250,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "read-only-by-design",
       "title": "Read-Only by Design",
@@ -259,7 +259,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "result-statuses",
       "title": "Result Statuses",
@@ -268,7 +268,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "run-sequence",
       "title": "Run Sequence",
@@ -277,7 +277,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "second-brain",
       "title": "Second Brain",
@@ -288,7 +288,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "troubleshooting",
       "title": "Troubleshooting",
@@ -297,7 +297,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "usage",
       "title": "Usage",
@@ -306,7 +306,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "usage-1",
       "title": "Usage",
@@ -315,7 +315,7 @@
     },
     {
       "repo": "avd-current-state",
-      "commit": "dce9b28bb2599077a389877a97de79fc98a39aa8",
+      "commit": "b2bcf753af92b72b38995550bf98260b72989fb0",
       "path": "README.md",
       "anchor": "what-it-does",
       "title": "What It Does",
@@ -324,7 +324,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "",
       "title": "Gotchas",
@@ -333,7 +333,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "a-session-host-shows-unavailable-or-never-registers",
       "title": "A session host shows \"Unavailable\" or never registers",
@@ -342,7 +342,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "before-you-deploy",
       "title": "Before you deploy",
@@ -351,7 +351,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "budget-start-date",
       "title": "Budget start date",
@@ -360,7 +360,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "default-outbound-access-cant-be-changed-later",
       "title": "Default outbound access can't be changed later",
@@ -369,7 +369,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "during-and-after-deployment",
       "title": "During and after deployment",
@@ -378,7 +378,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "encryption-at-host-is-a-subscription-feature",
       "title": "Encryption at host is a subscription feature",
@@ -387,7 +387,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "fslogix-profiles-dont-attach",
       "title": "FSLogix profiles don't attach",
@@ -396,7 +396,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "hub-peered-mode-needs-an-egress-path",
       "title": "Hub-peered mode needs an egress path",
@@ -405,7 +405,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "intune-enrollment-needs-intune",
       "title": "Intune enrollment needs Intune",
@@ -414,7 +414,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "key-vault-name-after-teardown",
       "title": "Key Vault name after teardown",
@@ -423,7 +423,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "orphaned-devices",
       "title": "Orphaned devices",
@@ -432,7 +432,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "premium-zrs-file-shares-arent-in-every-region",
       "title": "Premium ZRS file shares aren't in every region",
@@ -441,7 +441,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "teardown",
       "title": "Teardown",
@@ -450,7 +450,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "the-break-glass-password-is-random-and-set-at-host-creation",
       "title": "The break-glass password is random and set at host creation",
@@ -459,7 +459,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "the-storage-account-wont-delete",
       "title": "The storage account won't delete",
@@ -468,7 +468,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/gotchas.md",
       "anchor": "vcpu-quota-and-zonal-capacity",
       "title": "vCPU quota and zonal capacity",
@@ -477,7 +477,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "",
       "title": "Operations scripts (Cloud Shell)",
@@ -486,7 +486,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "auto-shutdown",
       "title": "Auto shutdown",
@@ -495,7 +495,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "cleanup",
       "title": "Cleanup",
@@ -504,7 +504,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "demo-deployment",
       "title": "Demo deployment",
@@ -513,7 +513,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "deployment-portal",
       "title": "Deployment portal",
@@ -522,7 +522,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "exit-codes",
       "title": "Exit codes",
@@ -531,7 +531,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "how-the-ntfs-step-works",
       "title": "How the NTFS step works",
@@ -540,7 +540,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "microsoft-graph-sign-in",
       "title": "Microsoft Graph sign-in",
@@ -549,7 +549,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "post-deployment-preflight-what-it-checks-and-fixes",
       "title": "Post-deployment preflight: what it checks and fixes",
@@ -558,7 +558,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "pre-deployment-preflight",
       "title": "Pre-deployment preflight",
@@ -567,7 +567,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "recovery",
       "title": "Recovery",
@@ -576,7 +576,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "running-them",
       "title": "Running them",
@@ -585,7 +585,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "sizing-and-cost",
       "title": "Sizing and cost",
@@ -594,7 +594,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "verify-access-test-avduserconnectionps1",
       "title": "Verify access: Test-AvdUserConnection.ps1",
@@ -603,7 +603,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "well-architected-review",
       "title": "Well-Architected review",
@@ -612,7 +612,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "docs/operations.md",
       "anchor": "your-own-copy-of-the-portal-optional",
       "title": "Your own copy of the portal (optional)",
@@ -621,7 +621,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "",
       "title": "Cloud-native AVD Landing Zone",
@@ -630,7 +630,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "contributing",
       "title": "Contributing",
@@ -639,7 +639,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "documentation",
       "title": "Documentation",
@@ -648,7 +648,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "entry-points",
       "title": "Entry points",
@@ -657,7 +657,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "license-and-disclaimer",
       "title": "License and disclaimer",
@@ -666,7 +666,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "quick-start",
       "title": "Quick start",
@@ -675,7 +675,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "repo-layout",
       "title": "Repo layout",
@@ -684,7 +684,7 @@
     },
     {
       "repo": "avd-landing-zone",
-      "commit": "c5a4165841f04c6b7338e5350ea11b445b838eff",
+      "commit": "5db21ecc5bb9877119f674f227f6b125f3778562",
       "path": "README.md",
       "anchor": "what-you-get",
       "title": "What you get",
@@ -693,7 +693,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "",
       "title": "2ndbrain: the specification",
@@ -702,7 +702,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "1-layers",
       "title": "1. Layers",
@@ -711,7 +711,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "2-the-format-version-1",
       "title": "2. The format (version 1)",
@@ -720,7 +720,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "3-keeping-a-kb-current",
       "title": "3. Keeping a KB current",
@@ -729,7 +729,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "4-the-family",
       "title": "4. The family",
@@ -738,7 +738,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "5-upstream-sources",
       "title": "5. Upstream sources",
@@ -747,7 +747,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "6-guardrails",
       "title": "6. Guardrails",
@@ -756,7 +756,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "7-directives-and-the-pause-switch",
       "title": "7. Directives and the pause switch",
@@ -765,7 +765,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "8-the-private-layer",
       "title": "8. The private layer",
@@ -774,7 +774,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "9-templates",
       "title": "9. Templates",
@@ -783,7 +783,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "credits",
       "title": "Credits",
@@ -792,7 +792,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "proposed-for-format-version-2",
       "title": "Proposed for format version 2",
@@ -801,7 +801,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/2ndbrain/SPEC.md",
       "anchor": "the-rules-format-version-1-in-force-now",
       "title": "The rules (format version 1, in force now)",
@@ -810,7 +810,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/claude-pilot.md",
       "anchor": "",
       "title": "Model-selection pilot: session measures",
@@ -819,7 +819,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/console.md",
       "anchor": "",
       "title": "The ProfileUnity console: checklist until the silent install is verified",
@@ -828,7 +828,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/console.md",
       "anchor": "after",
       "title": "After",
@@ -837,7 +837,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/console.md",
       "anchor": "before-once-per-tier-from-cloud-shell",
       "title": "Before: once per tier, from Cloud Shell",
@@ -846,7 +846,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/console.md",
       "anchor": "on-the-console",
       "title": "On the console",
@@ -855,7 +855,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0001-optional-tier.md",
       "anchor": "",
       "title": "AL-0001. Liquidware ProfileUnity, FlexApp and CommandCTRL as an optional tier: FSLogix stays the container, FlexApp goes through app attach",
@@ -864,7 +864,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0001-optional-tier.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -873,7 +873,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0001-optional-tier.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -882,7 +882,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0001-optional-tier.md",
       "anchor": "context",
       "title": "Context",
@@ -891,7 +891,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0001-optional-tier.md",
       "anchor": "decision",
       "title": "Decision",
@@ -900,7 +900,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0002-automated-deployment.md",
       "anchor": "",
       "title": "AL-0002. Automated deployment: own resource group and VNet, keyless config with two hands, no console secret",
@@ -909,7 +909,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0002-automated-deployment.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -918,7 +918,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0002-automated-deployment.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -927,7 +927,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0002-automated-deployment.md",
       "anchor": "context",
       "title": "Context",
@@ -936,7 +936,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/AL-0002-automated-deployment.md",
       "anchor": "decision",
       "title": "Decision",
@@ -945,7 +945,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/README.md",
       "anchor": "",
       "title": "Decisions",
@@ -954,7 +954,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/TEMPLATE.md",
       "anchor": "",
       "title": "AL-NNNN. <Decision, as a statement>",
@@ -963,7 +963,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/TEMPLATE.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -972,7 +972,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/TEMPLATE.md",
       "anchor": "context",
       "title": "Context",
@@ -981,7 +981,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/decisions/TEMPLATE.md",
       "anchor": "decision",
       "title": "Decision",
@@ -990,7 +990,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "",
       "title": "Red-team review: automated deployment of ProfileUnity, FlexApp and Stratusphere",
@@ -999,7 +999,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "corrections-to-the-authors-pass",
       "title": "Corrections to the author's pass",
@@ -1012,7 +1012,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "critical",
       "title": "Critical",
@@ -1021,7 +1021,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "critical-1",
       "title": "Critical",
@@ -1035,7 +1035,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-c1-a-subnet-on-the-landing-zones-vnet-doesnt-survive-the-landing-zone",
       "title": "D-C1. A subnet on the landing zone's VNet doesn't survive the landing zone",
@@ -1044,7 +1044,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-c2-a-config-share-on-the-profiles-account-is-user-writable",
       "title": "D-C2. A config share on the profiles account is user-writable",
@@ -1055,7 +1055,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-c3-the-console-can-push-a-logon-policy-to-every-host",
       "title": "D-C3. The console can push a logon policy to every host",
@@ -1066,7 +1066,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-c4-cloud-shell-cant-reach-the-tiers-private-endpoints",
       "title": "D-C4. Cloud Shell can't reach the tier's private endpoints",
@@ -1075,7 +1075,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h1-hosts-created-later-take-logons-without-profileunity",
       "title": "D-H1. Hosts created later take logons without ProfileUnity",
@@ -1084,7 +1084,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h2-a-bad-client-rolls-out-to-every-host-at-once",
       "title": "D-H2. A bad client rolls out to every host at once",
@@ -1093,7 +1093,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h3-the-app-attach-sync-needs-a-client-secret-on-the-console",
       "title": "D-H3. The app attach sync needs a client secret on the console",
@@ -1104,7 +1104,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h4-the-config-account-needs-the-same-entra-kerberos-setup-as-the-profiles-account",
       "title": "D-H4. The config account needs the same Entra Kerberos setup as the profiles account",
@@ -1113,7 +1113,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h5-drains-get-undone-behind-the-syncs-back",
       "title": "D-H5. Drains get undone behind the sync's back",
@@ -1122,7 +1122,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "d-h6-the-budget-lock-doesnt-stop-the-tiers-spend",
       "title": "D-H6. The budget Lock doesn't stop the tier's spend",
@@ -1131,7 +1131,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "high",
       "title": "High",
@@ -1140,7 +1140,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "high-1",
       "title": "High",
@@ -1149,7 +1149,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "independent-pass",
       "title": "Independent pass",
@@ -1158,7 +1158,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "medium",
       "title": "Medium",
@@ -1169,7 +1169,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "medium-1",
       "title": "Medium",
@@ -1178,7 +1178,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-redteam.md",
       "anchor": "verdict",
       "title": "Verdict",
@@ -1192,7 +1192,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "",
       "title": "Spec: automated deployment of ProfileUnity, FlexApp and Stratusphere on Azure Virtual Desktop",
@@ -1203,7 +1203,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "1-what-gets-automated",
       "title": "1. What gets automated",
@@ -1212,7 +1212,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "10-identities-and-secrets",
       "title": "10. Identities and secrets",
@@ -1223,7 +1223,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "11-actions",
       "title": "11. Actions",
@@ -1232,7 +1232,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "12-testing-offline-first",
       "title": "12. Testing, offline first",
@@ -1241,7 +1241,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "13-cost",
       "title": "13. Cost",
@@ -1252,7 +1252,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "14-second-brain-and-swarm",
       "title": "14. Second brain and swarm",
@@ -1266,7 +1266,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "15-build-slices",
       "title": "15. Build slices",
@@ -1277,7 +1277,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "16-unverified-and-the-forks",
       "title": "16. Unverified, and the forks",
@@ -1286,7 +1286,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "2-defaults-picked-and-the-forks-left-for-nick",
       "title": "2. Defaults picked, and the forks left for Nick",
@@ -1299,7 +1299,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "3-shape",
       "title": "3. Shape",
@@ -1308,7 +1308,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "4-reading-the-landing-zone-and-the-only-things-written-to-it",
       "title": "4. Reading the landing zone, and the only things written to it",
@@ -1320,7 +1320,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "5-profileunity-resources",
       "title": "5. ProfileUnity resources",
@@ -1332,7 +1332,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "6-hosts-and-the-console-configuration-by-run-command",
       "title": "6. Hosts and the console: configuration by Run Command",
@@ -1341,7 +1341,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "61-console-install",
       "title": "6.1 Console install",
@@ -1352,7 +1352,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "62-client-install-on-existing-hosts",
       "title": "6.2 Client install on existing hosts",
@@ -1361,7 +1361,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "63-hosts-created-later-d-h1",
       "title": "6.3 Hosts created later (D-H1)",
@@ -1370,7 +1370,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "64-media-without-keys-or-sas-d-m2-d-c4",
       "title": "6.4 Media without keys or SAS (D-M2, D-C4)",
@@ -1381,7 +1381,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "7-profileunity-configuration-staging-then-promote-d-c3",
       "title": "7. ProfileUnity configuration: staging, then promote (D-C3)",
@@ -1393,7 +1393,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "8-flexapp",
       "title": "8. FlexApp",
@@ -1402,7 +1402,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "81-packaging",
       "title": "8.1 Packaging",
@@ -1411,7 +1411,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "82-upload",
       "title": "8.2 Upload",
@@ -1422,7 +1422,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "83-registration-and-assignment-without-the-consoles-secret-d-h3",
       "title": "8.3 Registration and assignment without the console's secret (D-H3)",
@@ -1433,7 +1433,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/deploy-spec.md",
       "anchor": "9-stratusphere-against-the-landing-zone",
       "title": "9. Stratusphere against the landing zone",
@@ -1444,7 +1444,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "",
       "title": "Guardrails",
@@ -1453,7 +1453,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "1-nothing-public-identifies-a-real-account-or-project-ci-gitleaks-validatepy",
       "title": "1. Nothing public identifies a real account or project (CI: gitleaks, validate.py)",
@@ -1462,7 +1462,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "2-secrets-never-pass-through-chat-the-repo-or-the-kb",
       "title": "2. Secrets never pass through chat, the repo or the KB",
@@ -1471,7 +1471,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "3-every-change-through-a-pr-nothing-touches-a-real-account-without-a-yes",
       "title": "3. Every change through a PR; nothing touches a real account without a yes",
@@ -1480,7 +1480,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "4-respect-licenses-unlicensed-code-is-reference-only",
       "title": "4. Respect licenses: unlicensed code is reference only",
@@ -1489,7 +1489,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "5-free-and-open-first-paid-services-need-a-decision",
       "title": "5. Free and open first; paid services need a decision",
@@ -1498,7 +1498,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "6-works-from-a-browser",
       "title": "6. Works from a browser",
@@ -1507,7 +1507,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "7-every-decision-and-lesson-goes-into-the-kb",
       "title": "7. Every decision and lesson goes into the KB",
@@ -1516,7 +1516,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/guardrails.md",
       "anchor": "when-a-guardrail-gets-in-the-way",
       "title": "When a guardrail gets in the way",
@@ -1525,7 +1525,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/avd/fit-with-avd-and-fslogix.md",
       "anchor": "",
       "title": "How Liquidware products fit with Azure Virtual Desktop and FSLogix",
@@ -1534,7 +1534,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/avd/fit-with-avd-and-fslogix.md",
       "anchor": "facts-worth-knowing",
       "title": "Facts worth knowing",
@@ -1543,7 +1543,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/avd/fit-with-avd-and-fslogix.md",
       "anchor": "not-confirmed-yet",
       "title": "Not confirmed yet",
@@ -1552,7 +1552,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/lab-costs.md",
       "anchor": "",
       "title": "Lab costs and teardown",
@@ -1561,7 +1561,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/marketplace.md",
       "anchor": "",
       "title": "Stratusphere in Azure Marketplace",
@@ -1570,7 +1570,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/marketplace.md",
       "anchor": "gotchas",
       "title": "Gotchas",
@@ -1579,7 +1579,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/networking.md",
       "anchor": "",
       "title": "Networking for Stratusphere in Azure",
@@ -1588,7 +1588,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/networking.md",
       "anchor": "egress",
       "title": "Egress",
@@ -1597,7 +1597,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/azure/networking.md",
       "anchor": "peering-and-routes",
       "title": "Peering and routes",
@@ -1606,7 +1606,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "",
       "title": "Keeping the knowledge base current",
@@ -1615,7 +1615,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "checks-on-every-change-kb-validate",
       "title": "Checks on every change (kb-validate)",
@@ -1624,7 +1624,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "feedback-loop-kb-feedback",
       "title": "Feedback loop (kb-feedback)",
@@ -1633,7 +1633,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "freshness-check-kb-freshness",
       "title": "Freshness check (kb-freshness)",
@@ -1642,7 +1642,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "prior-art-check-kb-prior-art",
       "title": "Prior-art check (kb-prior-art)",
@@ -1651,7 +1651,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "staying-aligned-with-the-family",
       "title": "Staying aligned with the family",
@@ -1660,7 +1660,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/curation.md",
       "anchor": "weekly-digest-kb-curator",
       "title": "Weekly digest (kb-curator)",
@@ -1669,7 +1669,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "",
       "title": "0001. Adopt the 2ndbrain knowledge base format, version 1",
@@ -1678,7 +1678,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1687,7 +1687,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1696,7 +1696,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1705,7 +1705,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1714,7 +1714,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0001-adopt-the-2ndbrain-format.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -1723,7 +1723,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "",
       "title": "0002. MIT for the repo; the knowledge base tooling keeps Apache-2.0",
@@ -1732,7 +1732,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1741,7 +1741,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1750,7 +1750,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1759,7 +1759,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1768,7 +1768,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0002-mit-license-apache-kb-tooling.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -1777,7 +1777,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0003-deploy-here-assess-and-design-elsewhere.md",
       "anchor": "",
       "title": "0003. This repo deploys the Liquidware platform; assessment and design live elsewhere",
@@ -1786,7 +1786,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0003-deploy-here-assess-and-design-elsewhere.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1795,7 +1795,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0003-deploy-here-assess-and-design-elsewhere.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1804,7 +1804,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0003-deploy-here-assess-and-design-elsewhere.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1813,7 +1813,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0003-deploy-here-assess-and-design-elsewhere.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1822,7 +1822,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0004-marketplace-appliances-no-vendor-binaries.md",
       "anchor": "",
       "title": "0004. Deploy appliances from Azure Marketplace; no Liquidware binaries or license material in the repo",
@@ -1831,7 +1831,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0004-marketplace-appliances-no-vendor-binaries.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1840,7 +1840,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0004-marketplace-appliances-no-vendor-binaries.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1849,7 +1849,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0004-marketplace-appliances-no-vendor-binaries.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1858,7 +1858,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0004-marketplace-appliances-no-vendor-binaries.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1867,7 +1867,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "",
       "title": "0005. Bicep with pinned Azure Verified Modules, following avd-landing-zone",
@@ -1876,7 +1876,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1885,7 +1885,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1894,7 +1894,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1903,7 +1903,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1912,7 +1912,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0005-bicep-with-azure-verified-modules.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -1921,7 +1921,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0006-credentials-in-key-vault.md",
       "anchor": "",
       "title": "0006. Generated credentials go to Key Vault, and reruns reuse them",
@@ -1930,7 +1930,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0006-credentials-in-key-vault.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1939,7 +1939,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0006-credentials-in-key-vault.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1948,7 +1948,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0006-credentials-in-key-vault.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -1957,7 +1957,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0006-credentials-in-key-vault.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -1966,7 +1966,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0007-real-runs-are-the-source-of-truth.md",
       "anchor": "",
       "title": "0007. Real runs are the source of truth; every lesson adds a guard",
@@ -1975,7 +1975,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0007-real-runs-are-the-source-of-truth.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -1984,7 +1984,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0007-real-runs-are-the-source-of-truth.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -1993,7 +1993,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0007-real-runs-are-the-source-of-truth.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2002,7 +2002,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0007-real-runs-are-the-source-of-truth.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2011,7 +2011,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "",
       "title": "0008. Everything runs from Azure Cloud Shell",
@@ -2020,7 +2020,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2029,7 +2029,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2038,7 +2038,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2047,7 +2047,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2056,7 +2056,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0008-cloud-shell-baseline.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2065,7 +2065,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "",
       "title": "0009. Unlicensed code is reference only",
@@ -2074,7 +2074,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2083,7 +2083,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2092,7 +2092,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2101,7 +2101,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2110,7 +2110,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0009-unlicensed-code-reference-only.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2119,7 +2119,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "",
       "title": "0010. Prefer Azure-native, GitHub, HashiCorp and open-source tooling",
@@ -2128,7 +2128,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2137,7 +2137,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2146,7 +2146,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2155,7 +2155,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2164,7 +2164,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0010-prefer-azure-github-hashicorp-oss.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2173,7 +2173,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "",
       "title": "0011. Family format: a guard field on known errors",
@@ -2182,7 +2182,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2191,7 +2191,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2200,7 +2200,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2209,7 +2209,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2218,7 +2218,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0011-family-format-guard-on-known-errors.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2227,7 +2227,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "",
       "title": "0012. Family format: the upstream asks file's path set in kb.toml",
@@ -2236,7 +2236,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2245,7 +2245,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2254,7 +2254,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2263,7 +2263,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2272,7 +2272,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0012-family-format-upstream-path-in-kb-toml.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2281,7 +2281,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "",
       "title": "0013. Follow the family's model-selection convention",
@@ -2290,7 +2290,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2299,7 +2299,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2308,7 +2308,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2317,7 +2317,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2326,7 +2326,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0013-family-model-selection-convention.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2335,7 +2335,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "",
       "title": "0014. Pilot the family's enforced knowledge capture, in warn mode",
@@ -2344,7 +2344,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2353,7 +2353,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2362,7 +2362,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2371,7 +2371,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2380,7 +2380,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0014-family-format-enforced-kb-capture-pilot.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2389,7 +2389,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "",
       "title": "0015. Take handoffs from other Claude projects as handoff issues",
@@ -2398,7 +2398,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2407,7 +2407,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2416,7 +2416,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2425,7 +2425,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2434,7 +2434,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/0015-family-format-handoff-issues.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2443,7 +2443,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/README.md",
       "anchor": "",
       "title": "Decision records",
@@ -2452,16 +2452,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
-      "path": "docs/knowledge/decisions/template.md",
-      "anchor": "",
-      "title": "MADR 4 front matter. status: proposed | accepted | rejected | deprecated | superseded by NNNN",
-      "contracts": [],
-      "text": "status: proposed date: YYYY-MM-DD decision-makers: [maintainers] ---"
-    },
-    {
-      "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "",
       "title": "NNNN. Short title of the problem and solution",
@@ -2470,7 +2461,16 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
+      "path": "docs/knowledge/decisions/template.md",
+      "anchor": "",
+      "title": "MADR 4 front matter. status: proposed | accepted | rejected | deprecated | superseded by NNNN",
+      "contracts": [],
+      "text": "status: proposed date: YYYY-MM-DD decision-makers: [maintainers] ---"
+    },
+    {
+      "repo": "avd-liquidware",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -2479,7 +2479,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "considered-options",
       "title": "Considered Options",
@@ -2488,7 +2488,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "context-and-problem-statement",
       "title": "Context and Problem Statement",
@@ -2497,7 +2497,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "decision-outcome",
       "title": "Decision Outcome",
@@ -2506,7 +2506,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/decisions/template.md",
       "anchor": "more-information",
       "title": "More Information",
@@ -2515,7 +2515,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/deployment/gotchas.md",
       "anchor": "",
       "title": "Deployment gotchas",
@@ -2524,7 +2524,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/deployment/gotchas.md",
       "anchor": "any-azure-lab",
       "title": "Any Azure lab",
@@ -2533,7 +2533,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/deployment/gotchas.md",
       "anchor": "profileunity-flexapp-and-commandctrl",
       "title": "ProfileUnity, FlexApp and CommandCTRL",
@@ -2542,7 +2542,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/deployment/gotchas.md",
       "anchor": "stratusphere-ux",
       "title": "Stratusphere UX",
@@ -2551,7 +2551,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "",
       "title": "Experts we follow",
@@ -2560,7 +2560,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "1-find-candidates-in-several-places",
       "title": "1. Find candidates in several places",
@@ -2569,7 +2569,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "2-apply-the-gates",
       "title": "2. Apply the gates",
@@ -2578,7 +2578,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "3-score-five-things-from-0-to-3",
       "title": "3. Score five things from 0 to 3",
@@ -2587,7 +2587,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "4-measure-and-review",
       "title": "4. Measure and review",
@@ -2596,7 +2596,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "declined",
       "title": "Declined",
@@ -2605,7 +2605,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "nominated-not-scored-yet",
       "title": "Nominated, not scored yet",
@@ -2614,7 +2614,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "the-method",
       "title": "The method",
@@ -2623,7 +2623,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "this-kbs-study",
       "title": "This KB's study",
@@ -2632,7 +2632,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "tracked",
       "title": "Tracked",
@@ -2641,7 +2641,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "watch-list",
       "title": "Watch list",
@@ -2650,7 +2650,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/experts.md",
       "anchor": "whats-recorded-about-people",
       "title": "What's recorded about people",
@@ -2659,7 +2659,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/liquidware/community-projects.md",
       "anchor": "",
       "title": "Prior art and community projects",
@@ -2668,7 +2668,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/liquidware/community-projects.md",
       "anchor": "not-found",
       "title": "Not found",
@@ -2677,7 +2677,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/liquidware/products.md",
       "anchor": "",
       "title": "Liquidware products and where they're documented",
@@ -2686,7 +2686,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/liquidware/products.md",
       "anchor": "where-liquidware-publishes",
       "title": "Where Liquidware publishes",
@@ -2695,7 +2695,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/liquidware/upstream.md",
       "anchor": "",
       "title": "Asks for Liquidware",
@@ -2704,7 +2704,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "",
       "title": "Knowledge base",
@@ -2713,7 +2713,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "before-you-build-something",
       "title": "Before you build something",
@@ -2722,7 +2722,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "format",
       "title": "Format",
@@ -2731,7 +2731,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "how-to-add-to-it",
       "title": "How to add to it",
@@ -2740,7 +2740,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "index",
       "title": "Index",
@@ -2749,7 +2749,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/README.md",
       "anchor": "related-knowledge-bases",
       "title": "Related knowledge bases",
@@ -2758,7 +2758,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/roadmap/README.md",
       "anchor": "",
       "title": "Roadmap",
@@ -2767,7 +2767,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/api.md",
       "anchor": "",
       "title": "Stratusphere API",
@@ -2776,7 +2776,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/api.md",
       "anchor": "gotchas",
       "title": "Gotchas",
@@ -2785,7 +2785,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/appliances.md",
       "anchor": "",
       "title": "Stratusphere UX appliances in Azure",
@@ -2794,7 +2794,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/appliances.md",
       "anchor": "credentials",
       "title": "Credentials",
@@ -2803,7 +2803,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/appliances.md",
       "anchor": "first-time-setup",
       "title": "First-time setup",
@@ -2812,7 +2812,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/appliances.md",
       "anchor": "licensing",
       "title": "Licensing",
@@ -2821,7 +2821,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/appliances.md",
       "anchor": "roles",
       "title": "Roles",
@@ -2830,7 +2830,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/connector-id-key.md",
       "anchor": "",
       "title": "Connector ID Key",
@@ -2839,7 +2839,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/connector-id-key.md",
       "anchor": "callbacks",
       "title": "Callbacks",
@@ -2848,7 +2848,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/connector-id-key.md",
       "anchor": "desktops-created-later",
       "title": "Desktops created later",
@@ -2857,7 +2857,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/connector-id-key.md",
       "anchor": "installer",
       "title": "Installer",
@@ -2866,7 +2866,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/connector-id-key.md",
       "anchor": "on-the-machine",
       "title": "On the machine",
@@ -2875,7 +2875,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/stratusphere/hub-setup.md",
       "anchor": "",
       "title": "First-time Hub setup",
@@ -2884,7 +2884,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/troubleshooting/README.md",
       "anchor": "",
       "title": "Known errors",
@@ -2893,7 +2893,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/knowledge/troubleshooting/README.md",
       "anchor": "adding-an-entry",
       "title": "Adding an entry",
@@ -2902,7 +2902,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "",
       "title": "Red-team review: the Liquidware optional tier",
@@ -2911,7 +2911,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "c1-machine-context-access-on-entra-joined-hosts-needs-storage-keys",
       "title": "C1. Machine-context access on Entra-joined hosts needs storage keys",
@@ -2920,7 +2920,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "c2-a-standing-management-server-in-a-landing-zone-without-one",
       "title": "C2. A standing management server in a landing zone without one",
@@ -2929,7 +2929,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "c3-commandctrl-remote-control-and-shell-bypass-the-swarms-governance",
       "title": "C3. CommandCTRL remote control and shell bypass the swarm's governance",
@@ -2938,7 +2938,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "critical",
       "title": "Critical",
@@ -2947,7 +2947,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "factual-corrections-folded",
       "title": "Factual corrections (folded)",
@@ -2956,7 +2956,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h1-fslogix-and-portability-manage-the-same-files",
       "title": "H1. FSLogix and Portability manage the same files",
@@ -2965,7 +2965,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h2-sandbox-isolation-on-multi-session-hosts",
       "title": "H2. Sandbox Isolation on multi-session hosts",
@@ -2974,7 +2974,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h3-ai-insights-sends-host-telemetry-to-an-llm",
       "title": "H3. AI Insights sends host telemetry to an LLM",
@@ -2983,7 +2983,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h4-packages-lock-in-the-vendor",
       "title": "H4. Packages lock in the vendor",
@@ -2992,7 +2992,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h5-three-systems-can-assign-the-same-app",
       "title": "H5. Three systems can assign the same app",
@@ -3001,7 +3001,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "h6-per-landing-zone-settings-leak-into-the-generic-image",
       "title": "H6. Per-landing-zone settings leak into the generic image",
@@ -3010,7 +3010,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "high",
       "title": "High",
@@ -3019,7 +3019,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "independent-pass",
       "title": "Independent pass",
@@ -3028,7 +3028,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "medium",
       "title": "Medium",
@@ -3037,7 +3037,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "medium-1",
       "title": "Medium",
@@ -3046,7 +3046,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "n-c1-critical-the-config-share-has-no-working-writer-or-users-can-write-it",
       "title": "N-C1 (Critical). The config share has no working writer, or users can write it",
@@ -3057,7 +3057,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "n-c2-critical-the-app-attach-sync-is-a-fourth-writer-with-a-client-secret",
       "title": "N-C2 (Critical). The app attach sync is a fourth writer, with a client secret",
@@ -3066,7 +3066,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "n-h1-high-portability-saves-at-logoff-this-landing-zone-ends-sessions-without-one",
       "title": "N-H1 (High). Portability saves at logoff; this landing zone ends sessions without one",
@@ -3075,7 +3075,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "n-h2-high-the-headline-migrations-cant-reach-this-landing-zone",
       "title": "N-H2 (High). The headline migrations can't reach this landing zone",
@@ -3084,7 +3084,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "n-h3-high-commandctrl-shows-every-user-on-a-multi-session-host",
       "title": "N-H3 (High). CommandCTRL shows every user on a multi-session host",
@@ -3093,7 +3093,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "s1-greenfield-entra-only-landing-zones-gain-least",
       "title": "S1. Greenfield Entra-only landing zones gain least",
@@ -3102,7 +3102,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "s2-should-this-live-in-avd-landing-zone",
       "title": "S2. Should this live in avd-landing-zone?",
@@ -3111,7 +3111,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "strategic",
       "title": "Strategic",
@@ -3120,7 +3120,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/redteam.md",
       "anchor": "verdict",
       "title": "Verdict",
@@ -3133,7 +3133,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "",
       "title": "Spec: Liquidware ProfileUnity, FlexApp and CommandCTRL as an optional upgrade",
@@ -3144,7 +3144,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -3153,7 +3153,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "10-second-brain-and-swarm-hooks",
       "title": "10. Second brain and swarm hooks",
@@ -3162,7 +3162,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "101-facts-the-second-brain-reads-read-only",
       "title": "10.1 Facts the second brain reads (read-only)",
@@ -3171,7 +3171,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "102-detections-level-1-report-only",
       "title": "10.2 Detections (level 1, report only)",
@@ -3180,7 +3180,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "103-swarm-actions-plans-approved-through-github-environments",
       "title": "10.3 Swarm actions (plans approved through GitHub Environments)",
@@ -3189,7 +3189,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "11-cost",
       "title": "11. Cost",
@@ -3198,7 +3198,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "111-ongoing-customer-or-landing-zone",
       "title": "11.1 Ongoing (customer or landing zone)",
@@ -3207,7 +3207,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "112-spike-l0-the-owners-personal-sandbox",
       "title": "11.2 Spike L0 (the owner's personal sandbox)",
@@ -3216,7 +3216,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "12-facts-and-what-is-still-unverified",
       "title": "12. Facts and what is still unverified",
@@ -3225,7 +3225,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "13-phases",
       "title": "13. Phases",
@@ -3236,7 +3236,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "14-open-questions-for-nick",
       "title": "14. Open questions for Nick",
@@ -3245,7 +3245,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -3254,7 +3254,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "3-principles",
       "title": "3. Principles",
@@ -3267,7 +3267,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "4-which-product-owns-what",
       "title": "4. Which product owns what",
@@ -3276,7 +3276,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "41-profile-options",
       "title": "4.1 Profile options",
@@ -3285,7 +3285,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "42-app-delivery-options",
       "title": "4.2 App delivery options",
@@ -3296,7 +3296,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "43-support-and-telemetry",
       "title": "4.3 Support and telemetry",
@@ -3305,7 +3305,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "5-architecture",
       "title": "5. Architecture",
@@ -3316,7 +3316,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "51-new-resources-deployed-by-this-repo-into-an-existing-landing-zone",
       "title": "5.1 New resources (deployed by this repo into an existing landing zone)",
@@ -3327,7 +3327,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "52-host-configuration",
       "title": "5.2 Host configuration",
@@ -3336,7 +3336,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "6-identity-and-storage-path-by-path",
       "title": "6. Identity and storage, path by path",
@@ -3348,7 +3348,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "7-security",
       "title": "7. Security",
@@ -3361,7 +3361,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "8-nerdio-manager-customer-environments",
       "title": "8. Nerdio Manager customer environments",
@@ -3370,7 +3370,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "9-commandctrl-where-it-fits",
       "title": "9. CommandCTRL: where it fits",
@@ -3379,7 +3379,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "91-not-a-fit",
       "title": "9.1 Not a fit",
@@ -3390,7 +3390,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "92-multi-session-caveats",
       "title": "9.2 Multi-session caveats",
@@ -3399,7 +3399,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "93-stratusphere",
       "title": "9.3 Stratusphere",
@@ -3408,7 +3408,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "goals",
       "title": "Goals",
@@ -3419,7 +3419,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "docs/spec.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -3428,7 +3428,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "",
       "title": "avd-liquidware",
@@ -3437,7 +3437,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "contributing",
       "title": "Contributing",
@@ -3446,7 +3446,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "guardrails",
       "title": "Guardrails",
@@ -3455,7 +3455,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "license",
       "title": "License",
@@ -3464,7 +3464,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "the-knowledge-base",
       "title": "The knowledge base",
@@ -3473,7 +3473,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "whats-here",
       "title": "What's here",
@@ -3482,7 +3482,7 @@
     },
     {
       "repo": "avd-liquidware",
-      "commit": "c96a24bfd071ac1970397a582bf53635576eec43",
+      "commit": "15e331311525a16b74570fb7f6cc50529ec15e6c",
       "path": "README.md",
       "anchor": "working-with-claude",
       "title": "Working with Claude",
@@ -5116,7 +5116,7 @@
       "anchor": "more-information",
       "title": "More Information",
       "contracts": [],
-      "text": "- Proposed to the family per curation.md. To open in the Nerdio HCL kit, the AI KB and avd-liquidware once the owner says yes."
+      "text": "- Proposed to the family per curation.md. - Accepted by the owner on 2026-10-21. Written up in ai-brain, which owns the family format, as AI 0018; nerdio-hcl and avd-liquidware adopt it from there."
     },
     {
       "repo": "avd-second-brain",
@@ -5170,7 +5170,7 @@
       "anchor": "more-information",
       "title": "More Information",
       "contracts": [],
-      "text": "- Revisit at the family's pilot review on 2026-12-01. - Any app here that calls Claude is a paired change with avd-swarm (decision 0003), because models and identity are on its paired list."
+      "text": "- Revisit at the family's pilot review on 2026-12-01. - Any app here that calls Claude is a paired change with avd-swarm (decision 0003), because models and identity are on its paired list. - Accepted by the owner on 2026-10-21. Pair: avd-swarm decision 0008."
     },
     {
       "repo": "avd-second-brain",
@@ -7977,7 +7977,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "",
       "title": "avd-buddy as an installable web app",
@@ -7986,7 +7986,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "1-what-it-is-in-one-paragraph",
       "title": "1. What it is, in one paragraph",
@@ -7995,7 +7995,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "10-voice-and-calm",
       "title": "10. Voice and calm",
@@ -8004,7 +8004,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "11-design",
       "title": "11. Design",
@@ -8013,7 +8013,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "12-testing",
       "title": "12. Testing",
@@ -8022,7 +8022,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "13-phases",
       "title": "13. Phases",
@@ -8031,7 +8031,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "14-prior-art",
       "title": "14. Prior art",
@@ -8040,7 +8040,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "15-open-questions",
       "title": "15. Open questions",
@@ -8049,7 +8049,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "2-rules",
       "title": "2. Rules",
@@ -8058,7 +8058,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "3-screens",
       "title": "3. Screens",
@@ -8067,7 +8067,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "4-sign-in-with-entra",
       "title": "4. Sign-in with Entra",
@@ -8076,7 +8076,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "5-installable",
       "title": "5. Installable",
@@ -8085,7 +8085,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "6-the-icon-as-a-swappable-asset",
       "title": "6. The icon, as a swappable asset",
@@ -8094,7 +8094,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "61-one-source-one-setting",
       "title": "6.1 One source, one setting",
@@ -8103,7 +8103,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "62-the-owners-icon-by-an-accepted-risk-decision",
       "title": "6.2 The owner's icon, by an accepted-risk decision",
@@ -8112,7 +8112,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "7-push-notifications-later-opt-in-and-empty",
       "title": "7. Push notifications: later, opt-in, and empty",
@@ -8121,7 +8121,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "8-privacy-and-security",
       "title": "8. Privacy and security",
@@ -8130,7 +8130,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-app.md",
       "anchor": "9-hosting-performance-and-accessibility",
       "title": "9. Hosting, performance and accessibility",
@@ -8139,7 +8139,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "",
       "title": "avd-buddy's voice: a teacher with a sense of humor",
@@ -8148,7 +8148,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "1-purpose-leave-the-operator-more-capable",
       "title": "1. Purpose: leave the operator more capable",
@@ -8157,7 +8157,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "10-open-questions",
       "title": "10. Open questions",
@@ -8166,7 +8166,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "2-the-voice",
       "title": "2. The voice",
@@ -8175,7 +8175,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "3-teaching",
       "title": "3. Teaching",
@@ -8186,7 +8186,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "4-two-modes-and-how-avd-buddy-picks-one",
       "title": "4. Two modes, and how avd-buddy picks one",
@@ -8195,7 +8195,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "5-what-may-be-funny-and-what-never-is",
       "title": "5. What may be funny, and what never is",
@@ -8204,7 +8204,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "6-where-humor-lives-a-separate-flavor-layer",
       "title": "6. Where humor lives: a separate flavor layer",
@@ -8215,7 +8215,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "7-accessibility-and-translation",
       "title": "7. Accessibility and translation",
@@ -8224,7 +8224,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "8-evaluation",
       "title": "8. Evaluation",
@@ -8233,7 +8233,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "9-prior-art",
       "title": "9. Prior art",
@@ -8242,7 +8242,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/buddy-voice.md",
       "anchor": "examples",
       "title": "Examples",
@@ -8251,7 +8251,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "",
       "title": "0001. Operate the AVD estate through chat agents that read freely and change nothing without a person's approval",
@@ -8260,7 +8260,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -8269,7 +8269,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8278,7 +8278,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "context",
       "title": "Context",
@@ -8287,7 +8287,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0001-avd-swarm.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8296,7 +8296,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "",
       "title": "0002. A governance gate, an external observer hook and a kill switch that fail closed",
@@ -8305,7 +8305,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "alternatives-considered",
       "title": "Alternatives considered",
@@ -8314,7 +8314,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8323,7 +8323,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "context",
       "title": "Context",
@@ -8332,7 +8332,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0002-governance-and-kill-switch.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8341,7 +8341,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "",
       "title": "0003. avd-swarm is the actor and control layer; the second brain is its intelligence layer",
@@ -8350,7 +8350,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8359,7 +8359,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "context",
       "title": "Context",
@@ -8368,7 +8368,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8381,7 +8381,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0003-swarm-acts-brain-thinks.md",
       "anchor": "supersedes",
       "title": "Supersedes",
@@ -8390,7 +8390,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "",
       "title": "0004. Scribe drafts docs fixes; the brain decides what is inconsistent",
@@ -8399,7 +8399,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8410,7 +8410,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "context",
       "title": "Context",
@@ -8419,7 +8419,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0004-scribe-drafts-docs.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8430,7 +8430,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "",
       "title": "0005. The write path runs in a private adopter repo; solo mode replaces a second person",
@@ -8439,7 +8439,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8448,7 +8448,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "context",
       "title": "Context",
@@ -8457,7 +8457,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0005-adopter-write-path-and-solo-mode.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8466,7 +8466,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "",
       "title": "0006. avd-swarm runs the landing zone's recovery tests and failover as catalog actions",
@@ -8475,7 +8475,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8488,7 +8488,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "context",
       "title": "Context",
@@ -8497,7 +8497,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0006-recovery-tests-and-failover.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8506,7 +8506,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0007-every-plan-says-why.md",
       "anchor": "",
       "title": "0007. avd-swarm is the how; every plan says why, and the brain keeps it",
@@ -8517,7 +8517,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0007-every-plan-says-why.md",
       "anchor": "consequences",
       "title": "Consequences",
@@ -8528,7 +8528,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0007-every-plan-says-why.md",
       "anchor": "context",
       "title": "Context",
@@ -8537,7 +8537,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/decisions/0007-every-plan-says-why.md",
       "anchor": "decision",
       "title": "Decision",
@@ -8550,7 +8550,43 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
+      "path": "docs/decisions/0008-family-model-selection-convention.md",
+      "anchor": "",
+      "title": "0008. avd-swarm follows the family's model-selection convention",
+      "contracts": [],
+      "text": ""
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
+      "path": "docs/decisions/0008-family-model-selection-convention.md",
+      "anchor": "consequences",
+      "title": "Consequences",
+      "contracts": [],
+      "text": "- A model change follows evidence and the family's rules, in both repos at once. - Nothing logs usage yet; the pilot numbers start when the metered client is built. - No default changes today. Revisit at the family's pilot review on 2026-12-01."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
+      "path": "docs/decisions/0008-family-model-selection-convention.md",
+      "anchor": "context",
+      "title": "Context",
+      "contracts": [],
+      "text": "The family of knowledge bases pilots one model-selection convention across its four projects, with the AI KB as its source of truth (AI 0006). avd-swarm is where the AVD repos call Claude: the S1 spike calls Opus, Sonnet and Haiku 5.5 through Microsoft Foundry or, without Foundry quota, through t..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
+      "path": "docs/decisions/0008-family-model-selection-convention.md",
+      "anchor": "decision",
+      "title": "Decision",
+      "contracts": [],
+      "text": "- avd-swarm follows the convention. Any exception is recorded here as a \"Model override\" decision with its evidence. - Full model IDs are pinned in config; model, effort and provider come from the environment. - The metered model client logs, per request, the model, effort, usage, stop_reason and..."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "",
       "title": "Governance, the external observer and the kill switch",
@@ -8559,7 +8595,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "1-why",
       "title": "1. Why",
@@ -8568,7 +8604,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "2-three-parts",
       "title": "2. Three parts",
@@ -8577,7 +8613,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "21-governance-gate",
       "title": "2.1 Governance gate",
@@ -8591,7 +8627,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "22-external-observer-hook",
       "title": "2.2 External observer hook",
@@ -8600,7 +8636,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "23-kill-switch",
       "title": "2.3 Kill switch",
@@ -8611,7 +8647,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "24-watchdog-rules",
       "title": "2.4 Watchdog rules",
@@ -8620,7 +8656,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "25-compliance-gate-defender-for-cloud",
       "title": "2.5 Compliance gate (Defender for Cloud)",
@@ -8631,7 +8667,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "26-solo-mode-and-team-mode-r19",
       "title": "2.6 Solo mode and team mode (R19)",
@@ -8640,7 +8676,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "3-relationship-to-the-second-brain",
       "title": "3. Relationship to the second brain",
@@ -8651,7 +8687,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/governance.md",
       "anchor": "4-open-questions",
       "title": "4. Open questions",
@@ -8660,7 +8696,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/identities.md",
       "anchor": "",
       "title": "Identities: who runs what, with which rights",
@@ -8669,7 +8705,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/identities.md",
       "anchor": "1-the-identities",
       "title": "1. The identities",
@@ -8680,7 +8716,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/identities.md",
       "anchor": "2-decisions",
       "title": "2. Decisions",
@@ -8689,7 +8725,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/identities.md",
       "anchor": "3-setup-script-to-build-s1",
       "title": "3. Setup script (to build, S1)",
@@ -8698,7 +8734,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "",
       "title": "avd-swarm prior art review (as of 2026-10-17)",
@@ -8707,7 +8743,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "1-microsoft",
       "title": "1. Microsoft",
@@ -8716,7 +8752,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "2-avd-management-tools",
       "title": "2. AVD management tools",
@@ -8725,7 +8761,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "3-published-patterns-and-open-source",
       "title": "3. Published patterns and open source",
@@ -8734,7 +8770,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "4-chat-to-manage-azure-and-entra-end-to-end",
       "title": "4. \"Chat to manage Azure and Entra\" end to end",
@@ -8743,7 +8779,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/prior-art.md",
       "anchor": "recommendations-for-the-spec",
       "title": "Recommendations for the spec",
@@ -8752,7 +8788,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "",
       "title": "Spec: recovery tests and failover, run by avd-swarm",
@@ -8763,7 +8799,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -8772,7 +8808,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "10-phases",
       "title": "10. Phases",
@@ -8781,7 +8817,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -8790,7 +8826,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "3-the-recovery-agent",
       "title": "3. The Recovery agent",
@@ -8802,7 +8838,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "4-catalog-actions",
       "title": "4. Catalog actions",
@@ -8813,7 +8849,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "5-identities",
       "title": "5. Identities",
@@ -8822,7 +8858,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "6-governance",
       "title": "6. Governance",
@@ -8831,7 +8867,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "61-gate",
       "title": "6.1 Gate",
@@ -8840,7 +8876,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "62-kill-switch",
       "title": "6.2 Kill switch",
@@ -8849,7 +8885,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "63-watchdog",
       "title": "6.3 Watchdog",
@@ -8858,7 +8894,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "64-when-avd-swarm-itself-is-down",
       "title": "6.4 When avd-swarm itself is down",
@@ -8867,7 +8903,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "65-events",
       "title": "6.5 Events",
@@ -8876,7 +8912,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "7-what-goes-back-to-the-brain",
       "title": "7. What goes back to the brain",
@@ -8890,7 +8926,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "8-scope-and-the-hooks-later-work-builds-on",
       "title": "8. Scope and the hooks later work builds on",
@@ -8902,7 +8938,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "9-open-questions-for-the-owner",
       "title": "9. Open questions for the owner",
@@ -8911,7 +8947,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "goals",
       "title": "Goals",
@@ -8920,7 +8956,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/recovery.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -8929,7 +8965,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/redteam.md",
       "anchor": "",
       "title": "Red team: avd-swarm spec and governance (2026-10-17)",
@@ -8938,7 +8974,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/redteam.md",
       "anchor": "findings",
       "title": "Findings",
@@ -8947,7 +8983,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/redteam.md",
       "anchor": "not-resolved-here",
       "title": "Not resolved here",
@@ -8958,7 +8994,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/redteam.md",
       "anchor": "second-red-team-2026-10-19-avd-swarm-with-the-second-brain",
       "title": "Second red team (2026-10-19): avd-swarm with the second brain",
@@ -8970,7 +9006,16 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
+      "path": "docs/redteam.md",
+      "anchor": "security-tooling-review-2026-10-19",
+      "title": "Security tooling review (2026-10-19)",
+      "contracts": [],
+      "text": "From the AI security tooling proposal (security-tooling.md)."
+    },
+    {
+      "repo": "avd-swarm",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/redteam.md",
       "anchor": "what-held-up",
       "title": "What held up",
@@ -8979,7 +9024,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "",
       "title": "spikes/s1a/infra/main.bicep",
@@ -8988,7 +9033,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "outputs",
       "title": "Outputs",
@@ -8997,7 +9042,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-infra-main.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9006,7 +9051,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-Invoke-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/Invoke-Spike.ps1",
@@ -9015,7 +9060,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-Invoke-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9024,7 +9069,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Connect-SpikeAgent.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Connect-SpikeAgent.ps1",
@@ -9033,7 +9078,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Connect-SpikeAgent.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9042,7 +9087,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeEstimate.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Get-SpikeEstimate.ps1",
@@ -9051,7 +9096,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeEstimate.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9060,7 +9105,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeToken.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Get-SpikeToken.ps1",
@@ -9069,7 +9114,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Get-SpikeToken.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9078,7 +9123,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Remove-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Remove-Spike.ps1",
@@ -9087,7 +9132,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Remove-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9096,7 +9141,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Start-Spike.md",
       "anchor": "",
       "title": "spikes/s1a/scripts/Start-Spike.ps1",
@@ -9105,7 +9150,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/reference/spikes-s1a-scripts-Start-Spike.md",
       "anchor": "parameters",
       "title": "Parameters",
@@ -9114,7 +9159,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "",
       "title": "AI security tooling: defending the swarm, and security signal for operators",
@@ -9123,7 +9168,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "1-ranked-recommendation",
       "title": "1. Ranked recommendation",
@@ -9132,7 +9177,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "2-a-gap-this-review-found-proposed-r26",
       "title": "2. A gap this review found (proposed R26)",
@@ -9141,7 +9186,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "3-prompt-shields-in-the-model-client",
       "title": "3. Prompt Shields in the model client",
@@ -9155,7 +9200,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "4-decoy-tools-and-the-unknown-tool-tripwire",
       "title": "4. Decoy tools and the unknown-tool tripwire",
@@ -9164,7 +9209,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "5-red-teaming-our-own-agents",
       "title": "5. Red-teaming our own agents",
@@ -9175,7 +9220,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "6-security-signal-for-operators-avd-hunts",
       "title": "6. Security signal for operators: AVD hunts",
@@ -9184,7 +9229,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "61-what-exists-upstream",
       "title": "6.1 What exists upstream",
@@ -9193,7 +9238,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "62-the-hunts",
       "title": "6.2 The hunts",
@@ -9202,7 +9247,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "63-two-ways-to-run-them",
       "title": "6.3 Two ways to run them",
@@ -9211,7 +9256,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "7-licenses",
       "title": "7. Licenses",
@@ -9220,7 +9265,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "8-the-first-pr",
       "title": "8. The first PR",
@@ -9231,16 +9276,16 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/security-tooling.md",
       "anchor": "9-open-questions",
       "title": "9. Open questions",
       "contracts": [],
-      "text": "- SQ10 Is Prompt Shields offered in North Central US, and does the keyless call work from a Container App's managed identity? (S1a) - SQ11 What N for the injection.suspected watchdog row? Set it from step 2's observe-mode counts, not now. - SQ12 How do AVD reverse-connect logons appear in Securit..."
+      "text": "- SQ10 Does the keyless call work from a Container App's managed identity? (S1a.) Region answered 2026-10-21: North Central US and East US 2 both offer it (§3). - SQ11 What N for the injection.suspected watchdog row? Set it from step 2's observe-mode counts, not now. - SQ12 How do AVD reverse-con..."
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "",
       "title": "Spec: avd-swarm, an agent-based Azure and Entra self-management platform, with avd-buddy as its chat front end",
@@ -9249,7 +9294,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -9266,7 +9311,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "10-open-questions",
       "title": "10. Open questions",
@@ -9277,7 +9322,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -9286,7 +9331,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "3-architecture",
       "title": "3. Architecture",
@@ -9298,7 +9343,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "3a-azure-sre-agent-an-optional-add-on-proposed-2026-10-20",
       "title": "3a. Azure SRE Agent, an optional add-on (proposed 2026-10-20)",
@@ -9310,7 +9355,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "4-agents",
       "title": "4. Agents",
@@ -9322,7 +9367,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "4a-how-a-question-is-answered-split-fan-out-check-merge",
       "title": "4a. How a question is answered: split, fan out, check, merge",
@@ -9336,7 +9381,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "5-write-path",
       "title": "5. Write path",
@@ -9347,7 +9392,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "5a-action-safety-rules-ported-from-the-brains-playbooks",
       "title": "5a. Action safety rules (ported from the brain's playbooks)",
@@ -9359,7 +9404,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "5b-where-the-write-path-runs-the-project-and-its-adopters",
       "title": "5b. Where the write path runs: the project and its adopters",
@@ -9368,7 +9413,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6-identity-and-data",
       "title": "6. Identity and data",
@@ -9377,7 +9422,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6a-governance-observer-and-kill-switch",
       "title": "6a. Governance, observer and kill switch",
@@ -9386,7 +9431,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6b-self-improvement-from-conversations",
       "title": "6b. Self-improvement from conversations",
@@ -9395,7 +9440,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6c-what-feeds-the-second-brain",
       "title": "6c. What feeds the second brain",
@@ -9411,7 +9456,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6d-facts-from-avd-current-state",
       "title": "6d. Facts from avd-current-state",
@@ -9427,7 +9472,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6e-scribe-drafting-docs-fixes-from-the-brains-findings",
       "title": "6e. Scribe: drafting docs fixes from the brain's findings",
@@ -9439,7 +9484,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "6f-every-plan-says-why-brain-contract-c18",
       "title": "6f. Every plan says why (brain contract C18)",
@@ -9452,7 +9497,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "7-cost",
       "title": "7. Cost",
@@ -9461,7 +9506,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "7a-spend-control-placeholder",
       "title": "7a. Spend control (placeholder)",
@@ -9470,7 +9515,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "8-scope",
       "title": "8. Scope",
@@ -9479,7 +9524,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "9-phases",
       "title": "9. Phases",
@@ -9488,7 +9533,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "9a-build-order-proposed-2026-10-19-after-the-second-red-team",
       "title": "9a. Build order (proposed 2026-10-19, after the second red team)",
@@ -9501,7 +9546,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "goals",
       "title": "Goals",
@@ -9510,7 +9555,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -9519,7 +9564,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spec.md",
       "anchor": "the-base-pair-stands-alone-invariant",
       "title": "The base pair stands alone (invariant)",
@@ -9528,7 +9573,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "",
       "title": "Spend as a built-in function",
@@ -9537,7 +9582,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "1-why",
       "title": "1. Why",
@@ -9546,7 +9591,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "2-one-public-guard-records-you-keep",
       "title": "2. One public guard, records you keep",
@@ -9555,7 +9600,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "3-what-it-adds-to-avd-swarm",
       "title": "3. What it adds to avd-swarm",
@@ -9564,7 +9609,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "31-cost-agent-spec-4",
       "title": "3.1 Cost agent (spec §4)",
@@ -9573,7 +9618,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "32-plans-that-cost-money-carry-a-run-governance-21-budget-rule",
       "title": "3.2 Plans that cost money carry a run (governance §2.1, Budget rule)",
@@ -9582,7 +9627,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "33-stopping-spend-is-never-blocked",
       "title": "3.3 Stopping spend is never blocked",
@@ -9591,7 +9636,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "34-watchdog-and-observer-events-governance-22-24",
       "title": "3.4 Watchdog and observer events (governance §2.2, §2.4)",
@@ -9600,7 +9645,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "35-avd-buddy",
       "title": "3.5 avd-buddy",
@@ -9609,7 +9654,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "36-insights-to-the-brain-spec-6c",
       "title": "3.6 Insights to the brain (spec §6c)",
@@ -9618,7 +9663,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "37-token-spend-metered-as-it-happens-capped-outside-r22",
       "title": "3.7 Token spend: metered as it happens, capped outside (R22)",
@@ -9627,7 +9672,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "4-phases",
       "title": "4. Phases",
@@ -9636,7 +9681,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spend.md",
       "anchor": "5-open-questions",
       "title": "5. Open questions",
@@ -9645,7 +9690,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "",
       "title": "S1a spike: does the S1 stack actually work?",
@@ -9654,7 +9699,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "1-what-it-answers",
       "title": "1. What it answers",
@@ -9663,7 +9708,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "2-what-it-deploys",
       "title": "2. What it deploys",
@@ -9672,7 +9717,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "3-cost-estimate-spendmd-format-kind-other",
       "title": "3. Cost estimate (spend.md format, kind other)",
@@ -9681,7 +9726,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "4-steps",
       "title": "4. Steps",
@@ -9690,7 +9735,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "5-result-filled-in-after-the-run",
       "title": "5. Result (filled in after the run)",
@@ -9699,7 +9744,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "6-what-you-need-before-it-can-start",
       "title": "6. What you need before it can start",
@@ -9708,7 +9753,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/spikes/s1a.md",
       "anchor": "7-fallback-without-foundry--provider-anthropic",
       "title": "7. Fallback without Foundry (-Provider Anthropic)",
@@ -9717,7 +9762,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "",
       "title": "avd-swarm v1 completeness review",
@@ -9726,7 +9771,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "1-what-v1-is-proposed",
       "title": "1. What v1 is (proposed)",
@@ -9737,7 +9782,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "2-does-avd-swarm-have-or-need-an-mcp",
       "title": "2. Does avd-swarm have or need an MCP?",
@@ -9746,7 +9791,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "3-what-is-decided",
       "title": "3. What is decided",
@@ -9759,7 +9804,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "4-contradictions-found",
       "title": "4. Contradictions found",
@@ -9772,7 +9817,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "5-gaps-for-v1-with-defaults",
       "title": "5. Gaps for v1, with defaults",
@@ -9781,7 +9826,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "6-the-base-pair-check",
       "title": "6. The base pair check",
@@ -9793,7 +9838,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "7-decisions-only-the-owner-can-make",
       "title": "7. Decisions only the owner can make",
@@ -9802,7 +9847,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/v1-review.md",
       "anchor": "8-red-team-of-the-v1-specs-2026-10-20",
       "title": "8. Red team of the v1 specs (2026-10-20)",
@@ -9814,7 +9859,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "",
       "title": "Spec: a chat-driven Well-Architected review in avd-buddy",
@@ -9823,7 +9868,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "1-summary",
       "title": "1. Summary",
@@ -9835,7 +9880,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "10-phases",
       "title": "10. Phases",
@@ -9848,7 +9893,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "11-prior-art",
       "title": "11. Prior art",
@@ -9860,7 +9905,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "12-open-questions",
       "title": "12. Open questions",
@@ -9869,7 +9914,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "2-goals-and-non-goals",
       "title": "2. Goals and non-goals",
@@ -9878,7 +9923,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "3-how-the-conversation-goes",
       "title": "3. How the conversation goes",
@@ -9887,7 +9932,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "4-checks-microsofts-lists-our-mapping",
       "title": "4. Checks: Microsoft's lists, our mapping",
@@ -9901,7 +9946,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "5-no-score-of-our-own",
       "title": "5. No score of our own",
@@ -9910,7 +9955,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "6-evidence-the-review-record-and-what-avd-buddy-shows",
       "title": "6. Evidence, the review record and what avd-buddy shows",
@@ -9922,7 +9967,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "6a-how-avd-buddy-shows-it-design-pass",
       "title": "6a. How avd-buddy shows it (design pass)",
@@ -9931,7 +9976,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "7-what-the-second-brain-gives-and-takes",
       "title": "7. What the second brain gives and takes",
@@ -9948,7 +9993,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "8-from-finding-to-fix",
       "title": "8. From finding to fix",
@@ -9957,7 +10002,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "9-evals-safety-and-limits",
       "title": "9. Evals, safety and limits",
@@ -9966,7 +10011,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "goals",
       "title": "Goals",
@@ -9975,7 +10020,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "docs/waf-review.md",
       "anchor": "non-goals",
       "title": "Non-goals",
@@ -9984,7 +10029,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "README.md",
       "anchor": "",
       "title": "avd-swarm",
@@ -9995,7 +10040,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "README.md",
       "anchor": "contributing",
       "title": "Contributing",
@@ -10004,7 +10049,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "README.md",
       "anchor": "entry-points",
       "title": "Entry points",
@@ -10013,7 +10058,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "README.md",
       "anchor": "license",
       "title": "License",
@@ -10022,7 +10067,7 @@
     },
     {
       "repo": "avd-swarm",
-      "commit": "5cf14c83db4b08ef999634bad671f31cac71dbff",
+      "commit": "f73a3d2756ee3551698f34b8db33b34053967897",
       "path": "README.md",
       "anchor": "try-it-in-a-lab",
       "title": "Try it in a lab",
