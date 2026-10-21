@@ -38,6 +38,12 @@ Checked 2026-10-20 for avd-current-state. Every ready-made generator draws real 
 - [Network Watcher topology](https://learn.microsoft.com/azure/network-watcher/network-insights-topology) is a portal map built from Resource Graph, with SVG download. Changes can take up to 30 hours to show.
 - No AVD-specific diagram generator was found.
 - The gap for a redacted diagram is data, not drawing. The C11 snapshot holds counts, not connections, and pseudonyms exist only for subscriptions, host pools and storage. The collector doesn't read VNet peerings or which subnet a session host's NIC is on. Saving Resource Graph rows gives ARI what it needs. [Mermaid](https://github.com/mermaid-js/mermaid) (MIT) is the fallback if ARI's draw.io output can't be styled well enough.
+- An offline spike (2026-10-20, ARI `main` at `4cc602c`, PowerShell 7.4) loaded only ARI's seven diagram scripts, without ImportExcel or Az, and drew from nine fake pseudonymized rows. It made no Azure calls. Pseudonyms kept every link (subnet to NIC to session host VM, peering state, a red "Broken Peering" for a VNet not in the rows) because only names changed and each ID kept its `/` segments; ARI reads IDs by position. What it showed:
+  - The subscription page counts AVD host pools, but the network page doesn't place them. The AVD overlay belongs in ARI's subnet step (`Build-ARIDiagramSubnet`), labeling a subnet's VMs with their host pool.
+  - Cell IDs and the date label change on every run, so diagrams can't be compared by diff.
+  - A broken peering held by a spoke wasn't drawn; ARI drew the spoke only as the hub's peer. It showed when the hub held it.
+  - The network step catches errors and drops them, so a bad row can yield a partial diagram silently. Check the output for every expected VNet.
+  - ARI special-cases NICs named `aks-*` and `gwhost*`; pseudonyms lose those prefixes.
 
 ## Shared contracts that work with or without the upper layers
 
