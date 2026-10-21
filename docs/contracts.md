@@ -163,7 +163,7 @@ How the brain asks avd-swarm to run one of its playbooks for one episode. A prop
 
 What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so.
 
-**The switch position is read, not sent (v1, avd-swarm build step 2).** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the brain's runtime reads it with Reader on that resource group only (avd-swarm identities.md). A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position.
+**The switch position is read, not sent (v1, avd-swarm build step 2).** The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1): the tag `avd-swarm-switch`, whose value is `run`, `halt-actions`, `halt-agents` or `halt-all` (avd-swarm `governance/gateway.yml`; a missing tag or any other value counts as unreadable); the brain's runtime reads it with Reader on that resource group only (avd-swarm identities.md). A flag it can't read counts as `halt-all` for proposals and model calls. Sensing and recording go on at every position.
 
 - **In v1** the brain's only model call is Tier 1's Diagnose, which runs as Claude Code in GitHub Actions with its own client. So the `brain-diagnose` workflow's first step reads the flag and exits at `halt-agents` or above, or when it can't read it. Its spend is capped by the action's max turns and a workspace limit, and reconciled by the daily job (red team V1-8).
 - **From Tier 3** the brain's model calls go through the metered, flag-checking model client avd-swarm owns, consumed as a pinned package, never a copy.
