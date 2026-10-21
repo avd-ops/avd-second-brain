@@ -207,3 +207,13 @@ errors:
   source: https://github.com/nickprignano/avd-current-state/pull/23
   status: verified
   added: '2026-10-21'
+- id: github-mcp-no-label-create
+  symptom: An adoption step says to create a label (`no-kb`, `handoff`), but the GitHub MCP tools have
+    no tool that creates one, and `kb-capture` fails on the PR that was just opened
+  cause: The GitHub MCP server can read labels and set them on issues and PRs but has no create-label
+    call; `kb-capture` runs once when the PR opens, before any label is on it
+  fix: Apply the new label to the issue or PR with `issue_write` (labels); GitHub creates a label that
+    doesn't exist yet. The `labeled` event reruns `kb-capture`, which goes green without a new push
+  source: https://github.com/nickprignano/avd-landing-zone/pull/58
+  status: verified
+  added: '2026-10-21'
