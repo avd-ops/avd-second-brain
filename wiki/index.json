@@ -3502,24 +3502,6 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
-      "anchor": "",
-      "title": "Architecture: the estate brain",
-      "contracts": [],
-      "text": ""
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "",
-      "title": "Architecture: the estate brain",
-      "contracts": [],
-      "text": ""
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
       "anchor": "0-what-the-brain-is-for",
       "title": "0. What the brain is for",
       "contracts": [
@@ -3531,70 +3513,6 @@
         "C25"
       ],
       "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "0-what-the-brain-is-for",
-      "title": "0. What the brain is for",
-      "contracts": [
-        "C4",
-        "C11",
-        "C12",
-        "C18",
-        "C21",
-        "C25"
-      ],
-      "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "0-what-the-brain-is-for",
-      "title": "0. What the brain is for",
-      "contracts": [
-        "C4",
-        "C11",
-        "C12",
-        "C18",
-        "C21",
-        "C25"
-      ],
-      "text": "The foundation is avd-assess (what an estate should be, and why), avd-current-state (what is there now) and avd-landing-zone (how it is built and changed from here). It is the baseline and the plumbing, and it works with or without the brain. The brain and avd-swarm sit on top: the brain thinks, ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "1-why-one-brain-decision-0001-history",
-      "title": "1. Why one brain (decision 0001, history)",
-      "contracts": [
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C17",
-        "C18"
-      ],
-      "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "1-why-one-brain-decision-0001-history",
-      "title": "1. Why one brain (decision 0001, history)",
-      "contracts": [
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C17",
-        "C18"
-      ],
-      "text": "Three repositories each grew their own \"second brain\": They are the same idea at different points of one lifecycle: assess → inventory → design → deploy → operate, then assess again. Kept apart, they can't learn from each other. An app that broke in a pilot doesn't warn the image pipeline. Day-2 ..."
     },
     {
       "repo": "avd-second-brain",
@@ -3636,116 +3554,12 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
-      "anchor": "2-the-lifecycle-and-who-does-what",
-      "title": "2. The lifecycle and who does what",
-      "contracts": [
-        "C1",
-        "C6",
-        "C7",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15"
-      ],
-      "text": "The brain thinks, avd-swarm acts (decision 0003); the brain is the why and avd-swarm the how (decision 0020). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is th..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "2-the-lifecycle-and-who-does-what",
-      "title": "2. The lifecycle and who does what",
-      "contracts": [
-        "C1",
-        "C6",
-        "C7",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15"
-      ],
-      "text": "The brain thinks, avd-swarm acts (decision 0003); the brain is the why and avd-swarm the how (decision 0020). The brain senses, remembers, reasons and learns, and proposes; avd-swarm is the only thing that changes an estate, through a person's approval of the exact plan, and its kill switch is th..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
       "anchor": "3-layers-and-scopes",
       "title": "3. Layers and scopes",
       "contracts": [
         "C18"
       ],
       "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "3-layers-and-scopes",
-      "title": "3. Layers and scopes",
-      "contracts": [
-        "C18"
-      ],
-      "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "3-layers-and-scopes",
-      "title": "3. Layers and scopes",
-      "contracts": [
-        "C18"
-      ],
-      "text": "The brain has three stores. They differ in whose data they hold, and so in where they may live. The factory's engagement folders (output/engagements/ in the assessment project) are a fourth, temporary store, on the customer's side. Knowledge moves up only by a reviewed PR, after it is generalized..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "4-the-flows",
-      "title": "4. The flows",
-      "contracts": [
-        "C4",
-        "C5",
-        "C6",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15",
-        "C18"
-      ],
-      "text": "<<<<<<< HEAD ======= Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "4-the-flows",
-      "title": "4. The flows",
-      "contracts": [
-        "C4",
-        "C5",
-        "C6",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15",
-        "C18"
-      ],
-      "text": "<<<<<<< HEAD ======= Flow 5 needs the landing zone to know which engagement and persona tier a host pool came from. The factory's lz-cloudnative renderer tags each host pool with avdbrain-engagement and avdbrain-tier (contracts C5); a host pool without them yields no observation, because there is..."
     },
     {
       "repo": "avd-second-brain",
@@ -3783,28 +3597,6 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/architecture.md",
-      "anchor": "5-principles",
-      "title": "5. Principles",
-      "contracts": [
-        "C11"
-      ],
-      "text": "The three repos already agreed on these; the brain keeps them in one place. 1. Real runs are the source of truth. Evidence beats documents, and documents beat a model's guess. 2. Knowledge is code. Schemas, a guard in CI, versioned rules with a reason for every change. 3. Models propose, people a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "5-principles",
-      "title": "5. Principles",
-      "contracts": [
-        "C11"
-      ],
-      "text": "The three repos already agreed on these; the brain keeps them in one place. 1. Real runs are the source of truth. Evidence beats documents, and documents beat a model's guess. 2. Knowledge is code. Schemas, a guard in CI, versioned rules with a reason for every change. 3. Models propose, people a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
       "anchor": "6-repository-layout",
       "title": "6. Repository layout",
       "contracts": [
@@ -3814,58 +3606,6 @@
         "C17"
       ],
       "text": ""
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "6-repository-layout",
-      "title": "6. Repository layout",
-      "contracts": [
-        "C4",
-        "C11",
-        "C13",
-        "C17"
-      ],
-      "text": ""
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "6-repository-layout",
-      "title": "6. Repository layout",
-      "contracts": [
-        "C4",
-        "C11",
-        "C13",
-        "C17"
-      ],
-      "text": ""
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "7-open-questions",
-      "title": "7. Open questions",
-      "contracts": [
-        "C14",
-        "C18"
-      ],
-      "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/architecture.md",
-      "anchor": "7-open-questions",
-      "title": "7. Open questions",
-      "contracts": [
-        "C14",
-        "C18"
-      ],
-      "text": "- Q1. Should the operations brain's runtime move here too? (Its acting half now belongs to avd-swarm, decision 0003; this is about the sensing and reasoning half.) Today its Bicep module and workflows are specified to deploy from the landing zone, because they deploy into it. Moving them would ma..."
     },
     {
       "repo": "avd-second-brain",
@@ -3926,86 +3666,6 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "",
-      "title": "Contracts between the repos and the brain",
-      "contracts": [
-        "C1",
-        "C2",
-        "C3",
-        "C4",
-        "C5",
-        "C6",
-        "C7",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C13",
-        "C14",
-        "C15",
-        "C16",
-        "C17",
-        "C18",
-        "C19",
-        "C20",
-        "C21"
-      ],
-      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "",
-      "title": "Contracts between the repos and the brain",
-      "contracts": [
-        "C1",
-        "C2",
-        "C3",
-        "C4",
-        "C5",
-        "C6",
-        "C7",
-        "C8",
-        "C9",
-        "C10",
-        "C11",
-        "C12",
-        "C13",
-        "C14",
-        "C15",
-        "C16",
-        "C17",
-        "C18",
-        "C19",
-        "C20",
-        "C21"
-      ],
-      "text": "What each repo gives the brain and takes from it, in a form that can be tested. A change to a contract is a PR here, and the producing or consuming repo follows. The foundation's contracts live in avd-assess (decision 0021): C11, C15, C17, C19, C20 and C21 are authored in avd-assess contracts/ an..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c1-evidence-packages--vault",
-      "title": "C1. Evidence packages → vault",
-      "contracts": [],
-      "text": "The vault reads collector packages (manifest.json with SubscriptionDetails) and validator packages (manifest.json with Verdict), as folders or ZIPs, in any order. From the collector it reads avd-host-pools, avd-session-hosts, virtual-machines, avd-workspaces, avd-application-groups and arm-resour..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c1-evidence-packages--vault",
-      "title": "C1. Evidence packages → vault",
-      "contracts": [],
-      "text": "The vault reads collector packages (manifest.json with SubscriptionDetails) and validator packages (manifest.json with Verdict), as folders or ZIPs, in any order. From the collector it reads avd-host-pools, avd-session-hosts, virtual-machines, avd-workspaces, avd-application-groups and arm-resour..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c1-evidence-packages--vault",
       "title": "C1. Evidence packages → vault",
       "contracts": [],
@@ -4024,62 +3684,6 @@
         "C18"
       ],
       "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c10-action-outcomes-and-switch-position-specified",
-      "title": "C10. Action outcomes and switch position (specified)",
-      "contracts": [
-        "C8",
-        "C9",
-        "C11",
-        "C18"
-      ],
-      "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c10-action-outcomes-and-switch-position-specified",
-      "title": "C10. Action outcomes and switch position (specified)",
-      "contracts": [
-        "C8",
-        "C9",
-        "C11",
-        "C18"
-      ],
-      "text": "What avd-swarm tells the brain about what happened, so episodes close with an outcome and the brain stops when the switch says so. The switch position is read, not sent (v1, avd-swarm build step 2). The flag on avd-swarm's resource group is the one source (avd-swarm governance §2.3, layer 1); the..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c11-avd-current-state-factsv1",
-      "title": "C11. avd-current-state-facts/v1",
-      "contracts": [
-        "C1",
-        "C2",
-        "C9",
-        "C11"
-      ],
-      "text": "The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The va..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c11-avd-current-state-factsv1",
-      "title": "C11. avd-current-state-facts/v1",
-      "contracts": [
-        "C1",
-        "C2",
-        "C9",
-        "C11"
-      ],
-      "text": "The fact collection layer of the brain and avd-swarm. C1 gives the vault everything the collector and validator saw, for people. C11 gives the same evidence in the form the brain's agents (Diagnose, Critic, the Concierge) reason over, that their prompts hold, and that a C9 proposal cites. (The va..."
     },
     {
       "repo": "avd-second-brain",
@@ -4114,84 +3718,10 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c12-avd-forensic-factsv1-specified",
-      "title": "C12. avd-forensic-facts/v1 (specified)",
-      "contracts": [
-        "C4",
-        "C5",
-        "C11",
-        "C12",
-        "C15"
-      ],
-      "text": "The forensic tier of the fact layer. C11 says what an estate is configured as, from Azure's control plane, for free. It can't say what users do: how many are on at 10:00, how hard they push a host, how long logon takes, how big profiles are, where latency hurts. That is Stratusphere UX telemetry,..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c12-avd-forensic-factsv1-specified",
-      "title": "C12. avd-forensic-facts/v1 (specified)",
-      "contracts": [
-        "C4",
-        "C5",
-        "C11",
-        "C12",
-        "C15"
-      ],
-      "text": "The forensic tier of the fact layer. C11 says what an estate is configured as, from Azure's control plane, for free. It can't say what users do: how many are on at 10:00, how hard they push a host, how long logon takes, how big profiles are, where latency hurts. That is Stratusphere UX telemetry,..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c13-avd-doc-findingsv1",
       "title": "C13. avd-doc-findings/v1",
       "contracts": [],
       "text": "What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in docs-spec.md §6 and §9. Built in phase D0: scripts/Test-DocConsistency.ps1 -JsonPath writes it, the nightly docs-sweep workflow keeps it a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c13-avd-doc-findingsv1",
-      "title": "C13. avd-doc-findings/v1",
-      "contracts": [],
-      "text": "What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in docs-spec.md §6 and §9. Built in phase D0: scripts/Test-DocConsistency.ps1 -JsonPath writes it, the nightly docs-sweep workflow keeps it a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c13-avd-doc-findingsv1",
-      "title": "C13. avd-doc-findings/v1",
-      "contracts": [],
-      "text": "What the docs consistency check found, for avd-swarm's Scribe to draft fixes from. The checks (D1 to D11), the sources of truth and an example document are in docs-spec.md §6 and §9. Built in phase D0: scripts/Test-DocConsistency.ps1 -JsonPath writes it, the nightly docs-sweep workflow keeps it a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c14-avd-target-statev1-and-avd-target-approvalv1",
-      "title": "C14. avd-target-state/v1 and avd-target-approval/v1",
-      "contracts": [
-        "C11",
-        "C12",
-        "C18"
-      ],
-      "text": "What the assessment produces and the landing zone deploys: one design, every deployed value a decision (value, evidence, confidence, optionally rule, boundBy, override). It replaces the factory spec's factory.avd/v1, which was never built. Design and reasons: the assessment project's boundaries s..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c14-avd-target-statev1-and-avd-target-approvalv1",
-      "title": "C14. avd-target-state/v1 and avd-target-approval/v1",
-      "contracts": [
-        "C11",
-        "C12",
-        "C18"
-      ],
-      "text": "What the assessment produces and the landing zone deploys: one design, every deployed value a decision (value, evidence, confidence, optionally rule, boundBy, override). It replaces the factory spec's factory.avd/v1, which was never built. Design and reasons: the assessment project's boundaries s..."
     },
     {
       "repo": "avd-second-brain",
@@ -4222,48 +3752,6 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c15-avd-fact-registerv1",
-      "title": "C15. avd-fact-register/v1",
-      "contracts": [
-        "C11",
-        "C12"
-      ],
-      "text": "contracts/fact-register.json: the decisions a manifest makes (with the manifest path and the tiers whose facts alone can support each) and the facts any repo may cite (ID, tier, contract and JSON path, grain, unit, privacy class, status, and the decisions it can evidence). Test-FactRegister keeps..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c15-avd-fact-registerv1",
-      "title": "C15. avd-fact-register/v1",
-      "contracts": [
-        "C11",
-        "C12"
-      ],
-      "text": "contracts/fact-register.json: the decisions a manifest makes (with the manifest path and the tiers whose facts alone can support each) and the facts any repo may cite (ID, tier, contract and JSON path, grain, unit, privacy class, status, and the decisions it can evidence). Test-FactRegister keeps..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c16-stratusphere-instrumentv1-proposed",
-      "title": "C16. stratusphere-instrument/v1 (proposed)",
-      "contracts": [],
-      "text": "The output files of the Stratusphere instrument that the assessment project reads: the deployment preflight's manifest.json and current-state.json, the appliance check report (with each role's address), and the Connector ID Key rollout report (per machine: name, resource ID, subscription ID, stat..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c16-stratusphere-instrumentv1-proposed",
-      "title": "C16. stratusphere-instrument/v1 (proposed)",
-      "contracts": [],
-      "text": "The output files of the Stratusphere instrument that the assessment project reads: the deployment preflight's manifest.json and current-state.json, the appliance check report (with each role's address), and the Connector ID Key rollout report (per machine: name, resource ID, subscription ID, stat..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c16-stratusphere-instrumentv1-proposed",
       "title": "C16. stratusphere-instrument/v1 (proposed)",
       "contracts": [],
@@ -4277,60 +3765,6 @@
       "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
       "contracts": [],
       "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
-      "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
-      "contracts": [],
-      "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c17-avd-run-recordv1-and-avd-run-costv1",
-      "title": "C17. avd-run-record/v1 and avd-run-cost/v1",
-      "contracts": [],
-      "text": "One shape for a recorded run, so every repo in the family can record its runs the same way and new use cases fit in without a new contract. A run folder runs/<runId>/ holds: - run.json (run-record.schema.json): the run ID, its use case, the producing repo and commit, steps, region, status, the ma..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c18-avd-lifecycle-recordv1",
-      "title": "C18. avd-lifecycle-record/v1",
-      "contracts": [
-        "C7",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15",
-        "C17",
-        "C18"
-      ],
-      "text": "Why one environment is built and performs the way it does, from the day it is born. The facts (C11, C12) say what an environment is and how it behaves; the runs (C17) and avd-swarm's plans (C10) say what was done to it. Neither says why: which use cases it serves, what was decided at each step, w..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c18-avd-lifecycle-recordv1",
-      "title": "C18. avd-lifecycle-record/v1",
-      "contracts": [
-        "C7",
-        "C10",
-        "C11",
-        "C12",
-        "C14",
-        "C15",
-        "C17",
-        "C18"
-      ],
-      "text": "Why one environment is built and performs the way it does, from the day it is born. The facts (C11, C12) say what an environment is and how it behaves; the runs (C17) and avd-swarm's plans (C10) say what was done to it. Neither says why: which use cases it serves, what was decided at each step, w..."
     },
     {
       "repo": "avd-second-brain",
@@ -4366,74 +3800,10 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c19-avd-intakev1",
-      "title": "C19. avd-intake/v1",
-      "contracts": [
-        "C11",
-        "C15"
-      ],
-      "text": "intake.json: what telemetry can't know about an estate, answered once by the operator. Each field is one intake. fact in the register (C15), at the same path: /residency (required or not, and the regions), /preferredRegions (up to three, most preferred first), /existingHub (none, azure-hub, vwan,..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c19-avd-intakev1",
-      "title": "C19. avd-intake/v1",
-      "contracts": [
-        "C11",
-        "C15"
-      ],
-      "text": "intake.json: what telemetry can't know about an estate, answered once by the operator. Each field is one intake. fact in the register (C15), at the same path: /residency (required or not, and the regions), /preferredRegions (up to three, most preferred first), /existingHub (none, azure-hub, vwan,..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c2-vault--knowledge",
       "title": "C2. Vault → knowledge",
       "contracts": [],
       "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c2-vault--knowledge",
-      "title": "C2. Vault → knowledge",
-      "contracts": [],
-      "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c2-vault--knowledge",
-      "title": "C2. Vault → knowledge",
-      "contracts": [],
-      "text": "Get-VaultHarvest reads the latest inventory and validation snapshot per environment and returns: - Estate: a session host bucket (1-10, 11-50, 51-200, >200), host pool count and types, VM families, configured max session limits. These go into an engagement record when the vault belongs to a facto..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c20-avd-assess-indexv1-and-avd-assess-methodv1",
-      "title": "C20. avd-assess-index/v1 and avd-assess-method/v1",
-      "contracts": [
-        "C14"
-      ],
-      "text": "avd-assess is the family's assessment methodology (assess spec). It publishes two JSON documents, so no reader needs a YAML parser: - index.json (assess-index.schema.json), generated from its references/, observations/ and gaps/ and checked fresh by its CI. A reference is pinned to an immutable v..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c20-avd-assess-indexv1-and-avd-assess-methodv1",
-      "title": "C20. avd-assess-index/v1 and avd-assess-method/v1",
-      "contracts": [
-        "C14"
-      ],
-      "text": "avd-assess is the family's assessment methodology (assess spec). It publishes two JSON documents, so no reader needs a YAML parser: - index.json (assess-index.schema.json), generated from its references/, observations/ and gaps/ and checked fresh by its CI. A reference is pinned to an immutable v..."
     },
     {
       "repo": "avd-second-brain",
@@ -4463,76 +3833,10 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c21-avd-assessmentv1",
-      "title": "C21. avd-assessment/v1",
-      "contracts": [
-        "C11",
-        "C19",
-        "C21"
-      ],
-      "text": "One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c21-avd-assessmentv1",
-      "title": "C21. avd-assessment/v1",
-      "contracts": [
-        "C11",
-        "C19",
-        "C21"
-      ],
-      "text": "One estate assessed: the method's version, commit and SHA-256 and the register version it ran with, the inputs' times and hashes (the C11 snapshot and, if answered, the intake), one row per check (outcome, the facts it had, each subject's pseudonym and outcome), the pillar scores with coverage, a..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c3-engagement--knowledge",
       "title": "C3. Engagement → knowledge",
       "contracts": [],
       "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c3-engagement--knowledge",
-      "title": "C3. Engagement → knowledge",
-      "contracts": [],
-      "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c3-engagement--knowledge",
-      "title": "C3. Engagement → knowledge",
-      "contracts": [],
-      "text": "See the knowledge spec §6 and .claude/skills/harvest/SKILL.md."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c4-avd-sizing-evidencev1",
-      "title": "C4. avd-sizing-evidence/v1",
-      "contracts": [
-        "C5"
-      ],
-      "text": "One document per period (and wave, for the factory). There's no field for a name: no host pool, host, resource or user name can travel in it. Conversion. Sessions per host at the target utilization (knowledge/rules/workload-tiers.json, 0.8) = peak sessions per host × target ÷ the higher of p95 CP..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c4-avd-sizing-evidencev1",
-      "title": "C4. avd-sizing-evidence/v1",
-      "contracts": [
-        "C5"
-      ],
-      "text": "One document per period (and wave, for the factory). There's no field for a name: no host pool, host, resource or user name can travel in it. Conversion. Sessions per host at the target utilization (knowledge/rules/workload-tiers.json, 0.8) = peak sessions per host × target ÷ the higher of p95 CP..."
     },
     {
       "repo": "avd-second-brain",
@@ -4558,42 +3862,6 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c5-host-pool-tags",
-      "title": "C5. Host pool tags",
-      "contracts": [],
-      "text": "They hold no customer data: the engagement ID is pseudonymous by construction."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c5-host-pool-tags",
-      "title": "C5. Host pool tags",
-      "contracts": [],
-      "text": "They hold no customer data: the engagement ID is pseudonymous by construction."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c6-reading-the-knowledge-base",
-      "title": "C6. Reading the knowledge base",
-      "contracts": [],
-      "text": "Consumers read the JSON files directly, validated against knowledge/schemas/, at a commit they record (the factory's manifest field brainCommit). They cite entries as knowledge/catalog/apps.json#<id> and knowledge/rules/<id>.json@v<version>. Calibration factors are computed with Get-SizingCalibra..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c6-reading-the-knowledge-base",
-      "title": "C6. Reading the knowledge base",
-      "contracts": [],
-      "text": "Consumers read the JSON files directly, validated against knowledge/schemas/, at a commit they record (the factory's manifest field brainCommit). They cite entries as knowledge/catalog/apps.json#<id> and knowledge/rules/<id>.json@v<version>. Calibration factors are computed with Get-SizingCalibra..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c6-reading-the-knowledge-base",
       "title": "C6. Reading the knowledge base",
       "contracts": [],
@@ -4612,74 +3880,10 @@
       "repo": "avd-second-brain",
       "commit": "",
       "path": "docs/contracts.md",
-      "anchor": "c7-searchable-docs",
-      "title": "C7. Searchable docs",
-      "contracts": [],
-      "text": "sources/sources.json lists each repo, the ref to follow, and the Markdown paths worth searching. scripts/Sync-BrainSources.ps1 checks them out into .sources/ (git-ignored) and records each commit in .sources/lock.json, so a citation names the exact text: avd-landing-zone@5f10290:docs/gotchas.md."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c7-searchable-docs",
-      "title": "C7. Searchable docs",
-      "contracts": [],
-      "text": "sources/sources.json lists each repo, the ref to follow, and the Markdown paths worth searching. scripts/Sync-BrainSources.ps1 checks them out into .sources/ (git-ignored) and records each commit in .sources/lock.json, so a citation names the exact text: avd-landing-zone@5f10290:docs/gotchas.md."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
       "anchor": "c8-avd-swarm-insightsv1-specified",
       "title": "C8. avd-swarm-insights/v1 (specified)",
       "contracts": [],
       "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c8-avd-swarm-insightsv1-specified",
-      "title": "C8. avd-swarm-insights/v1 (specified)",
-      "contracts": [],
-      "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c8-avd-swarm-insightsv1-specified",
-      "title": "C8. avd-swarm-insights/v1 (specified)",
-      "contracts": [],
-      "text": "What avd-swarm learned in a month, as counts, for the harvest. It is the only way the swarm's experience reaches knowledge/, and it goes there only by a PR a person merges (avd-swarm spec §6c). Shape (the schema lands with its first producer, avd-swarm's Improve exporter, after its v1): Rules. - ..."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c9-playbook-run-proposal-specified-after-v1",
-      "title": "C9. Playbook run proposal (specified, after v1)",
-      "contracts": [
-        "C10",
-        "C11",
-        "C12",
-        "C15"
-      ],
-      "text": "How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it (avd-swarm spec §5). Shape: Rules. - Targets are hints...."
-    },
-    {
-      "repo": "avd-second-brain",
-      "commit": "",
-      "path": "docs/contracts.md",
-      "anchor": "c9-playbook-run-proposal-specified-after-v1",
-      "title": "C9. Playbook run proposal (specified, after v1)",
-      "contracts": [
-        "C10",
-        "C11",
-        "C12",
-        "C15"
-      ],
-      "text": "How the brain asks avd-swarm to run one of its playbooks for one episode. A proposal is a reason to plan, never a plan: avd-swarm builds the plan itself from its catalog, resolves every target live and runs its gate, and a person approves it (avd-swarm spec §5). Shape: Rules. - Targets are hints...."
     },
     {
       "repo": "avd-second-brain",
