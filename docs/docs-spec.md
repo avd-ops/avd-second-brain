@@ -1,6 +1,6 @@
 # Spec: one set of docs, consistent with the brain
 
-- **Status:** Phase D0 built (2026-10-19, at the owner's go): the check, the generator, the handbook and the workflows (§12). D1 and later wait on avd-swarm's Scribe. [Decision 0004](knowledge/decisions/0004-docs-consistency.md) stays proposed until the owner accepts it, with its avd-swarm pair.
+- **Status:** Phase D0 built (2026-10-19, at the owner's go): the check, the generator, the handbook and the workflows (§12). D1 and later wait on avd-swarm's Scribe. The handbook (`wiki/`, its agent index and `-Wiki`) is retired by [decision 0024](knowledge/decisions/0024-the-brain-is-the-estate-brain.md) (owner, 2026-10-21): avd-ops holds each repo's page, and the check, the generator for reference pages, README blocks and changelogs, the sweep and C13 stay here as the sweep plumbing. The handbook rows below are history. [Decision 0004](knowledge/decisions/0004-docs-consistency.md) stays proposed until the owner accepts it, with its avd-swarm pair.
 - **Date:** 2026-10-18
 - **Pair:** avd-swarm spec §6e and its decision 0004 say the same from the acting side. The two change together.
 - **Red team:** [docs-redteam.md](docs-redteam.md). Every finding is folded in below.
@@ -103,8 +103,8 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 | **Reference pages**, one per entry point | Comment-based help and `param()` (AST), Bicep `@description` and parameter types | Each repo's `docs/reference/<script>.md` | People reading a repo on GitHub |
 | **README blocks**: the entry point table, the "How it connects" table | The reference data; `sources/sources.json` | Each README, between markers | First thing a person reads |
 | **Changelog** | `Changelog:` lines in merged PR bodies, grouped Added/Changed/Fixed/Removed ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/)) | Each repo's `CHANGELOG.md` | Release notes, agents asking "what changed" |
-| **The wiki** (the handbook) | Every indexed doc at the commits in `wiki/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
-| **The agent index** | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, contracts named, first 300 characters), linked from the root `llms.txt` that `scripts/kb/build.py` generates, so there is one agent index, not two | `Find-BrainKnowledge.ps1 -Wiki`, the Concierge, Claude Code |
+| **The wiki** (the handbook; retired, decision 0024) | Every indexed doc at the commits in `wiki/lock.json`, the reference pages, the contracts and decisions, arranged by lifecycle stage | `wiki/` in this repo, as Markdown GitHub renders | One place to read the whole system |
+| **The agent index** (retired with the handbook) | The same pages, chunked by heading | `wiki/index.json` (each chunk: repo, commit, path, anchor, title, contracts named, first 300 characters), linked from the root `llms.txt` that `scripts/kb/build.py` generates, so there is one agent index, not two | The handbook search in `Find-BrainKnowledge.ps1` (retired), the Concierge, Claude Code |
 
 **Why not GitHub's wiki feature.** A GitHub wiki is a separate git repository with no pull requests and no CI. Generated Markdown in `wiki/` gets review, history and the guards for free. A public repo may later mirror its own pages to its GitHub wiki one way, overwritten on each publish, with a banner that says so (red team W1).
 
@@ -116,7 +116,7 @@ Generated text sits between markers, `<!-- generated:<name> begin -->` and `<!--
 |---|---|---|---|
 | Check one repo on its PR | That repo's CI, calling the pinned shared workflow | No | Nothing; fails or passes the PR |
 | Sweep all repos nightly | This repo's scheduled workflow: `Sync-BrainSources.ps1`, then `Test-DocConsistency.ps1 -All -JsonPath` | No | A findings file (C13) as a workflow artifact, and one issue here per repo with open errors, updated in place |
-| Build the wiki and index | Same workflow, after the sweep | No | A draft PR here that only touches `wiki/`, when it changed |
+| Build the wiki and index (retired, decision 0024) | No longer runs | No | Nothing |
 | Judge prose against code | The Critic's pattern (brain), on demand or weekly: for each changed doc section, a Claude model lists claims the code or facts of record don't support | Yes; flags only | Findings marked `judge`, never errors; a person confirms each before Scribe may act on it |
 | Draft fixes | **Scribe**, in avd-swarm (its spec §6e), from the C13 findings | Yes, for prose; the generator for generated text | Draft PRs in the repo the finding names |
 | Decide | A person merges, and the check on the draft PR must pass | — | — |
@@ -151,9 +151,9 @@ Scribe's outcomes need no new contract: a finding closes when the next sweep no 
 
 ## 10. Agents reading the docs
 
-- `Find-BrainKnowledge.ps1 -Wiki '<query>'` searches `wiki/index.json` and cites `<repo>@<commit>:<path>#<anchor>`, the same form as C7.
-- avd-swarm's coordinator reaches the wiki only through the Concierge read tool, as with every brain read (decision 0003).
-- Each repo's `CLAUDE.md` keeps its rules and gains one line pointing at its `docs/reference/` and the brain's wiki. `CLAUDE.md` itself is never generated or edited by Scribe (red team W5).
+- `Find-BrainKnowledge.ps1 '<query>'` searches the connected repos' lessons and decisions after `Sync-BrainSources.ps1` and cites `<repo>@<commit>:<path>`, as C7 says. The `-Wiki` search went with the handbook (decision 0024).
+- avd-swarm's coordinator reaches the brain only through the Concierge read tool, as with every brain read (decision 0003).
+- Each repo's `CLAUDE.md` keeps its rules and gains one line pointing at its `docs/reference/`. `CLAUDE.md` itself is never generated or edited by Scribe (red team W5).
 
 ## 11. Cost
 
@@ -169,7 +169,7 @@ Nothing here creates an Azure resource. A later GitHub Pages site for `wiki/` is
 
 | Phase | Delivers | Exit |
 |---|---|---|
-| **D0** | `terms.json`; `Test-DocConsistency.ps1` with D1–D11 as pure functions and Pester fixtures; C13 schema and test; the generator for reference pages, README blocks and changelog; the nightly sweep; the first `wiki/` and `wiki/index.json`; `Find-BrainKnowledge.ps1 -Wiki`; the shared `docs-check.yml` workflow; a caller in each of the four connected repos, one PR each | The sweep runs green on the brain itself; every finding in the first sweep is fixed or recorded as accepted |
+| **D0** | `terms.json`; `Test-DocConsistency.ps1` with D1–D11 as pure functions and Pester fixtures; C13 schema and test; the generator for reference pages, README blocks and changelog; the nightly sweep; the first `wiki/` and `wiki/index.json` with a handbook search in `Find-BrainKnowledge.ps1` (all three retired since, decision 0024); the shared `docs-check.yml` workflow; a caller in each of the four connected repos, one PR each | The sweep runs green on the brain itself; every finding in the first sweep is fixed or recorded as accepted |
 | **D1** | Scribe in avd-swarm (its spec §6e): draft PRs from C13 errors, generated fixes first; the judge, flag-only, with the seeded-fault auditor; checks become errors | Ten Scribe PRs merged with no hand edits beyond review nits; no seeded-fault alarm from the judge auditor over its last four windows (avd-swarm spec §6b: a fixed seeded-fault count per window, a confidence bound, minimum counts) |
 | **D2** | Scribe runs inside avd-swarm's Improve schedule once that exists; optional one-way GitHub wiki mirror for public repos | Owner's call |
 

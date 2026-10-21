@@ -2,21 +2,17 @@ name: docs-sweep
 
 # The nightly docs sweep (docs/docs-spec.md §8): checks this repo and every connected repo it can
 # read (D1 to D11, including D5 and D7 across repos), keeps one issue per repo with open errors up to
-# date (label docs-findings), and refreshes the handbook (wiki/) as a draft PR on docs/refresh when the
-# connected repos moved. Findings are an artifact (avd-doc-findings/v1, contract C13) for avd-swarm's
-# Scribe. No model and no Azure; it writes only issues and the docs/refresh branch in this repo.
-# Opening the PR needs "Allow GitHub Actions to create and approve pull requests" in the repo's
-# Actions settings.
+# date (label docs-findings). Findings are an artifact (avd-doc-findings/v1, contract C13) for
+# avd-swarm's Scribe. No model and no Azure; it writes only issues in this repo. The handbook it used
+# to refresh (wiki/) is retired (decision 0024): avd-ops holds the page for each repo.
 on:
   schedule:
     - cron: "17 3 * * *" # 03:17 UTC daily
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
-  pull-requests: write
-  actions: write
 
 concurrency:
   group: docs-sweep
@@ -81,24 +77,3 @@ jobs:
             if ($issue) { gh issue edit $issue.number --body-file $file | Out-Null }
             else { gh issue create --title $title --label docs-findings --body-file $file | Out-Null }
           }
-
-      - name: Refresh the handbook
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ./scripts/Update-BrainDocs.ps1 -Wiki
-          if (-not (git status --porcelain -- wiki)) { Write-Host 'The handbook is current.'; return }
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git switch -C docs/refresh
-          git add wiki
-          git commit -m 'Refresh the handbook from the connected repos' -m 'Changelog: none'
-          git push --force origin docs/refresh
-          $pr = gh pr list --head docs/refresh --state open --json number --jq '.[0].number'
-          if (-not $pr) {
-            gh pr create --draft --head docs/refresh --base main --title 'Refresh the handbook (wiki/)' --body "The nightly docs sweep rebuilt wiki/ from the connected repos at the commits in wiki/lock.json. Only wiki/ changes; review and merge when ready.`n`nChangelog: none"
-          }
-          # A PR or push made with GITHUB_TOKEN starts no workflows, so start the required ones on the branch.
-          gh workflow run validate.yml --ref docs/refresh
-          gh workflow run docs-check.yml --ref docs/refresh

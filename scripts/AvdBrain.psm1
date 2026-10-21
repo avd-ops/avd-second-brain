@@ -1532,7 +1532,7 @@ function Test-DocLink {
           Get-DocFinding -Check D1 -Severity error -Repo $Repo.Name -Path $md.Path -Line $l.Number -Says "links to $target" -Truth "$resolved does not exist"
         }
       }
-      # The handbook names other repos' files in link text; its links are checked above.
+      # The handbook stub (wiki/) names other repos' pages.
       if ($md.Path -like 'wiki/*') { continue }
       foreach ($m in [regex]::Matches($l.Text, '`([A-Za-z0-9_.-]+/[A-Za-z0-9_./-]*)`')) {
         $p = $m.Groups[1].Value.TrimEnd('/')
@@ -2067,149 +2067,6 @@ function Get-DocChangelog {
   $lines -join "`n"
 }
 
-function Get-DocChunk {
-  # A Markdown file split at its headings, for the agent index: heading, anchor, contracts named and
-  # the first 300 characters of prose.
-  param([Parameter(Mandatory)] $Markdown)
-  $chunks = @(); $title = $null; $anchor = ''; $buf = [System.Text.StringBuilder]::new(); $text = ''
-  $anchors = @{}
-  $flush = {
-    if ($null -ne $title) {
-      $prose = ($buf.ToString() -replace '\s+', ' ').Trim()
-      [pscustomobject][ordered]@{
-        title = $title; anchor = $anchor
-        contracts = @([regex]::Matches($text, '\bC\d{1,2}\b') | ForEach-Object Value | Select-Object -Unique | Sort-Object { [int]$_.Substring(1) })
-        text = Get-DocMasked $(if ($prose.Length -gt 300) { $prose.Substring(0, 297) + '...' } else { $prose })
-      }
-    }
-  }
-  foreach ($l in $Markdown.Lines) {
-    $h = if (-not $l.Code) { [regex]::Match($l.Text, '^(#{1,3})\s+(.+?)\s*#*\s*$') } else { $null }
-    if ($h -and $h.Success) {
-      $chunks += & $flush
-      $title = $h.Groups[2].Value -replace '[*`]', ''
-      $a = Get-DocAnchor $h.Groups[2].Value
-      if ($anchors.ContainsKey($a)) { $anchors[$a]++; $a = "$a-$($anchors[$a])" } else { $anchors[$a] = 0 }
-      $anchor = if ($h.Groups[1].Value -eq '#') { '' } else { $a }
-      [void]$buf.Clear(); $text = ''
-      continue
-    }
-    $text += "`n" + $l.Text
-    if (-not $l.Code -and $l.Text -notmatch '^\s*(\||<!--|>|[-*]\s+\*\*[^*]+:\*\*)' -and $buf.Length -lt 400) {
-      $plain = [regex]::Replace($l.Text, '!?\[([^\]]*)\]\([^)]*\)', '$1') -replace '[`*]', ''
-      [void]$buf.Append(' ').Append(($plain -replace '\s+', ' '))
-    }
-  }
-  $chunks += & $flush
-  $chunks
-}
-
-function Get-DocWiki {
-  # The handbook (wiki/): a home page by lifecycle stage, a page per connected repo (its docs with
-  # their summaries, entry points and decisions, linked at the commit read), and the agent index
-  # (wiki/index.json). The brain's own pages are linked relatively; nothing is copied.
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory)] $Brain,
-    [Parameter(Mandatory)] [object[]] $Source,
-    # Connected repos read at a commit (Get-DocRepo over .sources/); missing ones are listed as not read.
-    [object[]] $Repo = @()
-  )
-  $byName = @{}; foreach ($r in $Repo) { $byName[$r.Name] = $r }
-  $files = @{}; $index = @()
-  $front = [System.Collections.Generic.List[string]]::new()
-  $front.Add('# AVD handbook'); $front.Add(''); $front.Add(($script:DocGeneratedHeader -replace 'from the code', 'from the connected repos at the commits in wiki/lock.json')); $front.Add('')
-  $front.Add('One map of the AVD repos for people and agents: what each repo does in the lifecycle, its docs, its entry points and its decisions, at the commit this page was built from. Agents search the same pages through [index.json](index.json) (`./scripts/Find-BrainKnowledge.ps1 -Wiki <query>`).'); $front.Add('')
-  $front.Add('| Repo | Lifecycle stage | Read at |'); $front.Add('|---|---|---|')
-  $front.Add("| [avd-second-brain](avd-second-brain.md) | The brain: knowledge, contracts, the docs check | this commit |")
-  $lock = @()
-  foreach ($s in $Source) {
-    $r = $byName[$s.name]
-    $at = if ($r) { '`' + $r.Commit.Substring(0, 7) + '`' } else { 'not read (private or unreachable)' }
-    $front.Add("| [$($s.name)]($($s.name).md) | $(Get-DocCell $s.stage) | $at |")
-    $lock += [pscustomobject][ordered]@{ name = $s.name; ref = $s.ref; commit = if ($r) { $r.Commit } else { $null } }
-  }
-  $front.Add(''); $front.Add('Contracts between the repos: [docs/contracts.md](../docs/contracts.md). Decisions: [docs/knowledge/decisions](../docs/knowledge/decisions/README.md).')
-  $files['wiki/README.md'] = ($front -join "`n") + "`n"
-
-  $page = {
-    param($R, [string] $Stage, [string[]] $Include, [string] $LinkBase, [string] $Cite)
-    $p = [System.Collections.Generic.List[string]]::new()
-    $p.Add("# $($R.Name)"); $p.Add(''); $p.Add(($script:DocGeneratedHeader -replace 'from the code', 'from the repo at the commit below')); $p.Add('')
-    $p.Add("**Stage:** $Stage"); $p.Add('')
-    if ($R.Commit -and $LinkBase -notlike '../*') { $p.Add("**Read at:** ``$($R.Commit)``"); $p.Add('') }
-    $docs = @($R.Markdown | Where-Object { $m = $_.Path; @($Include | Where-Object { $m -eq $_ -or $m -like "$($_.TrimEnd('/'))/*" }).Count } | Sort-Object { $_.Path -ne 'README.md' }, { $_.Path })
-    if ($docs.Count) {
-      $p.Add('## Docs'); $p.Add('')
-      foreach ($d in $docs) {
-        $chunks = @(Get-DocChunk -Markdown $d)
-        $title = if ($chunks.Count -and $chunks[0].title) { $chunks[0].title } else { $d.Path }
-        $summary = if ($chunks.Count) { $chunks[0].text } else { '' }
-        $p.Add("- [$(Get-DocCell $title)]($LinkBase$($d.Path)): $(Get-DocCell $summary)")
-        foreach ($c in $chunks) {
-          $script:wikiIndex += [pscustomobject][ordered]@{ repo = $R.Name; commit = $Cite; path = $d.Path; anchor = $c.anchor; title = $c.title; contracts = $c.contracts; text = $c.text }
-        }
-      }
-      $p.Add('')
-    }
-    $entry = @($R.Scripts | Where-Object HasNotice | Sort-Object Path)
-    if ($entry.Count) {
-      $p.Add('## Entry points'); $p.Add('')
-      $p.Add('| Script | What it does |'); $p.Add('|---|---|')
-      foreach ($s in $entry) { $p.Add("| [``$($s.Path)``]($LinkBase$($s.Path)) | $(Get-DocCell $s.Synopsis) |") }
-      $p.Add('')
-    }
-    $dec = @(Get-DocDecision -Repo $R | Sort-Object Path)
-    if ($dec.Count) {
-      $p.Add('## Decisions'); $p.Add('')
-      foreach ($d in $dec) {
-        $t = ([regex]::Match((@($R.Markdown | Where-Object Path -eq $d.Path)[0].Text), '(?m)^#\s+(.+)$')).Groups[1].Value
-        $p.Add("- [$(Get-DocCell $t)]($LinkBase$($d.Path)): $($d.Status)")
-      }
-      $p.Add('')
-    }
-    ($p -join "`n").TrimEnd() + "`n"
-  }
-
-  $script:wikiIndex = @()
-  $files['wiki/avd-second-brain.md'] = & $page $Brain 'The brain: knowledge, contracts, the docs check' @('README.md', 'docs') '../' ''
-  foreach ($s in $Source) {
-    $r = $byName[$s.name]
-    if (-not $r) {
-      $files["wiki/$($s.name).md"] = "# $($s.name)`n`n$($script:DocGeneratedHeader)`n`n**Stage:** $($s.stage)`n`nNot read: the repo is private or couldn't be reached when this page was built, so nothing from it is listed here.`n"
-      continue
-    }
-    $files["wiki/$($s.name).md"] = & $page $r $s.stage (@('README.md') + @($s.index)) "$($s.url)/blob/$($r.Commit)/" $r.Commit
-  }
-  $index = $script:wikiIndex | Sort-Object repo, path, anchor
-  $files['wiki/index.json'] = ([ordered]@{ schema = 'avd-wiki-index/v1'; sources = $lock; chunks = @($index) } | ConvertTo-Json -Depth 6) + "`n"
-  $files['wiki/lock.json'] = ([ordered]@{ sources = $lock } | ConvertTo-Json -Depth 4) + "`n"
-  $files
-}
-
-function Search-DocWiki {
-  # Searches the agent index (wiki/index.json) and returns each hit with its citation.
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory)] [string] $IndexPath,
-    [Parameter(Mandatory)] [string] $Query,
-    [int] $Top = 10
-  )
-  $words = @([regex]::Matches($Query.ToLowerInvariant(), '[a-z0-9]{2,}') | ForEach-Object Value | Select-Object -Unique)
-  if (-not $words.Count) { return }
-  $patterns = @($words | ForEach-Object { [regex]::new("\b$([regex]::Escape($_))(s|es)?\b", 'IgnoreCase') })
-  $chunks = @((Get-Content -LiteralPath $IndexPath -Raw | ConvertFrom-Json).chunks)
-  $chunks | ForEach-Object {
-    $c = $_
-    $inTitle = @($patterns | Where-Object { $_.IsMatch($c.title) }).Count
-    $score = @($patterns | Where-Object { $_.IsMatch("$($c.title) $($c.text) $($c.path)") }).Count
-    if ($score) {
-      $at = if ($c.commit) { "$($c.repo)@$($c.commit.Substring(0, 7)):" } else { '' }
-      [pscustomobject]@{ Score = $score; InTitle = $inTitle; Ref = "$at$($c.path)$(if ($c.anchor) { "#$($c.anchor)" })"; Title = $c.title; Snippet = $c.text }
-    }
-  } | Sort-Object @{ Expression = 'Score'; Descending = $true }, @{ Expression = 'InTitle'; Descending = $true }, Ref | Select-Object -First $Top
-}
-
 function Get-DocSourceRepo {
   # The connected repos Sync-BrainSources.ps1 checked out under -SourcesRoot, read with Get-DocRepo.
   [CmdletBinding()]
@@ -2224,20 +2081,6 @@ function Get-DocSourceRepo {
     $r = Get-DocRepo -Path $dir -Name $s.name
     if ($r.Commit) { $r }
   }
-}
-
-function Get-DocPinnedRepo {
-  # The connected repos the handbook was built from, when each is checked out at the commit
-  # wiki/lock.json records; $null when any isn't (sync with -LockPath first).
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory)] [string] $LockPath,
-    [Parameter(Mandatory)] [AllowEmptyCollection()] [object[]] $Repo
-  )
-  $byName = @{}; foreach ($r in $Repo) { $byName[$r.Name] = $r }
-  $pins = @((Get-Content -LiteralPath $LockPath -Raw | ConvertFrom-Json).sources | Where-Object commit)
-  if (@($pins | Where-Object { -not $byName[$_.name] -or $byName[$_.name].Commit -ne $_.commit }).Count) { return $null }
-  , @($pins | ForEach-Object { $byName[$_.name] })
 }
 
 function Get-DocFindingDocument {
@@ -2267,8 +2110,6 @@ function Test-DocConsistency {
     [Parameter(Mandatory)] $Fact,
     [string[]] $ChangedFile = @(),
     [string] $PullRequestBody,
-    # The wiki the brain should have (Get-DocWiki), when the connected repos were read at its lock.
-    [hashtable] $Wiki,
     # Check every repo in -Repo, not just the first.
     [switch] $All
   )
@@ -2278,7 +2119,6 @@ function Test-DocConsistency {
       $source = if ($r.Name -eq 'avd-second-brain') { $Fact.Sources } else { @() }
       $expected = Get-DocOutput -Repo $r -Source $source
       $owned = @('docs/reference')
-      if ($r.Name -eq 'avd-second-brain' -and $Wiki) { foreach ($k in $Wiki.Keys) { $expected[$k] = $Wiki[$k] }; $owned += 'wiki' }
       Test-DocLink -Repo $r
       Test-DocEntryPoint -Repo $r
       Test-DocParameter -Repo $r -Script $allScripts
@@ -2319,4 +2159,4 @@ Export-ModuleMember -Function Get-BrainSensitiveText, Test-BrainCatalog, Test-Br
   Get-DocFact, Get-DocTextHash, Test-DocLink, Test-DocEntryPoint, Test-DocParameter, Test-DocContract, Test-DocDecisionPair,
   Test-DocChangelog, Test-DocConnectionTable, Test-DocTerm, Test-DocKnowledgeCitation, Test-DocGenerated, Test-DocPrivate,
   Get-DocUpdatedText, Get-DocReferencePage, Get-DocReferencePath, Get-DocEntryPointTable, Get-DocConnectionTable, Get-DocOutput,
-  Get-DocChangelog, Get-DocWiki, Search-DocWiki, Get-DocSourceRepo, Get-DocPinnedRepo, Get-DocFindingDocument, Test-DocConsistency
+  Get-DocChangelog, Get-DocSourceRepo, Get-DocFindingDocument, Test-DocConsistency

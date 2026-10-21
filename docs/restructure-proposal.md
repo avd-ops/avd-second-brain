@@ -40,7 +40,7 @@ Verdicts: **Keep**, **Move** (to the named repo), **Retire** (frozen in place as
 | `knowledge/catalog/apps.json` | App compatibility verdicts with evidence | Owner (G3) | Guidance (keep) or a standard (avd-assess) |
 | `knowledge/runbooks/` | Shared runbooks copied into new vaults | Keep | Guidance for vaults |
 | [assess-spec.md](assess-spec.md) | avd-assess's own spec | Move | avd-assess `docs/`; a stub here points to it |
-| [docs-spec.md](docs-spec.md), [red team](docs-redteam.md), `Test-DocConsistency.ps1`, `Update-BrainDocs.ps1`, the 35 `*-Doc*` functions in `AvdBrain.psm1`, `wiki/`, [accepted-findings.json](accepted-findings.json), `docs-check.yml`, `docs-sweep.yml`, C13, decision 0004 | Docs consistency across every repo and the generated handbook | Owner (G4) | Recommended: avd-ops, the front door that already renders the family docs; avd-swarm's Scribe re-points |
+| [docs-spec.md](docs-spec.md), [red team](docs-redteam.md), `Test-DocConsistency.ps1`, `Update-BrainDocs.ps1`, the 35 `*-Doc*` functions in `AvdBrain.psm1`, `wiki/`, [accepted-findings.json](accepted-findings.json), `docs-check.yml`, `docs-sweep.yml`, C13, decision 0004 | Docs consistency across every repo and the generated handbook | Owner (G4) | Decided: the check and C13 stay as sweep plumbing; the handbook is retired (avd-ops holds each repo's page) |
 | `docs/knowledge/` (topic pages, known errors, upstream asks, experts, curation), `scripts/kb/`, `kb-*.yml`, `family.yaml`, `sources.toml`, `Test-KbLeaks.ps1`, decisions 0006 to 0015 | The family KB and its plumbing | Keep | Owner's steer: the brain keeps the plumbing and its decisions |
 | `sources/`, `Sync-BrainSources.ps1`, `Find-BrainKnowledge.ps1`, C7 | Search across the repos' lessons, the KB and a vault | Keep | Plumbing the agents use to cite |
 | [docs/knowledge/roadmap.md](knowledge/roadmap.md) | Status of the KB migration (all steps done) | Retire | Settled outcome stays in curation.md; tracking goes private |
@@ -58,7 +58,7 @@ The working boundary (from the RAID thread, not yet confirmed by the owner): dec
 | 0001 | One brain for the AVD lifecycle | Public; superseded in part by 0024 |
 | 0002 | The engine's knowledge base | Public; moves with G2 or is deprecated |
 | 0003 | Brain thinks, avd-swarm acts | Public, keep |
-| 0004 | Docs consistency | Public; moves with G4 |
+| 0004 | Docs consistency | Public; stays, narrowed by 0024 (handbook retired) |
 | 0005 | One schema registry and fact register | Public, keep (narrowed by 0021) |
 | 0006 to 0015 | Family KB format, leak check, model convention, upstream sources, lanes, kb-capture, handoffs, GitHub work | Public, keep (KB plumbing) |
 | 0016, 0017 (#37) | Never delete the last copy, never leave the meter running | Public: they are rules every repo follows. Could live in avd-ops beside the family conventions (G7) |
@@ -95,7 +95,7 @@ Each has a default. The owner chose all of them (2026-10-20).
 - **G1. C14 target state.** The landing zone reads it, so it is arguably a foundation contract. Default: keep here, as 0021 decided; revisit when the factory producer is built.
 - **G2. The migration factory's engine knowledge.** Default: move it to the private assessment factory repo. Revised on a closer read (2026-10-20): only the stage rules (delivery, quality gate) are the factory's own. The harvest, engagement records and C3, C5 and C6 feed and serve the catalog and calibration, which stay here as guidance, so they stay too.
 - **G3. The app catalog.** Default: keep as guidance; it is learned across estates.
-- **G4. Docs consistency and the handbook.** Default: move to avd-ops, with a paired avd-swarm PR for the Scribe.
+- **G4. Docs consistency and the handbook.** Default was to move both to avd-ops. Owner's choice (2026-10-21): the check and C13 stay here as sweep plumbing, and the handbook is retired because avd-ops holds each repo's page.
 - **G5. Owner-decision lists in public docs** (v1-review D1 to D18, status lines). Default: once answered, each becomes a settled line in its spec; open items live only in the private log.
 - **G6. Naming the private assessment repo in public text.** Default: replace with "the assessment factory (private)".
 - **G7. Family conventions (0016, 0017, 0023).** Default: stay here, linked from avd-ops.
@@ -112,7 +112,7 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 | R1 | Decision 0024 "The brain is the estate brain", narrowing 0001; rewrite README and architecture.md; retire roadmap.md | Done in the proposal's PR |
 | R2 | Foundation contracts: #54 merged (pinned copies in `contracts/`, listed in `FOUNDATION-PINS.json`). The folder split is held: the docs check compares other repos' vendored schemas against `contracts/schemas/` by name | Done; split held |
 | R3 | Drop the brain's copies of the factory's delivery and quality-gate rules (the factory holds them); tests use workload-tiers instead. workload-tiers stays (C14 cites it) | Done |
-| R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |
+| R4 | Retire the handbook (`wiki/` becomes a stub, the nightly refresh stops, `-Wiki` goes); the docs check stays (G4), paired with avd-swarm and avd-ops | Done |
 | R5 | Factory stage rules copied to the private factory repo (its #13, merged); assess spec copied to avd-assess (#16, merged) and stubbed here; C16 needs nothing (the Liquidware project lands it with its producer); the brain's rule copies go once the tests stop reading them | Done, except the rule copies |
 | R6 | v1 review section 7 states the defaults in force; open items are tracked privately | Done |
 | R7 | Optional rename to `guidance/` (G9) | Everything else |
@@ -121,4 +121,4 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 
 - **Merge before R1:** #45 (C18) and #56 (C25), the core of the new shape; #44 (v1 review), once its conflict with main is resolved; #54 (foundation contracts).
 - **Unaffected, merge any time:** KB pages #39, #49, #51, #52, #55, #58, #34, #38; #33 (kb-auto-merge resync); #40 (C17 use case, which then also lands in avd-assess as the authority).
-- **Decide before moving:** #37 (G7), #41 (G8), #29 (claims on every edge; stays with the swarm pair), #28 (handbook refresh; superseded by R4 if G4 moves it).
+- **Decide before moving:** #37 (G7), #41 (G8), #29 (claims on every edge; stays with the swarm pair), #28 (handbook refresh; closed, superseded by R4).

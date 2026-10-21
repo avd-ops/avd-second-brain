@@ -36,7 +36,7 @@ Assessment and design run in a separate project that isn't connected here; it gi
 | **Guidance** (`knowledge/`) | What the brain learned across estates, applied by the foundation only when present and valid: sizing calibration, the app catalog, shared runbooks | [knowledge-spec.md](docs/knowledge-spec.md) | Built; the factory's engine rules and the baselines are moving out ([proposal](docs/restructure-proposal.md)) |
 | **Operations brain** | Detections, episodes and playbook proposals for a running estate; avd-swarm does every change | [operations-spec.md](docs/operations-spec.md), [red team](docs/operations-redteam.md) | Specified |
 | **Family knowledge base** (`docs/knowledge/`, `scripts/kb/`) | Topic pages, decision records (MADR 4), known errors, upstream asks, sources and experts, and the tooling that keeps them current. One of the sibling knowledge bases that share a format | [docs/knowledge/README.md](docs/knowledge/README.md), [guardrails](docs/guardrails.md) | Built |
-| **Docs consistency** | The check and the generated handbook for every repo | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Built; moving to avd-ops ([proposal](docs/restructure-proposal.md)) |
+| **Docs consistency** | The check every repo calls, as part of the sweep plumbing (the handbook is retired; avd-ops holds each repo's page) | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Built; stays ([decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)) |
 
 **Build order with avd-swarm** (second red team AX-15, [avd-swarm spec §9a](https://github.com/nickprignano/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
 
@@ -53,7 +53,6 @@ Set-Location avd-second-brain
 ./scripts/Find-BrainKnowledge.ps1 'fslogix kerberos'                   # search, with commit-pinned citations
 ./scripts/Find-BrainKnowledge.ps1 -App 'Skype for Business 2016'       # resolve an inventory app name
 ./scripts/Find-BrainKnowledge.ps1 -Calibration                         # sizing factors per tier and VM family
-./scripts/Find-BrainKnowledge.ps1 -Wiki 'kill switch'                  # search the handbook (wiki/) across every repo
 
 # A customer's estate vault, from avd-current-state packages (in their own private repo)
 ./vault/avd_second_brain.ps1 -BrainPath ../contoso-avd-brain -Init
@@ -87,11 +86,11 @@ Each links its reference page, generated from the script's own help.
 | [`scripts/Test-DocConsistency.ps1`](docs/reference/scripts-Test-DocConsistency.md) | Checks that a repo's docs agree with its code and with the brain's facts of record (docs consistency, D1 to D11). |
 | [`scripts/Test-KbLeaks.ps1`](docs/reference/scripts-Test-KbLeaks.md) | Runs the brain's sensitive-text guard over the family knowledge base (docs/knowledge/) and llms.txt. |
 | [`scripts/Test-Knowledge.ps1`](docs/reference/scripts-Test-Knowledge.md) | Checks the organizational second brain's knowledge base (knowledge/): schemas, scope, cross-references and customer data. |
-| [`scripts/Update-BrainDocs.ps1`](docs/reference/scripts-Update-BrainDocs.md) | Regenerates the docs that come from the code: reference pages, README blocks, the changelog and the handbook. |
+| [`scripts/Update-BrainDocs.ps1`](docs/reference/scripts-Update-BrainDocs.md) | Regenerates the docs that come from the code: reference pages, README blocks, and the changelog. |
 | [`vault/avd_second_brain.ps1`](docs/reference/vault-avd_second_brain.md) | AVD Second Brain -- turns collector and validator evidence packages into a living, Markdown knowledge base for an Azure Virtual Desktop estate. |
 <!-- generated:entry-points end -->
 
-The handbook, one map of every connected repo for people and agents, is in [wiki/](wiki/README.md).
+Each repo's own page, for people, is on the front door, [avd-ops.dev](https://avd-ops.dev/docs/repos/index.html). The handbook that used to be generated in [wiki/](wiki/README.md) is retired.
 
 ## Rules that keep it trustworthy
 
