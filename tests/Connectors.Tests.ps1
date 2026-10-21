@@ -226,7 +226,7 @@ Describe 'Foundation contracts vendored from avd-assess (decision 0021)' {
   }
 
   It 'pins a commit of avd-assess' {
-    $script:pins.source | Should -Be 'https://github.com/nickprignano/avd-assess'
+    $script:pins.source | Should -Be 'https://github.com/avd-ops/avd-assess'
     $script:pins.assessCommit | Should -Match '^[0-9a-f]{40}$'
   }
 
