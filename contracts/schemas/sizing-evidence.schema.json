@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "avd-sizing-evidence/v1: measured host pool utilization",
-  "description": "Produced by the factory's verify stage (avd-readiness-stratusphere) and the landing zone's operations brain (avd-landing-zone); read by scripts/Import-SizingEvidence.ps1. No host pool, host or resource names: the contract has no field for them.",
+  "description": "Produced by the factory's verify stage (the assessment project) and the landing zone's operations brain (avd-landing-zone); read by scripts/Import-SizingEvidence.ps1. No host pool, host or resource names: the contract has no field for them.",
   "type": "object",
   "required": ["schema", "source", "period", "hostPools"],
   "additionalProperties": false,

@@ -207,8 +207,7 @@ kb_page = "fslogix/README.md"
 
 # --- The connected AVD repos ----------------------------------------------------
 # Their lessons and decisions stay where they happened; the digest shows new ones so the topic
-# pages can link them. avd-readiness-ux (formerly avd-readiness-stratusphere) is private, so the
-# built-in token can't read it; its source is left out until it's public.
+# pages can link them. Private repos are left out: the built-in token can't read them.
 
 [[source]]
 name = "avd-landing-zone: lessons"

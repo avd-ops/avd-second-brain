@@ -11,7 +11,7 @@ Spec: `docs/knowledge-spec.md` §5–§6; the sources: `docs/architecture.md` §
 
 1. Read `knowledge/knowledge.json`. Harvests with engagement trails (records, calibration observations, pilot evidence) go only into an `organization` brain. In the `public` brain, you may only add or update catalog entries backed by a public document (https), and rule changes.
 2. Find the source. Each is customer data: never copy from it verbatim, never quote names, and never commit anything from it.
-   - A factory **engagement folder** (`output/engagements/<customer>-<yyyymm>/` in avd-readiness-stratusphere).
+   - A factory **engagement folder** (`output/engagements/<customer>-<yyyymm>/` in the assessment project).
    - A customer's **estate vault**: run `./scripts/Get-VaultHarvest.ps1 -VaultPath <vault>` and work only from its proposal and the candidate files it lists.
    - A **sizing evidence** file (`avd-sizing-evidence/v1`): run `./scripts/Import-SizingEvidence.ps1 -EvidencePath <file>`, and with `-Apply` in an organization brain.
 3. Find or create the engagement's pseudonymous ID: `eng-<yyyy>-<mm>-<4 lowercase letters or digits>`, random, not derived from the customer's name. Ask the person for the existing ID if `knowledge/engagements/` doesn't obviously hold it; never guess which record belongs to which customer.

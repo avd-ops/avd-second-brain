@@ -21,7 +21,7 @@ projects:
   owns: [Azure Virtual Desktop platform, FSLogix, session host images in general, the AVD landing zone and its operations]
   format_version: 1
   claude_project: AVD
-  builds_in: [avd-landing-zone, avd-swarm, avd-second-brain, avd-current-state, avd-readiness-ux, avd-liquidware deployment tooling, avd-ops]
+  builds_in: [avd-landing-zone, avd-swarm, avd-second-brain, avd-current-state, avd-liquidware deployment tooling, avd-ops]
   not_here:
   - topic: Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only
     owner: nerdio-hcl

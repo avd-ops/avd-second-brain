@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-avd-second-brain: the organizational second brain for Azure Virtual Desktop, connecting avd-readiness-stratusphere (assess and design), avd-liquidware (the Stratusphere instrument and the Liquidware tier), avd-current-state (inventory and validate) and avd-landing-zone (deploy and operate). Design: `docs/architecture.md`; interfaces: `docs/contracts.md`.
+avd-second-brain: the organizational second brain for Azure Virtual Desktop, connecting the assessment project (assess and design), avd-liquidware (the Stratusphere instrument and the Liquidware tier), avd-current-state (inventory and validate) and avd-landing-zone (deploy and operate). Design: `docs/architecture.md`; interfaces: `docs/contracts.md`.
 
 ## Validate before pushing
 CI (`.github/workflows/validate.yml`) runs:

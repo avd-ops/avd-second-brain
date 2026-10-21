@@ -37,6 +37,7 @@
 - [0016. Never delete the last copy](../docs/knowledge/decisions/0016-never-delete-the-last-copy.md): 
 - [0017. Never leave the meter running without an opt-in](../docs/knowledge/decisions/0017-never-leave-the-meter-running.md): 
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](../docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): 
+- [0020. The brain is the why layer: one lifecycle record per environment, from its birth](../docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md): 
 - [0021. The foundation's contracts live in avd-assess](../docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): 
 - [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](../docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): 
 - [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](../docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): 
@@ -61,7 +62,7 @@
 - [scripts/Find-BrainKnowledge.ps1](../docs/reference/scripts-Find-BrainKnowledge.md): Asks the second brain: search its knowledge and the connected repos, resolve an inventory app name, or show the sizing calibration. -Query searches the app catalog, the engine rules, the shared runbooks and docs here, the connected repos' lessons and decisions once ./scripts/Sync-BrainSources.ps1...
 - [scripts/Get-VaultHarvest.ps1](../docs/reference/scripts-Get-VaultHarvest.md): Proposes what a customer vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates. Reads a vault built by vault/avd_second_brain.ps1 from avd-current-state packages (the latest inventory and validation snapshot of each environment...
 - [scripts/Import-CurrentStateFacts.ps1](../docs/reference/scripts-Import-CurrentStateFacts.md): Checks a redacted current-state snapshot (contract C11, avd-current-state-facts/v1) and files it in the estate vault's facts store. avd-current-state's avd_current_state_facts.ps1 turns collector and validator packages into a snapshot with no names, IDs, IP addresses, tags or free text: counts, b...
-- [scripts/Import-SizingEvidence.ps1](../docs/reference/scripts-Import-SizingEvidence.md): Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations. The evidence comes from the factory's verify stage (avd-readiness-stratusphere) or from the landing zone's operations brain (avd-landing-zone), in the format of contracts/schemas/sizing-ev...
+- [scripts/Import-SizingEvidence.ps1](../docs/reference/scripts-Import-SizingEvidence.md): Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations. The evidence comes from the factory's verify stage (the assessment project) or from the landing zone's operations brain (avd-landing-zone), in the format of contracts/schemas/sizing-eviden...
 - [scripts/Sync-BrainSources.ps1](../docs/reference/scripts-Sync-BrainSources.md): Checks out the connected repositories (sources/sources.json) so the brain can search their lessons and decisions. Shallow-clones (or updates) each source at its ref into .sources/<name> (git-ignored) and records the commit of each in .sources/lock.json. Find-BrainKnowledge.ps1 then searches them ...
 - [scripts/Test-DocConsistency.ps1](../docs/reference/scripts-Test-DocConsistency.md): Checks that a repo's docs agree with its code and with the brain's facts of record (docs consistency, D1 to D11). Runs the checks in docs/docs-spec.md section 6 on one repo (this one by default), or with -All on this repo and every connected repo ./scripts/Sync-BrainSources.ps1 checked out: links...
 - [scripts/Test-KbLeaks.ps1](../docs/reference/scripts-Test-KbLeaks.md): Runs the brain's sensitive-text guard over the family knowledge base (docs/knowledge/) and llms.txt. The family checks (scripts/kb/validate.py) catch email addresses and public IPv4 addresses. This adds the rest of the brain's guard (docs/knowledge-spec.md §8): GUIDs other than placeholders, UNC ...
@@ -97,8 +98,8 @@
 - [0006. Adopt the family KB format at docs/knowledge/, beside the engine's knowledge/](../docs/knowledge/decisions/0006-family-kb-format.md): accepted
 - [0007. Python for the family layer, PowerShell for the engine](../docs/knowledge/decisions/0007-python-family-layer-powershell-engine.md): accepted
 - [0008. Learned knowledge stays where it happened; this KB links and watches](../docs/knowledge/decisions/0008-learned-knowledge-stays-where-it-happened.md): accepted
-- [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): proposed
-- [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): proposed
+- [0009. Family format: a stronger leak check and reviewed model-drafted entries](../docs/knowledge/decisions/0009-family-format-stronger-leak-check.md): accepted
+- [0010. Follow the family's model-selection convention, as one of its four pilot projects](../docs/knowledge/decisions/0010-family-model-selection-convention.md): accepted
 - [0011. Family format: link to upstream sources of truth, check against them, and give back](../docs/knowledge/decisions/0011-family-format-upstream-sources.md): proposed
 - [0012. Family format: project lanes, referrals and a no-HCL guard for the AVD repos](../docs/knowledge/decisions/0012-family-format-project-lanes.md): proposed
 - [0013. Enforce knowledge capture with a thread closeout, a Stop hook and a PR check, as an AVD pilot](../docs/knowledge/decisions/0013-family-format-enforced-kb-capture.md): accepted
@@ -107,6 +108,7 @@
 - [0016. Never delete the last copy](../docs/knowledge/decisions/0016-never-delete-the-last-copy.md): accepted
 - [0017. Never leave the meter running without an opt-in](../docs/knowledge/decisions/0017-never-leave-the-meter-running.md): accepted
 - [0019. Basic recovery testing and failover run through avd-swarm; the brain judges what the results mean](../docs/knowledge/decisions/0019-recovery-runs-through-the-swarm.md): proposed
+- [0020. The brain is the why layer: one lifecycle record per environment, from its birth](../docs/knowledge/decisions/0020-the-brain-is-the-why-layer.md): proposed
 - [0021. The foundation's contracts live in avd-assess](../docs/knowledge/decisions/0021-foundation-contracts-live-in-avd-assess.md): accepted
 - [0022. The brain keeps each estate's RAID log and action tracker, beside the lifecycle record](../docs/knowledge/decisions/0022-the-brain-keeps-the-raid-log.md): proposed
 - [0023. Adopt an outside tool only when it is the best and open source; otherwise build our own](../docs/knowledge/decisions/0023-family-format-best-open-source-or-build.md): accepted

@@ -4,14 +4,14 @@
 
 **Stage:** Inventory and validate: the collector and the deployment validator
 
-**Read at:** `17fe96ac9a041077b8383be8359c4a835404514c`
+**Read at:** `b2bcf753af92b72b38995550bf98260b72989fb0`
 
 ## Docs
 
-- [AVD Tooling for Azure Commercial](https://github.com/nickprignano/avd-current-state/blob/17fe96ac9a041077b8383be8359c4a835404514c/README.md): Read-only PowerShell tooling for Azure Virtual Desktop (AVD) environments on Azure Commercial. The collector and validator read through Azure Resource Manager and write nothing. Their evidence packages feed avd-second-brain, which turns them into a living knowledge base of the estate.
+- [AVD Tooling for Azure Commercial](https://github.com/nickprignano/avd-current-state/blob/b2bcf753af92b72b38995550bf98260b72989fb0/README.md): Part of avd-ops, the open toolkit for Azure Virtual Desktop. Read-only PowerShell tooling for Azure Virtual Desktop (AVD) environments on Azure Commercial. The collector and validator read through Azure Resource Manager and write nothing. Their evidence packages feed avd-second-brain, which turns...
 
 ## Entry points
 
 | Script | What it does |
 |---|---|
-| [`avd_current_state_facts.ps1`](https://github.com/nickprignano/avd-current-state/blob/17fe96ac9a041077b8383be8359c4a835404514c/avd_current_state_facts.ps1) | AVD Current State Facts -- turns collector and validator evidence packages into one redacted facts snapshot (avd-current-state-facts/v1) for avd-second-brain and avd-swarm. |
+| [`avd_current_state_facts.ps1`](https://github.com/nickprignano/avd-current-state/blob/b2bcf753af92b72b38995550bf98260b72989fb0/avd_current_state_facts.ps1) | AVD Current State Facts -- turns collector and validator evidence packages into one redacted facts snapshot (avd-current-state-facts/v1) for avd-second-brain and avd-swarm. |
