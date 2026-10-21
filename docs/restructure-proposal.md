@@ -110,11 +110,11 @@ Rules for every step: a step is one PR (paired where a contract or the swarm cha
 |---|---|---|
 | R0 | This proposal (doc only) | Owner review |
 | R1 | Decision 0024 "The brain is the estate brain", narrowing 0001; rewrite README and architecture.md; retire roadmap.md | Done in the proposal's PR |
-| R2 | Foundation contracts: finish #54, move the pinned copies under `contracts/foundation/` with the `FOUNDATION-PINS.json` paths and the pin-hash tests in `tests/Connectors.Tests.ps1` in the same PR; C22 to C24 point to avd-assess | #54 |
+| R2 | Foundation contracts: #54 merged (pinned copies in `contracts/`, listed in `FOUNDATION-PINS.json`). The folder split is held: the docs check compares other repos' vendored schemas against `contracts/schemas/` by name | Done; split held |
 | R3 | Drop the brain's copies of the factory's delivery and quality-gate rules (the factory holds them); tests use workload-tiers instead. workload-tiers stays (C14 cites it) | Done |
 | R4 | Docs consistency and handbook to avd-ops (G4), paired with avd-swarm | Owner on G4; #28 closed or merged first |
 | R5 | Factory stage rules copied to the private factory repo (its #13, merged); assess spec copied to avd-assess (#16, merged) and stubbed here; C16 needs nothing (the Liquidware project lands it with its producer); the brain's rule copies go once the tests stop reading them | Done, except the rule copies |
-| R6 | Trim operations-spec; settle v1-review decisions into specs (G5) | #44 merged |
+| R6 | v1 review section 7 states the defaults in force; open items are tracked privately | Done |
 | R7 | Optional rename to `guidance/` (G9) | Everything else |
 
 ## 6. Sequence against the open PRs
