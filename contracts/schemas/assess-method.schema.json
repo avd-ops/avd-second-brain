@@ -6,6 +6,30 @@
   "required": ["schema", "version", "factRegister", "collection", "checks", "readiness", "scoring"],
   "additionalProperties": false,
   "$defs": {
+    "remediation": {
+      "type": "object",
+      "description": "What would make a non-pass outcome pass, as a hint for the remediation plan (C24). lz-parameter: an avd-landing-zone parameter and the public value it should take; lz-setting: something the landing zone always applies, so a redeploy from it fixes the finding; manual: outside what a landing zone redeploy fixes, with a code, never free text (rebuild-hosts: hosts the landing zone deploys have it, existing hosts must be replaced).",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["lz-parameter", "lz-setting", "manual"] },
+        "name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9-]{2,60}$" },
+        "to": { "$ref": "#/$defs/publicValue" },
+        "code": { "enum": ["collect-evidence", "rebuild-hosts", "private-value", "outside-landing-zone", "process", "no-known-change"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "kind": { "const": "manual" } } }, "then": { "required": ["code"], "properties": { "name": false, "to": false } }, "else": { "required": ["name"], "properties": { "code": false } } },
+        { "if": { "properties": { "kind": { "const": "lz-setting" } } }, "then": { "properties": { "to": false } } }
+      ]
+    },
+    "publicValue": {
+      "description": "A public value only: a SKU, a count, a boolean, a region. Never a name, prefix or address: a string starts with a letter and holds only letters, digits and underscores, so an address, a CIDR prefix or a hyphenated resource name can't pass.",
+      "oneOf": [
+        { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$" },
+        { "type": "integer" },
+        { "type": "boolean" }
+      ]
+    },
     "factId": { "type": "string", "pattern": "^(c11|c12|intake|liquidware)\\.[A-Za-z0-9.]{2,80}$" },
     "claimRef": { "type": "string", "pattern": "^ref:[a-z0-9][a-z0-9-]{1,63}#[A-Za-z0-9][A-Za-z0-9.:-]{0,63}$" },
     "gapRef": { "type": "string", "pattern": "^gap:[a-z0-9][a-z0-9-]{1,63}$" },
@@ -32,6 +56,7 @@
     "$schema": { "type": "string" },
     "schema": { "const": "avd-assess-method/v1" },
     "version": { "type": "integer", "minimum": 1, "description": "Bumped on any change to a check, a readiness rule or the scoring; C21 reports pin it" },
+    "landingZoneCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$", "description": "Optional: the avd-landing-zone commit whose bicep/main.bicep the checks' lz-parameter and lz-setting hints were read from" },
     "factRegister": { "type": "integer", "minimum": 1, "description": "The C15 register version the method's fact IDs come from" },
     "collection": {
       "type": "array",
@@ -76,7 +101,8 @@
               "onFail": { "enum": ["gap", "warn"], "default": "gap", "description": "warn: a trade-off to review, not a defect" }
             }
           },
-          "informs": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/decisionId" } }
+          "informs": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/decisionId" } },
+          "remediation": { "$ref": "#/$defs/remediation" }
         }
       }
     },

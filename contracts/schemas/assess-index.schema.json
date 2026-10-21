@@ -120,6 +120,20 @@
                 }
               }
             }
+          },
+          "archive": {
+            "type": "string",
+            "description": "A retrievable copy of the page as read: an archived snapshot taken on the read date. The pin is the fingerprint; this is what a reader opens.",
+            "pattern": "^https://(web\\.archive\\.org/web/[0-9]{14}/|archive\\.ph/)"
+          },
+          "pillars": {
+            "type": "array",
+            "description": "The pillars of the map (pillars.yaml) this source serves",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z-]{1,40}$"
+            },
+            "uniqueItems": true
           }
         }
       }
