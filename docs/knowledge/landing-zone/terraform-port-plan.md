@@ -112,11 +112,11 @@ reason goes in the record. Phase 0 also runs the prior-art check.
 
 ## 6. Open questions for the owner
 
-1. **Where does the code live?** (a) A new public sibling repo in the HCL lane, under the owner's
-   account like nerdio-hcl, Apache-2.0, its own family.yaml row and lane, no avd-ops branding
-   (**recommended**: keeps every AVD repo HCL-free and the guards unchanged); (b) change decision
-   0012 to allow HCL in one named AVD repo. Also: its name (working name only, a naming and
-   prior-art check comes first), and which Claude project builds in it.
+1. **Where does the code live?** Answered 2026-10-21: a sibling repo in the HCL lane, separate
+   from the AVD repos, so decision 0012 and its guards stay as they are. The owner keeps it
+   private for now, so it isn't named here and gets no family.yaml row until it goes public.
+   Still open: its license (Apache-2.0 recommended, to match nerdio-hcl's reused files) and
+   which Claude project builds in it.
 2. **How does it relate to the landing zone?** Separate repo with shared contracts
    (recommended), shared parameter schema, or parallel option (section 4).
 3. **Scope of the first build:** pooled, Entra-joined, one host pool, FSLogix on Azure Files,
@@ -143,8 +143,8 @@ Each phase is one PR (or a small set) with `terraform test`, tflint and gitleaks
 sandbox run.
 
 0. **Decide and set up.** Owner answers questions 1 to 3. Prior-art check, AVM and accelerator
-   review, name check. Create the repo (LICENSE, NOTICE with nerdio-hcl attribution), family.yaml
-   rows and lanes in each KB, guardrails, KB skeleton. Record 0025 as accepted.
+   review, name check. Set up the sibling repo (LICENSE, NOTICE with nerdio-hcl attribution),
+   guardrails, KB skeleton; family.yaml rows and lanes follow when it goes public. Record 0025 as accepted.
 1. **Engine core, offline.** Parameter schema, `init`, foundation, network, FSLogix storage, Key
    Vault, control plane (host pool, desktop app group, workspace, assignments), session hosts
    from a marketplace image, AVD Insights. `terraform test` with mocked providers only.
