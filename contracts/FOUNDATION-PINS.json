@@ -1,6 +1,6 @@
 {
   "description": "Foundation contracts (C11, C15, C17, C19, C20, C21) vendored from avd-assess, their authority since decision 0021. Each must be byte-identical to the file at assessCommit; tests/Connectors.Tests.ps1 checks the hashes. To update: copy the files from avd-assess at a new commit, then update assessCommit and the hashes in the same PR. The other files in contracts/ are this repo's own.",
-  "source": "https://github.com/nickprignano/avd-assess",
+  "source": "https://github.com/avd-ops/avd-assess",
   "assessCommit": "7748e74fb51cc6c720698b3a99f7a7a8a2a3e1b4",
   "files": {
     "examples/assess/assessment.example.json": "5eacd525c2021d5aa501bbbc6adb75e77c476f31a0deed95bd313898f8b8399a",

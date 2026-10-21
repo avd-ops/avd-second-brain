@@ -14,7 +14,7 @@
   },
   "sources": [
     "https://learn.microsoft.com/windows-server/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines",
-    "https://github.com/nickprignano/avd-landing-zone/blob/master/docs/decisions/0010-sizing-and-cost.md",
+    "https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0010-sizing-and-cost.md",
     "docs/factory-spec.md#65-sizing-measured-not-guessed"
   ],
   "history": [

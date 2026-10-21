@@ -14,7 +14,7 @@ projects:
 - id: avd
   name: AVD
   self: true
-  repo: nickprignano/avd-second-brain
+  repo: avd-ops/avd-second-brain
   kb_path: docs/knowledge
   role: member
   focus: Azure Virtual Desktop itself, across its lifecycle (assess, inventory, deploy, operate), and the intelligence layer behind avd-swarm
@@ -43,7 +43,7 @@ projects:
   format_version: 1
 - id: avd-ops
   name: avd-ops
-  repo: nickprignano/avd-ops
+  repo: avd-ops/avd-ops
   kb_path: docs/knowledge
   role: member
   focus: 'The front door for the AVD repos: avd-ops.dev, onboarding and user docs'
