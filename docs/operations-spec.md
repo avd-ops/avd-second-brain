@@ -197,9 +197,9 @@ Why this split:
 Retention (red-team M7):
 - **Episodes:** 13 months, which is a year of seasonality plus one month.
 - **Signals:** 30 days.
-- **Evidence:** 90 days, under a time-based immutability window of **30 days**, so it is tamper-evident while an incident is live and deletable afterwards. Evidence a lesson needs is copied into a redacted fixture in Git, never kept in Blob.
+- **Evidence:** 90 days hot, under a time-based immutability window of **30 days**, so it is tamper-evident while an incident is live. Evidence a lesson needs is also copied into a redacted fixture in Git.
 
-Lifecycle management deletes the rest. Erasure is covered in §9.4.
+Past those windows, lifecycle management moves episodes, signals and evidence to the cool, then cold or archive tier; it never deletes them, and soft delete stays on ([decision 0016](knowledge/decisions/0016-never-delete-the-last-copy.md)). Removing a store needs a checked copy elsewhere, or the owner's explicit opt-in. Erasure of a person's data (§9.4) is the one exception, and it is recorded.
 
 ### 4.4 Reason
 

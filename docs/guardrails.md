@@ -57,6 +57,24 @@ Decisions get a record, lessons go on the topic page they belong to (or stay in 
 they happened, linked from here), and these guardrails stay visible here, in
 [AGENTS.md](../AGENTS.md) and in the README.
 
+## 8. Never delete the last copy
+
+A script, workflow or agent step that deletes data (logs, evidence, reports, ledgers, backups,
+assessment data, configuration, user data) first checks that another durable copy exists, or the
+person running it opts in. Every run's logs and teardown evidence go to one run store outside the
+deployment, kept by default (`-TeardownLogs Keep|Ask|Delete`); data inside a deployment needs
+`-DiscardLastCopy`, which `-Force` never implies. Old data moves to a colder tier instead of being
+deleted, and soft delete stays on
+([decision 0016](knowledge/decisions/0016-never-delete-the-last-copy.md)).
+
+## 9. Never leave the meter running without an opt-in
+
+Anything that bills by time or use is removed, stopped or on a schedule at the end of a run. It
+keeps billing only with `-KeepRunning <until>` (an expiry or a reason, recorded), which `-Force`
+never implies. Microsoft 365 licenses, Marketplace SaaS offers and other recurring commitments
+are recorded with their renewal date and cancel path, and no script buys one
+([decision 0017](knowledge/decisions/0017-never-leave-the-meter-running.md)).
+
 ## When a guardrail gets in the way
 
 Don't work around it quietly. Open an issue or a decision record that says which guardrail, why,
