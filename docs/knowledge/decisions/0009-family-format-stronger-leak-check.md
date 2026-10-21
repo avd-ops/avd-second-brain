@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-10-18
 decision-makers: [owner]
 ---
@@ -31,4 +31,5 @@ Chosen option: "Propose both for format v2", because every KB in the family writ
 
 ## More Information
 
-- Proposed to the family per [curation.md](../curation.md). To open in the Nerdio HCL kit, the AI KB and avd-liquidware once the owner says yes.
+- Proposed to the family per [curation.md](../curation.md).
+- Accepted by the owner on 2026-10-21. Written up in ai-brain, which owns the family format, as [AI 0018](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0018-family-format-stronger-leak-check.md); nerdio-hcl and avd-liquidware adopt it from there.
