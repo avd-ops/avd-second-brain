@@ -117,9 +117,9 @@ What a harvest proposes:
 
 | Stage | Reads | Behavior |
 |---|---|---|
-| 3 Quality gate | The factory's own `knowledge/rules/quality-gate.json` (moved there, decision 0024) | Thresholds come from the rule, and the gate's report prints the rule's ID and version |
+| 3 Quality gate | The factory's own quality-gate rule (moved there, decision 0024) | Thresholds come from the rule, and the gate's report prints the rule's ID and version |
 | 4 App rationalization | `catalog/apps.json` through `Resolve-BrainApp` (the engine ports it) | Inventory names resolve by match pattern, most specific pattern first. Unresolved apps go to the LLM normalizer and to the app test plan |
-| 4 Delivery | The factory's own `knowledge/rules/delivery.json` (moved there, decision 0024) | The delivery decision table (factory §6.2) |
+| 4 Delivery | The factory's own delivery rule (moved there, decision 0024) | The delivery decision table (factory §6.2) |
 | 4 Sizing | `rules/workload-tiers.json`, `calibration/sizing.json`, `rules/calibration.json` | Microsoft's users-per-vCPU guidance as the prior, then the calibration factor for the tier and VM family when it has enough observations. The design report states the factor, its count and whether it applied |
 | 5 Design report | All of the above | Every decision that used the brain cites the entry (`knowledge/catalog/apps.json#microsoft/teams/2`, `knowledge/rules/workload-tiers.json@v1`) |
 

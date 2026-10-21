@@ -35,7 +35,7 @@ Verdicts: **Keep**, **Move** (to the named repo), **Retire** (frozen in place as
 | C14 target state | The design the landing zone reads | Owner (G1) | Kept here by 0021 |
 | C16 Stratusphere instrument | Between avd-liquidware and the assessment factory; never reaches the brain | Move | avd-liquidware, with its producer |
 | `knowledge/rules/workload-tiers.json` | The sizing prior | Keep (revised in R3) | C14 manifests cite it by version and calibration reads its target utilization, so it stays as the brain's prior; its users-per-vCPU values follow avd-assess `baselines.yaml` |
-| `knowledge/rules/delivery.json`, `quality-gate.json` | The factory's stage 4 and stage 3 rules | Move (G2) | The private assessment factory repo (copied, its decision 0004) |
+| The delivery and quality-gate rules | The factory's stage 4 and stage 3 rules | Move (G2) | The private assessment factory repo (copied, its decision 0004) |
 | `knowledge/engagements/`, C3, C5, C6, the `harvest` skill, [knowledge-spec.md](knowledge-spec.md), decision 0002 | How estates feed the catalog and calibration, and how the factory reads them | Keep (G2, revised) | They serve the guidance that stays; the spec gets a note that the stage rules moved |
 | `knowledge/catalog/apps.json` | App compatibility verdicts with evidence | Owner (G3) | Guidance (keep) or a standard (avd-assess) |
 | `knowledge/runbooks/` | Shared runbooks copied into new vaults | Keep | Guidance for vaults |
