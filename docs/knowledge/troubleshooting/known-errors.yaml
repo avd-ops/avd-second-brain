@@ -217,3 +217,22 @@ errors:
   source: https://github.com/nickprignano/avd-landing-zone/pull/58
   status: verified
   added: '2026-10-21'
+- id: empty-array-unrolled-to-null
+  symptom: A value that should be an empty array (for example `availabilityZones = []`) reads back as
+    `$null`, so a comparison or a `.Count` on it fails or reports a mismatch
+  cause: 'PowerShell unrolls an empty array to nothing when it leaves a function as output or is assigned
+    from an if-expression (`$v = if ($a) { $x } else { $y }`); `$rows += , $obj` nests arrays instead
+    of adding an item'
+  fix: Assign the value directly and override it in a plain `if` statement, return lists with the unary
+    comma and assign them without `@()`, and add items with `$rows += $obj` or a `List[object]`
+  source: https://github.com/nickprignano/avd-current-state/pull/19
+  status: verified
+  added: '2026-10-21'
+- id: strictmode-index-empty-array
+  symptom: 'A script under `Set-StrictMode -Version Latest` stops with `Index was outside the bounds of
+    the array` when a query returns no rows'
+  cause: Strict mode throws on `$x[0]` when `$x` is empty, where non-strict PowerShell returns `$null`
+  fix: Read the first item with `$x | Select-Object -First 1`, which gives `$null` on no rows
+  source: https://github.com/nickprignano/avd-current-state/pull/15
+  status: verified
+  added: '2026-10-21'
