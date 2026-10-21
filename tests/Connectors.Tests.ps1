@@ -381,6 +381,10 @@ Describe 'C8 avd-swarm-insights/v1 (specified)' {
   ) {
     $script:c8 | Should -Match ([regex]::Escape("``$category``"))
   }
+  It 'counts runbook runs by outcome, could-not-run apart (avd-swarm check runner)' {
+    $script:c8 | Should -Match '"checks"'
+    foreach ($word in 'clear', 'finding', 'could-not-run') { $script:c8 | Should -Match ([regex]::Escape("``$word``")) }
+  }
 }
 
 Describe 'C13 avd-doc-findings/v1' {
