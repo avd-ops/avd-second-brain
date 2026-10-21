@@ -120,6 +120,7 @@ What avd-swarm learned in a month, as counts, for the harvest. It is the only wa
 **Rules.**
 - **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9, owned by this repo since `knowledge/` consumes it; default: the agents' areas plus avd-current-state's validator check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
 - **The negative side counts as much as the positive** (incidents, rejections, failed verifications, judge alarms), so guardrail defaults learn from what went wrong.
+- **Untrusted-text incidents** (avd-swarm red team R26) use the categories `injection.suspected` (a Prompt Shields hit on a tool result or the operator's message) and `decoy.tripped` (a call to a decoy tool), with triggers `tool-result`, `operator-prompt` or `decoy`, counted like any other incident: never the text, the tool's arguments or the conversation.
 - **A person carries it across.** The adopter's private repo produces it; a person attaches it to a harvest PR here. The brain never pulls from an adopter, and no swarm identity writes to this repo.
 - `Test-BrainKnowledge` and the leak check run over it like any harvest input; a finding means the exporter is wrong, never that a pattern should loosen.
 
