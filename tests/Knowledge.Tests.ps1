@@ -200,19 +200,19 @@ Describe 'Test-BrainKnowledge: cross-references and harvest' {
 Describe 'Test-BrainKnowledge: rules' {
   It 'fails a version bump without a history entry' {
     $b = New-TestBrain
-    Set-TestJson $b 'rules/quality-gate.json' { param($j) $j.version = 2; $j.values.minUserCoverage = 0.7 }
+    Set-TestJson $b 'rules/workload-tiers.json' { param($j) $j.version = 2; $j.values.targetUtilization = 0.7 }
     (Get-Errors $b).Check | Should -Contain 'rule:history-version'
   }
   It 'accepts a version bump with its reason' {
     $b = New-TestBrain
-    Set-TestJson $b 'rules/quality-gate.json' { param($j)
+    Set-TestJson $b 'rules/workload-tiers.json' { param($j)
       $j.version = 2
-      $j.history += [pscustomobject]@{ version = 2; date = '2026-12-01'; change = 'Coverage 0.8 to 0.85'; reason = 'Lesson from a lab run' } }
+      $j.history += [pscustomobject]@{ version = 2; date = '2026-12-01'; change = 'Target utilization 0.8 to 0.75'; reason = 'Lesson from a lab run' } }
     Get-Errors $b | Should -BeNullOrEmpty
   }
   It 'fails a rule whose ID differs from its file name' {
     $b = New-TestBrain
-    Set-TestJson $b 'rules/delivery.json' { param($j) $j.id = 'app-delivery' }
+    Set-TestJson $b 'rules/workload-tiers.json' { param($j) $j.id = 'tiers' }
     (Get-Errors $b).Check | Should -Contain 'rule:file-name'
   }
 }
@@ -334,8 +334,8 @@ Describe 'Get-SizingCalibration' {
 
 Describe 'Search-BrainKnowledge' {
   It 'finds catalog entries, rules and docs with the path to cite' {
-    $hits = @(Search-BrainKnowledge -Path (Join-Path $script:root 'knowledge') -Query 'quality gate coverage')
-    $hits.Ref | Should -Contain 'knowledge/rules/quality-gate.json@v1'
+    $hits = @(Search-BrainKnowledge -Path (Join-Path $script:root 'knowledge') -Query 'workload tiers sizing prior')
+    $hits.Ref | Should -Contain 'knowledge/rules/workload-tiers.json@v1'
     (Search-BrainKnowledge -Path (Join-Path $script:root 'knowledge') -Query 'teams')[0].Ref | Should -Be 'knowledge/catalog/apps.json#microsoft/teams/2'
   }
   It 'matches whole words, not parts of words' {

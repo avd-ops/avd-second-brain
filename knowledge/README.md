@@ -8,7 +8,7 @@ What the organization has learned across engagements and estates, in a form the 
 | `catalog/apps.json` | Public products: match patterns for inventory names, category, multi-session verdict, delivery, evidence | `schemas/app-catalog.schema.json` |
 | `rules/*.json` | The engine's thresholds and decision tables, each with a version and a reason for every change | `schemas/rule.schema.json` |
 
-The factory's stage rules (`rules/delivery.json`, `rules/quality-gate.json`) now live in the private assessment factory repo (its decision 0004, [decision 0024](../docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)). The copies here stay until the brain's tests stop reading them; change the factory's copy, not these.
+The factory's stage rules (the delivery table and the quality gate) live in the private assessment factory repo (its decision 0004, [decision 0024](../docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)); their last copies here are in this folder's history. `rules/workload-tiers.json` stays: it is the prior calibration learns against and target-state manifests (C14) cite it by version. Its users-per-vCPU values follow avd-assess `baselines.yaml`; change them there first.
 | `calibration/sizing.json` | Predicted vs measured sessions per host, per wave (organization scope only) | `schemas/calibration.schema.json` |
 | `engagements/eng-*.json` | One pseudonymous record per engagement (organization scope only) | `schemas/engagement.schema.json` |
 | `denylist.sha256` | SHA-256 of the lowercase names of your customers, one per line (organization scope only) | — |
