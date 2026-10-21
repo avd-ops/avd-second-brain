@@ -32,9 +32,49 @@ jobs:
           foreach ($p in 'scripts', 'vault') {
             Invoke-ScriptAnalyzer -Path $p -Recurse -Settings ./PSScriptAnalyzerSettings.psd1 -EnableExit
           }
+          # Runs anywhere (avd-ops docs/run-anywhere.md): scripts/ against PowerShell 7 on Linux and
+          # Windows, the vault script against Windows PowerShell 5.1 as well.
+          Invoke-ScriptAnalyzer -Path scripts -Recurse -Settings ./build/analyzer/Portable.psd1 -EnableExit
+          Invoke-ScriptAnalyzer -Path vault -Recurse -Settings ./build/analyzer/WindowsPowerShell.psd1 -EnableExit
 
       - name: Pester
         shell: pwsh
         run: |
           Install-Module Pester -MinimumVersion 5.5.0 -Scope CurrentUser -Force -SkipPublisherCheck
           Invoke-Pester -Path ./tests -CI -Output Detailed
+
+  # The same checks on Windows and macOS (avd-ops docs/run-anywhere.md, decision 0006), and the vault
+  # script in Windows PowerShell 5.1, which it promises (CLAUDE.md).
+  other-os:
+    name: Tests on ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: Windows (PowerShell 7), os: windows-latest, shell: pwsh }
+          - { name: macOS (PowerShell 7), os: macos-latest, shell: pwsh }
+          - { name: Windows PowerShell 5.1, os: windows-latest, shell: powershell }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Knowledge guard and Pester
+        if: matrix.shell == 'pwsh'
+        shell: pwsh
+        run: |
+          ./scripts/Test-Knowledge.ps1
+          Install-Module Pester -MinimumVersion 5.5.0 -Scope CurrentUser -Force -SkipPublisherCheck
+          Invoke-Pester -Path ./tests -CI -Output Detailed
+
+      - name: Vault script in Windows PowerShell 5.1
+        if: matrix.shell == 'powershell'
+        shell: powershell
+        run: |
+          $PSVersionTable.PSVersion.ToString()
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path ./vault/avd_second_brain.ps1), [ref]$null, [ref]$errors)
+          if ($errors) { throw "vault/avd_second_brain.ps1 doesn't parse in Windows PowerShell 5.1: $($errors[0].Message) (line $($errors[0].Extent.StartLineNumber))" }
+          $vault = Join-Path $env:RUNNER_TEMP 'vault'
+          & ./vault/avd_second_brain.ps1 -BrainPath $vault -Init -KnowledgePath ./knowledge
+          if (-not (Test-Path (Join-Path $vault 'README.md'))) { throw 'The vault was not created.' }
+          Get-ChildItem -Path $vault -Name | Select-Object -First 20
