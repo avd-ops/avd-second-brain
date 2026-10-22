@@ -3,7 +3,7 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 sources:
   - https://github.com/robusta-dev/holmesgpt
   - https://github.com/Azure/azure-api-mcp
@@ -42,6 +42,9 @@ sources:
   - https://learn.microsoft.com/azure/api-management/mcp-server-overview
   - https://learn.microsoft.com/azure/api-management/llm-token-limit-policy
   - https://learn.microsoft.com/azure/api-management/ai-gateway-overview
+  - https://github.com/multica-ai/andrej-karpathy-skills
+  - https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/memport.md
+  - https://agents.md/
 ---
 
 # AI agents in the AVD repos
@@ -52,6 +55,16 @@ How the AVD repos use AI: the brain's agents (triage, diagnose, critic, retro), 
 
 - [avd-swarm spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md) and [identities](https://github.com/avd-ops/avd-swarm/blob/main/docs/identities.md)
 - [How avd-swarm answers a question](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md) (spec §4a): split, fan out, claim check, merge
+
+## Instruction files for coding agents: AGENTS.md, CLAUDE.md, GEMINI.md (2026-10-22)
+
+Every AVD repo carries the same three files so any coding agent can pick up the work.
+
+- **AGENTS.md is the shared file.** It opens with four working habits (think before coding, simplest thing that works, surgical changes, goal first then proof), written in our own words from the Karpathy-inspired guidelines ([multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills)); that repo had no license file at its root when checked, so its text is reference only. Then the family rules (exact spend go, never leave the meter running, never delete the last copy, no IDs or names, PRs only), the repo roles, and the repo's own section.
+- **Claude Code reads CLAUDE.md, not AGENTS.md.** Each CLAUDE.md starts with `@AGENTS.md`, an import, and keeps the repo's checks and lessons below it.
+- **Gemini CLI reads GEMINI.md by default** and supports `@./file.md` imports in it ([memport](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/memport.md)), which detect circular imports. GEMINI.md holds only `@./AGENTS.md`; AGENTS.md tells the agent to read CLAUDE.md next, so no file is imported twice. Its `context.fileName` setting can name AGENTS.md instead.
+- **Hooks are Claude Code only.** The SessionStart handoff list and the Stop knowledge check don't run under other agents; AGENTS.md tells them to run the same scripts by hand.
+- **The owner's private context** goes in a private repo only, never in a public AGENTS.md.
 
 ## MCP in the AVD repos
 
