@@ -115,14 +115,14 @@ What avd-swarm learned in a month, as counts, for the harvest. It is the only wa
   "grading": [ { "judge": "answers", "seeded": 120, "caught": 116, "alarms": 0 } ],
   "spend": { "runs": 4, "refused": { "over-run-cap": 1 }, "medianActualToEstimate": 0.92, "teardownsWithLeftovers": 0 },
   "docs": { "findingsDrafted": 6, "merged": 5, "rejected": 1 },
-  "checks": { "runs": 62, "startedBy": { "schedule": 60, "manual": 2 },
+  "checks": { "runs": 62, "startedBy": { "schedule": 58, "manual": 2, "alert": 2 },
               "runbooks": [ { "id": "hosts.agent-unhealthy", "clear": 18, "finding": 2, "could-not-run": 1 } ] }
 }
 ```
 
 **Rules.**
 - **Counts and fixed words only.** Every string is an enum from the schema: topics from a fixed vocabulary (avd-swarm SQ9, owned by this repo since `knowledge/` consumes it; default: the agents' areas plus avd-current-state's validator check categories), action IDs from the catalog, reason and incident categories from a list. There is no free-text field and no field for a name, user, resource, ID, pseudonym or time finer than the period.
-- **Runbook runs** (`checks`, proposed 2026-10-21 with avd-swarm's check runner, its spec §3c): runs per runbook by outcome (`clear`, `finding`, `could-not-run`) and by what started them (`schedule` or `manual`; `alert` joins with the alert path). Runbook IDs are fixed words from avd-swarm's `runbooks/` at the release; `could-not-run` is counted apart so a month of failed reads doesn't look clear. The runner's `report.checks_block` builds it.
+- **Runbook runs** (`checks`, proposed 2026-10-21 with avd-swarm's check runner, its spec §3c): runs per runbook by outcome (`clear`, `finding`, `could-not-run`) and by what started them (`schedule`, `manual` or `alert`). Runbook IDs are fixed words from avd-swarm's `runbooks/` at the release; `could-not-run` is counted apart so a month of failed reads doesn't look clear. The runner's `report.checks_block` builds it.
 - **The negative side counts as much as the positive** (incidents, rejections, failed verifications, judge alarms), so guardrail defaults learn from what went wrong.
 - **Untrusted-text incidents** (avd-swarm red team R26) are counted like any other incident, never with the text, the tool's arguments or the conversation:
   - **Categories:** `injection.suspected` (a Prompt Shields hit), `decoy.tripped` (a call to a decoy tool) and `injection.unscanned` (a conversation whose untrusted text wasn't fully scanned: the scan failed or was throttled, or text was past the size cap), so a month in which the scan quietly stopped doesn't look clean.
