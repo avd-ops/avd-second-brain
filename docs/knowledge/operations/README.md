@@ -3,7 +3,7 @@ title: "Operating an estate"
 summary: "Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate"
 topic: operations
 status: partial
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Operating an estate
@@ -48,7 +48,7 @@ The rules below came from real runs of [avd-landing-zone](https://github.com/avd
 
 ## Detecting drift
 
-*Proposed:* a read-only drift check in avd-current-state compares the live estate with the landing zone parameter file and its last deployment, and fixes go through the landing zone's deploy workflow after a person approves ([drift spec](https://github.com/avd-ops/avd-current-state/blob/main/docs/drift-spec.md)). Checked against Microsoft Learn and the projects' own pages on 2026-10-21:
+*Built, not yet run against Azure:* a read-only drift check in avd-current-state (`avd_current_state_drift.ps1`) compares the live estate with the parameters of the landing zone's last deployment, attributes every change, and leaves fixes to the landing zone's deploy workflow after a person approves ([drift spec](https://github.com/avd-ops/avd-current-state/blob/main/docs/drift-spec.md)). Checked against Microsoft Learn and the projects' own pages on 2026-10-21:
 
 - Resource Graph's `resourcechanges` table keeps property-level changes for 14 days at no charge, with `changedBy`, `clientType` and `operation`. `changedBy` can be `System` (a platform change with no user action), and `changedBy`, `clientType` and `operation` can be `Unspecified`; `clientType` can also be `Unknown`. Create and delete records carry no property list, data-plane changes aren't recorded, and properties that arrive with a new API version don't show as changes ([get resource changes](https://learn.microsoft.com/azure/governance/resource-graph/changes/get-resource-changes), [change analysis](https://learn.microsoft.com/azure/governance/resource-graph/changes/resource-graph-changes)). A daily check stays inside the window; anything longer needs its own record. It records only types in the `resources`, `resourcecontainers` and `healthresources` tables, so session hosts, role assignments, locks and policy assignments need the Activity Log (90 days, free, readable as Reader) for who and when, with no property values.
 - A what-if needs the same rights as a deployment: write on the resources and `Microsoft.Resources/deployments/*`. `--validation-level ProviderNoRbac` relaxes only the RBAC part of preflight. So a Reader-only audit identity can't run one ([what-if prerequisites](https://learn.microsoft.com/azure/azure-resource-manager/bicep/deploy-what-if#prerequisites)). What-if also doesn't evaluate `reference()`, secure parameters, nondeterministic functions or template links, and over Bicep modules it short-circuits ([Azure Verified Modules known issues](https://azure.github.io/Azure-Verified-Modules/help-support/known-issues/#bicep)).
@@ -56,6 +56,16 @@ The rules below came from real runs of [avd-landing-zone](https://github.com/avd
 - Machine Configuration has three modes: `Audit` reports only, `ApplyAndMonitor` applies once and reports drift, `ApplyAndAutoCorrect` fixes drift at the next evaluation and leaves no record that it did. The agent rechecks every 15 minutes and results land in Resource Graph ([remediation options](https://learn.microsoft.com/azure/governance/machine-configuration/concepts/remediation-options), [prerequisites](https://learn.microsoft.com/azure/governance/machine-configuration/overview/02-setup-prerequisites)). Azure Automation State Configuration and Automanage machine best practices both retire on 2027-09-30.
 - Microsoft Entra Tenant Governance's configuration management (the Graph Tenant Configuration Management APIs, GA) monitors a JSON baseline of Entra, Intune, Exchange, Teams and Security and Compliance resources every six hours, fixed. Limits: 30 monitors, 200 resources per baseline, 800 resource checks a day, and updating a monitor's baseline deletes its results and drifts. It needs Microsoft Entra ID P1 or above; Free has no configuration monitoring ([licensing](https://learn.microsoft.com/entra/id-governance/tenant-governance/licensing), [API limits](https://learn.microsoft.com/graph/api/resources/unified-tenant-configuration-management-api-overview?view=graph-rest-1.0#api-limits), [configuration management](https://learn.microsoft.com/entra/id-governance/tenant-governance/configuration-management)).
 - Open source checked: PSRule for Azure has one AVD rule (AZR-000437) and its last stable release is 1.47.0 from January 2026; Steampipe's Azure plugin has no AVD tables; Prowler (Apache-2.0) and ScoutSuite (GPL-2.0, last release May 2024) check posture, not AVD; InSpec 6 needs a license key for commercial use. None compares an AVD estate with a declared state.
+
+Learned building it (2026-10-22):
+
+- Attribute a change by its deployment's correlation ID, not by who ran it: operators deploy as themselves, so the same person makes both the deployment and the portal edit. *Unverified:* that nested module deployments carry the top-level deployment's correlation ID.
+- A rule that hides changes (an expected actor, a run-time property, a what-if noise entry) can hide real drift. Approve each rule by the SHA-256 of its canonical JSON, after its placeholders are resolved, for at most 90 days, and let an unapproved rule hide nothing. A missing approval then means more noise, never less evidence. Canonical JSON is serialized by hand (sorted keys, one escaping rule), because `ConvertTo-Json` escapes differently in Windows PowerShell 5.1 and PowerShell 7.
+- Set run-time properties aside before matching actors. One change can be part platform state (`systemData`, power state) and part automation (a tag), and only what is left decides who made it.
+- Read the Activity Log at subscription scope too. Role assignments, locks and policy assignments made at the subscription sit in no resource group, so per-group reads never see them; one extra read filtered to `resourceProvider eq 'Microsoft.Authorization'` does.
+- Treat a short read as a failed one. A list that stops at its page limit, or at an empty page that still carries a `nextLink`, is incomplete, and an incomplete read must never let a run report clean.
+- A crash must not read as a result. In the offline tests, a script that stopped on an error under `pwsh -Command "& script; exit $LASTEXITCODE"` exited 0, so the script now traps every error as exit 2 (couldn't check).
+- *Unverified until the first read-only run:* whether a deployment record lists parameters left at their defaults, whether session host changes reach the change log, and which ID the change log and the Activity Log give for a managed identity.
 
 ## Learning from real runs
 
