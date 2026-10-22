@@ -27,7 +27,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | Page | What's in it | Status |
 |---|---|---|
 | [landing-zone/](landing-zone/README.md) | Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell | verified |
-| [identity/](identity/README.md) | Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities | partial |
+| [identity/](identity/README.md) | Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities | partial |
 | [fslogix/](fslogix/README.md) | FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks | verified |
 | [images/](images/README.md) | Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion | partial |
 | [assessment/](assessment/README.md) | How the AVD repos assess an estate and size host pools: the app catalog, workload tiers, sizing calibration and measured evidence | plan |

@@ -1,6 +1,6 @@
 ---
 title: "Identity and Entra"
-summary: "Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, and agent identities"
+summary: "Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities"
 topic: identity
 status: partial
 last_reviewed: 2026-10-21
@@ -21,6 +21,16 @@ Identity for AVD on Entra ID: Entra-joined session hosts, Entra Kerberos for pro
 - Operators sign in to Microsoft Graph once per session through one operator app with one set of delegated scopes ([avd-landing-zone decision 0016](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0016-graph-operator-app.md)). An explicit client ID beats relying on a sign-in that happens to have the scopes ([lesson 0030](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md)).
 - In Cloud Shell, never pipe `Connect-MgGraph` to `Out-Null`: the device code goes to the output stream. Check a sign-in with a real request before trusting it, and identify the Azure user with `Get-AzADUser -SignedIn` ([lesson 0007](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0007-graph-sign-in.md)).
 - Microsoft Graph's service principal doesn't list every delegated permission it issues in `oauth2PermissionScopes`. Grant scopes by value ([lesson 0030](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md)).
+
+## Unattended reads
+
+- An app registration saves a person no sign-ins in Az PowerShell: Cloud Shell is already signed in, Az saves the context elsewhere, and `Connect-AzAccount -ApplicationId` exists only in the service principal parameter sets. What an app gives is runs with nobody signed in, and least privilege ([avd-current-state reader guide](https://github.com/avd-ops/avd-current-state/blob/main/docs/reader-identity.md)).
+- One app can't carry per-tool permission sets: Entra grants rights to the app, so a shared app holds the union of its callers' rights. A family-wide identity is safe for reads only; writes keep their own identities.
+- Bind a GitHub Actions federated credential to GitHub's immutable subject (`repo:<owner>@<owner id>/<repo>@<repo id>:environment:<env>`). A name-only subject can be claimed by whoever re-registers a deleted or renamed repo's name. GitHub uses the immutable form by default only for repos created, renamed or transferred from 2026-07-15; older repos opt in ([Learn](https://learn.microsoft.com/entra/workload-id/workload-identities-github-immutable-subjects)).
+- "No secret" needs the tenant, not a script: app owners and Application or Cloud Application Administrators can add credentials. An app management policy blocks passwords and symmetric keys (a free Workload ID feature, one custom policy per app); no restriction blocks a certificate, so a check has to catch one ([Learn](https://learn.microsoft.com/entra/identity/enterprise-apps/configure-app-management-policies)).
+- An app-only identity can't read its own app object without a Graph permission. With Reader only on a resource group, a workspace or a container, it can't list role assignments at subscription scope either (403); Resource Graph's `authorizationresources` shows its assignments wherever it can read.
+- Reader is control plane only but not harmless: deployment history with non-secure parameters and outputs, unencrypted Automation variables, and Resource Graph over the whole scope. Reading a host pool's registration token is an action (`retrieveRegistrationToken`), so Reader gets 403 and a check must not read that as "no token".
+- A Role Based Access Control Administrator limited to certain roles needs two conditions, one on `roleAssignments/write` (`@Request`) and one on `roleAssignments/delete` (`@Resource`) ([Learn](https://learn.microsoft.com/azure/role-based-access-control/delegate-role-assignments-examples#example-constrain-roles)).
 
 ## Cleaning up identities
 
