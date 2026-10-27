@@ -326,3 +326,27 @@ errors:
   applies_to: PowerShell 7.4 on Windows 11, Python 3.12+
   status: verified
   added: '2026-10-27'
+- id: orchestrator-dry-run-missing-sibling-checkouts-in-ci
+  symptom: 'Orchestrator `-DryRun` Pester tests pass locally in a multi-repo workspace (`../avd-entra`, `../avd-intune`, etc.) but fail in GitHub Actions CI where only `avd-landing-zone` is checked out'
+  cause: The orchestrator relied on invoking sibling control-plane scripts on disk (`../avd-entra/scripts/Deploy-AvdEntra.ps1 -DryRun`) to emit downstream handoff manifests (`entra-manifest.json`, `azure-outputs.json`)
+  fix: 'When `-DryRun` is active and a sibling repo checkout is absent on disk, synthesize a deterministic contract-valid handoff manifest directly inside the orchestrator'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/123
+  applies_to: PowerShell 7.4, GitHub Actions CI
+  status: verified
+  added: '2026-10-27'
+- id: storage-kerberos-app-display-name-spoofing
+  symptom: 'Lookup of the Azure Files Entra Kerberos app registration (`[Storage Account] <storageFqdn>`) by `displayName` matches multiple apps or a user-registered look-alike app'
+  cause: 'Anyone who can register applications in the tenant can create an app with display name `[Storage Account] <storageFqdn>`, which would otherwise receive `AllPrincipals` admin consent and Conditional Access MFA exclusion'
+  fix: 'Query `GET /v1.0/applications/{id}/owners?$select=id` on every candidate and accept only the single application with zero owners, since Azure''s platform-created storage app never has owners'
+  source: https://github.com/avd-ops/avd-entra/pull/2
+  applies_to: Microsoft Graph v1.0, Azure Files Entra Kerberos
+  status: verified
+  added: '2026-10-27'
+- id: psscriptanalyzer-state-changing-verb-on-pure-helper
+  symptom: '`Invoke-ScriptAnalyzer -EnableExit` fails CI with `PSUseShouldProcessForStateChangingFunctions` or `PSUseSingularNouns` on internal helper functions that only build in-memory objects'
+  cause: 'Naming internal helper functions with state-changing verbs (`New-*`, `Set-*`, `Remove-*`) or plural nouns triggers PSScriptAnalyzer rules even when the script itself declares `SupportsShouldProcess`'
+  fix: 'Reserve `New-*`, `Set-*`, and `Remove-*` for functions with `[CmdletBinding(SupportsShouldProcess)]`, and name pure in-memory helpers with `Build-*`, `ConvertTo-*`, `Resolve-*`, or `Format-*` and singular nouns'
+  source: https://github.com/avd-ops/avd-entra/pull/2
+  applies_to: PSScriptAnalyzer 1.23+
+  status: verified
+  added: '2026-10-27'
