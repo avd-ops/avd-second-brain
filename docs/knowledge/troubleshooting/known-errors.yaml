@@ -350,3 +350,19 @@ errors:
   applies_to: PSScriptAnalyzer 1.23+
   status: verified
   added: '2026-10-27'
+- id: portal-report-public-ids-rejects-synthetic-guids
+  symptom: '`node --test "build/tests/portal/*.test.mjs"` fails in `report.test.mjs` (`PUBLIC_IDS lists every GUID in bicep/, parameters/ and scripts/`) after adding dry-run or placeholder GUIDs to a script'
+  cause: '`report.test.mjs` scans every file in `bicep/`, `parameters/`, and `scripts/` for GUID literals and requires every match to appear in `PUBLIC_IDS` (`site/portal/report.js`), which only lists tenant-invariant Microsoft app/role IDs and the all-zero GUID'
+  fix: 'Use the all-zero placeholder GUID (`00000000-0000-0000-0000-000000000000`) for dry-run and placeholder object IDs in `scripts/` instead of inventing numbered dummy GUIDs, and add to `PUBLIC_IDS` only real Microsoft built-in role or first-party application IDs'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/123
+  applies_to: avd-landing-zone deployment portal redaction guard (site/portal/report.js)
+  status: verified
+  added: '2026-10-27'
+- id: playwright-details-panel-and-step-aria-label-mismatch
+  symptom: 'Portal UI tests pass in JSDOM (`portal-browser.test.mjs`) but fail or time out in real Chromium (`portal.browser.test.mjs`) when clicking controls inside a `<details class="panel">` or asserting the active step button `aria-label`'
+  cause: 'JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` rather than the short `LIST[s.id]` rail label'
+  fix: 'Switch to the step slide that owns the panel (`size` for `#control-planes-panel`), click `#control-planes-panel > summary` before clicking buttons inside `<details>`, and match the full step title in `aria-label`'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/123
+  applies_to: Playwright 1.56+, Chromium, avd-landing-zone deployment portal
+  status: verified
+  added: '2026-10-27'
