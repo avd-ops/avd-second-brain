@@ -285,3 +285,36 @@ errors:
   applies_to: Node.js 20+ on Windows
   status: verified
   added: '2026-10-27'
+
+- id: tenant-control-plane-stamp-run-manifest-teardown
+  symptom: Tenant-level teardown risks deleting pre-existing brownfield Entra groups, Conditional Access policies, Intune profiles, M365 baselines, or Power Platform environments when matching by displayName alone
+  cause: Graph, Intune, M365, and Power Platform objects share a flat tenant namespace with no resource-group container
+  fix: 'Stamp display names (`[avd-ops-<prefix>-<env>]`) and record `created: true|false` per object ID in a local `*-run-manifest.json` so `Remove-Avd*.ps1` deletes only objects created by the run (never pre-existing brownfield objects matched on `GET`) and gates stateful deletions behind `-DiscardLastCopy`'
+  source: https://github.com/avd-ops/avd-entra/pull/2
+  applies_to: Microsoft Graph v1.0/beta, Power Platform BAP API
+  status: verified
+  added: '2026-10-27'
+- id: onedrive-kfm-silent-opt-in-runtime-tenant-id
+  symptom: OneDrive Known Folder Move (`KFMSilentOptIn`) policy deployment fails or triggers a leak check if a static tenant GUID is committed in baseline JSON templates
+  cause: OneDrive KFM policy definitions require the tenant GUID, which must never be committed in static JSON templates
+  fix: 'Query `GET https://graph.microsoft.com/v1.0/organization?$select=id` at deploy time and inject the tenant GUID only in memory'
+  source: https://github.com/avd-ops/avd-m365/pull/2
+  applies_to: Microsoft Graph v1.0/beta, OneDrive Known Folder Move
+  status: verified
+  added: '2026-10-27'
+- id: az-rest-inline-json-body-escaping
+  symptom: '`az rest` fails with `400 Bad Request` or JSON parse errors when passing nested Microsoft Graph Settings Catalog or Conditional Access JSON inline via `--body`'
+  cause: Passing nested Graph Settings Catalog or Conditional Access JSON inline to `az rest --body` breaks across PowerShell, Bash, and Windows argument escaping
+  fix: 'Write UTF-8 without BOM to a temp file and pass `--body "@$tempFile"`'
+  source: https://github.com/avd-ops/avd-intune/pull/2
+  applies_to: Azure CLI 2.60+, PowerShell 7.4, Windows and Linux
+  status: verified
+  added: '2026-10-27'
+- id: power-platform-compress-archive-backslash-zip-entries
+  symptom: 'Dataverse or `pac solution import` rejects a packed Power Platform solution `.zip` built on Windows because `[Content_Types].xml` or `Other/Solution.xml` cannot be found'
+  cause: '`Compress-Archive` on Windows writes backslash (`\`) entry paths in `.zip` archives, which breaks Dataverse and `pac solution import` lookup of `[Content_Types].xml` and `Other/Solution.xml`'
+  fix: 'Build solution `.zip` files with `[System.IO.Compression.ZipFile]` / `ZipArchive` using forward-slash (`/`) entry names'
+  source: https://github.com/avd-ops/avd-power-platform/pull/2
+  applies_to: PowerShell 7.4 on Windows, Power Platform CLI (pac)
+  status: verified
+  added: '2026-10-27'
