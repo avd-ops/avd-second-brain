@@ -3,7 +3,7 @@ title: "Landing zone"
 summary: "Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell"
 topic: landing-zone
 status: verified
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-27
 sources:
   - https://learn.microsoft.com/azure/well-architected/reliability/checklist
   - https://learn.microsoft.com/azure/well-architected/design-guides/implementing-recommendations
@@ -21,6 +21,17 @@ sources:
 How an AVD landing zone gets built and kept healthy with Azure-native tooling: Bicep and Azure Verified Modules, networking and private endpoints, vCPU quota, resource providers, and running every step from Azure Cloud Shell. Each rule below came out of a real run of [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) and links the lesson that holds the detail ([decision 0008](../decisions/0008-learned-knowledge-stays-where-it-happened.md)). The exact errors are in [known errors](../troubleshooting/README.md).
 
 The landing zone's scope is Entra ID only, greenfield and private by default ([avd-landing-zone decision 0001](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0001-cloud-native-scope.md)).
+
+## Orchestrating the five control planes
+
+[avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) is the top-level orchestrator and deployment portal (`deploy.avd-ops.dev/portal/`) over five single-purpose control-plane packs ([avd-ops decision 0009](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0009-split-landing-zone-into-five-control-planes.md)):
+
+- **[avd-entra](https://github.com/avd-ops/avd-entra)** (Microsoft Graph API + PowerShell): security groups (`SG-AVD-Users-*`, `SG-AVD-Admins`, `SG-AVD-SessionHosts-*`), Conditional Access policies (aligned AVD and Windows Cloud Login MFA with the feed excluded), Entra Kerberos cloud trust preparation, and optional greenfield lab user and license assignment. Emits `avd-ops-entra-manifest/v1` (`contracts/entra-manifest.schema.json`).
+- **[avd-intune](https://github.com/avd-ops/avd-intune)** (Microsoft Graph `deviceManagement` API + PowerShell): automatic MDM enrollment, Windows 11 multi-session Settings Catalog profiles (`FSLogix`, `Watermarking`, `ScreenCaptureProtection`, `SessionTimeLimits`, ` DefenderVdiExclusions`), and compliance policies scoped to the session-host device groups from `avd-entra`. Emits `avd-ops-intune-manifest/v1` (`contracts/intune-manifest.schema.json`).
+- **[avd-m365](https://github.com/avd-ops/avd-m365)** (Microsoft Graph API + PowerShell): greenfield M365 workplace readiness, OneDrive Known Folder Move and Silent Account Configuration, new Teams VDI optimization (`SlimCore`), and Microsoft 365 Apps Shared Computer Activation. Emits `avd-ops-m365-manifest/v1` (`contracts/m365-manifest.schema.json`).
+- **[avd-azure](https://github.com/avd-ops/avd-azure)** (Azure ARM + Bicep + PowerShell): the Azure resource-plane infrastructure extracted from `avd-landing-zone` (subscription and workload Bicep templates, Azure Verified Modules, multi-pool host pools, FSLogix Azure Files and Private Link networking, session host image and rollout scripts, Bastion Developer jumpbox, and PSRule checks). Consumes `avd-ops-entra-manifest/v1` and emits `avd-ops-azure-outputs/v1` (`contracts/azure-outputs.schema.json`).
+- **[avd-power-platform](https://github.com/avd-ops/avd-power-platform)** (`Microsoft.PowerPlatform` Bicep + Power Platform CLI + unpacked Power Automate solutions): optional Day-2 low-code environment, business vs. non-business DLP policy baseline, VNet subnet delegation (`Microsoft.PowerPlatform/enterprisePolicies`), and source-controlled approval workflows for self-service AVD access requests and host start/drain/deallocate requests in Teams. Consumes `avd-ops-entra-manifest/v1` and `avd-ops-azure-outputs/v1` and emits `avd-ops-power-platform-manifest/v1` (`contracts/power-platform-manifest.schema.json`).
+- **Keep `avd-power-platform` and `avd-swarm` in separate lanes.** `avd-power-platform` holds deterministic, user-facing approval workflows inside the tenant's Teams and Power Automate environment; [avd-swarm](https://github.com/avd-ops/avd-swarm) holds agentic reasoning, investigation, and GitHub-gated change plans. Neither duplicates the other.
 
 ## Quota and regions
 

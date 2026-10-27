@@ -260,3 +260,28 @@ errors:
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/.claude/kb-capture.toml
   status: verified
   added: '2026-10-21'
+
+- id: playwright-ubuntu-latest-2604-unsupported
+  symptom: 'GitHub Actions job on `ubuntu-latest` fails in `npx playwright install --with-deps chromium` with `ERROR: Playwright does not support chromium on ubuntu26.04-x64`'
+  cause: GitHub Actions moved `ubuntu-latest` to Ubuntu 26.04 (`ubuntu26.04-x64`), which pinned Playwright versions (such as `playwright@1.56.1`) do not map in their host browser dependency table
+  fix: 'Pin the workflow job runner explicitly (`runs-on: ubuntu-24.04`) instead of using the floating `ubuntu-latest` label'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/121
+  applies_to: playwright 1.56.1
+  status: verified
+  added: '2026-10-27'
+- id: shellcheck-sc2329-trap-cleanup
+  symptom: 'ShellCheck fails a script with `SC2329 (info): This function is never invoked. Check usage (or ignored if invoked indirectly).` on a `cleanup()` function registered with `trap cleanup EXIT`'
+  cause: Newer ShellCheck releases flag functions that are only referenced as string arguments to `trap` with `SC2329`
+  fix: Add `# shellcheck disable=SC2329` immediately above the trap-invoked `cleanup()` function definition
+  source: https://github.com/avd-ops/avd-landing-zone/pull/121
+  applies_to: ShellCheck 0.10+
+  status: verified
+  added: '2026-10-27'
+- id: nodejs-url-pathname-windows-drive-slash
+  symptom: 'Node.js scripts fail on Windows with `ENOENT: no such file or directory, open ''C:\C:\...\file''` or `fatal: cannot change to ''/C:/...''` when resolving repo paths from `import.meta.url`'
+  cause: '`new URL(''../'', import.meta.url).pathname` returns a leading slash before the drive letter on Windows (`/C:/...`), which `path.join` duplicates into `C:\C:\...` and `git -C` rejects'
+  fix: Convert `import.meta.url` with `fileURLToPath(new URL(''../'', import.meta.url))` from `node:url`, and enforce `* text=auto eol=lf` in `.gitattributes` so byte-hashed and newline-parsed files stay LF on Windows checkouts
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0006-run-anywhere.md
+  applies_to: Node.js 20+ on Windows
+  status: verified
+  added: '2026-10-27'
