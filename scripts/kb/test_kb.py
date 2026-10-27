@@ -233,7 +233,7 @@ class FamilyTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, tmp)
         (tmp / "sources.toml").write_text('[[source]]\nname = "a"\nkind = "github_commits"\nrepo = "octo/sib"\npath = "kb"\n')
         validate.errors.clear()
-        with mock.patch.object(kblib, "SOURCES", tmp / "sources.toml"), mock.patch.object(validate, "ROOT", Path("/")):
+        with mock.patch.object(kblib, "SOURCES", tmp / "sources.toml"), mock.patch.object(validate, "ROOT", tmp):
             validate.check_family()
         self.assertEqual(len(validate.errors), 1)
         self.assertIn("kb/decisions", validate.errors[0])
