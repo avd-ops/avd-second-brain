@@ -3,19 +3,26 @@
   "estate": "est-0a1b2c3d",
   "generatedUtc": "2026-10-20T10:00:00Z",
   "producer": { "name": "avd_current_state_assess.ps1", "version": "1.0.0" },
-  "method": { "version": 1, "commit": "abababababababababababababababababababab", "sha256": "027e59873233093e410679dea1cdbbe50650bbf81310dfd81b14b5776647079c", "factRegister": 1 },
+  "method": { "version": 1, "commit": "abababababababababababababababababababab", "sha256": "e3b13b292cc52805987f20dcd71d936c2a9212ef8949bfbbd7e2ed245f9d6429", "factRegister": 1 },
   "inputs": {
     "facts": { "generatedUtc": "2026-10-18T09:00:00Z", "sha256": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd" },
     "intake": { "answeredOn": "2026-10-20", "sha256": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef" }
   },
   "results": [
-    { "check": "asm-personal-start-vm-on-connect", "outcome": "warn", "facts": ["c11.hostPool.type", "c11.hostPool.startVmOnConnect"], "subjects": [ { "id": "hp-4d5e6f70", "outcome": "warn" } ] },
-    { "check": "asm-profile-storage-private-endpoint", "outcome": "pass", "facts": ["c11.storage.privateEndpoint"], "subjects": [ { "id": "st-3c4d5e6f", "outcome": "pass" } ] }
+    { "check": "asm-personal-start-vm-on-connect", "plane": "azure", "outcome": "warn", "facts": ["c11.hostPool.type", "c11.hostPool.startVmOnConnect"], "subjects": [ { "id": "hp-4d5e6f70", "outcome": "warn" } ] },
+    { "check": "asm-profile-storage-private-endpoint", "plane": "azure", "outcome": "pass", "facts": ["c11.storage.privateEndpoint"], "subjects": [ { "id": "st-3c4d5e6f", "outcome": "pass" } ] }
   ],
   "pillars": [
     { "pillar": "cost", "checks": 1, "assessed": 1, "score": 0.5, "coverage": 1 },
     { "pillar": "security", "checks": 1, "assessed": 1, "score": 1, "coverage": 1 }
   ],
+  "planes": {
+    "azure": { "score": 0.875, "coverage": 1, "pass": 1, "warn": 1, "gap": 0, "unknown": 0, "notApplicable": 0 },
+    "entra": { "score": null, "coverage": 0, "pass": 0, "warn": 0, "gap": 0, "unknown": 0, "notApplicable": 0 },
+    "intune": { "score": null, "coverage": 0, "pass": 0, "warn": 0, "gap": 0, "unknown": 0, "notApplicable": 0 },
+    "m365": { "score": null, "coverage": 0, "pass": 0, "warn": 0, "gap": 0, "unknown": 0, "notApplicable": 0 },
+    "power-platform": { "score": null, "coverage": 0, "pass": 0, "warn": 0, "gap": 0, "unknown": 0, "notApplicable": 0 }
+  },
   "decisions": [
     { "decision": "identity", "readiness": "decidable-with-intake", "status": "supported" },
     { "decision": "region", "readiness": "decidable-with-intake", "status": "supported" },

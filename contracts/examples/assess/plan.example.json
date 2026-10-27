@@ -1,0 +1,70 @@
+{
+  "schema": "avd-remediation-plan/v1",
+  "estate": "est-0a1b2c3d",
+  "plannedOn": "2026-10-21",
+  "basis": {
+    "assessment": "8b5f1f0e6b1c2a3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5",
+    "review": "1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d",
+    "method": 3,
+    "landingZoneCommit": "ae6e80b574cccde570d0053d4c62b519d31052a8"
+  },
+  "items": [
+    {
+      "order": 1,
+      "check": "asm-files-zone-redundant",
+      "plane": "azure",
+      "outcome": "warn",
+      "pillar": "reliability",
+      "severity": "high",
+      "claims": [
+        "ref:review-checklists-avd#A03.05",
+        "ref:psrule-azure#AZR-000195"
+      ],
+      "source": "unreviewed",
+      "change": {
+        "kind": "lz-parameter",
+        "plane": "azure",
+        "name": "profileStorageSku",
+        "from": "Premium_LRS",
+        "to": "Premium_ZRS"
+      }
+    },
+    {
+      "order": 2,
+      "check": "asm-personal-start-vm-on-connect",
+      "plane": "azure",
+      "outcome": "warn",
+      "pillar": "cost",
+      "severity": "low",
+      "claims": [
+        "ref:review-checklists-avd#E01.05"
+      ],
+      "source": "review-fix",
+      "change": {
+        "kind": "lz-parameter",
+        "plane": "azure",
+        "name": "startVmOnConnect",
+        "from": false,
+        "to": true
+      }
+    },
+    {
+      "order": 3,
+      "check": "asm-defender-servers",
+      "plane": "azure",
+      "outcome": "unknown",
+      "pillar": "security",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#G03.04",
+        "ref:avd-security-guide#defender-for-cloud"
+      ],
+      "source": "unreviewed",
+      "change": {
+        "kind": "manual",
+        "plane": "azure",
+        "code": "collect-evidence"
+      }
+    }
+  ]
+}

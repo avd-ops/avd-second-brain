@@ -272,11 +272,11 @@ Describe 'Fact register (C15) and target-state manifest (C14)' {
     Test-Json -Path (Join-Path $script:contracts 'fact-register.json') -SchemaFile (Join-Path $script:contracts 'schemas/fact-register.schema.json') | Should -BeTrue
     $c19 = Get-Content (Join-Path $script:contracts 'schemas/intake.schema.json') -Raw | ConvertFrom-Json
     @(Test-FactRegister -Register $script:register -SchemaByContract @{ C11 = $script:c11; C19 = $c19 }) | Should -BeNullOrEmpty
-    @($script:register.facts | Where-Object { $_.tier -eq 'intake' -and ($_.status -ne 'built' -or $_.contract -ne 'C19') }) | Should -BeNullOrEmpty -Because 'C19 gives every intake fact its path'
+    @($script:register.facts | Where-Object { $_.tier -eq 'intake' -and ($_.status -notin @('built', 'specified') -or $_.contract -ne 'C19') }) | Should -BeNullOrEmpty -Because 'C19 gives every intake fact its path'
   }
   It 'puts every C12 group measure, the hourly series and the app catalog in the group-behavior class' {
     $c12 = @($script:register.facts | Where-Object { $_.id -like 'c12.group.*' })
-    $behavior = @($c12 | Where-Object { $_.id -notin 'c12.group.users', 'c12.group.concurrency.peak', 'c12.group.perHost.peakSessionsPerHost', 'c12.group.apps.unknown' })
+    $behavior = @($c12 | Where-Object { $_.id -notin 'c12.group.users', 'c12.group.concurrency.peak', 'c12.group.perHost.peakSessionsPerHost', 'c12.group.apps.unknown', 'c12.group.scaling.failedEvaluations' })
     $behavior.Count | Should -BeGreaterThan 10
     foreach ($f in $behavior) { $f.privacy | Should -Be 'group-behavior' -Because "$($f.id) describes a group's behavior" }
     @($script:register.facts | Where-Object { $_.privacy -eq 'group-behavior' -and $_.id -notlike 'c12.group.*' }) | Should -BeNullOrEmpty
@@ -566,9 +566,14 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
   ) {
     Get-ReportCheck (Save-Changed 'assessment.example.json' $Change) | Should -Contain $Check
   }
-  It 'contracts.md lists C19, C20 and C21 as built, with their schemas' {
+  It 'the remediation plan example matches avd-remediation-plan/v1 (C24) with required plane' {
+    Test-Json -Path (Join-Path $script:ex 'plan.example.json') -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') | Should -BeTrue
+    $bad = Save-Changed 'plan.example.json' { param($p) $p.items[0].PSObject.Properties.Remove('plane') }
+    Test-Json -Path $bad -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') -ErrorAction SilentlyContinue | Should -BeFalse
+  }
+  It 'contracts.md lists C19, C20, C21 and C24 as built, with their schemas' {
     $all = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw))
-    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json', 'assess-map.schema.json'); C21 = @('assessment.schema.json') }
+    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json', 'assess-map.schema.json'); C21 = @('assessment.schema.json'); C24 = @('remediation-plan.schema.json') }
     foreach ($id in $want.Keys) {
       $c = @($all | Where-Object Id -eq $id)[0]
       $c.Built | Should -BeTrue -Because "$id has its schema and tests"

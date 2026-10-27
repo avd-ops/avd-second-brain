@@ -99,7 +99,7 @@
       "verdict": "extends",
       "observed": "Latency measured from Cloud Shell says nothing about users, because Cloud Shell runs in an Azure datacenter. Measure round-trip time from the user's device, against endpoints verified to be regional.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/lessons/0003-region-latency.md"
       ],
       "date": "2026-10-20"
     },
@@ -109,7 +109,7 @@
       "verdict": "not-yet-tested",
       "observed": "The landing zone's minimum kit defaults to a 4-vCPU memory-optimized host, which is Microsoft's stated floor and below its 6 to 24 vCPU range, chosen for the smallest test cost. The reasoning that shared hosts run out of memory before CPU is our hypothesis; no measurement backs it yet.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     },
@@ -119,7 +119,7 @@
       "verdict": "not-yet-tested",
       "observed": "Adopted as the landing zone's automatic sizing input, and its preflight warns above 6 sessions per vCPU. No real users have been measured against it, so the numbers are still Microsoft's prior, not our evidence.",
       "evidence": [
-        "https://github.com/nickprignano/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
+        "https://github.com/avd-ops/avd-landing-zone/blob/150331e37d66370438bdd7867398693eaa0935aa/build/decisions/0010-sizing-and-cost.md"
       ],
       "date": "2026-10-20"
     }
