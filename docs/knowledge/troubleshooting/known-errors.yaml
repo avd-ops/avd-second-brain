@@ -350,3 +350,11 @@ errors:
   applies_to: PSScriptAnalyzer 1.23+
   status: verified
   added: '2026-10-27'
+- id: portal-report-public-ids-guard-on-synthetic-guids
+  symptom: '`build/tests/portal/report.test.mjs` fails in CI (`PUBLIC_IDS lists every GUID in bicep/, parameters/ and scripts/`) after adding synthetic placeholder GUIDs (such as `00000000-0000-0000-0000-000000000001`) to a PowerShell script'
+  cause: '`report.test.mjs` scans `bicep/`, `parameters/`, and `scripts/` for every literal GUID and requires it to appear in `PUBLIC_IDS` (`site/portal/report.js`) so the issue report redactor knows which GUIDs are tenant-agnostic public constants vs. private tenant IDs'
+  fix: 'Use the zero GUID (`00000000-0000-0000-0000-000000000000`) for synthetic `-DryRun` manifest placeholders in `scripts/`, which satisfies JSON Schema UUID validation and is already in `PUBLIC_IDS` without widening the redaction allowlist'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/123
+  applies_to: avd-landing-zone portal report redactor
+  status: verified
+  added: '2026-10-27'
