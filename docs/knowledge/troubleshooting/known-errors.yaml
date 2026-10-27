@@ -318,3 +318,11 @@ errors:
   applies_to: PowerShell 7.4 on Windows, Power Platform CLI (pac)
   status: verified
   added: '2026-10-27'
+- id: windows-store-python-app-execution-alias
+  symptom: 'Calling `python3` or `python` from PowerShell on Windows prints `Python was not found; run without arguments to install from the Microsoft Store` instead of running the installed Python interpreter'
+  cause: Windows puts the Microsoft Store app execution alias (`%LOCALAPPDATA%\Microsoft\WindowsApps\python3.exe`) ahead of or in place of a local Python install on `PATH`
+  fix: 'Filter out `Get-Command` matches whose `Source` contains `WindowsApps`, and fall back to the `py` launcher or `$env:LOCALAPPDATA\Programs\Python\Python*\python.exe`'
+  source: https://github.com/avd-ops/avd-intune/pull/2
+  applies_to: PowerShell 7.4 on Windows 11, Python 3.12+
+  status: verified
+  added: '2026-10-27'
