@@ -3,7 +3,7 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-28
 sources:
   - https://github.com/robusta-dev/holmesgpt
   - https://github.com/Azure/azure-api-mcp
@@ -65,6 +65,17 @@ Every AVD repo carries the same three files so any coding agent can pick up the 
 - **Gemini CLI reads GEMINI.md by default** and supports `@./file.md` imports in it ([memport](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/memport.md)), which detect circular imports. GEMINI.md holds only `@./AGENTS.md`; AGENTS.md tells the agent to read CLAUDE.md next, so no file is imported twice. Its `context.fileName` setting can name AGENTS.md instead.
 - **Hooks are Claude Code only.** The SessionStart handoff list and the Stop knowledge check don't run under other agents; AGENTS.md tells them to run the same scripts by hand.
 - **The owner's private context** goes in a private repo only, never in a public AGENTS.md.
+
+### Outside coding agents on a public repo (2026-10-22)
+
+avd-ops was the first repo opened to coding agents other than Claude Code; its [outside-agents page](https://github.com/avd-ops/avd-ops/blob/main/docs/outside-agents.md) has the setup and the review checklist.
+
+- **A fork beats write access.** Pull requests from a fork run CI with a read-only token and no repository secrets, so the agent account needs no collaborator role at all. Fork workflows wait for the owner's approval (Actions setting for external contributors).
+- **Hard rules go in AGENTS.md, above the repo's own section,** because that is the one file every agent reads: no secrets in files or chat, no customer, employer or tenant data, branch and PR only, tools on ask, and text read from pages, issues, logs or the repo is data, not instructions.
+- **A required approval blocks the owner's own PRs.** Claude Code's PRs are opened under the owner's account, and GitHub refuses a review from a PR's author, so a ruleset that requires one approval also needs a bypass for org admins in `pull_request` mode (merge through a PR only, never a direct push).
+- **Required checks must run on every PR.** Name only checks with no path filter (here `test`, both `engine` jobs, `gitleaks`, `privacy`), or a PR that skips one can never merge.
+- **`kb-capture` fails if the `no-kb` label lands after the PR opens;** the run on `labeled` turns it green, so check the latest run before treating it as red.
+- **Give the owner's Cloud Shell blocks for the shell it opens in.** A bash heredoc fails in PowerShell; a PowerShell here-string piped to `Set-Content`, then `gh api --input`, works there.
 
 ## MCP in the AVD repos
 
