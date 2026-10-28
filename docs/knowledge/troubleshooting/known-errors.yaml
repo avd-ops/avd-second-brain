@@ -390,3 +390,19 @@ errors:
   applies_to: Git for Windows, avd-swarm, avd-second-brain contract pin checks
   status: verified
   added: '2026-10-28'
+- id: gh-pr-create-powershell-multiline-body-splitting
+  symptom: '`gh pr create --body "..."` in PowerShell fails with `unknown arguments ["(15/15" "passing)"]; please quote all values that have spaces` when the PR body spans multiple lines or contains backticks and quotes'
+  cause: 'PowerShell native command argument quoting splits double-quoted multi-line strings containing embedded quotes or backtick-escaped tokens into separate argv words when invoking external executables like `gh`'
+  fix: 'Assign the markdown body to a single-quoted PowerShell here-string (`$prBody = @'' ... ''@`) and pass `--body $prBody` (or `--body-file`)'
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/run-anywhere.md
+  applies_to: GitHub CLI (gh), PowerShell 7.4 on Windows
+  status: verified
+  added: '2026-10-28'
+- id: avd-ops-portal-css-hover-specificity-override
+  symptom: 'Shell header icon buttons (`.iconbtn`), wizard rail step buttons (`.wz-rail button.step`), or modal sheet backdrops (`.sheet-backdrop`) turn solid accent blue on hover when `avd-ops-portal.css` and `avd-ops-shell.css` are loaded together'
+  cause: '`.portal :is(button:hover:not(:disabled),a.btnlink:hover)` in `avd-ops-portal.css` has specificity `(0,3,1)`, which overrides single- or two-class button rules in portal stylesheets on hover'
+  fix: 'Include `:hover:not(:disabled)` on shell header, wizard rail, and sheet-backdrop button selectors (matching or exceeding `0,3,1` specificity) so transparent/sunken hover states win cleanly'
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/design-system-spec.md
+  applies_to: avd-ops design system ds-v2.7.0 (avd-ops-portal.css, avd-ops-shell.css)
+  status: verified
+  added: '2026-10-28'
