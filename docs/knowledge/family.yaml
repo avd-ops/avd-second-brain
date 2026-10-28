@@ -47,7 +47,8 @@ projects:
   kb_path: docs/knowledge
   role: member
   focus: 'The front door for the AVD repos: avd-ops.dev, onboarding and user docs'
-  owns: [onboarding and user-facing docs for the AVD repos, the avd-ops.dev site and design system]
+  owns: [onboarding and user-facing docs for the AVD repos, the avd-ops.dev site and design system,
+    the list of family repos (repos.json)]
   format_version: 1
 - id: nerdio-hcl
   name: Nerdio HCL kit
@@ -55,16 +56,19 @@ projects:
   kb_path: docs/knowledge
   role: member
   focus: 'Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer'
-  owns: [Nerdio Manager, the nerdio/nme provider, this kit's Terraform and Packer]
+  owns: [Nerdio Manager, the nerdio/nme provider, AVD and FSLogix for this kit, this kit's Terraform
+    and Packer, setup chatbot and KB format]
   format_version: 1
   claude_project: Nerdio
 - id: liquidware
   name: Liquidware
-  repo: nickprignano/avd-liquidware
+  repo: nickprignano/liquidware-ninja
   kb_path: docs/knowledge
   role: member
-  focus: Liquidware products on virtual desktops, starting with Stratusphere UX in Azure
-  owns: [Liquidware products, Stratusphere UX appliances, the Connector ID Key, the Stratusphere API,
-    this repo's Bicep and PowerShell]
+  focus: Liquidware products across virtual and physical desktops (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL)
+  # Its own row also names a private toolkit repo, which this public KB leaves out.
+  owns: ['Liquidware products (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL)', the Stratusphere
+      API and SpotCheck methodology, 'how they fit with AVD, Citrix, Horizon and FSLogix, and the avd-liquidware
+      toolkit']
   format_version: 1
   claude_project: Liquidware

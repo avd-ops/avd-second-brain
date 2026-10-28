@@ -141,6 +141,10 @@ Describe 'D3 parameters' {
     $f = @(Test-DocParameter -Repo $r | Where-Object severity -eq 'error')
     $f.says | Should -Be @('Get-Thing.ps1 -Colour', 'Get-Thing.ps1 -Nmae')
   }
+  It 'skips a script passed as another command''s argument' {
+    $r = New-TestRepo -File @{ 'docs/lint.md' = "``````bash`npwsh -c ""Invoke-ScriptAnalyzer -Path ./scripts/Get-Thing.ps1 -Settings ./s.psd1 -EnableExit""`npwsh -File ./scripts/Get-Thing.ps1 -Nmae x`npwsh -NoProfile ./scripts/Get-Thing.ps1 -Cnt 1`n``````" }
+    @(Test-DocParameter -Repo $r | Where-Object severity -eq 'error').says | Should -Be @('Get-Thing.ps1 -Nmae', 'Get-Thing.ps1 -Cnt')
+  }
   It 'checks scripts in other repos the docs name' {
     $other = New-TestRepo -Name 'avd-other'
     $r = New-TestRepo -File @{ 'docs/x.md' = '`Get-Thing.ps1 -Wrong`' }

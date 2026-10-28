@@ -3,7 +3,7 @@ title: "Identity and Entra"
 summary: "Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities"
 topic: identity
 status: partial
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-28
 ---
 
 # Identity and Entra
@@ -15,6 +15,7 @@ Identity for AVD on Entra ID: Entra-joined session hosts, Entra Kerberos for pro
 - avd-assess maps the identity pillar: the review checklist's identity items, the Learn pages they rest on, and which parts a Reader-only run sees (join type, the host pool's single sign-on property, the profile share's identity source, role assignment counts), which need a directory read (Conditional Access, per-user MFA, the tenant's single sign-on setting, LAPS), and which only the operator knows ([gap:identity-scope](https://github.com/avd-ops/avd-assess/blob/main/gaps/identity-scope.md)). The directory read doesn't exist yet; its rows stay `unknown` unless the operator answers the intake question.
 - Learn disagrees with itself on FSLogix for cloud-only users: the AVD prerequisites and Entra joined host pages still ask for hybrid accounts, the Azure Files and FSLogix pages don't, and the landing zone's run shows cloud-only users work ([observation](https://github.com/avd-ops/avd-assess/blob/main/observations/fslogix-cloud-only-users-work.yaml); [upstream ask](../microsoft/upstream-contributions.md#docs-and-packaging)).
 - Conditional Access for AVD is two aligned policies, the AVD app and Windows Cloud Login, with the feed app never under MFA and per-user MFA off; per-user MFA alongside Conditional Access breaks sign-in to Entra joined hosts.
+- Entra enforces a Content Security Policy on browser sign-in at `login.microsoftonline.com` from mid-to-late October 2026: only scripts from Microsoft's own domains run there, so a browser extension or tool that injects script into the sign-in page (some security, monitoring and password tools) stops working on it, the AVD web client's sign-in included. Sign-in itself still works, and MSAL and API flows aren't affected. Check with the browser's developer console during a sign-in before blaming AVD ([Entra CSP](https://learn.microsoft.com/entra/identity-platform/content-security-policy), checked 2026-10-28; from digest #15).
 
 ## Microsoft Graph sign-in for operators
 

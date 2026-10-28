@@ -35,8 +35,17 @@ Watched today:
 Expert feeds come with the experts study: people are chosen with the method in
 [experts.md](experts.md), and each feed is added once a curator run shows it works.
 
-Working a digest: for each ticked item, add what matters to the page named next to the source
-(facts, versions, fixes; not a link dump), then close the issue.
+Working a digest: tick the items worth adding (a `→ docs/knowledge/<page>.md` at the end of an
+item's line sends it to another page than its source's), then label the issue **kb-accepted**.
+[kb-feedback](#feedback-loop-kb-feedback) adds each ticked item to its page under "From the
+digest", marked *unverified*, and opens a pull request that closes the digest. Before merging, turn
+each link into what matters (facts, versions, fixes; not a link dump) with a primary source, and
+drop its marker. Or write it up by hand in your own PR with `Closes #<digest>`.
+
+A new digest closes the older open ones nobody ticked anything in or commented on, with a link to the new one, so
+unworked digests don't pile up. A digest with ticks stays open until it's accepted or closed by hand.
+Commit sources leave out merge commits and dependency bumps. A feed or API that answers 5xx gets
+one retry after a short wait before it counts as failed for that run.
 
 To watch something else, add a `[[source]]` table to [sources.toml](sources.toml). Supported
 kinds: `github_releases`, `github_commits` (optionally limited to one `path`), `github_issues`,
@@ -75,13 +84,14 @@ The digest and prior-art scripts need Python 3.11+ and `scripts/kb/requirements.
 
 ## Feedback loop (`kb-feedback`)
 
-Real results flow back into the KB through three issue forms:
+Real results flow back into the KB through three issue forms, and the weekly digest:
 
 - **Knowledge base feedback:** what worked, broke, went out of date or is missing, for one page
   (label `kb-feedback`).
 - **Known error:** an error, its cause and fix, for the [troubleshooting catalog](troubleshooting/README.md)
   (label `kb-known-error`).
 - **Suggest an expert to follow:** a nomination for the [experts study](experts.md) (label `kb-source`).
+- **A weekly digest** with ticked items (label `kb-digest`, see [above](#weekly-digest-kb-curator)).
 
 Each form has a required public-safe tick box. A maintainer reviews the issue and, if it's useful
 and public-safe, labels it **kb-accepted**.
@@ -110,9 +120,12 @@ of each month and keeps one open issue labelled **kb-freshness** listing:
 - pages whose `last_reviewed` is more than 90 days old (pages with status `plan` are skipped)
 - pages with status `unverified` or `partial`, with the number of claims still marked *unverified*
 - known errors whose fix is still unverified
-- experts due for re-scoring, with each tracked expert's digest yield
+- experts due for re-scoring, with each tracked expert's digest yield (counted only over digests
+  opened since the expert was last scored, so a new KB or a new expert isn't flagged before any
+  digest could list them)
 - sibling KBs on a different family format version, or whose `family.yaml` can't be read
 
+When the check comes back clean it closes the open issue instead of leaving it for next month.
 Work it by re-checking each item against a primary source or a real run, then updating the page's
 text, `last_reviewed` and `status`. Run it locally with `python3 scripts/kb/freshness.py --family`.
 

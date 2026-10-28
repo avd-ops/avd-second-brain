@@ -277,21 +277,6 @@ path = "docs/knowledge"
 kb_page = "curation.md"
 
 [[source]]
-name = "Liquidware KB: decisions"
-kind = "github_commits"
-repo = "nickprignano/avd-liquidware"
-path = "docs/knowledge/decisions"
-# Quiet until the Liquidware KB exists at this path.
-kb_page = "curation.md"
-
-[[source]]
-name = "Liquidware KB: changes"
-kind = "github_commits"
-repo = "nickprignano/avd-liquidware"
-path = "docs/knowledge"
-kb_page = "curation.md"
-
-[[source]]
 name = "2ndbrain format: decisions"
 kind = "github_commits"
 repo = "nickprignano/2ndbrain"
@@ -308,14 +293,14 @@ kb_page = "curation.md"
 [[source]]
 name = "Liquidware KB: decisions"
 kind = "github_commits"
-repo = "nickprignano/avd-liquidware"
+repo = "nickprignano/liquidware-ninja"
 path = "docs/knowledge/decisions"
 kb_page = "curation.md"
 
 [[source]]
 name = "Liquidware KB: changes"
 kind = "github_commits"
-repo = "nickprignano/avd-liquidware"
+repo = "nickprignano/liquidware-ninja"
 path = "docs/knowledge"
 kb_page = "curation.md"
 
