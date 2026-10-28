@@ -26,7 +26,7 @@
   ],
   "landingZone": {
     "commit": "ae5c2877d53d9af8e1efbf47b85cfdef06c51364",
-    "source": "https://github.com/nickprignano/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep",
+    "source": "https://github.com/avd-ops/avd-landing-zone/blob/ae5c2877d53d9af8e1efbf47b85cfdef06c51364/bicep/main.bicep",
     "parameters": [
       "namePrefix",
       "environmentName",

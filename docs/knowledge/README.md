@@ -35,6 +35,9 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | partial |
 | [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | partial |
 | [microsoft/drafts/](microsoft/drafts/README.md) | Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it | plan |
+| [microsoft/study-guide/](microsoft/study-guide/README.md) | A free, public study guide for the Azure Virtual Desktop Specialty (AZ-140) and Azure Administrator (AZ-104) exams | verified |
+| [microsoft/study-guide/az-104.md](microsoft/study-guide/az-104.md) | Original notes, traps and practice questions for AZ-104, Microsoft Azure Administrator | verified |
+| [microsoft/study-guide/az-140.md](microsoft/study-guide/az-140.md) | Original notes, traps and practice questions for AZ-140, Configuring and Operating Microsoft Azure Virtual Desktop | verified |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
 | [troubleshooting/](troubleshooting/README.md) | Errors hit deploying and running AVD: symptom, cause, fix and source | verified |
 | [landing-zone/terraform-port-plan.md](landing-zone/terraform-port-plan.md) | Plan to port nerdio-hcl's approach to Terraform that deploys and operates AVD directly, with no Nerdio Manager in the path; awaits the owner's yes | plan |

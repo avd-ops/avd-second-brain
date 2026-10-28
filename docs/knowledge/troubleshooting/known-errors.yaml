@@ -337,8 +337,8 @@ errors:
 - id: storage-kerberos-app-display-name-spoofing
   symptom: 'Lookup of the Azure Files Entra Kerberos app registration (`[Storage Account] <storageFqdn>`) by `displayName` matches multiple apps or a user-registered look-alike app'
   cause: 'Anyone who can register applications in the tenant can create an app with display name `[Storage Account] <storageFqdn>`, which would otherwise receive `AllPrincipals` admin consent and Conditional Access MFA exclusion'
-  fix: 'Query `GET /v1.0/applications/{id}/owners?$select=id` on every candidate and accept only the single application with zero owners, since Azure''s platform-created storage app never has owners'
-  source: https://github.com/avd-ops/avd-entra/pull/2
+  fix: 'Query `GET /v1.0/applications/{id}/owners?$select=id` on every candidate and accept only an application with zero owners or whose owners are all directory administrators (`Get-AvdDirectoryAdminId`) or the signed-in operator (`v1.0/me`), rejecting any candidate owned by a non-administrator'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/124
   applies_to: Microsoft Graph v1.0, Azure Files Entra Kerberos
   status: verified
   added: '2026-10-27'
@@ -350,17 +350,65 @@ errors:
   applies_to: PSScriptAnalyzer 1.23+
   status: verified
   added: '2026-10-27'
-- id: portal-report-public-ids-rejects-synthetic-guids
-  symptom: '`node --test "build/tests/portal/*.test.mjs"` fails in `report.test.mjs` (`PUBLIC_IDS lists every GUID in bicep/, parameters/ and scripts/`) after adding dry-run or placeholder GUIDs to a script'
-  cause: '`report.test.mjs` scans every file in `bicep/`, `parameters/`, and `scripts/` for GUID literals and requires every match to appear in `PUBLIC_IDS` (`site/portal/report.js`), which only lists tenant-invariant Microsoft app/role IDs and the all-zero GUID'
-  fix: 'Use the all-zero placeholder GUID (`00000000-0000-0000-0000-000000000000`) for dry-run and placeholder object IDs in `scripts/` instead of inventing numbered dummy GUIDs, and add to `PUBLIC_IDS` only real Microsoft built-in role or first-party application IDs'
+- id: portal-report-public-ids-guard-on-synthetic-guids
+  symptom: '`build/tests/portal/report.test.mjs` fails in CI (`PUBLIC_IDS lists every GUID in bicep/, parameters/ and scripts/`) after adding synthetic placeholder GUIDs (such as `00000000-0000-0000-0000-000000000001`) to a PowerShell script'
+  cause: '`report.test.mjs` scans `bicep/`, `parameters/`, and `scripts/` for every literal GUID and requires it to appear in `PUBLIC_IDS` (`site/portal/report.js`) so the issue report redactor knows which GUIDs are tenant-agnostic public constants vs. private tenant IDs'
+  fix: 'Use the zero GUID (`00000000-0000-0000-0000-000000000000`) for synthetic `-DryRun` manifest placeholders in `scripts/`, which satisfies JSON Schema UUID validation and is already in `PUBLIC_IDS` without widening the redaction allowlist'
   source: https://github.com/avd-ops/avd-landing-zone/pull/123
-  applies_to: avd-landing-zone deployment portal redaction guard (site/portal/report.js)
+  applies_to: avd-landing-zone portal report redactor
   status: verified
   added: '2026-10-27'
+- id: arm-subscription-template-4mb-limit
+  symptom: '`deploy.sh` or `az deployment sub create` fails before creating any resources with `RequestContentTooLarge: The request content size exceeds the maximum size of 4 MB`'
+  cause: '`bicep build-params <file>.bicepparam --stdout` emits 2-space pretty-printed JSON with all nested AVM `@description` metadata inlined; referencing `br/public:avm/res/compute/virtual-machine:0.22.3` in two separate modules (`sessionHosts.bicep` and `additionalPool.bicep`) inlines the 676 KB VM module tree twice even when `additionalPools` is empty (`count: 0`), pushing `templateJson` over `4,194,304` bytes'
+  fix: 'Create and FSLogix-configure session hosts for both the primary pool and `additionalPools` inside a single `avm/res/compute/virtual-machine` loop in `sessionHosts.bicep`, keep additional pool registration in a lightweight module (`registerPoolHosts.bicep`), and assert `[Text.Encoding]::UTF8.GetByteCount($raw.templateJson) -lt 4194304` in `Template.Tests.ps1`'
+  source: https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0037-subscription-template-4mb-limit.md
+  applies_to: Bicep 0.42.1, Azure Resource Manager subscription deployments, avm/res/compute/virtual-machine 0.22.3
+  status: verified
+  added: '2026-10-28'
+- id: storage-kerberos-app-operator-owner
+  symptom: '`Test-AvdLandingZoneReadiness.ps1 -Fix` fails at `Storage Kerberos app consent` and `MFA policy excludes storage app` with `every app with this name has owners, which the app Azure creates never has` right after an interactive ARM deployment'
+  cause: 'When `Microsoft.Storage` registers the `[Storage Account] <storageFqdn>` Entra application during an ARM deployment initiated by a signed-in user (rather than a service principal), Entra ID sets that deploying user as the application owner'
+  fix: 'In `Get-AvdStorageKerberosApp`, accept a candidate `[Storage Account] <storageFqdn>` application when it has zero owners or when every owner ID is in `Get-AvdDirectoryAdminId` (directory administrators) or matches the signed-in operator (`GET /v1.0/me`), and reject any candidate with a non-administrator owner'
+  source: https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0038-storage-kerberos-app-operator-owner.md
+  applies_to: Microsoft Graph v1.0, Azure Files Entra Kerberos (AADKERB)
+  status: verified
+  added: '2026-10-28'
+- id: az-cli-mfa-claims-challenge-separate-from-az-powershell
+  symptom: '`Invoke-AvdSandboxBatch.ps1` passes `Az` PowerShell preflight and run-store steps, then `deploy.sh` fails on its first `az account show` or `az deployment sub create` call with `AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access ''<app-id>''`'
+  cause: '`Connect-AzAccount` (Az PowerShell) and `az` (Azure CLI) maintain separate MSAL token caches; satisfying a Conditional Access MFA policy on Azure Resource Management in `Az` PowerShell does not refresh a non-MFA token cached by `az` CLI'
+  fix: 'Run `az login --tenant <tenant-id> --scope https://management.core.windows.net//.default` (or pass `--claims-challenge` from the `AADSTS50076` prompt) before invoking `deploy.sh` when Conditional Access enforces MFA on ARM'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/124
+  applies_to: Azure CLI (az), Az PowerShell, Microsoft Entra Conditional Access MFA
+  status: verified
+  added: '2026-10-28'
+- id: git-autocrlf-breaks-contract-pin-sha256
+  symptom: '`unittest` in a freshly cloned AVD repo on Windows fails `test_contract_pin_matches` with `Contract pin verification failed` (`contracts/fact-register.json: sha256 mismatch`)'
+  cause: 'Cloning on Windows with `git config core.autocrlf=true` converts LF line endings to CRLF on checkout when `.gitattributes` does not force `eol=lf`, altering the raw byte SHA-256 digest checked against `FOUNDATION-PINS.json`'
+  fix: 'Set `git config --global core.autocrlf false` on Windows workstations and enforce `* text=auto eol=lf` in `.gitattributes`'
+  source: https://github.com/avd-ops/avd-swarm/pull/1
+  applies_to: Git for Windows, avd-swarm, avd-second-brain contract pin checks
+  status: verified
+  added: '2026-10-28'
+- id: gh-pr-create-powershell-multiline-body-splitting
+  symptom: '`gh pr create --body "..."` in PowerShell fails with `unknown arguments ["(15/15" "passing)"]; please quote all values that have spaces` when the PR body spans multiple lines or contains backticks and quotes'
+  cause: 'PowerShell native command argument quoting splits double-quoted multi-line strings containing embedded quotes or backtick-escaped tokens into separate argv words when invoking external executables like `gh`'
+  fix: 'Assign the markdown body to a single-quoted PowerShell here-string (`$prBody = @'' ... ''@`) and pass `--body $prBody` (or `--body-file`)'
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/run-anywhere.md
+  applies_to: GitHub CLI (gh), PowerShell 7.4 on Windows
+  status: verified
+  added: '2026-10-28'
+- id: avd-ops-portal-css-hover-specificity-override
+  symptom: 'Shell header icon buttons (`.iconbtn`), wizard rail step buttons (`.wz-rail button.step`), or modal sheet backdrops (`.sheet-backdrop`) turn solid accent blue on hover when `avd-ops-portal.css` and `avd-ops-shell.css` are loaded together'
+  cause: '`.portal :is(button:hover:not(:disabled),a.btnlink:hover)` in `avd-ops-portal.css` has specificity `(0,3,1)`, which overrides single- or two-class button rules in portal stylesheets on hover'
+  fix: 'Include `:hover:not(:disabled)` on shell header, wizard rail, and sheet-backdrop button selectors (matching or exceeding `0,3,1` specificity) so transparent/sunken hover states win cleanly'
+  source: https://github.com/avd-ops/avd-ops/blob/main/docs/design-system-spec.md
+  applies_to: avd-ops design system ds-v2.7.0 (avd-ops-portal.css, avd-ops-shell.css)
+  status: verified
+  added: '2026-10-28'
 - id: playwright-details-panel-and-step-aria-label-mismatch
   symptom: 'Portal UI tests pass in JSDOM (`portal-browser.test.mjs`) but fail or time out in real Chromium (`portal.browser.test.mjs`) when clicking controls inside a `<details class="panel">` or asserting the active step button `aria-label`'
-  cause: 'JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` rather than the short `LIST[s.id]` rail label'
+  cause: 'JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` (with `, done` appended once the step is done) rather than the short `LIST[s.id]` rail label'
   fix: 'Switch to the step slide that owns the panel (`size` for `#control-planes-panel`), click `#control-planes-panel > summary` before clicking buttons inside `<details>`, and match the full step title in `aria-label`'
   source: https://github.com/avd-ops/avd-landing-zone/pull/123
   applies_to: Playwright 1.56+, Chromium, avd-landing-zone deployment portal

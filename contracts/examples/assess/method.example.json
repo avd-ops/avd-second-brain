@@ -11,6 +11,7 @@
   "checks": [
     {
       "id": "asm-personal-start-vm-on-connect",
+      "plane": "azure",
       "title": "Personal host pools use Start VM on Connect",
       "pillar": "cost",
       "severity": "low",
@@ -21,6 +22,7 @@
     },
     {
       "id": "asm-profile-storage-private-endpoint",
+      "plane": "azure",
       "title": "Profile storage is reached through a private endpoint",
       "pillar": "security",
       "severity": "medium",

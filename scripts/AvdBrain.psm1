@@ -1129,7 +1129,7 @@ function Test-AssessMethod {
 function Get-AssessScore {
   # The method's scoring (severity-weighted/v1) over a report's results: per pillar, the passing
   # severity weight over the assessed weight (warn counts warnFactor), and coverage, the share of
-  # checks that aren't unknown. A pillar with nothing assessed scores null. Only builds data.
+  # checks that aren't unknown or not-applicable. A pillar with nothing assessed scores null. Only builds data.
   [CmdletBinding()]
   param(
     [Parameter(Mandatory)] $Method,
@@ -1138,18 +1138,20 @@ function Get-AssessScore {
   $outcome = @{}; foreach ($r in $Result) { $outcome[$r.check] = $r.outcome }
   $s = $Method.scoring
   foreach ($g in @($Method.checks | Group-Object pillar | Sort-Object Name)) {
-    $assessed = 0; $weight = 0.0; $passed = 0.0
+    $assessed = 0; $notApplicable = 0; $weight = 0.0; $passed = 0.0
     foreach ($c in $g.Group) {
       $o = $outcome[$c.id]
+      if ($o -eq 'not-applicable') { $notApplicable++; continue }
       if (-not $o -or $o -eq 'unknown') { continue }
       $w = [double](Get-BrainProperty $s.weights $c.severity)
       $assessed++; $weight += $w
       if ($o -eq 'pass') { $passed += $w } elseif ($o -eq 'warn') { $passed += $w * $s.warnFactor }
     }
+    $denom = $g.Count - $notApplicable
     [pscustomobject]@{
       pillar = $g.Name; checks = $g.Count; assessed = $assessed
       score = if ($weight) { [Math]::Round($passed / $weight, 3) } else { $null }
-      coverage = [Math]::Round($assessed / $g.Count, 3)
+      coverage = if ($denom -gt 0) { [Math]::Round($assessed / $denom, 3) } else { 0 }
     }
   }
 }
@@ -1177,15 +1179,15 @@ function Test-AssessmentReport {
   if ($doc.method.factRegister -ne $Register.version) { $findings += Get-BrainFinding Error 'report:register-version' $display "Uses fact register v$($doc.method.factRegister); this register is v$($Register.version)." }
 
   $checks = @{}; foreach ($c in @($Method.checks)) { $checks[$c.id] = $c }
-  $rank = @{ gap = 3; warn = 2; unknown = 1; pass = 0 }
+  $rank = @{ gap = 3; warn = 2; unknown = 1; pass = 0; 'not-applicable' = -1 }
   foreach ($dup in @($doc.results.check | Group-Object | Where-Object Count -gt 1)) { $findings += Get-BrainFinding Error 'report:duplicate-check' $display "Check '$($dup.Name)' has two rows." }
   foreach ($id in $checks.Keys) { if ($id -notin @($doc.results.check)) { $findings += Get-BrainFinding Error 'report:missing-check' $display "Check '$id' has no row." } }
   foreach ($row in @($doc.results)) {
     $c = $checks[$row.check]
     if (-not $c) { $findings += Get-BrainFinding Error 'report:unknown-check' $display "Row '$($row.check)' isn't a check in method v$($Method.version)."; continue }
     foreach ($f in @($row.facts)) { if ($f -notin @($c.facts)) { $findings += Get-BrainFinding Error 'report:fact-not-in-check' $display "$($row.check) lists '$f', which the check doesn't use." } }
-    $worst = 'unknown'
     $subjects = @($row.subjects)
+    $worst = if ($row.outcome -eq 'not-applicable' -and -not $subjects.Count) { 'not-applicable' } else { 'unknown' }
     if ($subjects.Count) { $worst = ($subjects.outcome | Sort-Object { $rank[$_] } -Descending | Select-Object -First 1) }
     if ($row.outcome -ne $worst) { $findings += Get-BrainFinding Error 'report:rollup' $display "$($row.check) says $($row.outcome); its subjects roll up to $worst." }
   }
