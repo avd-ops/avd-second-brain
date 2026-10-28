@@ -4,8 +4,9 @@
 
 Run by .github/workflows/kb-feedback.yml when a maintainer labels an issue kb-accepted. It reads
 the issue form, appends a field report (kb-feedback), a known error (kb-known-error) or an expert
-nomination (kb-source, to experts.yaml as status nominated, for a maintainer to score), and writes
-the branch name, PR title and PR body for the workflow to open a pull request.
+nomination (kb-source, to experts.yaml as status nominated, for a maintainer to score), or adds the
+items ticked in a weekly digest (kb-digest, digest.py) to their pages, and writes the branch name,
+PR title and PR body for the workflow to open a pull request.
 
     python3 scripts/kb/feedback.py --event "$GITHUB_EVENT_PATH"
     python3 scripts/kb/feedback.py --issue-json issue.json      # {"number", "title", "body", "labels"}
@@ -25,6 +26,7 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import digest  # noqa: E402
 import kblib  # noqa: E402
 from kblib import KB_DIR  # noqa: E402
 
@@ -188,6 +190,11 @@ def write(path: Path, data) -> None:
 
 def handle(issue: dict, today: str) -> tuple[str, str]:
     labels = {lbl["name"] if isinstance(lbl, dict) else lbl for lbl in issue.get("labels", [])}
+    if "kb-digest" in labels:
+        try:
+            return digest.accept(issue)
+        except digest.DigestError as e:
+            raise FeedbackError(str(e)) from e
     fields = parse_form(issue.get("body") or "")
     public_safe(fields)
     if "kb-known-error" in labels:
@@ -196,7 +203,7 @@ def handle(issue: dict, today: str) -> tuple[str, str]:
         return add_nomination(issue, fields, today)
     if "kb-feedback" in labels:
         return add_field_report(issue, fields, today)
-    raise FeedbackError("the issue has none of the kb-feedback, kb-known-error or kb-source labels")
+    raise FeedbackError("the issue has none of the kb-feedback, kb-known-error, kb-source or kb-digest labels")
 
 
 def main() -> int:

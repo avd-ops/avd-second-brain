@@ -53,9 +53,9 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | Knowledge base | Role | Focus | Source of truth for |
 |---|---|---|---|
 | [2ndbrain](https://github.com/nickprignano/2ndbrain/tree/main/docs/knowledge) | reference | The template that owns the family knowledge base format | the family knowledge base format; its scripts and schemas |
-| [avd-ops](https://github.com/avd-ops/avd-ops/tree/main/docs/knowledge) | member | The front door for the AVD repos: avd-ops.dev, onboarding and user docs | onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system |
-| [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge) | member | Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer | Nerdio Manager; the nerdio/nme provider; this kit's Terraform and Packer |
-| [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge) | member | Liquidware products on virtual desktops, starting with Stratusphere UX in Azure | Liquidware products; Stratusphere UX appliances; the Connector ID Key; the Stratusphere API; this repo's Bicep and PowerShell |
+| [avd-ops](https://github.com/avd-ops/avd-ops/tree/main/docs/knowledge) | member | The front door for the AVD repos: avd-ops.dev, onboarding and user docs | onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system; the list of family repos (repos.json) |
+| [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge) | member | Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer | Nerdio Manager; the nerdio/nme provider; AVD and FSLogix for this kit; this kit's Terraform and Packer; setup chatbot and KB format |
+| [Liquidware](https://github.com/nickprignano/liquidware-ninja/tree/main/docs/knowledge) | member | Liquidware products across virtual and physical desktops (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL) | Liquidware products (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL); the Stratusphere API and SpotCheck methodology; how they fit with AVD, Citrix, Horizon and FSLogix, and the avd-liquidware toolkit |
 <!-- END GENERATED: family -->
 
 When a fact belongs to a sibling's topic, link to their page instead of copying it. When we learn
@@ -70,7 +70,7 @@ before anything near it is researched here ([decision 0012](decisions/0012-famil
 <!-- BEGIN GENERATED: lanes (from family.yaml; run scripts/kb/build.py) -->
 - Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
 - Nerdio Manager, its provider and scripted actions: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
-- Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project: [Liquidware](https://github.com/nickprignano/avd-liquidware/tree/main/docs/knowledge), the Liquidware Claude project
+- Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project: [Liquidware](https://github.com/nickprignano/liquidware-ninja/tree/main/docs/knowledge), the Liquidware Claude project
 <!-- END GENERATED: lanes -->
 
 ## Before you build something

@@ -70,18 +70,23 @@ def expert_items(max_age_days: int, today: date, digests: list[dict] | None) -> 
     if digests is None:
         return out
     since = date.fromordinal(today.toordinal() - max_age_days)
-    counts = digest_yield(digests, since)
     sources = tomllib.loads(kblib.SOURCES.read_text(encoding="utf-8")).get("source", [])
     for e in experts:
         if e["status"] != "tracked":
             continue
+        # Judge yield only over digests opened since the expert was scored: on a new KB, or for an
+        # expert added last week, no digest has had a chance to list them yet.
+        start = max(since, date.fromisoformat(e["reviewed"]))
+        if not any(date.fromisoformat(d["createdAt"][:10]) >= start for d in digests):
+            continue
+        counts = digest_yield(digests, start)
         names = [s["name"] for s in sources if s.get("expert") == e["id"]]
         ticked = sum(counts.get(n, [0, 0])[0] for n in names)
         listed = sum(counts.get(n, [0, 0])[1] for n in names)
         if listed == 0:
-            out["Expert yield"].append(f"{e['name']}: nothing in the digests since {since}; check the feed still works")
+            out["Expert yield"].append(f"{e['name']}: nothing in the digests since {start}; check the feed still works")
         elif ticked == 0:
-            out["Expert yield"].append(f"{e['name']}: {listed} item(s) since {since}, none ticked; lower relevance or add keywords")
+            out["Expert yield"].append(f"{e['name']}: {listed} item(s) since {start}, none ticked; lower relevance or add keywords")
     return out
 
 

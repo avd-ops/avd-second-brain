@@ -35,4 +35,4 @@ Chosen option: "The landing zone owns recovery, avd-swarm runs it, the brain jud
 
 ## More Information
 
-Pair: [avd-swarm decision 0006](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0006-recovery-tests-and-failover.md) and its [recovery spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/recovery.md). Builds on avd-landing-zone's recovery spec (draft PR #75), this repo's KB facts on backup and recovery (draft PR #39) and the `recovery` use case for C17 (draft PR #40). Revisit when the first real recovery test has run.
+**Pair:** [avd-swarm decision 0006](https://github.com/avd-ops/avd-swarm/blob/main/docs/decisions/0006-recovery-tests-and-failover.md) and its [recovery spec](https://github.com/avd-ops/avd-swarm/blob/main/docs/recovery.md). Builds on avd-landing-zone's recovery spec (draft PR #75), this repo's KB facts on backup and recovery (draft PR #39) and the `recovery` use case for C17 (draft PR #40). Revisit when the first real recovery test has run.

@@ -13,6 +13,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build  # noqa: E402
+import digest  # noqa: E402
 import feedback  # noqa: E402
 import freshness  # noqa: E402
 import kblib  # noqa: E402
@@ -319,6 +320,133 @@ class RateLimitTests(unittest.TestCase):
 
         with mock.patch.object(sources, "http_get", side_effect=fake), mock.patch.object(sources.time, "sleep"):
             self.assertEqual(sources.github("/search/code", {"q": "x"}), {"items": []})
+
+
+DIGEST_BODY = """New since 2026-10-18: **3** item(s) from 2 source(s). Tick what's worth adding to the KB, and note which page.
+
+### Blog A → `docs/knowledge/fslogix/README.md`
+- [x] [One [preview] post](https://example.com/one) · 2026-10-20
+- [ ] [Two](https://example.com/two) · 2026-10-21
+
+### Blog B
+- [X] [Three](https://example.com/three) · 2026-10-22 → `docs/knowledge/images/README.md`
+"""
+
+
+class DigestTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        for page in ("fslogix/README.md", "images/README.md"):
+            (self.tmp / page).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(kblib.KB_DIR / page, self.tmp / page)
+        self.patch = mock.patch.object(digest, "KB_DIR", self.tmp)
+        self.patch.start()
+
+    def tearDown(self):
+        self.patch.stop()
+        shutil.rmtree(self.tmp)
+
+    def test_superseded_only_older_and_unticked(self):
+        issues = [{"number": 15, "body": "- [ ] a"}, {"number": 20, "body": "- [x] a"},
+                  {"number": 30, "body": "- [ ] new"}, {"number": 31, "body": ""}]
+        self.assertEqual(digest.superseded(issues, 30), [15])
+
+    def test_ticked_items_and_page_override(self):
+        items = digest.ticked_items(DIGEST_BODY)
+        self.assertEqual([(i["title"], i["page"]) for i in items],
+                         [("One [preview] post", "fslogix/README.md"), ("Three", "images/README.md")])
+
+    def test_accept_adds_once_through_feedback(self):
+        issue = {"number": 42, "body": DIGEST_BODY, "labels": [{"name": "kb-digest"}]}
+        title, body = feedback.handle(issue, "2026-10-28")
+        self.assertIn("2 item(s) from #42", title)
+        page = (self.tmp / "fslogix/README.md").read_text(encoding="utf-8")
+        self.assertIn("- [One (preview) post](https://example.com/one) (Blog A, 2026-10-20; digest #42).", page)
+        self.assertNotIn("example.com/two", page)
+        feedback.handle(issue, "2026-10-28")  # a re-run adds nothing twice
+        self.assertEqual((self.tmp / "fslogix/README.md").read_text(encoding="utf-8").count("example.com/one"), 1)
+
+    def test_accept_rejects_nothing_ticked_or_no_page(self):
+        with self.assertRaisesRegex(feedback.FeedbackError, "nothing is ticked"):
+            feedback.handle({"number": 1, "body": "### A\n- [ ] [x](https://e/x)", "labels": ["kb-digest"]}, "2026-10-28")
+        with self.assertRaisesRegex(feedback.FeedbackError, "no page"):
+            feedback.handle({"number": 1, "body": "### A\n- [x] [x](https://e/x)", "labels": ["kb-digest"]}, "2026-10-28")
+        with self.assertRaisesRegex(feedback.FeedbackError, "doesn't exist"):
+            feedback.handle({"number": 1, "body": "### A → `nope.md`\n- [x] [x](https://e/x)", "labels": ["kb-digest"]},
+                            "2026-10-28")
+
+
+class ExpertYieldWindowTests(unittest.TestCase):
+    """No yield finding before any digest exists, or before one has been opened since the expert was scored."""
+
+    def _yield(self, digests, today):
+        experts = {"experts": [{"id": "e1", "name": "E1", "status": "tracked", "reviewed": "2026-10-20"}]}
+        with mock.patch.object(kblib, "load_yaml", return_value=experts), \
+                mock.patch.object(freshness.tomllib, "loads", return_value={"source": [{"name": "Blog A", "expert": "e1"}]}):
+            return freshness.expert_items(90, today, digests)["Expert yield"]
+
+    def test_window(self):
+        self.assertEqual(self._yield([], date(2026, 10, 28)), [])
+        old = [{"createdAt": "2026-10-19T13:00:00Z", "body": "### Blog B\n- [ ] [b](https://b)"}]
+        self.assertEqual(self._yield(old, date(2026, 10, 28)), [])
+        new = old + [{"createdAt": "2026-10-26T13:00:00Z", "body": "### Blog B\n- [ ] [b](https://b)"}]
+        self.assertEqual(len(self._yield(new, date(2026, 10, 28))), 1)
+
+
+class ServerErrorRetryTests(unittest.TestCase):
+    """Feeds get one retry on a 5xx; a 4xx fails at once."""
+
+    def _err(self, code):
+        import urllib.error
+        return urllib.error.HTTPError("https://example.com/feed", code, "x", None, None)
+
+    def _run(self, outcomes):
+        import sources
+        calls = list(outcomes)
+
+        class Resp:
+            def __init__(self, data): self.data = data
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+            def read(self): return self.data
+
+        def fake(req, timeout):
+            item = calls.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return Resp(item)
+
+        with mock.patch.object(sources.urllib.request, "urlopen", side_effect=fake), \
+                mock.patch.object(sources.time, "sleep") as sleep:
+            try:
+                return sources.http_get("https://example.com/feed"), sleep.call_count
+            finally:
+                self.left = len(calls)
+
+    def test_retries_one_5xx(self):
+        self.assertEqual(self._run([self._err(500), b"ok"]), (b"ok", 1))
+
+    def test_gives_up_after_one_retry(self):
+        import urllib.error
+        with self.assertRaises(urllib.error.HTTPError):
+            self._run([self._err(502), self._err(503), b"never"])
+        self.assertEqual(self.left, 1)
+
+    def test_commit_noise_is_dropped(self):
+        import sources
+        from datetime import datetime, timezone
+        commit = lambda msg: {"html_url": "https://e/" + msg[:5], "commit": {
+            "message": msg, "committer": {"date": "2026-10-20T00:00:00Z"}}}
+        with mock.patch.object(sources, "github", return_value=[
+                commit("Merge pull request #1 from x"), commit("Bump pyyaml"), commit("Fix the thing")]):
+            items = sources.github_commits({"repo": "o/r"}, datetime(2026, 10, 1, tzinfo=timezone.utc))
+        self.assertEqual([i.title for i in items], ["Fix the thing"])
+
+    def test_no_retry_on_4xx(self):
+        import urllib.error
+        with self.assertRaises(urllib.error.HTTPError):
+            self._run([self._err(404), b"never"])
+        self.assertEqual(self.left, 1)
 
 
 if __name__ == "__main__":

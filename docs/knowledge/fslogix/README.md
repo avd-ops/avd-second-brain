@@ -3,7 +3,7 @@ title: "FSLogix profiles"
 summary: "FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks"
 topic: fslogix
 status: verified
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-28
 ---
 
 # FSLogix profiles
@@ -30,3 +30,4 @@ Checked against Microsoft Learn on 2026-10-20 ([Azure Files backup support matri
 - Azure Backup for Azure Files and storage account keys: two Microsoft pages differ. *Back up Azure Files* asks for key access **or** public network access disabled; the support matrix asks for key access on the vaulted tier. A backup refused for lack of keys fails with `UserErrorStorageKeyBasedAuthenticationNotPermitted`. The landing zone keeps keys off (its share is private-endpoint only) for the snapshot tier and turns them on only with `profileBackupTier = 'Vaulted'`; SMB stays Kerberos-only, so a key can't mount the share. The snapshot tier with keys off is *unverified* until a real run's backup status says so; the post-deployment preflight reports it as `profile-backup` ([recovery spec U1, section 6.1](https://github.com/avd-ops/avd-landing-zone/blob/master/build/specs/recovery-spec.md)).
 - With Cloud Cache across two regions, list the local share first in each region's `CCDLocations`, and never let a user hold sessions in both pools: the profile lock fails the second sign-in.
 - Microsoft's own advice is to keep business data out of the profile (OneDrive, SharePoint); after a failover, a profile can come back damaged.
+- A second copy of a profile share in any region (not only the paired one) can come from Azure Storage Mover's Azure Files-to-Azure Files copy, in preview since October 2026: sign up per subscription, portal only (no PowerShell or CLI yet), SSD provisioned v2 shares on both sides in the same Entra tenant, the whole share only, a share snapshot on the source for each run, and the Storage Mover resource in one of six regions. It promises no RPO: the recovery point is the end of the last successful run, and the target must stay read-only between runs because nothing resolves conflicts. Checked on Learn 2026-10-28 ([Azure Files-to-Azure Files copy](https://learn.microsoft.com/azure/storage-mover/azure-files-to-azure-files-copy)); from digest #15.
