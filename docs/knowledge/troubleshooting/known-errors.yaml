@@ -406,3 +406,11 @@ errors:
   applies_to: avd-ops design system ds-v2.7.0 (avd-ops-portal.css, avd-ops-shell.css)
   status: verified
   added: '2026-10-28'
+- id: playwright-details-panel-and-step-aria-label-mismatch
+  symptom: 'Portal UI tests pass in JSDOM (`portal-browser.test.mjs`) but fail or time out in real Chromium (`portal.browser.test.mjs`) when clicking controls inside a `<details class="panel">` or asserting the active step button `aria-label`'
+  cause: 'JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` (with `, done` appended once the step is done) rather than the short `LIST[s.id]` rail label'
+  fix: 'Switch to the step slide that owns the panel (`size` for `#control-planes-panel`), click `#control-planes-panel > summary` before clicking buttons inside `<details>`, and match the full step title in `aria-label`'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/123
+  applies_to: Playwright 1.56+, Chromium, avd-landing-zone deployment portal
+  status: verified
+  added: '2026-10-27'
