@@ -348,6 +348,7 @@ class DigestTests(unittest.TestCase):
 
     def test_superseded_only_older_and_unticked(self):
         issues = [{"number": 15, "body": "- [ ] a"}, {"number": 20, "body": "- [x] a"},
+                  {"number": 22, "body": "- [ ] a", "comments": [{"body": "take the first one"}]},
                   {"number": 30, "body": "- [ ] new"}, {"number": 31, "body": ""}]
         self.assertEqual(digest.superseded(issues, 30), [15])
 
@@ -363,15 +364,25 @@ class DigestTests(unittest.TestCase):
         page = (self.tmp / "fslogix/README.md").read_text(encoding="utf-8")
         self.assertIn("- [One (preview) post](https://example.com/one) (Blog A, 2026-10-20; digest #42).", page)
         self.assertNotIn("example.com/two", page)
-        feedback.handle(issue, "2026-10-28")  # a re-run adds nothing twice
+        with self.assertRaisesRegex(feedback.FeedbackError, "already on its page"):
+            feedback.handle(issue, "2026-10-28")  # a re-run adds nothing twice, and says so
         self.assertEqual((self.tmp / "fslogix/README.md").read_text(encoding="utf-8").count("example.com/one"), 1)
+
+    def test_accept_refuses_other_files_and_authors(self):
+        for page in ("../../scripts/kb/build.py", "troubleshooting/known-errors.yaml", "decisions/0001-x.md"):
+            with self.assertRaisesRegex(feedback.FeedbackError, "isn't a topic page"):
+                feedback.handle({"number": 1, "body": f"### A → `{page}`\n- [x] [x](https://e/x)",
+                                 "labels": ["kb-digest"]}, "2026-10-28")
+        with self.assertRaisesRegex(feedback.FeedbackError, "opened by someone"):
+            feedback.handle({"number": 1, "body": DIGEST_BODY, "labels": ["kb-digest"],
+                             "user": {"login": "someone"}}, "2026-10-28")
 
     def test_accept_rejects_nothing_ticked_or_no_page(self):
         with self.assertRaisesRegex(feedback.FeedbackError, "nothing is ticked"):
             feedback.handle({"number": 1, "body": "### A\n- [ ] [x](https://e/x)", "labels": ["kb-digest"]}, "2026-10-28")
         with self.assertRaisesRegex(feedback.FeedbackError, "no page"):
             feedback.handle({"number": 1, "body": "### A\n- [x] [x](https://e/x)", "labels": ["kb-digest"]}, "2026-10-28")
-        with self.assertRaisesRegex(feedback.FeedbackError, "doesn't exist"):
+        with self.assertRaisesRegex(feedback.FeedbackError, "isn't a topic page"):
             feedback.handle({"number": 1, "body": "### A → `nope.md`\n- [x] [x](https://e/x)", "labels": ["kb-digest"]},
                             "2026-10-28")
 
@@ -432,6 +443,14 @@ class ServerErrorRetryTests(unittest.TestCase):
             self._run([self._err(502), self._err(503), b"never"])
         self.assertEqual(self.left, 1)
 
+    def test_no_retry_on_4xx(self):
+        import urllib.error
+        with self.assertRaises(urllib.error.HTTPError):
+            self._run([self._err(404), b"never"])
+        self.assertEqual(self.left, 1)
+
+
+class CommitNoiseTests(unittest.TestCase):
     def test_commit_noise_is_dropped(self):
         import sources
         from datetime import datetime, timezone
@@ -441,12 +460,6 @@ class ServerErrorRetryTests(unittest.TestCase):
                 commit("Merge pull request #1 from x"), commit("Bump pyyaml"), commit("Fix the thing")]):
             items = sources.github_commits({"repo": "o/r"}, datetime(2026, 10, 1, tzinfo=timezone.utc))
         self.assertEqual([i.title for i in items], ["Fix the thing"])
-
-    def test_no_retry_on_4xx(self):
-        import urllib.error
-        with self.assertRaises(urllib.error.HTTPError):
-            self._run([self._err(404), b"never"])
-        self.assertEqual(self.left, 1)
 
 
 if __name__ == "__main__":

@@ -42,7 +42,7 @@ digest", marked *unverified*, and opens a pull request that closes the digest. B
 each link into what matters (facts, versions, fixes; not a link dump) with a primary source, and
 drop its marker. Or write it up by hand in your own PR with `Closes #<digest>`.
 
-A new digest closes the older open ones nobody ticked anything in, with a link to the new one, so
+A new digest closes the older open ones nobody ticked anything in or commented on, with a link to the new one, so
 unworked digests don't pile up. A digest with ticks stays open until it's accepted or closed by hand.
 Commit sources leave out merge commits and dependency bumps. A feed or API that answers 5xx gets
 one retry after a short wait before it counts as failed for that run.

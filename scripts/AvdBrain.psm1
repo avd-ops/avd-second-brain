@@ -1596,9 +1596,10 @@ function Test-DocParameter {
       $s = $known[$calls[$c].Groups[1].Value]
       if (-not $s) { continue }
       # A script passed as another command's argument (Invoke-ScriptAnalyzer -Path ./x.ps1 -Settings ...)
-      # isn't being run, so the parameters after it aren't its own; pwsh -File ./x.ps1 still runs it.
+      # isn't being run, so the parameters after it aren't its own. Only path parameters count:
+      # pwsh -File, -Command or -NoProfile before a script still runs it.
       $arg = [regex]::Match($Segment.Substring(0, $calls[$c].Index), '(?<![\w-])-([A-Za-z]\w*)[\s:]+[''"]?[\w./\\$-]*$')
-      if ($arg.Success -and $arg.Groups[1].Value -notin 'File', 'f') { continue }
+      if ($arg.Success -and $arg.Groups[1].Value -in 'Path', 'LiteralPath', 'FilePath', 'ScriptPath') { continue }
       $end = if ($c + 1 -lt $calls.Count) { $calls[$c + 1].Index } else { $Segment.Length }
       $rest = $Segment.Substring($calls[$c].Index + $calls[$c].Length, $end - $calls[$c].Index - $calls[$c].Length)
       $rest = ($rest -split '[|;]|\s#')[0]

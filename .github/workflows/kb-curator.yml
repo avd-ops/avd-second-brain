@@ -3,7 +3,7 @@ name: kb-curator
 
 # Weekly digest of new releases, docs and community repos from docs/knowledge/sources.toml,
 # opened as an issue labelled kb-digest. A new digest closes older open ones nobody ticked
-# anything in; a digest with ticked items stays open until a maintainer labels it kb-accepted
+# anything in and nobody commented on; a digest with ticked items stays open until a maintainer labels it kb-accepted
 # (kb-feedback turns it into a PR). On pull requests that touch the curator it runs as a dry run
 # and writes the digest to the job summary instead.
 
@@ -49,7 +49,7 @@ jobs:
           gh label create kb-digest --color 0e8a16 --description "Knowledge base curator digest" --force
           url=$(gh issue create --label kb-digest --title "KB digest: $(date -u +%F)" --body-file digest.md)
           new="${url##*/}"
-          gh issue list --label kb-digest --state open --limit 100 --json number,body > "$RUNNER_TEMP/open.json"
+          gh issue list --label kb-digest --state open --limit 100 --json number,body,comments > "$RUNNER_TEMP/open.json"
           for n in $(python3 scripts/kb/digest.py supersede --issues "$RUNNER_TEMP/open.json" --new "$new"); do
-            gh issue close "$n" --reason "not planned" --comment "Superseded by #$new; nothing here was ticked."
+            gh issue close "$n" --reason "not planned" --comment "Superseded by #$new; nothing here was ticked or commented on."
           done
