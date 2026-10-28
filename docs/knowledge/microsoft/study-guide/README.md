@@ -43,10 +43,12 @@ you book.
 | Certification | [Azure Virtual Desktop Specialty](https://learn.microsoft.com/credentials/certifications/azure-virtual-desktop-specialty/) | [Azure Administrator Associate](https://learn.microsoft.com/credentials/certifications/azure-administrator/) |
 | Skills outline | [AZ-140 study guide](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-140), updated 2026-07-20 | [AZ-104 study guide](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-104), updated 2026-04-17 |
 | Passing score | 700 on a 1 to 1000 scale | 700 on a 1 to 1000 scale |
-| Time | 100 minutes (120 if the exam has labs) | 100 minutes (120 if the exam has labs) |
+| Exam time | 100 minutes (120 if the exam has labs) | 100 minutes (120 if the exam has labs) |
+| Seat time | Plan 20 minutes more, for the agreement and comments | Same |
 | Renewal | Free online assessment on Learn, every 12 months | Same |
 
-The price varies by country; it shows at checkout.
+Times come from Microsoft's [exam duration](https://learn.microsoft.com/credentials/support/exam-duration-exam-experience)
+page, which also explains breaks. The price varies by country; it shows at checkout.
 
 ## How to use it
 
