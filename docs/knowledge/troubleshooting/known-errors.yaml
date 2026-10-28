@@ -414,6 +414,22 @@ errors:
   applies_to: Playwright 1.56+, Chromium, avd-landing-zone deployment portal
   status: verified
   added: '2026-10-27'
+- id: powershell-typographic-quote-ends-single-quoted-string
+  symptom: 'A portal-built PowerShell command breaks or runs extra code when a pasted value holds a curly quote (U+2018 to U+201B), although every ASCII `''` in the value was doubled'
+  cause: 'PowerShell treats the typographic single quotes U+2018, U+2019, U+201A and U+201B as single quotes, so any of them ends a `''...''` string'
+  fix: 'Double those characters too when quoting: `value.replace(/[''‘’‚‛]/g, ''$&$&'')`, and add a curly-quote case to the quoting tests (shared portal engine `blocks.psQuote`)'
+  source: https://github.com/avd-ops/avd-landing-zone/pull/111
+  applies_to: PowerShell 5.1 and 7, avd-ops portal engine pe-v1.0.0, avd-landing-zone and avd-current-state portals
+  status: verified
+  added: '2026-10-28'
+- id: cloud-shell-bash-block-in-powershell
+  symptom: 'A command block pasted into Azure Cloud Shell fails at once with `ParserError` (for example on `$(...)`, `&&` or a heredoc)'
+  cause: 'Cloud Shell opens in whichever shell was used last, bash or PowerShell, and a bash block does not parse in PowerShell'
+  fix: 'Label every Cloud Shell block with its shell, and for owner steps such as `gh release create <tag> --target <sha>` give a PowerShell one-liner that needs no clone'
+  source: https://github.com/avd-ops/avd-ops/pull/58
+  applies_to: Azure Cloud Shell, GitHub CLI (gh)
+  status: verified
+  added: '2026-10-28'
 - id: kb-digest-issues-pile-up
   symptom: Weekly `kb-digest` issues stay open for weeks and pile up, and a ticked digest never becomes a pull request
   cause: kb-curator only opened issues; nothing closed an unworked digest, and kb-feedback acted on kb-accepted for the issue forms but not for digests
