@@ -478,3 +478,35 @@ errors:
   applies_to: scripts/AvdBrain.psm1 (Test-DocParameter)
   status: verified
   added: '2026-10-28'
+- id: kb-freshness-marker-in-prose
+  symptom: The freshness check counts "1 claim(s) marked unverified" on a page whose claims are all checked
+  cause: The inline-marker pattern (`\*unverified`, `not yet reviewed`) also matches prose that explains the convention, such as "mark it as *unverified*"
+  fix: Put the marker in inline code when a page talks about it (`*unverified*`); the check strips code spans before counting
+  source: https://github.com/avd-ops/avd-ops/pull/83
+  applies_to: scripts/kb/freshness.py (family format 1)
+  status: verified
+  added: '2026-10-29'
+- id: kb-family-row-points-at-moved-kb
+  symptom: The freshness check's Family alignment says a sibling "couldn't read its family.yaml (HTTPError)", and that sibling's sources list nothing
+  cause: The sibling's knowledge base moved to another repo, but a KB's `family.yaml` row and `sources.toml` still named the old one
+  fix: Point the row's `repo` and the sibling's sources at the repo that now holds its KB, copying focus and owns from the sibling's own row and leaving out anything private; check every member KB when a sibling moves
+  source: https://github.com/avd-ops/avd-ops/pull/83
+  applies_to: docs/knowledge/family.yaml (family format 1)
+  status: verified
+  added: '2026-10-29'
+- id: kb-digest-pick-hidden-on-verified-page
+  symptom: Digest picks marked *Unverified* sit on a page for months and no freshness issue lists them
+  cause: '`digest.accept` adds picks with an inline marker, but freshness counts inline markers only on pages whose status is unverified or partial, and most target pages are verified'
+  fix: A pick turns a verified page back to partial (avd-ops #83); the same change applies to this repo's `scripts/kb/digest.py`
+  source: https://github.com/avd-ops/avd-ops/pull/83
+  applies_to: scripts/kb/digest.py (family format 1)
+  status: verified
+  added: '2026-10-29'
+- id: kb-digest-ticked-line-dropped
+  symptom: A kb-accepted digest PR says "Adds 2 of the 2 item(s) ticked" when three were ticked, or says nothing is ticked when one was
+  cause: Any `- [x]` line counts as a tick, but the item parser reads only `[title](https://...)` lines, so an http link or a URL with a parenthesis is dropped without a word
+  fix: Refuse the digest when a ticked line can't be read, naming how many (avd-ops #83); the same change applies to this repo's `scripts/kb/digest.py`
+  source: https://github.com/avd-ops/avd-ops/pull/83
+  applies_to: scripts/kb/digest.py (family format 1)
+  status: verified
+  added: '2026-10-29'
