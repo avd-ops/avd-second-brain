@@ -478,3 +478,19 @@ errors:
   applies_to: scripts/AvdBrain.psm1 (Test-DocParameter)
   status: verified
   added: '2026-10-28'
+- id: drift-sample-fails-daily-before-reader-setup
+  symptom: A copy of avd-current-state's `samples/drift.yml` fails every day and keeps a "Drift - couldn't check" issue open in a repository where the reader identity isn't set up yet
+  cause: Sign-in ran unconditionally, so empty `AVD_READER_CLIENT_ID`, `AVD_TENANT_ID` or `AVD_SUBSCRIPTION_ID` variables failed `azure/login`, and the issue step reported each failure as a new "couldn't check"
+  fix: A pre-check step sets `DRIFT_CONFIGURED`; when it is false the checkouts, sign-in and check are skipped, setup steps go to `$GITHUB_STEP_SUMMARY`, and only "couldn't check" issues are closed (never a drift finding). Test for `= "false"` explicitly, so a run that stopped before the pre-check doesn't close real findings
+  source: assessment/README.md
+  applies_to: avd-current-state samples/drift.yml
+  status: verified
+  added: '2026-10-29'
+- id: ast-readonly-guard-reads-extent-text
+  symptom: A PowerShell AST read-only guard passes a script that calls `Invoke-RestMethod -method put`, `-Method ([WebRequestMethod]::Delete)`, splatted parameters, or a POST whose payload names the allowed path
+  cause: The guard matched a case-sensitive regex over the command's whole extent text, so it skipped unreadable methods, took a nested command's `-Method`, and matched the allowlist anywhere in the text
+  fix: Read `-Method`, `-Path` and `-Uri` from the command's own `CommandElements`, report any method that isn't a string constant (or splatting), match the POST allowlist against the path only, and prove the guard on a planted script
+  source: assessment/README.md
+  applies_to: avd-current-state tests/ReadOnlyGuard.Tests.ps1
+  status: verified
+  added: '2026-10-29'
