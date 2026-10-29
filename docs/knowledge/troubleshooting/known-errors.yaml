@@ -478,3 +478,11 @@ errors:
   applies_to: scripts/AvdBrain.psm1 (Test-DocParameter)
   status: verified
   added: '2026-10-28'
+- id: runbook-issue-never-closes-after-removal
+  symptom: A `Runbook <id> is not clear` issue stays open after the runbook was removed or renamed
+  cause: The check runner closes a runbook's issue only when that runbook runs clear, and a removed runbook never runs again
+  fix: After each run, close open `runbook` issues whose title names a runbook that isn't in the repo (`avd_runner orphans`)
+  source: agents/README.md
+  applies_to: avd-swarm templates/workflows/runbooks.yml
+  status: verified
+  added: '2026-10-29'
