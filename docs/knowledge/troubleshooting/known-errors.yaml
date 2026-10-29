@@ -478,3 +478,11 @@ errors:
   applies_to: scripts/AvdBrain.psm1 (Test-DocParameter)
   status: verified
   added: '2026-10-28'
+- id: scheduled-workflow-unconfigured-secrets
+  symptom: 'A scheduled workflow fails at `azure/login` with `Not all values are present. Ensure ''client-id'' and ''tenant-id'' are supplied.` and opens an issue that no later run closes'
+  cause: The workflow ran before its environment's secrets were set, and empty secrets expand to empty strings; its issue step only ever created issues, so nothing closed one when the cause went away and every scheduled run could open another
+  fix: Check the secrets in a first step and skip the dependent steps when any is empty, with the setup steps in `$GITHUB_STEP_SUMMARY`, and close the open failure issue; fail a run started by hand instead, so it can't look like a build; keep one failure issue open (later failures comment) and close it on the next success
+  source: https://github.com/avd-ops/avd-landing-zone/pull/127
+  applies_to: avd-landing-zone .github/workflows/image-build.yml
+  status: verified
+  added: '2026-10-29'
