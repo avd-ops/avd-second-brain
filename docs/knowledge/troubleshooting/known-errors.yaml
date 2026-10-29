@@ -478,3 +478,35 @@ errors:
   applies_to: scripts/AvdBrain.psm1 (Test-DocParameter)
   status: verified
   added: '2026-10-28'
+- id: assess-pin-check-learn-429
+  symptom: The avd-assess "Pin drift report" issue lists dozens of Learn pages under "Could not check" with `HTTP Error 429`, so real drift on those pages goes unseen
+  cause: scripts/check_pins.py fetched every Learn page with 8 parallel workers and no retry, and Learn rate-limits a burst like that
+  fix: Four workers, and one retry after the `Retry-After` wait (capped at 30 seconds, 5 seconds when absent) on a 429, a 5xx, a timeout or a reset; a 404 still fails at once
+  source: https://github.com/avd-ops/avd-assess/blob/main/scripts/check_pins.py
+  applies_to: avd-assess scripts/check_pins.py
+  status: verified
+  added: '2026-10-29'
+- id: assess-pin-drift-issue-never-closes
+  symptom: The avd-assess "Pin drift report" issue stays open after every pin is moved, and the run says `RESULT OK` while the issue still lists landing zone parameters and checklist items
+  cause: The pins workflow only opened or refreshed the issue, and the script's result counted Learn and GitHub drift but not landing zone or checklist drift
+  fix: The script writes `items` (all four kinds of drift) and `unchecked` (failed fetches) to the step output; the workflow closes the issue when both are 0
+  source: https://github.com/avd-ops/avd-assess/blob/main/.github/workflows/pins.yml
+  applies_to: avd-assess .github/workflows/pins.yml
+  status: verified
+  added: '2026-10-29'
+- id: assess-checklist-items-never-pinned
+  symptom: Every pin drift report says some AVD review checklist items are "not yet pinned" even though the checklist file hasn't changed since its pin
+  cause: Four items were never added as claims when the reference was written, and two others were listed twice, which hid the gap in the claim count; no check refused a duplicate claim ID
+  fix: Pin every item as a claim in our own words; tests/check_method.py refuses a claim ID listed twice in one reference
+  source: https://github.com/avd-ops/avd-assess/blob/main/tests/check_method.py
+  applies_to: avd-assess references/review-checklists-avd.yaml
+  status: verified
+  added: '2026-10-29'
+- id: assess-evidence-issue-no-path-to-pr
+  symptom: A "Baseline evidence" issue in avd-assess sits open after review, waiting for a maintainer to copy the file into a pull request by hand
+  cause: The issue form had no automated path; gap:evidence-intake said a maintainer opens the PR
+  fix: Labeling an evidence issue `accepted` runs the evidence-intake workflow, which parses the form's JSON, runs scripts/check_evidence.py and every PR check, and opens a PR with `Closes #<issue>`, or comments with what to fix
+  source: https://github.com/avd-ops/avd-assess/blob/main/.github/workflows/evidence-intake.yml
+  applies_to: avd-assess .github/workflows/evidence-intake.yml
+  status: verified
+  added: '2026-10-29'
