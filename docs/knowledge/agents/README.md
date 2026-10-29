@@ -3,7 +3,7 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-28
+last_reviewed: 2026-10-29
 sources:
   - https://github.com/robusta-dev/holmesgpt
   - https://github.com/Azure/azure-api-mcp
@@ -128,6 +128,8 @@ The owner said yes to the plan on 2026-10-21; work packages WP0, WP1, WP3 (libra
 - **To confirm in the first sandbox run:** the scaler's identity likely needs Storage Queue Data Reader (queue length) besides Message Processor, and reading an alert by its subscription-scoped ID likely needs Monitoring Reader on the subscription, not on the target resource group. Both are granted that way in avd-swarm's `templates/alert-path/` until the run says otherwise.
 - **azure-identity's async credentials need aiohttp, and nothing warns until start-up.** `azure.identity.aio.ManagedIdentityCredential` builds its default transport on aiohttp, which `azure-identity` doesn't install, so a service that pins only `azure-identity` fails at import with "aiohttp package is not installed" (found offline in avd-swarm's S1a agent API before any run). Pin aiohttp beside it, or use the sync credential ([azure-identity async](https://learn.microsoft.com/python/api/overview/azure/identity-readme)).
 - **A synchronous endpoint behind Container Apps ingress needs one deadline under 240 seconds.** Ingress ends a request at 240 s, so avd-swarm's `POST /runbook` holds every token exchange, read and model call to one 200 s deadline and cancels what passes it: the caller always gets the finding the API kept, never a 504 while the work goes on. Long work belongs in a job the caller polls, as the S1a `/ask` does ([ingress](https://learn.microsoft.com/azure/container-apps/ingress-overview)).
+- **An issue-on-change loop also needs a close for checks that no longer exist.** avd-swarm's check runner opens one issue per runbook that stops being clear and closes it when the runbook runs clear again, but a runbook that is removed or renamed never runs again, so its issue stayed open for good. The runner now closes open issues whose title names a runbook that isn't in the repo, matching only the titles it writes ([avd-swarm #50](https://github.com/avd-ops/avd-swarm/pull/50)).
+- **Retry a runbook call only where the work can't have started.** One retry after a 502 or 503 (a proxy or a cold start) keeps a blip from opening an issue the next run closes; a 500 or 504 is not retried, because the runbook and its model spend may already have run.
 - **A read only the agent uses doesn't decide a runbook's outcome.** A runbook's outcome rests on its facts: a failed read a fact needs is `could-not-run`, but a failed read kept only as context for the investigation (avd-swarm's `hosts` tool read) is listed in `failedReads` and leaves the outcome alone, so a draft tool parameter can't hide a real finding.
 - **YAML 1.1 reads a bare `off` as `false`.** PyYAML's `safe_load` turns `default: off` into a boolean, so a check for the string `off` alone refuses a correct manifest; accept both and nothing else.
 
