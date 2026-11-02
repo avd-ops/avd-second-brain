@@ -3,8 +3,10 @@ title: "AI agents in the AVD repos"
 summary: "How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities"
 topic: agents
 status: partial
-last_reviewed: 2026-10-28
+last_reviewed: 2026-11-02
 sources:
+  - https://learn.microsoft.com/en-us/graph/api/resources/cloudpc?view=graph-rest-1.0
+  - https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/filters
   - https://github.com/robusta-dev/holmesgpt
   - https://github.com/Azure/azure-api-mcp
   - https://github.com/maximhq/bifrost
@@ -172,3 +174,11 @@ Mapped on 2026-10-20 from the common goal, split, fan-out workers, fresh-context
 - **Verify before the merge, then check the merge.** A merge done by a model can reintroduce what the check removed, so after the merge code checks that every factual sentence cites a supported claim.
 - **Fan-out multiplies tokens.** avd-swarm caps it at 3 specialists and one round per question, each with its own share of the metered per-question reservation, and splits workers by domain rather than by angle; the "check" and "find gaps" angles are built into the claim check and each specialist's list of what it couldn't answer.
 - **A verifier never approves a change.** Plans keep the deterministic gate, live re-reads and a person's approval; the claim check judges answers only.
+
+## Desktop DevOps specialist agents in avd-swarm (2026-11-02)
+
+Specified in [decision 0027](../decisions/0027-desktop-devops-across-avd-win365-and-intune.md) and [avd-ops 0012](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0012-desktop-devops-for-avd-win365-and-intune.md):
+
+- **`hosts-and-cloudpcs` (unified from `hosts`).** Investigates AVD session-host health (`WVDAgentHealthStatus`, `WVDConnections`, drain mode, image version) and Windows 365 Cloud PC status (`cloudPC`, `provisioningPolicies`, `userSettings`, `onPremisesConnections`, restore points) through narrow read-only tools. Proposals to reprovision, resize, restore, or deprovision a Cloud PC or replace a session host must populate `dataLossGuard` (`restorePointVerified`, `restorePointAgeHours`, `discardLastCopyApproved`) in C9.
+- **`intune-policy`.** Compares live Intune Settings Catalog, compliance, and security baseline posture against the declarative JSON manifests in `avd-intune` (`c11.intune.*`, `c11.intune.assignmentFiltersCount`, `c11.intune.unfilteredAllDevicesPolicies`). When drift or an unfiltered "All Devices" assignment is detected, its remediation path is a Git pull request against `avd-intune` (`desktopDevOpsAction: policy-drift-pr`), never an unreviewed Graph write.
+- **`cost-and-licensing`.** Compares AVD Azure consumption (compute, storage, autoscale savings) with Windows 365 Enterprise and Frontline SKU utilization (`c11.entra.skuWin365Available`, `c11.intune.win365.cloudPcCount`), recommending deprovisioning idle Cloud PCs or shifting low-hour dedicated users (`< 120 hours/month`) to AVD Personal with Start VM on Connect.

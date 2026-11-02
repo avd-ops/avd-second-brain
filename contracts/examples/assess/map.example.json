@@ -125,5 +125,26 @@
       "since": "2026-10-20",
       "why": "Our run measured latency from the user and confirmed the region choice depends on it (obs:region-latency-from-the-user)."
     }
+  ],
+  "benchmarks": [
+    {
+      "id": "multisession-density",
+      "version": "1.0.0",
+      "tier": "synthetic",
+      "title": "Multi-session persona density and experience gate benchmark",
+      "summary": "Ramps scripted multi-user processes calibrated to workload classes while sampling CPU, processor queue length, memory per session and User Input Delay.",
+      "harness": "PowerShell multi-session persona worker loops plus PerfMon counters",
+      "metrics": [
+        { "metric": "maxPassingSessionsPerVcpu", "unit": "users-per-vcpu" },
+        { "metric": "inputDelayMs", "unit": "ms" }
+      ],
+      "claims": [
+        "ref:session-host-sizing#multisession-users-per-vcpu",
+        "gap:workload-benchmark"
+      ],
+      "observations": [
+        "obs:users-per-vcpu-adopted"
+      ]
+    }
   ]
 }
