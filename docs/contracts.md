@@ -144,10 +144,17 @@ How the brain asks avd-swarm to run one of its playbooks for one episode. A prop
   "id": "prop-...",
   "createdUtc": "2027-01-12T08:14:00Z",
   "expiresUtc": "2027-01-12T08:44:00Z",
+  "targetSurface": "avd | win365 | intune | entra | m365 | power-platform",
+  "desktopDevOpsAction": "remediation | policy-drift-pr | reprovision | resize | restore | deprovision",
   "playbook": { "id": "restart-avd-agent", "version": 3, "sha256": "..." },
   "episode": { "id": "ep-...", "signature": "wvd-agent-unhealthy:upgrade-failed", "agentClassified": false },
   "targetHints": ["/subscriptions/.../virtualMachines/..."],
   "parameters": { "sessionHostId": { "from": "episode.scope.sessionHost" } },
+  "dataLossGuard": {
+    "restorePointVerified": true,
+    "restorePointAgeHours": 4,
+    "discardLastCopyApproved": false
+  },
   "evidence": [ { "fact": "c11.hostPools.loadBalancer@hp-3fa2c1d0", "at": "2027-01-11T22:00:00Z" },
                 { "ref": "blob://evidence/sha256-...", "kind": "kql" } ],
   "critic": { "verdict": "agree | dissent", "claims": [ { "claim": "...", "citations": ["..."] } ] }
@@ -156,6 +163,7 @@ How the brain asks avd-swarm to run one of its playbooks for one episode. A prop
 
 **Rules.**
 - **Targets are hints.** The brain's in-tenant runtime knows resource IDs from live signals (episodes, §6.2 of the operations spec); its agents reason over pseudonyms (C11, C12). avd-swarm re-resolves every target live and refuses a proposal whose hints don't match what it resolves.
+- **Desktop DevOps surfaces and `dataLossGuard`.** `targetSurface` identifies which Desktop DevOps surface (`avd`, `win365`, `intune`, `entra`, `m365`, or `power-platform`) the playbook touches. For destructive actions (`desktopDevOpsAction` in `reprovision`, `deprovision`, or session-host replacement), `dataLossGuard` records whether a recent restore point or profile backup was verified; avd-swarm's gate refuses execution when `restorePointVerified` is `false` unless an operator explicitly approves `discardLastCopyApproved: true` (decision 0016, "never delete the last copy").
 - **Parameters are bound from the episode,** never by a model, and re-resolved by avd-swarm's gate. A playbook can add preconditions to avd-swarm's catalog action; it can never drop one (avd-swarm spec §5a).
 - **Evidence is cited by fact register ID (C15)** or by evidence hash. avd-swarm's gate refuses evidence older than its freshness limits and IDs the pinned register doesn't have or still marks `proposed`.
 - **The Critic's output travels as claims,** never as the Diagnose agent's reasoning, and the approver sees a dissent beside the plan.
@@ -180,8 +188,10 @@ What avd-swarm tells the brain about what happened, so episodes close with an ou
 | Field | Value |
 |---|---|
 | `planId`, `proposalId` | The plan, and the C9 proposal it came from, if any |
+| `targetSurface` | `avd`, `win365`, `intune`, `entra`, `m365`, or `power-platform` |
 | `targets` | Pseudonyms (`hp-`, `vm-`), so an outcome joins C11 facts and episodes even for an operator-requested plan with no proposal |
 | `action`, `playbook` | Catalog action ID; playbook ID and version, if any |
+| `dataLossGuard` | `{ restorePointVerified, restorePointAgeHours, discardLastCopyApproved }` when the action replaces, reprovisions, or deprovisions a session host or Cloud PC |
 | `outcome` | `verified`, `failed`, `rolled-back`, `rejected`, `expired` |
 | `reasonCategory` | For rejections, from avd-swarm's fixed list |
 | `why` | When the plan carries one (avd-swarm decision 0007, "every plan says why"): its lifecycle `kind` (C18's event kinds: build, configure, expand, contract, fix, recover, retire), its `useCases` (`uc-NN`) and its `decision` (`dec-NNNN`), IDs and fixed words only, so the brain can tie the outcome to C18's lifecycle record |
@@ -203,7 +213,7 @@ collector + validator packages ──C1──► estate vault (private; names an
               vault facts/<estate>/<time>.json ──► brain agents ──C9 evidence──► avd-swarm gate
 ```
 
-**What it holds.** Per subscription: regions, dataset counts, host pools (type, load balancing, max session limit, Start VM on Connect, RDP property names without values, app group types, session hosts by status, agent, SxS and OS version, stale heartbeats, VM sizes, marketplace images or `custom`), VM sizes and power states, storage accounts (kind, SKU, TLS, network default, private endpoint), network counts (custom DNS, NSGs and route tables on subnets, default routes by next hop, private endpoints by group), Key Vault protection, Log Analytics retention, policy assignment counts, and role assignments by built-in role. Per validator run: mode, verdict, counts, the planned region, host count and VM size, and every check as phase, category, check name, status and, when it is in the snapshot, the pseudonym of what it checked.
+**What it holds.** Per subscription: regions, dataset counts, host pools (type, load balancing, max session limit, Start VM on Connect, RDP property names without values, app group types, session hosts by status, agent, SxS and OS version, stale heartbeats, VM sizes, marketplace images or `custom`), VM sizes and power states, storage accounts (kind, SKU, TLS, network default, private endpoint), network counts (custom DNS, NSGs and route tables on subnets, default routes by next hop, private endpoints by group), Key Vault protection, Log Analytics retention, policy assignment counts, and role assignments by built-in role. Across the five tenant planes (`entra`, `intune`, `azure`, `m365`, `powerPlatform`): device and license posture (including `skuWin365Available`), Intune compliance and Settings Catalog coverage, platform assignment filters (`assignmentFiltersCount`, `multiSessionFilterPresent`, `cloudPcFilterPresent`, `unfilteredAllDevicesPolicies`), and Windows 365 Cloud PC posture (`intune.win365.*`: Cloud PC status counts, provisioning policies, SSO, user settings, local-admin posture, restore-point cadence, and ANC health checks). Per validator run: mode, verdict, counts, the planned region, host count and VM size, and every check as phase, category, check name, status and, when it is in the snapshot, the pseudonym of what it checked.
 
 **What it can't hold.** The schema has no field for a name, a resource ID, an object ID, an IP address, a tag, a user, a check's scope or detail, or a recommendation, and every string has a pattern. A custom role counts as `other`; a value that doesn't fit its pattern becomes `other` and is counted in `redactedValues`. A validator check name that contains a collected name becomes `redacted`. The producer scans the result for GUIDs, email addresses, UNC paths and IPv4 addresses and refuses to write it if it finds one; the importer runs the brain's guard over it again and refuses on any finding.
 

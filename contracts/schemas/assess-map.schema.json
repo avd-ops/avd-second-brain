@@ -132,6 +132,26 @@
           "replaces": {"type": "string"}
         }
       }
+    },
+    "benchmarks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "version", "tier", "title", "summary", "harness", "metrics", "claims"],
+        "properties": {
+          "id": {"$ref": "#/$defs/slug"},
+          "deprecated": {"$ref": "#/$defs/deprecated"},
+          "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+          "tier": {"enum": ["synthetic", "observational"]},
+          "title": {"type": "string"},
+          "summary": {"type": "string"},
+          "harness": {"type": "string"},
+          "parameters": {"type": "array", "items": {"type": "object"}},
+          "metrics": {"type": "array", "items": {"type": "object"}},
+          "claims": {"type": "array", "items": {"$ref": "#/$defs/cite"}},
+          "observations": {"type": "array", "items": {"$ref": "#/$defs/cite"}}
+        }
+      }
     }
   }
 }
