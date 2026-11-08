@@ -10,6 +10,33 @@
   "appDelivery": ["image", "app-attach"],
   "appCompatibility": "some-untested",
   "profileSolution": "fslogix",
+  "reportedSymptoms": ["slow-session", "disconnects"],
+  "userNetworks": [
+    {
+      "kind": "office",
+      "sampleBand": "10-25",
+      "allowsClientEndpoints": "yes",
+      "outboundUdpAllowed": "unknown",
+      "proxyInPath": "possible",
+      "tunnelInPath": "unknown",
+      "targetRegion": "eastus2",
+      "targetRegionRttMs": 32,
+      "jitterMs": 6,
+      "candidateRegionsRttMs": { "eastus2": 32, "centralus": 48 },
+      "sentiment": {
+        "sampleBand": "10-25",
+        "ratingMedian": 3.5,
+        "lowRatingShare": 0.25,
+        "symptoms": ["slow-typing", "disconnects"]
+      }
+    }
+  ],
+  "userSentiment": {
+    "sampleBand": "10-25",
+    "ratingMedian": 3.5,
+    "lowRatingShare": 0.25,
+    "symptoms": ["slow-typing", "disconnects"]
+  },
   "m365PlaneScope": "in-scope",
   "powerPlatformPlaneScope": "in-scope",
   "avdScope": "in-scope",
