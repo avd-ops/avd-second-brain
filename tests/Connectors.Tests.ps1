@@ -1,4 +1,4 @@
-﻿#requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.0.0' }
+#requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.0.0' }
 # Offline tests for the connections between the source repos and the brain (docs/architecture.md):
 # avd-current-state packages -> vault -> harvest proposal, shared runbooks -> vault,
 # avd-sizing-evidence/v1 -> calibration observations, and search across connected repos.
@@ -114,6 +114,38 @@ Describe 'avd-current-state -> vault -> knowledge' {
     $h = Get-VaultHarvest -VaultPath $script:vault
     ($h.Candidates | Where-Object Path -eq 'lessons/token.md').SensitiveLines | Should -Be 1
     ($h.Candidates | Where-Object Kind -eq 'runbook').Path | Should -Be 'runbooks/renew-registration-token.md'
+  }
+  It 'ingests intake userSentiment and reportedSymptoms and generalizes them in the harvest' {
+    $pkgDir = Join-Path $TestDrive 'packages-feedback'
+    New-TestPackages $pkgDir
+    Write-TestJson "$pkgDir/avd-current-state-20261001T090000/intake.json" @{
+      schema           = 'avd-intake/v1'
+      estate           = 'est-0a1b2c3d'
+      capturedUtc      = '2026-10-01T09:00:00Z'
+      reportedSymptoms = @('slow-sign-in', 'teams-calls')
+      userSentiment    = @{
+        sampleBand     = '10-25'
+        ratingMedian   = 2.0
+        lowRatingShare = 0.67
+        symptoms       = @{ 'slow-sign-in' = 8; 'audio-video' = 5 }
+      }
+      userNetworks     = @(
+        @{ kind = 'home'; sampleBand = '10-25'; rttMsP50 = 32; rttMsP95 = 78; jitterMsP95 = 14; turnReachable = $true }
+      )
+    }
+    $fbVault = Join-Path $TestDrive 'vault-feedback'
+    & $script:vaultScript -BrainPath $fbVault -Init -KnowledgePath $script:knowledge 6>$null | Out-Null
+    & $script:vaultScript -BrainPath $fbVault -PackagePath $pkgDir -KnowledgePath $script:knowledge 6>$null | Out-Null
+    $envReadme = Get-Content (Join-Path $fbVault 'environments/*/README.md') -Raw
+    $envReadme | Should -Match 'User feedback'
+    $envReadme | Should -Match 'Rating median \*\*2/5\*\*'
+    $envReadme | Should -Match 'Corroborated signal'
+    $h = Get-VaultHarvest -VaultPath $fbVault
+    $h.UserFeedback.EnvironmentsWithFeedback | Should -Be 1
+    $h.UserFeedback.LowSentimentEnvironments | Should -Be 1
+    $h.UserFeedback.BlindSpotEnvironments | Should -Be 0
+    $h.UserFeedback.RecurringSymptoms.Symptom | Should -Contain 'slow-sign-in'
+    $h.UserFeedback.RecurringSymptoms.Symptom | Should -Contain 'teams-calls'
   }
 }
 

@@ -44,6 +44,16 @@ Write-Host 'Validator checks still failing (candidates for a shared runbook):'
 if (-not $h.RecurringChecks.Count) { Write-Host '  none' }
 foreach ($c in $h.RecurringChecks) { Write-Host ("  {0,-5} {1} / {2}  ({3} environments)" -f $c.Worst, $c.Category, $c.Check, $c.Environments) }
 Write-Host ''
+if ($h.UserFeedback -and $h.UserFeedback.EnvironmentsWithFeedback -gt 0) {
+  Write-Host 'User feedback & reported symptoms (generalized):'
+  Write-Host "  environments with feedback $($h.UserFeedback.EnvironmentsWithFeedback) (low sentiment: $($h.UserFeedback.LowSentimentEnvironments), blind spots: $($h.UserFeedback.BlindSpotEnvironments))"
+  if ($h.UserFeedback.RecurringSymptoms.Count) {
+    foreach ($s in $h.UserFeedback.RecurringSymptoms) {
+      Write-Host ("  symptom  {0,-20} ({1} environments)" -f $s.Symptom, $s.Environments)
+    }
+  }
+  Write-Host ''
+}
 Write-Host 'Runbooks (verified) and lessons to consider sharing:'
 if (-not $h.Candidates.Count) { Write-Host '  none' }
 foreach ($c in $h.Candidates) {
