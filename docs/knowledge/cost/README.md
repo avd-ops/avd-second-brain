@@ -3,7 +3,7 @@ title: "Cost and spend"
 summary: "Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence"
 topic: cost
 status: partial
-last_reviewed: 2026-10-28
+last_reviewed: 2026-11-08
 ---
 
 # Cost and spend
@@ -14,6 +14,16 @@ What AVD and its test sandboxes cost and how spend stays capped: the retail pric
 
 - Size in the portal, then validate and price in the preflight ([avd-landing-zone decision 0010](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0010-sizing-and-cost.md)).
 - The Azure Retail Prices API gains lookalike meters with the same SKU. Match the product name as well as the SKU and meter, and print product, SKU, meter and unit when a match fails ([lesson 0025](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0025-retail-price-lookalike-meters.md)).
+
+## Estate FinOps assessment (C11, C19 and C20)
+
+Learned building out the FinOps facts, intake fields, assessment checks (`method.json` v7) and collector extractions across [avd-assess #58](https://github.com/avd-ops/avd-assess/pull/58), [avd-ops #88](https://github.com/avd-ops/avd-ops/pull/88) and [avd-current-state #66](https://github.com/avd-ops/avd-current-state/pull/66) on 2026-11-08:
+
+- **Tag-presence facts without leaking tag names or values.** Azure cost allocation for AVD requires tagging host pools and session hosts (and enabling `cm-resource-parent` tag inheritance when grouping child costs), while `C11` (`avd-current-state-facts/v1`) forbids emitting any customer tag key or value into the snapshot (`tests/Facts.Tests.ps1` puts `'CostCenter'` and `'Finance Team'` in `$script:secrets`). Reducing tag inspection in `Test-CostAllocationTag` to a boolean (`hostPools/*/costAllocationTag`) and an integer count of untagged session hosts (`hostPools/*/sessionHosts/untaggedForCost`) lets `asm-cost-allocation-tags` verify cost attribution posture while keeping the snapshot 100% free of tag strings.
+- **Budgets must check `contactGroups` (Action Groups), not email notifications alone.** A `Microsoft.Consumption/budgets` resource with only `contactEmails` sends an email and takes no automated action. Extracting both `budgets.total` and `budgets.withActionGroup` (notifications with `enabled != false` and non-empty `contactGroups`) from `rebuild/rest/budgets.json` lets `asm-cost-budget-action-group` distinguish an actionable budget from an email-only alert without copying budget names, email addresses or action group resource IDs.
+- **Azure Advisor cost recommendations live in `advisorresources` and need category plus field/problem filtering.** `Microsoft.Advisor/recommendations` sits in the `advisorresources` Resource Graph table (`lib/AvdRebuild.psm1`, `rebuild/scope.json`), not `resources`. Registering `properties.impactedValue` with `Add-KnownName` prevents resource names in Advisor rows from leaking, while filtering `category == 'Cost'` rows into `unattachedDisks` (`impactedField` matching `disks` or `shortDescription.problem` matching `unattached.*disk`) and `rightSizeVms` (`impactedField` matching `virtualMachines` or `right-size|underutilized`) feeds `asm-cost-no-unattached-disks` and `asm-cost-advisor-rightsize-reviewed` (`informs: ["hostPool.vmSize"]`).
+- **Personal host pool deallocation pairs `startVmOnConnect` with `scalingPlan.method` and `sessionHosts.hibernation`.** Enabling `StartVMOnConnect` on a Personal host pool starts stopped VMs when users connect (`asm-personal-start-vm-on-connect`) but never deallocates or hibernates them after sign-out. Joining `microsoft.desktopvirtualization/scalingplans` (`properties.hostPoolReferences` where `scalingPlanEnabled != false`) and VM `properties.additionalCapabilities.hibernationEnabled` into `scalingPlan.method` and `sessionHosts.hibernation` lets `asm-personal-deallocation` verify the stop/hibernate half of the loop.
+- **Licensing eligibility (`userLicense`) and compute commitments (`computeCommitments`) belong in `C19` (`intake.schema.json`), not subscription-scoped ARM reads.** Windows 10/11 multi-session rights (`m365-or-windows-enterprise`, `rds-cal`, `per-user-access`) and enrollment- or billing-scoped Reservations and Azure Savings Plans (`reservation`, `savings-plan`, `both`, `none`) sit outside a subscription's `Reader` scope when purchased at the EA/MCA billing scope or in another tenant, so capturing them in `avd-intake/v1` keeps the collector subscription-Reader-only while documenting them on the FinOps dimensions (`cost.licensing`, `cost.commitments`).
 
 ## Capping
 
