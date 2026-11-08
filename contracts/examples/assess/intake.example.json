@@ -11,5 +11,7 @@
   "appCompatibility": "some-untested",
   "profileSolution": "fslogix",
   "m365PlaneScope": "in-scope",
-  "powerPlatformPlaneScope": "in-scope"
+  "powerPlatformPlaneScope": "in-scope",
+  "avdScope": "in-scope",
+  "win365Scope": "in-scope"
 }

@@ -3,7 +3,7 @@ title: "Operating an estate"
 summary: "Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate"
 topic: operations
 status: partial
-last_reviewed: 2026-10-22
+last_reviewed: 2026-11-02
 ---
 
 # Operating an estate
@@ -127,3 +127,15 @@ Learned in the 2026-10-21 audit of the public family repos (no secret or tenant 
 - An Actions log is public in a public repo, and it prints each step's `with:` inputs and `env:` values. Only secrets are masked. Tenant, subscription, client and group IDs and alert emails therefore go in secrets even though none grants access; avd-landing-zone's template tests refuse a `vars.*_ID` or `vars.*EMAIL` in any workflow.
 - A full check covers every branch, every PR ref (`refs/pull/*`), issue and PR text, review comments and the logs of jobs that sign in to Azure, not just the default branch. gitleaks' hits on the family repos are all deliberate fixtures (redaction samples, built-in role IDs, a one-byte PEM in a unit test).
 - A Cloudflare record left proxied, even briefly, serves Cloudflare's bot-challenge script and NEL reporting headers on the site, and cached DNS keeps serving them after the switch to DNS only. GitHub Pages issues its certificate only once the name resolves to it, so Enforce HTTPS comes last.
+
+## Desktop DevOps: AVD, Windows 365, and Intune
+
+Specified in [decision 0027](../decisions/0027-desktop-devops-across-avd-win365-and-intune.md) and [avd-ops 0012](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0012-desktop-devops-for-avd-win365-and-intune.md):
+
+- **Workload placement across AVD and Windows 365.** The brain recommends the desktop delivery model per persona (`uc-01` through `uc-07`) from utilization hours, shift concurrency, and GPU/peripheral needs:
+  - **AVD Pooled (`Windows 11 Enterprise multi-session`):** high concurrency (`>= 3:1`), elastic autoscale, or custom VNet/Azure Files needs.
+  - **AVD Personal (with Start VM on Connect):** dedicated local admin or GPU workstation needs (`uc-03`, `uc-04`) with `< 120 hours/month` active usage where consumption billing beats a fixed SKU.
+  - **Windows 365 Enterprise:** dedicated 1:1 persistent desktops (`>= 120 hours/month`), predictable per-user monthly cost, and low-touch Intune management (`Microsoft Hosted Network` or `Azure Network Connection`).
+  - **Windows 365 Frontline:** shift-worker (`<= 1:3` concurrency) or intermittent dedicated Cloud PCs (`Shared` mode for non-persistent task workers) without managing AVD host pools.
+- **Intune policy-as-code and platform assignment filters.** Every Intune Settings Catalog policy, compliance policy, and security baseline in [avd-intune](https://github.com/avd-ops/avd-intune) attaches an explicit platform assignment filter (`avd-multisession`, `avd-personal`, `win365-cloudpc`, `physical-desktop`) rather than unfiltered "All Devices" assignments ([Intune assignment filters](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/filters), [multi-session Settings Catalog](https://learn.microsoft.com/en-us/mem/intune/fundamentals/azure-virtual-desktop-multi-session)). When `avd-current-state` detects live tenant drift (`c11.intune.unfilteredAllDevicesPolicies > 0` or missing baseline profiles), the brain proposes a Git PR against `avd-intune` rather than a portal edit.
+- **Windows 365 Cloud PC lifecycle and `dataLossGuard`.** Windows 365 provisioning policies, user settings (`localAdminEnabled: false`, restore point cadence), and Azure Network Connections (ANCs) are collected read-only by `avd-current-state` (`GET /v1.0/deviceManagement/virtualEndpoint/*`) and deployed declaratively by `avd-intune -IncludeWin365` ([cloudPC Graph resource](https://learn.microsoft.com/en-us/graph/api/resources/cloudpc?view=graph-rest-1.0)). Any destructive action (`reprovision`, `deprovision`, or session-host replacement) in a C9 proposal carries `dataLossGuard` (`restorePointVerified`, `restorePointAgeHours`, `discardLastCopyApproved`) so `avd-swarm`'s gate enforces [decision 0016](../decisions/0016-never-delete-the-last-copy.md).
