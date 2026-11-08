@@ -1,78 +1,110 @@
+# Known errors catalog: the source of truth for troubleshooting/README.md.
+# Regenerate the page with `python3 scripts/kb/build.py`. Schema: ../schema/known-errors.schema.json
+# `source` is a KB path (relative to docs/knowledge/) or an https URL.
+# Seeded from avd-landing-zone's lessons (decision 0008: they stay there; each entry links its lesson).
+
 errors:
 - id: avm-nat-gateway-pip-zones
-  symptom: '`LocationNotSupportAvailabilityZones` on the NAT Gateway public IP when deploying to a region without availability zones'
-  cause: The AVM nat-gateway module defaults each public IP to zones 1-3, even when the NAT Gateway itself is non-zonal
+  symptom: '`LocationNotSupportAvailabilityZones` on the NAT Gateway public IP when deploying to a region
+    without availability zones'
+  cause: The AVM nat-gateway module defaults each public IP to zones 1-3, even when the NAT Gateway itself
+    is non-zonal
   fix: Pass the landing zone's zones to the network module and give the IP no zones when the list is empty
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0001-nat-gateway-pip-zones.md
   status: verified
   added: '2026-10-18'
 - id: bicep-readenvironmentvariable-empty
-  symptom: A Bicep parameter compiles to an empty string although `readEnvironmentVariable('X', 'default')` has a default
-  cause: The default applies only when the variable is unset, not when it is set but empty (an unset CI variable often is)
+  symptom: A Bicep parameter compiles to an empty string although `readEnvironmentVariable('X', 'default')`
+    has a default
+  cause: The default applies only when the variable is unset, not when it is set but empty (an unset CI
+    variable often is)
   fix: '`empty(readEnvironmentVariable(''X'', '''')) ? ''default'' : readEnvironmentVariable(''X'', '''')`'
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0004-empty-env-var.md
   status: verified
   added: '2026-10-18'
 - id: get-azresourceprovider-per-region
-  symptom: A region check built on `Get-AzResourceProvider -ProviderNamespace` reports it can't read the regions, though the region supports the resource type
-  cause: The cmdlet returns one object per region, each with only that region's resource types; reading the first object misses the rest
-  fix: 'Read `GET /subscriptions/<subscription-id>/providers/<namespace>` through ARM: one object with every region per resource type'
+  symptom: A region check built on `Get-AzResourceProvider -ProviderNamespace` reports it can't read the
+    regions, though the region supports the resource type
+  cause: The cmdlet returns one object per region, each with only that region's resource types; reading
+    the first object misses the rest
+  fix: 'Read `GET /subscriptions/<subscription-id>/providers/<namespace>` through ARM: one object with
+    every region per resource type'
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0005-provider-per-region.md
   status: verified
   added: '2026-10-18'
 - id: register-provider-hangs-encryptionathost
-  symptom: '`Register-AzResourceProvider` hangs silently for minutes, or EncryptionAtHost reports ready while it is still registering'
-  cause: The cmdlet can block until registration completes and prints nothing; EncryptionAtHost takes effect only after Microsoft.Compute is registered again, about 15 minutes after the feature
-  fix: Register through the ARM `register` API (returns at once), wait with visible progress up to 15 minutes, then register Microsoft.Compute again
+  symptom: '`Register-AzResourceProvider` hangs silently for minutes, or EncryptionAtHost reports ready
+    while it is still registering'
+  cause: The cmdlet can block until registration completes and prints nothing; EncryptionAtHost takes
+    effect only after Microsoft.Compute is registered again, about 15 minutes after the feature
+  fix: Register through the ARM `register` API (returns at once), wait with visible progress up to 15
+    minutes, then register Microsoft.Compute again
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0006-provider-registration.md
   status: verified
   added: '2026-10-18'
 - id: connect-mggraph-cloud-shell-device-code
-  symptom: '`Connect-MgGraph` in Cloud Shell hangs with no device code shown, or a sign-in that succeeded fails later with `DeviceCodeCredential authentication failed: Object reference not set`'
-  cause: The device-code prompt goes to the output stream (`| Out-Null` hides it), and a Graph context can exist without being able to issue tokens
-  fix: Show the prompt with `Write-Host`, test that the context can issue a token before reusing it, and compare the Graph account with the Azure account
+  symptom: '`Connect-MgGraph` in Cloud Shell hangs with no device code shown, or a sign-in that succeeded
+    fails later with `DeviceCodeCredential authentication failed: Object reference not set`'
+  cause: The device-code prompt goes to the output stream (`| Out-Null` hides it), and a Graph context
+    can exist without being able to issue tokens
+  fix: Show the prompt with `Write-Host`, test that the context can issue a token before reusing it, and
+    compare the Graph account with the Azure account
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0007-graph-sign-in.md
   status: verified
   added: '2026-10-18'
 - id: graph-paging-loop-forever
   symptom: A script prints the same Microsoft Graph errors endlessly
-  cause: '`Invoke-MgGraphRequest` returned nothing without a terminating error (module scope doesn''t inherit the script''s `ErrorActionPreference`), so the paging loop asked for the same page again'
+  cause: '`Invoke-MgGraphRequest` returned nothing without a terminating error (module scope doesn''t
+    inherit the script''s `ErrorActionPreference`), so the paging loop asked for the same page again'
   fix: Make the Graph wrapper throw on any error record or empty response
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0008-non-terminating-loops.md
   status: verified
   added: '2026-10-18'
 - id: azure-files-rest-share-root-acl
-  symptom: Setting the profile share's root ACL through the Azure Files REST API fails with `400 Bad Request`, then `MissingRequiredHeader`, then no `x-ms-file-permission-key`
-  cause: Get and Create Permission need `x-ms-date`, and the root of a new share has never had an ACL set, so it returns no permission key
+  symptom: Setting the profile share's root ACL through the Azure Files REST API fails with `400 Bad Request`,
+    then `MissingRequiredHeader`, then no `x-ms-file-permission-key`
+  cause: Get and Create Permission need `x-ms-date`, and the root of a new share has never had an ACL
+    set, so it returns no permission key
   fix: Send `x-ms-date` on every request and treat a missing key as the default ACL that still needs setting
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0011-azure-files-rest.md
   status: verified
   added: '2026-10-18'
 - id: new-subscription-vm-family-quota-zero
-  symptom: Deployment or preflight finds 0 vCPU quota for a VM family (for example standardDASv5Family) on a new subscription, though the regional quota is 10
+  symptom: Deployment or preflight finds 0 vCPU quota for a VM family (for example standardDASv5Family)
+    on a new subscription, though the regional quota is 10
   cause: Family quotas start at 0 on new subscriptions; the regional limit is separate
-  fix: Request the family quota through the Microsoft.Quota API (often approved in minutes) and check both family and regional quota before deploying
+  fix: Request the family quota through the Microsoft.Quota API (often approved in minutes) and check
+    both family and regional quota before deploying
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0013-vcpu-quota.md
   status: verified
   added: '2026-10-18'
 - id: get-azroleassignment-parameter-set
-  symptom: '`Get-AzRoleAssignment -Scope <scope> -ExpandPrincipalGroups` fails: the combination isn''t a valid parameter set'
+  symptom: '`Get-AzRoleAssignment -Scope <scope> -ExpandPrincipalGroups` fails: the combination isn''t
+    a valid parameter set'
   cause: Parameter sets were assumed, and the test mock accepted any parameters
-  fix: Use `-ExpandPrincipalGroups` and filter by scope afterwards; check every call against the cmdlet's help
+  fix: Use `-ExpandPrincipalGroups` and filter by scope afterwards; check every call against the cmdlet's
+    help
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0014-cmdlet-parameter-sets.md
   status: verified
   added: '2026-10-18'
 - id: psscriptanalyzer-ci-newer
-  symptom: CI fails on `PSUseShouldProcessForStateChangingFunctions` or `PSUseSingularNouns` for code that passed locally
-  cause: CI installs the latest PSScriptAnalyzer; an older local copy doesn't enforce those rules for script-level functions
-  fix: Install the same analyzer version as CI locally, and fix the finding (for example rename to a `Get-` noun)
+  symptom: CI fails on `PSUseShouldProcessForStateChangingFunctions` or `PSUseSingularNouns` for code
+    that passed locally
+  cause: CI installs the latest PSScriptAnalyzer; an older local copy doesn't enforce those rules for
+    script-level functions
+  fix: Install the same analyzer version as CI locally, and fix the finding (for example rename to a `Get-`
+    noun)
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0016-analyzer-version.md
   status: verified
   added: '2026-10-18'
 - id: psscriptanalyzer-severity-hides-parse-errors
-  symptom: A PowerShell script that doesn't parse (for example `Variable reference is not valid. ':' was not followed by a valid variable name character`) passes CI's PSScriptAnalyzer step
-  cause: 'The analyzer reports parse errors under their own severity, `ParseError`, so settings with `Severity = @(''Error'', ''Warning'')` filter them out; `"$name: text"` in a string reads as a drive-qualified variable and stops the whole file from parsing'
-  fix: 'Add `''ParseError''` to `Severity` in PSScriptAnalyzerSettings.psd1, write `"${name}: text"`, and keep a Pester test that parses every script'
+  symptom: "A PowerShell script that doesn't parse (for example `Variable reference is not valid. ':' was
+    not followed by a valid variable name character`) passes CI's PSScriptAnalyzer step"
+  cause: "The analyzer reports parse errors under their own severity, `ParseError`, so settings with
+    `Severity = @('Error', 'Warning')` filter them out; `\"$name: text\"` in a string reads as a
+    drive-qualified variable and stops the whole file from parsing"
+  fix: "Add `'ParseError'` to `Severity` in PSScriptAnalyzerSettings.psd1, write `\"${name}: text\"`,
+    and keep a Pester test that parses every script"
   source: https://github.com/avd-ops/avd-ops/blob/main/docs/run-anywhere.md
   applies_to: PSScriptAnalyzer 1.23.0, PowerShell 7.4
   status: verified
@@ -82,7 +114,7 @@ errors:
   cause: 'Inline `run:` blocks are not files, so neither the analyzer nor the parse test ever sees them; a nested string with doubled backticks inside a subexpression of an expandable string (`"...$(if ($x) { "`n  Fix: ``$($y)``" })"`) does not parse'
   fix: Move the step's logic into a module function with a Pester test and keep the run block to a few calls; build such a line in steps (`$line += ...`) instead of nesting quoted strings
   source: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsshell
-  applies_to: GitHub Actions shell pwsh, PowerShell 7.4+
+  applies_to: 'GitHub Actions shell pwsh, PowerShell 7.4+'
   status: verified
   added: '2026-10-29'
 - id: tracking-issue-never-closes
@@ -101,43 +133,57 @@ errors:
   status: verified
   added: '2026-10-18'
 - id: arm-omits-empty-zones
-  symptom: A zone check passes with an empty list (`Zones:` with nothing after it) in a region without availability zones
+  symptom: A zone check passes with an empty list (`Zones:` with nothing after it) in a region without
+    availability zones
   cause: ARM leaves out properties with no value, and in PowerShell `@($null).Count` is 1
-  fix: 'Count only real entries: `@($x | Where-Object { $_ }).Count`, and make mocks omit empty properties too'
+  fix: 'Count only real entries: `@($x | Where-Object { $_ }).Count`, and make mocks omit empty properties
+    too'
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0021-arm-omits-empty-properties.md
   status: verified
   added: '2026-10-18'
 - id: key-vault-purge-protection-recover
-  symptom: After deleting a landing zone, redeploying with the same name prefix fails on a soft-deleted Key Vault, and recovery fails because its resource group is gone
-  cause: Purge protection keeps the name for 90 days, and recovery puts the vault back into its original resource group, which the cleanup deleted
-  fix: Create the original resource group again (its name is in the deleted vault's resource ID), then recover the vault
+  symptom: After deleting a landing zone, redeploying with the same name prefix fails on a soft-deleted
+    Key Vault, and recovery fails because its resource group is gone
+  cause: Purge protection keeps the name for 90 days, and recovery puts the vault back into its original
+    resource group, which the cleanup deleted
+  fix: Create the original resource group again (its name is in the deleted vault's resource ID), then
+    recover the vault
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0022-key-vault-recovery.md
   status: verified
   added: '2026-10-18'
 - id: log-analytics-soft-delete-dcr-table
-  symptom: '`InvalidOutputTable: Table for output stream ''Microsoft-Perf'' is not available for destination` when creating a data collection rule after redeploying'
-  cause: Deleting a resource group only soft-deletes its Log Analytics workspace for 14 days; a workspace with the same name recovers it, and its tables come back a little later
-  fix: Delete the workspace permanently (`force=true`) before deleting the resource group, or wait for the recovered tables and run again
+  symptom: '`InvalidOutputTable: Table for output stream ''Microsoft-Perf'' is not available for destination`
+    when creating a data collection rule after redeploying'
+  cause: Deleting a resource group only soft-deletes its Log Analytics workspace for 14 days; a workspace
+    with the same name recovers it, and its tables come back a little later
+  fix: Delete the workspace permanently (`force=true`) before deleting the resource group, or wait for
+    the recovered tables and run again
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0023-log-analytics-soft-delete.md
   status: verified
   added: '2026-10-18'
 - id: quota-check-counts-deployed-hosts
   symptom: A post-deployment quota check reports `0 free, N needed` for hosts that are already deployed
-  cause: The subscription's `used` already includes the landing zone's own hosts, so they were counted twice
+  cause: The subscription's `used` already includes the landing zone's own hosts, so they were counted
+    twice
   fix: Count the deployed hosts' vCPUs out of `used` and require only the difference
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0024-quota-counts-deployed-hosts.md
   status: verified
   added: '2026-10-18'
 - id: retail-prices-lookalike-meters
-  symptom: A cost estimate from the Azure Retail Prices API leaves VMs or OS disks unpriced, or matches two meters for one SKU
-  cause: The price list gained lookalike meters with the same SKU (for example Cloud Services compute, other disk products)
-  fix: Match the product name too (`Virtual Machines …`, `Premium SSD Managed Disks`), not just the SKU and meter
+  symptom: A cost estimate from the Azure Retail Prices API leaves VMs or OS disks unpriced, or matches
+    two meters for one SKU
+  cause: The price list gained lookalike meters with the same SKU (for example Cloud Services compute,
+    other disk products)
+  fix: Match the product name too (`Virtual Machines …`, `Premium SSD Managed Disks`), not just the SKU
+    and meter
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0025-retail-price-lookalike-meters.md
   status: verified
   added: '2026-10-18'
 - id: redeploy-stopped-session-hosts
-  symptom: 'Redeploy fails with `OperationNotAllowed: Cannot modify extensions in the VM when the VM is not running`'
-  cause: Each deployment changes the hosts' run commands (a new registration token), and Azure changes run commands only on running VMs; scaling plans keep idle hosts deallocated
+  symptom: 'Redeploy fails with `OperationNotAllowed: Cannot modify extensions in the VM when the VM is
+    not running`'
+  cause: Each deployment changes the hosts' run commands (a new registration token), and Azure changes
+    run commands only on running VMs; scaling plans keep idle hosts deallocated
   fix: Start the session hosts before redeploying and deallocate them again after
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0026-redeploy-stopped-hosts.md
   status: verified
@@ -145,66 +191,92 @@ errors:
 - id: gitignore-json-hides-bicep-data
   symptom: Bicep error BCP091 (`Could not find file …json`) in CI for a data file that exists locally
   cause: A repo-wide `*.json` ignore rule kept data files that `loadJsonContent` reads out of git
-  fix: Ignore JSON only where Bicep writes build output, and check `git status --ignored` when adding data files
+  fix: Ignore JSON only where Bicep writes build output, and check `git status --ignored` when adding
+    data files
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0027-gitignore-json-data-files.md
   status: verified
   added: '2026-10-18'
 - id: fslogix-entra-kerberos-aes256gcm-only
-  symptom: FSLogix fails for cloud-only users with Access is denied (Status 0x1B, Reason 0x5, Error 0x5); the SMB session setup returns `STATUS_ACCESS_DENIED (0xC0000022)` although the Kerberos ticket is valid
+  symptom: FSLogix fails for cloud-only users with Access is denied (Status 0x1B, Reason 0x5, Error 0x5);
+    the SMB session setup returns `STATUS_ACCESS_DENIED (0xC0000022)` although the Kerberos ticket is
+    valid
   cause: Azure Files denies Entra Kerberos sessions when AES-256-GCM is the only SMB channel encryption
-  fix: Allow `AES-128-GCM;AES-256-GCM;` channel encryption on the storage account (keep CCM off and Kerberos only)
+  fix: Allow `AES-128-GCM;AES-256-GCM;` channel encryption on the storage account (keep CCM off and Kerberos
+    only)
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0028-smb-channel-encryption-entra-kerberos.md
   status: verified
   added: '2026-10-18'
 - id: device-cleanup-cannot-rerun
-  symptom: A cleanup that times out at the Microsoft Graph sign-in can't delete the hosts' Entra ID and Intune devices on a second run
+  symptom: A cleanup that times out at the Microsoft Graph sign-in can't delete the hosts' Entra ID and
+    Intune devices on a second run
   cause: The device names came from the VMs and deployment record, which the first run had already deleted
-  fix: Delete devices before the Azure resources, and read names from the deployment's outputs when the VMs are gone
+  fix: Delete devices before the Azure resources, and read names from the deployment's outputs when the
+    VMs are gone
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0029-device-cleanup-rerun.md
   status: verified
   added: '2026-10-18'
 - id: graph-unlisted-delegated-scope
-  symptom: An app setup reports a delegated Microsoft Graph permission (for example `Device.ReadWrite.All`) as not found, though Entra ID issues it
+  symptom: An app setup reports a delegated Microsoft Graph permission (for example `Device.ReadWrite.All`)
+    as not found, though Entra ID issues it
   cause: Microsoft Graph's service principal doesn't list every delegated permission in `oauth2PermissionScopes`
   fix: Grant scopes by name in the `oauth2PermissionGrant` instead of looking up their IDs
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0030-graph-unlisted-delegated-scope.md
   status: verified
   added: '2026-10-18'
 - id: strictmode-count-typed-object
-  symptom: A script under `Set-StrictMode -Version Latest` stops with `The property 'Count' cannot be found on this object` when a cmdlet returns exactly one item (for example one subscription from `Get-AzSubscription`)
-  cause: A single typed .NET object has no `.Count` in strict mode (a PSCustomObject does), so tests built on PSCustomObject fakes pass; and a function that returns its list with the unary comma (`return , $list`) gets wrapped twice by `@(...)` at the call site
-  fix: Wrap pipeline results in `@()` before counting; assign a comma-returned list directly, without `@()`; and run the whole script in a test against fakes that return typed objects
+  symptom: 'A script under `Set-StrictMode -Version Latest` stops with `The property ''Count'' cannot be
+    found on this object` when a cmdlet returns exactly one item (for example one subscription from
+    `Get-AzSubscription`)'
+  cause: A single typed .NET object has no `.Count` in strict mode (a PSCustomObject does), so tests
+    built on PSCustomObject fakes pass; and a function that returns its list with the unary comma
+    (`return , $list`) gets wrapped twice by `@(...)` at the call site
+  fix: Wrap pipeline results in `@()` before counting; assign a comma-returned list directly, without
+    `@()`; and run the whole script in a test against fakes that return typed objects
   source: https://github.com/avd-ops/avd-current-state/pull/23
   status: verified
   added: '2026-10-21'
 - id: github-mcp-no-label-create
-  symptom: An adoption step says to create a label (`no-kb`, `handoff`), but the GitHub MCP tools have no tool that creates one, and `kb-capture` fails on the PR that was just opened
-  cause: The GitHub MCP server can read labels and set them on issues and PRs but has no create-label call; `kb-capture` runs once when the PR opens, before any label is on it
-  fix: Apply the new label to the issue or PR with `issue_write` (labels); GitHub creates a label that doesn't exist yet. The `labeled` event reruns `kb-capture`, which goes green without a new push
+  symptom: An adoption step says to create a label (`no-kb`, `handoff`), but the GitHub MCP tools have
+    no tool that creates one, and `kb-capture` fails on the PR that was just opened
+  cause: The GitHub MCP server can read labels and set them on issues and PRs but has no create-label
+    call; `kb-capture` runs once when the PR opens, before any label is on it
+  fix: Apply the new label to the issue or PR with `issue_write` (labels); GitHub creates a label that
+    doesn't exist yet. The `labeled` event reruns `kb-capture`, which goes green without a new push
   source: https://github.com/avd-ops/avd-landing-zone/pull/58
   status: verified
   added: '2026-10-21'
 - id: empty-array-unrolled-to-null
-  symptom: A value that should be an empty array (for example `availabilityZones = []`) reads back as `$null`, so a comparison or a `.Count` on it fails or reports a mismatch
-  cause: PowerShell unrolls an empty array to nothing when it leaves a function as output or is assigned from an if-expression (`$v = if ($a) { $x } else { $y }`); `$rows += , $obj` nests arrays instead of adding an item
-  fix: Assign the value directly and override it in a plain `if` statement, return lists with the unary comma and assign them without `@()`, and add items with `$rows += $obj` or a `List[object]`
+  symptom: A value that should be an empty array (for example `availabilityZones = []`) reads back as
+    `$null`, so a comparison or a `.Count` on it fails or reports a mismatch
+  cause: 'PowerShell unrolls an empty array to nothing when it leaves a function as output or is assigned
+    from an if-expression (`$v = if ($a) { $x } else { $y }`); `$rows += , $obj` nests arrays instead
+    of adding an item'
+  fix: Assign the value directly and override it in a plain `if` statement, return lists with the unary
+    comma and assign them without `@()`, and add items with `$rows += $obj` or a `List[object]`
   source: https://github.com/avd-ops/avd-current-state/pull/19
   status: verified
   added: '2026-10-21'
 - id: strictmode-index-empty-array
-  symptom: A script under `Set-StrictMode -Version Latest` stops with `Index was outside the bounds of the array` when a query returns no rows
+  symptom: 'A script under `Set-StrictMode -Version Latest` stops with `Index was outside the bounds of
+    the array` when a query returns no rows'
   cause: Strict mode throws on `$x[0]` when `$x` is empty, where non-strict PowerShell returns `$null`
   fix: Read the first item with `$x | Select-Object -First 1`, which gives `$null` on no rows
   source: https://github.com/avd-ops/avd-current-state/pull/15
   status: verified
   added: '2026-10-21'
 - id: org-move-hard-coded-owner
-  symptom: After a repo moves to a GitHub organization, the `kb-capture` check fails a PR whose `KB:` link uses the new owner, and paired-decision links in the new owner's form are no longer read
-  cause: GitHub redirects the old URLs, so nothing breaks loudly, but config and code that compare owner/repo strings (`kb_repos` in `.claude/kb-capture.toml`, the D5 pair-link pattern in `AvdBrain.psm1`) still name the old owner and only accept links written the old way
-  fix: Search every moved repo for the old owner in config, workflows, scripts and tests as well as docs; let a check accept both owners for a transition window, and leave recorded fixtures, vendored files and pinned design-system assets for their own update
+  symptom: After a repo moves to a GitHub organization, the `kb-capture` check fails a PR whose `KB:`
+    link uses the new owner, and paired-decision links in the new owner's form are no longer read
+  cause: 'GitHub redirects the old URLs, so nothing breaks loudly, but config and code that compare
+    owner/repo strings (`kb_repos` in `.claude/kb-capture.toml`, the D5 pair-link pattern in
+    `AvdBrain.psm1`) still name the old owner and only accept links written the old way'
+  fix: Search every moved repo for the old owner in config, workflows, scripts and tests as well as
+    docs; let a check accept both owners for a transition window, and leave recorded fixtures, vendored
+    files and pinned design-system assets for their own update
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/.claude/kb-capture.toml
   status: verified
   added: '2026-10-21'
+
 - id: playwright-ubuntu-latest-2604-unsupported
   symptom: 'GitHub Actions job on `ubuntu-latest` fails in `npx playwright install --with-deps chromium` with `ERROR: Playwright does not support chromium on ubuntu26.04-x64`'
   cause: GitHub Actions moved `ubuntu-latest` to Ubuntu 26.04 (`ubuntu26.04-x64`), which pinned Playwright versions (such as `playwright@1.56.1`) do not map in their host browser dependency table
@@ -229,6 +301,7 @@ errors:
   applies_to: Node.js 20+ on Windows
   status: verified
   added: '2026-10-27'
+
 - id: tenant-control-plane-stamp-run-manifest-teardown
   symptom: Tenant-level teardown risks deleting pre-existing brownfield Entra groups, Conditional Access policies, Intune profiles, M365 baselines, or Power Platform environments when matching by displayName alone
   cause: Graph, Intune, M365, and Power Platform objects share a flat tenant namespace with no resource-group container
@@ -240,7 +313,7 @@ errors:
 - id: onedrive-kfm-silent-opt-in-runtime-tenant-id
   symptom: OneDrive Known Folder Move (`KFMSilentOptIn`) policy deployment fails or triggers a leak check if a static tenant GUID is committed in baseline JSON templates
   cause: OneDrive KFM policy definitions require the tenant GUID, which must never be committed in static JSON templates
-  fix: Query `GET https://graph.microsoft.com/v1.0/organization?$select=id` at deploy time and inject the tenant GUID only in memory
+  fix: 'Query `GET https://graph.microsoft.com/v1.0/organization?$select=id` at deploy time and inject the tenant GUID only in memory'
   source: https://github.com/avd-ops/avd-m365/pull/2
   applies_to: Microsoft Graph v1.0/beta, OneDrive Known Folder Move
   status: verified
@@ -248,47 +321,47 @@ errors:
 - id: az-rest-inline-json-body-escaping
   symptom: '`az rest` fails with `400 Bad Request` or JSON parse errors when passing nested Microsoft Graph Settings Catalog or Conditional Access JSON inline via `--body`'
   cause: Passing nested Graph Settings Catalog or Conditional Access JSON inline to `az rest --body` breaks across PowerShell, Bash, and Windows argument escaping
-  fix: Write UTF-8 without BOM to a temp file and pass `--body "@$tempFile"`
+  fix: 'Write UTF-8 without BOM to a temp file and pass `--body "@$tempFile"`'
   source: https://github.com/avd-ops/avd-intune/pull/2
   applies_to: Azure CLI 2.60+, PowerShell 7.4, Windows and Linux
   status: verified
   added: '2026-10-27'
 - id: power-platform-compress-archive-backslash-zip-entries
-  symptom: Dataverse or `pac solution import` rejects a packed Power Platform solution `.zip` built on Windows because `[Content_Types].xml` or `Other/Solution.xml` cannot be found
+  symptom: 'Dataverse or `pac solution import` rejects a packed Power Platform solution `.zip` built on Windows because `[Content_Types].xml` or `Other/Solution.xml` cannot be found'
   cause: '`Compress-Archive` on Windows writes backslash (`\`) entry paths in `.zip` archives, which breaks Dataverse and `pac solution import` lookup of `[Content_Types].xml` and `Other/Solution.xml`'
-  fix: Build solution `.zip` files with `[System.IO.Compression.ZipFile]` / `ZipArchive` using forward-slash (`/`) entry names
+  fix: 'Build solution `.zip` files with `[System.IO.Compression.ZipFile]` / `ZipArchive` using forward-slash (`/`) entry names'
   source: https://github.com/avd-ops/avd-power-platform/pull/2
   applies_to: PowerShell 7.4 on Windows, Power Platform CLI (pac)
   status: verified
   added: '2026-10-27'
 - id: windows-store-python-app-execution-alias
-  symptom: Calling `python3` or `python` from PowerShell on Windows prints `Python was not found; run without arguments to install from the Microsoft Store` instead of running the installed Python interpreter
+  symptom: 'Calling `python3` or `python` from PowerShell on Windows prints `Python was not found; run without arguments to install from the Microsoft Store` instead of running the installed Python interpreter'
   cause: Windows puts the Microsoft Store app execution alias (`%LOCALAPPDATA%\Microsoft\WindowsApps\python3.exe`) ahead of or in place of a local Python install on `PATH`
-  fix: Filter out `Get-Command` matches whose `Source` contains `WindowsApps`, and fall back to the `py` launcher or `$env:LOCALAPPDATA\Programs\Python\Python*\python.exe`
+  fix: 'Filter out `Get-Command` matches whose `Source` contains `WindowsApps`, and fall back to the `py` launcher or `$env:LOCALAPPDATA\Programs\Python\Python*\python.exe`'
   source: https://github.com/avd-ops/avd-intune/pull/2
   applies_to: PowerShell 7.4 on Windows 11, Python 3.12+
   status: verified
   added: '2026-10-27'
 - id: orchestrator-dry-run-missing-sibling-checkouts-in-ci
-  symptom: Orchestrator `-DryRun` Pester tests pass locally in a multi-repo workspace (`../avd-entra`, `../avd-intune`, etc.) but fail in GitHub Actions CI where only `avd-landing-zone` is checked out
+  symptom: 'Orchestrator `-DryRun` Pester tests pass locally in a multi-repo workspace (`../avd-entra`, `../avd-intune`, etc.) but fail in GitHub Actions CI where only `avd-landing-zone` is checked out'
   cause: The orchestrator relied on invoking sibling control-plane scripts on disk (`../avd-entra/scripts/Deploy-AvdEntra.ps1 -DryRun`) to emit downstream handoff manifests (`entra-manifest.json`, `azure-outputs.json`)
-  fix: When `-DryRun` is active and a sibling repo checkout is absent on disk, synthesize a deterministic contract-valid handoff manifest directly inside the orchestrator
+  fix: 'When `-DryRun` is active and a sibling repo checkout is absent on disk, synthesize a deterministic contract-valid handoff manifest directly inside the orchestrator'
   source: https://github.com/avd-ops/avd-landing-zone/pull/123
   applies_to: PowerShell 7.4, GitHub Actions CI
   status: verified
   added: '2026-10-27'
 - id: storage-kerberos-app-display-name-spoofing
-  symptom: Lookup of the Azure Files Entra Kerberos app registration (`[Storage Account] <storageFqdn>`) by `displayName` matches multiple apps or a user-registered look-alike app
-  cause: Anyone who can register applications in the tenant can create an app with display name `[Storage Account] <storageFqdn>`, which would otherwise receive `AllPrincipals` admin consent and Conditional Access MFA exclusion
-  fix: Query `GET /v1.0/applications/{id}/owners?$select=id` on every candidate and accept only an application with zero owners or whose owners are all directory administrators (`Get-AvdDirectoryAdminId`) or the signed-in operator (`v1.0/me`), rejecting any candidate owned by a non-administrator
+  symptom: 'Lookup of the Azure Files Entra Kerberos app registration (`[Storage Account] <storageFqdn>`) by `displayName` matches multiple apps or a user-registered look-alike app'
+  cause: 'Anyone who can register applications in the tenant can create an app with display name `[Storage Account] <storageFqdn>`, which would otherwise receive `AllPrincipals` admin consent and Conditional Access MFA exclusion'
+  fix: 'Query `GET /v1.0/applications/{id}/owners?$select=id` on every candidate and accept only an application with zero owners or whose owners are all directory administrators (`Get-AvdDirectoryAdminId`) or the signed-in operator (`v1.0/me`), rejecting any candidate owned by a non-administrator'
   source: https://github.com/avd-ops/avd-landing-zone/pull/124
   applies_to: Microsoft Graph v1.0, Azure Files Entra Kerberos
   status: verified
   added: '2026-10-27'
 - id: psscriptanalyzer-state-changing-verb-on-pure-helper
   symptom: '`Invoke-ScriptAnalyzer -EnableExit` fails CI with `PSUseShouldProcessForStateChangingFunctions` or `PSUseSingularNouns` on internal helper functions that only build in-memory objects'
-  cause: Naming internal helper functions with state-changing verbs (`New-*`, `Set-*`, `Remove-*`) or plural nouns triggers PSScriptAnalyzer rules even when the script itself declares `SupportsShouldProcess`
-  fix: Reserve `New-*`, `Set-*`, and `Remove-*` for functions with `[CmdletBinding(SupportsShouldProcess)]`, and name pure in-memory helpers with `Build-*`, `ConvertTo-*`, `Resolve-*`, or `Format-*` and singular nouns
+  cause: 'Naming internal helper functions with state-changing verbs (`New-*`, `Set-*`, `Remove-*`) or plural nouns triggers PSScriptAnalyzer rules even when the script itself declares `SupportsShouldProcess`'
+  fix: 'Reserve `New-*`, `Set-*`, and `Remove-*` for functions with `[CmdletBinding(SupportsShouldProcess)]`, and name pure in-memory helpers with `Build-*`, `ConvertTo-*`, `Resolve-*`, or `Format-*` and singular nouns'
   source: https://github.com/avd-ops/avd-entra/pull/2
   applies_to: PSScriptAnalyzer 1.23+
   status: verified
@@ -296,7 +369,7 @@ errors:
 - id: portal-report-public-ids-guard-on-synthetic-guids
   symptom: '`build/tests/portal/report.test.mjs` fails in CI (`PUBLIC_IDS lists every GUID in bicep/, parameters/ and scripts/`) after adding synthetic placeholder GUIDs (such as `00000000-0000-0000-0000-000000000001`) to a PowerShell script'
   cause: '`report.test.mjs` scans `bicep/`, `parameters/`, and `scripts/` for every literal GUID and requires it to appear in `PUBLIC_IDS` (`site/portal/report.js`) so the issue report redactor knows which GUIDs are tenant-agnostic public constants vs. private tenant IDs'
-  fix: Use the zero GUID (`00000000-0000-0000-0000-000000000000`) for synthetic `-DryRun` manifest placeholders in `scripts/`, which satisfies JSON Schema UUID validation and is already in `PUBLIC_IDS` without widening the redaction allowlist
+  fix: 'Use the zero GUID (`00000000-0000-0000-0000-000000000000`) for synthetic `-DryRun` manifest placeholders in `scripts/`, which satisfies JSON Schema UUID validation and is already in `PUBLIC_IDS` without widening the redaction allowlist'
   source: https://github.com/avd-ops/avd-landing-zone/pull/123
   applies_to: avd-landing-zone portal report redactor
   status: verified
@@ -304,15 +377,15 @@ errors:
 - id: arm-subscription-template-4mb-limit
   symptom: '`deploy.sh` or `az deployment sub create` fails before creating any resources with `RequestContentTooLarge: The request content size exceeds the maximum size of 4 MB`'
   cause: '`bicep build-params <file>.bicepparam --stdout` emits 2-space pretty-printed JSON with all nested AVM `@description` metadata inlined; referencing `br/public:avm/res/compute/virtual-machine:0.22.3` in two separate modules (`sessionHosts.bicep` and `additionalPool.bicep`) inlines the 676 KB VM module tree twice even when `additionalPools` is empty (`count: 0`), pushing `templateJson` over `4,194,304` bytes'
-  fix: Create and FSLogix-configure session hosts for both the primary pool and `additionalPools` inside a single `avm/res/compute/virtual-machine` loop in `sessionHosts.bicep`, keep additional pool registration in a lightweight module (`registerPoolHosts.bicep`), and assert `[Text.Encoding]::UTF8.GetByteCount($raw.templateJson) -lt 4194304` in `Template.Tests.ps1`
+  fix: 'Create and FSLogix-configure session hosts for both the primary pool and `additionalPools` inside a single `avm/res/compute/virtual-machine` loop in `sessionHosts.bicep`, keep additional pool registration in a lightweight module (`registerPoolHosts.bicep`), and assert `[Text.Encoding]::UTF8.GetByteCount($raw.templateJson) -lt 4194304` in `Template.Tests.ps1`'
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0037-subscription-template-4mb-limit.md
   applies_to: Bicep 0.42.1, Azure Resource Manager subscription deployments, avm/res/compute/virtual-machine 0.22.3
   status: verified
   added: '2026-10-28'
 - id: storage-kerberos-app-operator-owner
   symptom: '`Test-AvdLandingZoneReadiness.ps1 -Fix` fails at `Storage Kerberos app consent` and `MFA policy excludes storage app` with `every app with this name has owners, which the app Azure creates never has` right after an interactive ARM deployment'
-  cause: When `Microsoft.Storage` registers the `[Storage Account] <storageFqdn>` Entra application during an ARM deployment initiated by a signed-in user (rather than a service principal), Entra ID sets that deploying user as the application owner
-  fix: In `Get-AvdStorageKerberosApp`, accept a candidate `[Storage Account] <storageFqdn>` application when it has zero owners or when every owner ID is in `Get-AvdDirectoryAdminId` (directory administrators) or matches the signed-in operator (`GET /v1.0/me`), and reject any candidate with a non-administrator owner
+  cause: 'When `Microsoft.Storage` registers the `[Storage Account] <storageFqdn>` Entra application during an ARM deployment initiated by a signed-in user (rather than a service principal), Entra ID sets that deploying user as the application owner'
+  fix: 'In `Get-AvdStorageKerberosApp`, accept a candidate `[Storage Account] <storageFqdn>` application when it has zero owners or when every owner ID is in `Get-AvdDirectoryAdminId` (directory administrators) or matches the signed-in operator (`GET /v1.0/me`), and reject any candidate with a non-administrator owner'
   source: https://github.com/avd-ops/avd-landing-zone/blob/master/build/lessons/0038-storage-kerberos-app-operator-owner.md
   applies_to: Microsoft Graph v1.0, Azure Files Entra Kerberos (AADKERB)
   status: verified
@@ -320,55 +393,55 @@ errors:
 - id: az-cli-mfa-claims-challenge-separate-from-az-powershell
   symptom: '`Invoke-AvdSandboxBatch.ps1` passes `Az` PowerShell preflight and run-store steps, then `deploy.sh` fails on its first `az account show` or `az deployment sub create` call with `AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access ''<app-id>''`'
   cause: '`Connect-AzAccount` (Az PowerShell) and `az` (Azure CLI) maintain separate MSAL token caches; satisfying a Conditional Access MFA policy on Azure Resource Management in `Az` PowerShell does not refresh a non-MFA token cached by `az` CLI'
-  fix: Run `az login --tenant <tenant-id> --scope https://management.core.windows.net//.default` (or pass `--claims-challenge` from the `AADSTS50076` prompt) before invoking `deploy.sh` when Conditional Access enforces MFA on ARM
+  fix: 'Run `az login --tenant <tenant-id> --scope https://management.core.windows.net//.default` (or pass `--claims-challenge` from the `AADSTS50076` prompt) before invoking `deploy.sh` when Conditional Access enforces MFA on ARM'
   source: https://github.com/avd-ops/avd-landing-zone/pull/124
   applies_to: Azure CLI (az), Az PowerShell, Microsoft Entra Conditional Access MFA
   status: verified
   added: '2026-10-28'
 - id: git-autocrlf-breaks-contract-pin-sha256
   symptom: '`unittest` in a freshly cloned AVD repo on Windows fails `test_contract_pin_matches` with `Contract pin verification failed` (`contracts/fact-register.json: sha256 mismatch`)'
-  cause: Cloning on Windows with `git config core.autocrlf=true` converts LF line endings to CRLF on checkout when `.gitattributes` does not force `eol=lf`, altering the raw byte SHA-256 digest checked against `FOUNDATION-PINS.json`
-  fix: Set `git config --global core.autocrlf false` on Windows workstations and enforce `* text=auto eol=lf` in `.gitattributes`
+  cause: 'Cloning on Windows with `git config core.autocrlf=true` converts LF line endings to CRLF on checkout when `.gitattributes` does not force `eol=lf`, altering the raw byte SHA-256 digest checked against `FOUNDATION-PINS.json`'
+  fix: 'Set `git config --global core.autocrlf false` on Windows workstations and enforce `* text=auto eol=lf` in `.gitattributes`'
   source: https://github.com/avd-ops/avd-swarm/pull/1
   applies_to: Git for Windows, avd-swarm, avd-second-brain contract pin checks
   status: verified
   added: '2026-10-28'
 - id: gh-pr-create-powershell-multiline-body-splitting
   symptom: '`gh pr create --body "..."` in PowerShell fails with `unknown arguments ["(15/15" "passing)"]; please quote all values that have spaces` when the PR body spans multiple lines or contains backticks and quotes'
-  cause: PowerShell native command argument quoting splits double-quoted multi-line strings containing embedded quotes or backtick-escaped tokens into separate argv words when invoking external executables like `gh`
-  fix: Assign the markdown body to a single-quoted PowerShell here-string (`$prBody = @' ... '@`) and pass `--body $prBody` (or `--body-file`)
+  cause: 'PowerShell native command argument quoting splits double-quoted multi-line strings containing embedded quotes or backtick-escaped tokens into separate argv words when invoking external executables like `gh`'
+  fix: 'Assign the markdown body to a single-quoted PowerShell here-string (`$prBody = @'' ... ''@`) and pass `--body $prBody` (or `--body-file`)'
   source: https://github.com/avd-ops/avd-ops/blob/main/docs/run-anywhere.md
   applies_to: GitHub CLI (gh), PowerShell 7.4 on Windows
   status: verified
   added: '2026-10-28'
 - id: avd-ops-portal-css-hover-specificity-override
-  symptom: Shell header icon buttons (`.iconbtn`), wizard rail step buttons (`.wz-rail button.step`), or modal sheet backdrops (`.sheet-backdrop`) turn solid accent blue on hover when `avd-ops-portal.css` and `avd-ops-shell.css` are loaded together
+  symptom: 'Shell header icon buttons (`.iconbtn`), wizard rail step buttons (`.wz-rail button.step`), or modal sheet backdrops (`.sheet-backdrop`) turn solid accent blue on hover when `avd-ops-portal.css` and `avd-ops-shell.css` are loaded together'
   cause: '`.portal :is(button:hover:not(:disabled),a.btnlink:hover)` in `avd-ops-portal.css` has specificity `(0,3,1)`, which overrides single- or two-class button rules in portal stylesheets on hover'
-  fix: Include `:hover:not(:disabled)` on shell header, wizard rail, and sheet-backdrop button selectors (matching or exceeding `0,3,1` specificity) so transparent/sunken hover states win cleanly
+  fix: 'Include `:hover:not(:disabled)` on shell header, wizard rail, and sheet-backdrop button selectors (matching or exceeding `0,3,1` specificity) so transparent/sunken hover states win cleanly'
   source: https://github.com/avd-ops/avd-ops/blob/main/docs/design-system-spec.md
   applies_to: avd-ops design system ds-v2.7.0 (avd-ops-portal.css, avd-ops-shell.css)
   status: verified
   added: '2026-10-28'
 - id: playwright-details-panel-and-step-aria-label-mismatch
-  symptom: Portal UI tests pass in JSDOM (`portal-browser.test.mjs`) but fail or time out in real Chromium (`portal.browser.test.mjs`) when clicking controls inside a `<details class="panel">` or asserting the active step button `aria-label`
-  cause: JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` (with `, done` appended once the step is done) rather than the short `LIST[s.id]` rail label
-  fix: Switch to the step slide that owns the panel (`size` for `#control-planes-panel`), click `#control-planes-panel > summary` before clicking buttons inside `<details>`, and match the full step title in `aria-label`
+  symptom: 'Portal UI tests pass in JSDOM (`portal-browser.test.mjs`) but fail or time out in real Chromium (`portal.browser.test.mjs`) when clicking controls inside a `<details class="panel">` or asserting the active step button `aria-label`'
+  cause: 'JSDOM dispatches `.click()` on elements inside a closed `<details>` or an inactive wizard slide without layout checks, whereas Playwright requires the owning step slide to be active and `<details> > summary` to be expanded; additionally `#steps button[aria-current="step"]` sets `aria-label` to `${i + 1}. ${STEPS[i].title}` (with `, done` appended once the step is done) rather than the short `LIST[s.id]` rail label'
+  fix: 'Switch to the step slide that owns the panel (`size` for `#control-planes-panel`), click `#control-planes-panel > summary` before clicking buttons inside `<details>`, and match the full step title in `aria-label`'
   source: https://github.com/avd-ops/avd-landing-zone/pull/123
   applies_to: Playwright 1.56+, Chromium, avd-landing-zone deployment portal
   status: verified
   added: '2026-10-27'
 - id: powershell-typographic-quote-ends-single-quoted-string
-  symptom: A portal-built PowerShell command breaks or runs extra code when a pasted value holds a curly quote (U+2018 to U+201B), although every ASCII `'` in the value was doubled
-  cause: PowerShell treats the typographic single quotes U+2018, U+2019, U+201A and U+201B as single quotes, so any of them ends a `'...'` string
+  symptom: 'A portal-built PowerShell command breaks or runs extra code when a pasted value holds a curly quote (U+2018 to U+201B), although every ASCII `''` in the value was doubled'
+  cause: 'PowerShell treats the typographic single quotes U+2018, U+2019, U+201A and U+201B as single quotes, so any of them ends a `''...''` string'
   fix: 'Double those characters too when quoting: `value.replace(/[''‘’‚‛]/g, ''$&$&'')`, and add a curly-quote case to the quoting tests (shared portal engine `blocks.psQuote`)'
   source: https://github.com/avd-ops/avd-landing-zone/pull/111
   applies_to: PowerShell 5.1 and 7, avd-ops portal engine pe-v1.0.0, avd-landing-zone and avd-current-state portals
   status: verified
   added: '2026-10-28'
 - id: cloud-shell-bash-block-in-powershell
-  symptom: A command block pasted into Azure Cloud Shell fails at once with `ParserError` (for example on `$(...)`, `&&` or a heredoc)
-  cause: Cloud Shell opens in whichever shell was used last, bash or PowerShell, and a bash block does not parse in PowerShell
-  fix: Label every Cloud Shell block with its shell, and for owner steps such as `gh release create <tag> --target <sha>` give a PowerShell one-liner that needs no clone
+  symptom: 'A command block pasted into Azure Cloud Shell fails at once with `ParserError` (for example on `$(...)`, `&&` or a heredoc)'
+  cause: 'Cloud Shell opens in whichever shell was used last, bash or PowerShell, and a bash block does not parse in PowerShell'
+  fix: 'Label every Cloud Shell block with its shell, and for owner steps such as `gh release create <tag> --target <sha>` give a PowerShell one-liner that needs no clone'
   source: https://github.com/avd-ops/avd-ops/pull/58
   applies_to: Azure Cloud Shell, GitHub CLI (gh)
   status: verified
@@ -414,7 +487,7 @@ errors:
   status: verified
   added: '2026-10-28'
 - id: docs-check-d3-script-as-argument
-  symptom: The docs sweep reports `D3 <script>.ps1 -Settings` (or `-EnableExit`) for a command such as `Invoke-ScriptAnalyzer -Path ./<script>.ps1 -Settings ./settings.psd1`
+  symptom: 'The docs sweep reports `D3 <script>.ps1 -Settings` (or `-EnableExit`) for a command such as `Invoke-ScriptAnalyzer -Path ./<script>.ps1 -Settings ./settings.psd1`'
   cause: D3 read every parameter after a script's name as that script's own, even when the script was only the value of another command's parameter
   fix: D3 skips a script named as another parameter's value, except after `pwsh -File`, which runs it
   source: https://github.com/avd-ops/avd-second-brain/blob/main/docs/docs-spec.md
@@ -422,7 +495,7 @@ errors:
   status: verified
   added: '2026-10-28'
 - id: scheduled-workflow-unconfigured-secrets
-  symptom: A scheduled workflow fails at `azure/login` with `Not all values are present. Ensure 'client-id' and 'tenant-id' are supplied.` and opens an issue that no later run closes
+  symptom: 'A scheduled workflow fails at `azure/login` with `Not all values are present. Ensure ''client-id'' and ''tenant-id'' are supplied.` and opens an issue that no later run closes'
   cause: The workflow ran before its environment's secrets were set, and empty secrets expand to empty strings; its issue step only ever created issues, so nothing closed one when the cause went away and every scheduled run could open another
   fix: Check the secrets in a first step and skip the dependent steps when any is empty, with the setup steps in `$GITHUB_STEP_SUMMARY`, and close the open failure issue; fail a run started by hand instead, so it can't look like a build; keep one failure issue open (later failures comment) and close it on the next success
   source: https://github.com/avd-ops/avd-landing-zone/pull/127
@@ -472,7 +545,7 @@ errors:
 - id: kb-digest-pick-hidden-on-verified-page
   symptom: Digest picks marked *Unverified* sit on a page for months and no freshness issue lists them
   cause: '`digest.accept` adds picks with an inline marker, but freshness counts inline markers only on pages whose status is unverified or partial, and most target pages are verified'
-  fix: A pick turns a verified page back to partial (avd-ops
+  fix: A pick turns a verified page back to partial (avd-ops #83); the same change applies to this repo's `scripts/kb/digest.py`
   source: https://github.com/avd-ops/avd-ops/pull/83
   applies_to: scripts/kb/digest.py (family format 1)
   status: verified
@@ -480,7 +553,7 @@ errors:
 - id: kb-digest-ticked-line-dropped
   symptom: A kb-accepted digest PR says "Adds 2 of the 2 item(s) ticked" when three were ticked, or says nothing is ticked when one was
   cause: Any `- [x]` line counts as a tick, but the item parser reads only `[title](https://...)` lines, so an http link or a URL with a parenthesis is dropped without a word
-  fix: Refuse the digest when a ticked line can't be read, naming how many (avd-ops
+  fix: Refuse the digest when a ticked line can't be read, naming how many (avd-ops #83); the same change applies to this repo's `scripts/kb/digest.py`
   source: https://github.com/avd-ops/avd-ops/pull/83
   applies_to: scripts/kb/digest.py (family format 1)
   status: verified
