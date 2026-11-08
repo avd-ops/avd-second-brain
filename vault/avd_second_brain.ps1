@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     AVD Second Brain -- turns collector and validator evidence packages into a living,
     Markdown knowledge base for an Azure Virtual Desktop estate.
