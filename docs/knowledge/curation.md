@@ -3,7 +3,7 @@ title: "Keeping the knowledge base current"
 summary: "How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment"
 topic: curation
 status: verified
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-29
 ---
 
 # Keeping the knowledge base current
@@ -157,6 +157,12 @@ in `llms.txt`. The schema and the family code in `scripts/kb/` are the same in e
   all of them have merged. The freshness check flags a sibling whose version differs.
 - **Cross-project decisions.** A decision that affects more than one project is recorded in each
   affected KB, and each copy says "Also recorded in ..." with links.
+- **Close the issue loop in every repo.** A workflow that opens an issue on a schedule also closes
+  it when a run comes back clean, and an issue form a maintainer accepts becomes a checked pull
+  request that closes it, never a hand copy. Fetchers retry a 429 or 5xx once before they count a
+  source as failed. avd-assess follows the same rules for its weekly pin drift issue and its
+  "Baseline evidence" form, whose approval label is `accepted` (see the
+  [known errors](troubleshooting/known-errors.yaml) added 2026-10-29).
 
 ## Where the family format comes from
 
