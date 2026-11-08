@@ -109,6 +109,22 @@ errors:
   applies_to: PSScriptAnalyzer 1.23.0, PowerShell 7.4
   status: verified
   added: '2026-10-21'
+- id: workflow-inline-pwsh-never-parsed
+  symptom: 'A scheduled workflow fails every run with `ParserError: The string is missing the terminator: "` in a `shell: pwsh` step, while CI, PSScriptAnalyzer and Pester are green'
+  cause: 'Inline `run:` blocks are not files, so neither the analyzer nor the parse test ever sees them; a nested string with doubled backticks inside a subexpression of an expandable string (`"...$(if ($x) { "`n  Fix: ``$($y)``" })"`) does not parse'
+  fix: Move the step's logic into a module function with a Pester test and keep the run block to a few calls; build such a line in steps (`$line += ...`) instead of nesting quoted strings
+  source: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsshell
+  applies_to: 'GitHub Actions shell pwsh, PowerShell 7.4+'
+  status: verified
+  added: '2026-10-29'
+- id: tracking-issue-never-closes
+  symptom: An issue opened by a scheduled check ("needs attention", "leftovers", a health issue) stays open after the problem is fixed, or a health issue is opened and kept even when every check passes
+  cause: The workflow had an issue step only on failure (or edited the issue on every run), with no clean branch, so nothing ever closed it
+  fix: 'Give every tracking issue a clean branch: on success, close the open issue with a comment linking the clean run; open or update it only on a failure; for an unconfigured optional dependency, skip, write the setup steps to `$GITHUB_STEP_SUMMARY` and close the issue'
+  source: curation.md
+  applies_to: .github/workflows (any scheduled check that opens an issue)
+  status: verified
+  added: '2026-10-29'
 - id: bicep-bcp178-loop-names
   symptom: Bicep error BCP178 in a for-loop over resources
   cause: A for-loop can't use runtime values for resource names
