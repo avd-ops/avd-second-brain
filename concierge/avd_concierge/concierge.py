@@ -297,10 +297,21 @@ class Concierge:
                 )
             doc = json.loads(snapshot.read_text(encoding="utf-8"))
         elif self.facts_root is not None:
-            target_dir = (self.facts_root / estate) if estate else self.facts_root
+            if estate:
+                if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", estate):
+                    raise FactsStoreError("Invalid estate identifier.")
+                matching_dirs = [
+                    child for child in sorted(self.facts_root.iterdir())
+                    if child.is_dir() and not child.is_symlink() and child.name == estate
+                ]
+                if not matching_dirs:
+                    raise FactsStoreError(f"No C11 snapshot found for estate {estate!r}.")
+                target_dir = matching_dirs[0]
+            else:
+                target_dir = self.facts_root
             candidates = sorted(target_dir.rglob("*.json")) if target_dir.is_dir() else []
             if not candidates:
-                raise FactsStoreError(f"No C11 snapshot found in facts store '{target_dir}'.")
+                raise FactsStoreError("No C11 snapshot found in facts store.")
             doc = json.loads(candidates[-1].read_text(encoding="utf-8"))
         else:
             raise FactsStoreError("No C11 snapshot or facts_root configured.")

@@ -154,6 +154,15 @@ class ConciergeFactsTests(unittest.TestCase):
             self.assertEqual(bad_status, 400)
             self.assertIn("Unknown fact ID", bad_body["error"])
 
+            trav_status, trav_body = handle_request(
+                "POST",
+                "/facts",
+                {"ids": ["c11.subscription.budgets.withActionGroup"], "estate": "../outside"},
+                c,
+            )
+            self.assertEqual(trav_status, 400)
+            self.assertIn("Invalid estate identifier", trav_body["error"])
+
 
 if __name__ == "__main__":
     unittest.main()
