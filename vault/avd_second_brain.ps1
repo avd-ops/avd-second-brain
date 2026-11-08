@@ -461,16 +461,128 @@ function Resolve-Package {
 # region Inventory Ingest
 # ---------------------------------------------
 
+function Get-UserFeedbackFact {
+    <#
+    .SYNOPSIS
+        Reads optional user sentiment, client network rollups and reported symptoms from an
+        avd-intake/v1 (intake.json) file inside an evidence package. Free-text comments are
+        never read or stored; only closed C19 enums, banded counts and numeric rollups are kept.
+    #>
+    param([string[]]$Directories, [string]$Utc = '', [string]$PackageName = '')
+    $allowedSymptoms = @(
+        'slow-sign-in', 'reconnect-loop', 'black-screen', 'audio-video-lag',
+        'disconnects', 'app-launch-slow', 'printing', 'teams-calls'
+    )
+    $allowedChips = @(
+        'slow-sign-in', 'disconnects', 'freeze-input-lag',
+        'audio-video', 'print-devices', 'app-slow'
+    )
+    $allowedBands = @('1-2', '3-9', '10-25', '26-100', '100+')
+    $allowedKinds = @('office', 'home', 'mobile', 'branch')
+
+    $intake = $null
+    foreach ($dir in $Directories) {
+        if ([string]::IsNullOrWhiteSpace($dir)) { continue }
+        $candidate = Join-Path $dir 'intake.json'
+        if (Test-Path -LiteralPath $candidate) {
+            $intake = Read-JsonFile -Path $candidate
+            if ($null -ne $intake) { break }
+        }
+    }
+    if ($null -eq $intake) { return $null }
+
+    $reported = @()
+    foreach ($s in @(Get-Prop $intake 'reportedSymptoms' @())) {
+        $val = "$s".Trim()
+        if ($val -in $allowedSymptoms -and $val -notin $reported) { $reported += $val }
+    }
+
+    $sentiment = $null
+    $rawSentiment = Get-Prop $intake 'userSentiment'
+    if ($null -ne $rawSentiment) {
+        $band = "$(Get-Prop $rawSentiment 'sampleBand' '')"
+        $median = Get-Prop $rawSentiment 'ratingMedian'
+        $lowShare = Get-Prop $rawSentiment 'lowRatingShare'
+        if ($band -in $allowedBands -and $null -ne $median -and $null -ne $lowShare) {
+            $chipCounts = [ordered]@{}
+            $rawChips = Get-Prop $rawSentiment 'symptoms'
+            if ($null -ne $rawChips) {
+                foreach ($chip in $allowedChips) {
+                    $cVal = Get-Prop $rawChips $chip
+                    if ($null -ne $cVal -and [int]$cVal -gt 0) { $chipCounts[$chip] = [int]$cVal }
+                }
+            }
+            $sentiment = [ordered]@{
+                sampleBand     = $band
+                ratingMedian   = [double]$median
+                lowRatingShare = [Math]::Round([double]$lowShare, 2)
+                symptoms       = $chipCounts
+            }
+        }
+    }
+
+    $networks = @()
+    foreach ($n in @(Get-Prop $intake 'userNetworks' @())) {
+        if ($null -eq $n) { continue }
+        $nKind = "$(Get-Prop $n 'kind' '')"
+        $nBand = "$(Get-Prop $n 'sampleBand' '')"
+        if ($nKind -notin $allowedKinds -or $nBand -notin $allowedBands) { continue }
+        $entry = [ordered]@{ kind = $nKind; sampleBand = $nBand }
+        foreach ($metric in @('rttMsP50', 'rttMsP95', 'jitterMsP95', 'bandwidthMbpsP10')) {
+            $mVal = Get-Prop $n $metric
+            if ($null -ne $mVal) { $entry[$metric] = [double]$mVal }
+        }
+        $turn = Get-Prop $n 'turnReachable'
+        if ($null -ne $turn) { $entry['turnReachable'] = [bool]$turn }
+        $networks += $entry
+    }
+
+    if ($reported.Count -eq 0 -and $null -eq $sentiment -and $networks.Count -eq 0) { return $null }
+
+    return [ordered]@{
+        UpdatedUtc       = $Utc
+        Package          = $PackageName
+        ReportedSymptoms = $reported
+        UserSentiment    = $sentiment
+        UserNetworks     = $networks
+    }
+}
+
+function Format-UserFeedbackSummary {
+    param($Feedback)
+    if ($null -eq $Feedback) { return '—' }
+    $parts = @()
+    $sent = Get-Prop $Feedback 'UserSentiment'
+    if ($null -ne $sent) {
+        $pct = [Math]::Round([double](Get-Prop $sent 'lowRatingShare' 0) * 100)
+        $parts += "Rating median **$(Get-Prop $sent 'ratingMedian' '—')/5** · Low-rating share **$pct%** (band ``$(Get-Prop $sent 'sampleBand' '')``)"
+    }
+    $symptoms = @(Get-Prop $Feedback 'ReportedSymptoms' @())
+    if ($symptoms.Count -gt 0) {
+        $parts += "Symptoms: " + (@($symptoms | ForEach-Object { "``$_``" }) -join ', ')
+    }
+    $nets = @(Get-Prop $Feedback 'UserNetworks' @())
+    if ($nets.Count -gt 0) {
+        $netSummaries = @($nets | ForEach-Object {
+            $rtt = Get-Prop $_ 'rttMsP95'
+            if ($null -ne $rtt) { "$($_['kind']) p95 ${rtt}ms" } else { "$($_['kind'])" }
+        })
+        $parts += "Networks: " + ($netSummaries -join ', ')
+    }
+    if ($parts.Count -eq 0) { return '—' }
+    return ($parts -join ' · ')
+}
+
 function Get-InventoryFact {
     <#
     .SYNOPSIS
         Condenses one subscription folder of a collector package into the facts the vault
         keeps. Raw rows stay in the evidence package.
     #>
-    param([string]$Directory)
+    param([string]$Directory, [string]$PackageDirectory = '', [string]$Utc = '', [string]$PackageName = '')
 
     $datasets = [ordered]@{}
-    foreach ($file in (Get-ChildItem -LiteralPath $Directory -Filter '*.json' -File | Sort-Object Name)) {
+    foreach ($file in (Get-ChildItem -LiteralPath $Directory -Filter '*.json' -File | Where-Object { $_.Name -ne 'intake.json' } | Sort-Object Name)) {
         $datasets[$file.BaseName] = @(Read-Dataset -Directory $Directory -Name $file.BaseName).Count
     }
 
@@ -505,7 +617,7 @@ function Get-InventoryFact {
         if ($id) { [ordered]@{ Id = $id.ToLowerInvariant(); Type = "$(Get-Prop $_ 'ResourceType' '')"; Name = "$(Get-Prop $_ 'Name' '')" } }
     } | Sort-Object { $_['Id'] })
 
-    return [ordered]@{
+    $result = [ordered]@{
         Datasets     = $datasets
         HostPools    = $hostPools
         SessionHosts = $hostSummary
@@ -515,6 +627,9 @@ function Get-InventoryFact {
         AppGroups    = Get-Distinct @(Read-Dataset -Directory $Directory -Name 'avd-application-groups' | ForEach-Object { Get-Prop $_ 'Name' })
         Resources    = $resources
     }
+    $feedback = Get-UserFeedbackFact -Directories @($Directory, $PackageDirectory) -Utc $Utc -PackageName $PackageName
+    if ($null -ne $feedback) { $result['UserFeedback'] = $feedback }
+    return $result
 }
 
 function Format-Map {
@@ -651,11 +766,19 @@ function Import-InventoryPackage {
             continue
         }
 
-        $facts = Get-InventoryFact -Directory $subDir
+        $facts = Get-InventoryFact -Directory $subDir -PackageDirectory $Package.Directory -Utc $utc -PackageName $Package.Name
         $snapshotBase = "$stamp-inventory"
         Write-JsonFile -Path (Join-Path $envDir "snapshots/$snapshotBase.json") -Data $facts
         Write-TextFile -Path (Join-Path $envDir "snapshots/$snapshotBase.md") `
             -Content (Get-InventoryMarkdown -Environment $environment -Facts $facts -Utc $utc -Package $Package.Name)
+
+        $feedback = Get-Prop $facts 'UserFeedback'
+        if ($null -ne $feedback) {
+            $prevFeedback = Get-Prop $environment 'UserFeedback'
+            if ($null -eq $prevFeedback -or $utc -ge "$(Get-Prop $prevFeedback 'UpdatedUtc' '')") {
+                $environment['UserFeedback'] = $feedback
+            }
+        }
 
         $sessionHostTotal = 0
         foreach ($k in $facts['SessionHosts'].Keys) { $sessionHostTotal += $facts['SessionHosts'][$k]['Count'] }
@@ -740,11 +863,20 @@ function Import-ValidationPackage {
         }
     }
     Write-TextFile -Path (Join-Path $envDir "snapshots/$snapshotBase.md") -Content ($md -join "`n")
-    # Every result is kept, not only the issues: a later PASS is what closes a finding
-    Write-JsonFile -Path (Join-Path $envDir "snapshots/$snapshotBase.json") -Data ([ordered]@{
+    $valData = [ordered]@{
         GeneratedUtc = $utc; Package = $Package.Name; Mode = $mode; Verdict = $verdict
         Counts = $counts; Inputs = $inputs; Results = $results
-    })
+    }
+    $feedback = Get-UserFeedbackFact -Directories @($Package.Directory) -Utc $utc -PackageName $Package.Name
+    if ($null -ne $feedback) {
+        $valData['UserFeedback'] = $feedback
+        $prevFeedback = Get-Prop $environment 'UserFeedback'
+        if ($null -eq $prevFeedback -or $utc -ge "$(Get-Prop $prevFeedback 'UpdatedUtc' '')") {
+            $environment['UserFeedback'] = $feedback
+        }
+    }
+    # Every result is kept, not only the issues: a later PASS is what closes a finding
+    Write-JsonFile -Path (Join-Path $envDir "snapshots/$snapshotBase.json") -Data $valData
 
     Add-Run -Environment $environment -Utc $utc -Kind 'validation' -Package $Package.Name `
         -Summary "$mode → **$verdict** ($countText)" -Link "snapshots/$snapshotBase.md"
@@ -1003,10 +1135,28 @@ function Write-EnvironmentPage {
             $g.Add("| [Validation: $mode]($($v['Link'])) | **$($v['Verdict'])** — $($v['Counts']) | $(Format-Utc $v['Utc']) | $(Get-Age $v['Utc']) |")
         }
     } else { $g.Add('| Validation | _never validated_ | | |') }
+    $userFeedback = Get-Prop $Environment 'UserFeedback'
+    if ($null -ne $userFeedback) {
+        $fbUtc = "$(Get-Prop $userFeedback 'UpdatedUtc' '')"
+        $g.Add("| User feedback | $(Format-UserFeedbackSummary $userFeedback) | $(Format-Utc $fbUtc) | $(Get-Age $fbUtc) |")
+    }
     $g.Add('')
     $openFail = @($open | Where-Object { $_['Status'] -eq 'FAIL' }).Count
     $openWarn = @($open | Where-Object { $_['Status'] -eq 'WARN' }).Count
     $g.Add("**Open findings:** $openFail FAIL · $openWarn WARN — see [findings](findings.md).")
+    if ($null -ne $userFeedback) {
+        $sent = Get-Prop $userFeedback 'UserSentiment'
+        $symptoms = @(Get-Prop $userFeedback 'ReportedSymptoms' @())
+        $lowPain = ($null -ne $sent -and ([double](Get-Prop $sent 'lowRatingShare' 0) -ge 0.25 -or [double](Get-Prop $sent 'ratingMedian' 5) -le 3)) -or ($symptoms.Count -gt 0)
+        if ($lowPain) {
+            $g.Add('')
+            if ($open.Count -eq 0) {
+                $g.Add('> **Blind spot (perceived pain without active findings):** Users report symptoms or low ratings while open validator findings are 0. Inspect client networks, UDP/TURN reachability, and sign-in phases.')
+            } else {
+                $g.Add("> **Corroborated signal:** User-reported symptoms align with $($open.Count) open validator finding(s).")
+            }
+        }
+    }
 
     $header = "# $name"
     $footer = ''

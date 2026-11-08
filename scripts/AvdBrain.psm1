@@ -1,4 +1,4 @@
-﻿# The organizational second brain (docs/knowledge-spec.md): checks on the knowledge in knowledge/,
+# The organizational second brain (docs/knowledge-spec.md): checks on the knowledge in knowledge/,
 # app resolution, sizing calibration and search. Every check takes data already read from disk
 # and returns findings, so it is tested offline. PowerShell 7 (Test-Json), no modules.
 # Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.
@@ -519,8 +519,14 @@ function Get-VaultHarvest {
 
   $hosts = 0; $pools = 0; $types = @{}; $families = @{}; $limits = @{}
   $checks = @{}
+  $symptomEnvs = @{}; $feedbackEnvs = 0; $lowSentimentEnvs = 0; $blindSpotEnvs = 0
+  $allowedSymptoms = @(
+    'slow-sign-in', 'reconnect-loop', 'black-screen', 'audio-video-lag',
+    'disconnects', 'app-launch-slow', 'printing', 'teams-calls'
+  )
   foreach ($env in $envDirs) {
     $snap = Join-Path $env.FullName 'snapshots'
+    $envFeedback = $null
     $inv = Get-ChildItem -LiteralPath $snap -Filter '*-inventory.json' -File -ErrorAction SilentlyContinue | Sort-Object Name | Select-Object -Last 1
     if ($inv) {
       $facts = Get-Content -LiteralPath $inv.FullName -Raw | ConvertFrom-Json
@@ -538,15 +544,24 @@ function Get-VaultHarvest {
           if ($fam) { $families[$fam] = [int]$p.Value + [int]$families[$fam] }
         }
       }
+      if ($facts.PSObject.Properties['UserFeedback'] -and $null -ne $facts.UserFeedback) {
+        $envFeedback = $facts.UserFeedback
+      }
     }
     # The latest validation per mode decides what is still failing in this environment.
     $latest = Get-ChildItem -LiteralPath $snap -Filter '*-validation-*.json' -File -ErrorAction SilentlyContinue |
       Group-Object { ($_.BaseName -split '-validation-', 2)[1] } | ForEach-Object { $_.Group | Sort-Object Name | Select-Object -Last 1 }
+    $envFailingCount = 0
     foreach ($v in @($latest)) {
       if (-not $v) { continue }
+      $valDoc = Get-Content -LiteralPath $v.FullName -Raw | ConvertFrom-Json
+      if ($valDoc.PSObject.Properties['UserFeedback'] -and $null -ne $valDoc.UserFeedback) {
+        $envFeedback = $valDoc.UserFeedback
+      }
       $seen = @{}
-      foreach ($r in @((Get-Content -LiteralPath $v.FullName -Raw | ConvertFrom-Json).Results)) {
+      foreach ($r in @($valDoc.Results)) {
         if ($r.Status -notin 'FAIL', 'WARN') { continue }
+        $envFailingCount++
         $key = "$($r.Category)|$($r.Check)"
         if ($seen[$key]) { continue }
         $seen[$key] = $true
@@ -555,7 +570,37 @@ function Get-VaultHarvest {
         if ($r.Status -eq 'FAIL') { $checks[$key].Worst = 'FAIL' }
       }
     }
+    if ($null -ne $envFeedback) {
+      $feedbackEnvs++
+      $seenSymptoms = @{}
+      if ($envFeedback.PSObject.Properties['ReportedSymptoms'] -and $null -ne $envFeedback.ReportedSymptoms) {
+        foreach ($sym in @($envFeedback.ReportedSymptoms)) {
+          $sName = "$sym".Trim()
+          if ($sName -in $allowedSymptoms -and -not $seenSymptoms[$sName]) {
+            $seenSymptoms[$sName] = $true
+            $symptomEnvs[$sName] = 1 + [int]$symptomEnvs[$sName]
+          }
+        }
+      }
+      $hasLowSentiment = $false
+      if ($envFeedback.PSObject.Properties['UserSentiment'] -and $null -ne $envFeedback.UserSentiment) {
+        $sent = $envFeedback.UserSentiment
+        $lowShare = if ($sent.PSObject.Properties['lowRatingShare'] -and $null -ne $sent.lowRatingShare) { [double]$sent.lowRatingShare } else { 0.0 }
+        $median = if ($sent.PSObject.Properties['ratingMedian'] -and $null -ne $sent.ratingMedian) { [double]$sent.ratingMedian } else { 5.0 }
+        if ($lowShare -ge 0.25 -or $median -le 3.0) {
+          $hasLowSentiment = $true
+          $lowSentimentEnvs++
+        }
+      }
+      if (($hasLowSentiment -or $seenSymptoms.Count -gt 0) -and $envFailingCount -eq 0) {
+        $blindSpotEnvs++
+      }
+    }
   }
+
+  $recurringSymptoms = @(foreach ($k in ($symptomEnvs.Keys | Sort-Object)) {
+    [pscustomobject]@{ Symptom = $k; Environments = [int]$symptomEnvs[$k] }
+  }) | Sort-Object @{ Expression = 'Environments'; Descending = $true }, Symptom
 
   $candidates = foreach ($kind in 'runbooks', 'lessons') {
     foreach ($f in @(Get-ChildItem -LiteralPath (Join-Path $vault $kind) -Filter *.md -File -ErrorAction SilentlyContinue)) {
@@ -582,6 +627,12 @@ function Get-VaultHarvest {
       maxSessionLimits   = $limits
     }
     RecurringChecks    = @($checks.Values | Sort-Object @{ Expression = 'Environments'; Descending = $true }, @{ Expression = { $_.Worst -ne 'FAIL' } }, Check)
+    UserFeedback       = [pscustomobject]@{
+      EnvironmentsWithFeedback = $feedbackEnvs
+      LowSentimentEnvironments = $lowSentimentEnvs
+      BlindSpotEnvironments    = $blindSpotEnvs
+      RecurringSymptoms        = @($recurringSymptoms)
+    }
     Candidates         = @($candidates)
   }
 }
