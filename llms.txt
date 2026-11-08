@@ -67,6 +67,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md): accepted
 - [0025. An AVD-native Terraform kit lives in its own HCL-lane repo, beside the landing zone](docs/knowledge/decisions/0025-avd-native-terraform-kit.md): proposed
 - [0026. Runs check and clean up before they spend, and the setup is the desired state](docs/knowledge/decisions/0026-runs-check-and-clean-before-they-spend.md): accepted
+- [0027. Desktop DevOps across AVD, Windows 365, and Microsoft Intune](docs/knowledge/decisions/0027-desktop-devops-across-avd-win365-and-intune.md): accepted
 
 ## Related knowledge bases
 
