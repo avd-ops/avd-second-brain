@@ -590,3 +590,35 @@ errors:
   applies_to: avd-assess .github/workflows/evidence-intake.yml
   status: verified
   added: '2026-10-29'
+- id: win11-client-patchmode-automaticbyplatform
+  symptom: 'Deploying a Windows 11 client VM (`MicrosoftWindowsDesktop/windows-11/*`) fails with `InvalidParameter: The selected VM image is not supported for VM Guest patch operations` on `windowsConfiguration.patchSettings.patchMode`'
+  cause: 'Azure VM Guest Patching (`patchMode: ''AutomaticByPlatform''`) is supported on `MicrosoftWindowsServer` images, not on `MicrosoftWindowsDesktop` Windows 11 client images'
+  fix: 'Set `windowsConfiguration.patchSettings.patchMode` to `''AutomaticByOS''` (with `assessmentMode: ''ImageDefault''`) when the image publisher is `MicrosoftWindowsDesktop`'
+  source: landing-zone/README.md
+  applies_to: Bicep Microsoft.Compute/virtualMachines (MicrosoftWindowsDesktop/windows-11)
+  status: verified
+  added: '2026-11-08'
+- id: nsg-service-tag-in-plural-sourceaddressprefixes
+  symptom: 'ARM deployment of an NSG rule (`Microsoft.Network/networkSecurityGroups`) fails when a single-element service tag array (such as `[''VirtualNetwork'']`) is passed in `sourceAddressPrefixes` or `destinationAddressPrefixes`'
+  cause: 'Azure Network RP allows service tags (`VirtualNetwork`, `Internet`, `AzureLoadBalancer`, etc.) only in singular `sourceAddressPrefix` / `destinationAddressPrefix`, not inside plural `sourceAddressPrefixes` / `destinationAddressPrefixes`'
+  fix: 'Use singular `sourceAddressPrefix` when passing a service tag or a single-element prefix list, and use plural `sourceAddressPrefixes` only for multiple CIDR prefixes'
+  source: landing-zone/README.md
+  applies_to: Bicep Microsoft.Network/networkSecurityGroups
+  status: verified
+  added: '2026-11-08'
+- id: ps51-az-stderr-warning-breaks-convertfrom-json
+  symptom: 'In Windows PowerShell 5.1, `az deployment group create ... -o json 2>&1 | Out-String | ConvertFrom-Json` fails with `ConvertFrom-Json : Invalid JSON primitive: az.` even when the deployment succeeded'
+  cause: 'Under `$ErrorActionPreference = ''Stop''`, Windows PowerShell 5.1 wraps every stderr line redirected via `2>&1` (such as `WARNING: A new Bicep release is available`) in a `[System.Management.Automation.ErrorRecord]` object that serializes ahead of the JSON output on stdout'
+  fix: 'Run `az` JSON calls with `$ErrorActionPreference = ''Continue''` inside a local scope and filter out `[System.Management.Automation.ErrorRecord]` items (`Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] }`) before piping to `ConvertFrom-Json`'
+  source: landing-zone/README.md
+  applies_to: Windows PowerShell 5.1 + Azure CLI (az)
+  status: verified
+  added: '2026-11-08'
+- id: azure-mcp-virtualdesktop-draft-tool-names
+  symptom: 'An MCP tool allowlist or runbook targeting Microsoft''s Azure MCP Server (`@azure/mcp`, `--mode all --read-only --namespace virtualdesktop`) fails to match session host or user session tools when configured with `virtualdesktop_sessionhost_list`, `virtualdesktop_hostpool_sessionhost_list`, or `virtualdesktop_usersession_list`'
+  cause: 'Microsoft Learn documents the `virtualdesktop` namespace capabilities without listing exact MCP tool names; `@azure/mcp` (`4.0.0-beta.6`) names the three tools under the `virtualdesktop_hostpool_` hierarchy with a hyphen in `user-list`'
+  fix: 'Use the verified `@azure/mcp` (`4.0.0-beta.6`) tool names `virtualdesktop_hostpool_list`, `virtualdesktop_hostpool_host_list`, and `virtualdesktop_hostpool_host_user-list` in allowlists and runbooks'
+  source: agents/README.md
+  applies_to: '@azure/mcp 4.0.0-beta.6 (--namespace virtualdesktop)'
+  status: verified
+  added: '2026-11-08'
