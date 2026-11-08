@@ -34,5 +34,6 @@ Chosen option: "Extend `avd-second-brain` while keeping Windows 365 inside `avd-
 ## More Information
 
 - Also recorded in: [avd-ops 0012](https://github.com/avd-ops/avd-ops/blob/main/docs/knowledge/decisions/0012-desktop-devops-for-avd-win365-and-intune.md) and [docs/desktop-devops-spec.md](https://github.com/avd-ops/avd-ops/blob/main/docs/desktop-devops-spec.md).
-- Pair: `avd-swarm` specialist agents (`hosts-and-cloudpcs`, `intune-policy`, `cost-and-licensing`) and `avd-assess` checks (`asm-intune-assignment-filters-separate-platforms`, `asm-win365-*`).
+- Pair: `avd-swarm` specialist agents (`hosts-and-cloudpcs`, `intune-policy`, `cost-and-licensing`), governance gate (`gate/avd_gate/evidence.py`, `gate/avd_gate/apply.py`, `templates/workflows/approve.yml`), and `avd-assess` checks (`asm-intune-assignment-filters-separate-platforms`, `asm-win365-*`).
 - Microsoft Learn: [Windows 365 Cloud PC lifecycle](https://learn.microsoft.com/en-us/windows-365/enterprise/device-management-overview), [Assignment filters in Microsoft Intune](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/filters), [cloudPC Graph resource](https://learn.microsoft.com/en-us/graph/api/resources/cloudpc?view=graph-rest-1.0).
+
