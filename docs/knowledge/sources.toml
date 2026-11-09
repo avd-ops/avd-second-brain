@@ -231,6 +231,20 @@ path = "docs/decisions"
 kb_page = "operations/README.md"
 
 [[source]]
+name = "avd-servicenow: lessons"
+kind = "github_commits"
+repo = "avd-ops/avd-servicenow"
+path = "docs/lessons"
+kb_page = "operations/README.md"
+
+[[source]]
+name = "avd-servicenow: decisions"
+kind = "github_commits"
+repo = "avd-ops/avd-servicenow"
+path = "docs/decisions"
+kb_page = "operations/README.md"
+
+[[source]]
 name = "avd-current-state: changes"
 kind = "github_commits"
 repo = "avd-ops/avd-current-state"
