@@ -1,0 +1,151 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "avd-ops/avd-second-brain",
+  "documentNamespace": "https://github.com/avd-ops/avd-second-brain/sbom/spdx-2.3",
+  "creationInfo": {
+    "created": "2026-11-09T00:00:00Z",
+    "creators": [
+      "Organization: avd-ops",
+      "Tool: avd-ops-sbom-generator-1.0.0"
+    ],
+    "comment": "Software Bill of Materials (SPDX 2.3) for pinned GitHub Actions, runtime packages, and CI toolchain dependencies."
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-avd-second-brain",
+      "name": "avd-ops/avd-second-brain",
+      "versionInfo": "HEAD",
+      "downloadLocation": "https://github.com/avd-ops/avd-second-brain",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/avd-ops/avd-second-brain"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-actions-checkout-v4.4.0--11d5960a3267",
+      "name": "actions/checkout",
+      "versionInfo": "v4.4.0 (11d5960a3267)",
+      "downloadLocation": "https://github.com/actions/checkout",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/actions/checkout@11d5960a326750d5838078e36cf38b85af677262"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-actions-upload-artifact-v4.6.2--ea165f8d65b6",
+      "name": "actions/upload-artifact",
+      "versionInfo": "v4.6.2 (ea165f8d65b6)",
+      "downloadLocation": "https://github.com/actions/upload-artifact",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-actions-setup-python-v5.6.0--a26af69be951",
+      "name": "actions/setup-python",
+      "versionInfo": "v5.6.0 (a26af69be951)",
+      "downloadLocation": "https://github.com/actions/setup-python",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-PyYAML-6.0.2",
+      "name": "PyYAML",
+      "versionInfo": "6.0.2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:pypi/pyyaml@6.0.2"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jsonschema-4.23.0",
+      "name": "jsonschema",
+      "versionInfo": "4.23.0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:pypi/jsonschema@4.23.0"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-actions-checkout-v4.4.0--11d5960a3267",
+      "relationshipType": "BUILD_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-actions-upload-artifact-v4.6.2--ea165f8d65b6",
+      "relationshipType": "BUILD_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-actions-setup-python-v5.6.0--a26af69be951",
+      "relationshipType": "BUILD_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-PyYAML-6.0.2",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-jsonschema-4.23.0",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-avd-second-brain"
+    }
+  ]
+}
