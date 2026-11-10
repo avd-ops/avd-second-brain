@@ -1,0 +1,99 @@
+{
+  "$schema": "../../schemas/check-catalog.schema.json",
+  "schema": "avd-check-catalog/v1",
+  "version": 1,
+  "checks": [
+    {
+      "id": "quota",
+      "title": "Regional vCPU quota covers the planned session hosts",
+      "phase": [
+        "preflight"
+      ],
+      "gate": "block",
+      "pillar": "reliability",
+      "severity": "high",
+      "reads": [
+        "arm"
+      ],
+      "claims": [
+        "ref:review-checklists-avd#C03.03"
+      ],
+      "impl": "Get-QuotaResult",
+      "fixable": false
+    },
+    {
+      "id": "hostpool-pooled-start-vm-on-connect",
+      "title": "Start VM on Connect is on for pooled host pools",
+      "phase": [
+        "postflight"
+      ],
+      "gate": "advise",
+      "pillar": "cost",
+      "severity": "low",
+      "facts": [
+        "c11.hostPool.type",
+        "c11.hostPool.startVmOnConnect"
+      ],
+      "claims": [
+        "ref:start-vm-on-connect#power-on-when-needed"
+      ],
+      "rule": {
+        "each": "/subscriptions/*/hostPools/*",
+        "where": {
+          "type": {
+            "eq": "Pooled"
+          }
+        },
+        "expect": {
+          "startVmOnConnect": {
+            "eq": true
+          }
+        },
+        "onFail": "warn"
+      },
+      "remediation": {
+        "kind": "lz-parameter",
+        "name": "startVmOnConnect",
+        "to": true
+      },
+      "fixable": true
+    },
+    {
+      "id": "asm-personal-start-vm-on-connect",
+      "title": "Personal host pools have Start VM on Connect on",
+      "phase": [
+        "postflight"
+      ],
+      "gate": "advise",
+      "pillar": "operations",
+      "severity": "medium",
+      "claims": [
+        "ref:review-checklists-avd#E01.05"
+      ],
+      "source": "method"
+    },
+    {
+      "id": "drift-param",
+      "title": "A declared landing zone parameter no longer matches the live estate",
+      "phase": [
+        "drift"
+      ],
+      "gate": "advise",
+      "pillar": "operations",
+      "severity": "medium",
+      "reads": [
+        "deployment-record",
+        "resource-graph",
+        "arm"
+      ],
+      "claims": [
+        "gap:governance-scope"
+      ],
+      "impl": "Get-DriftParameterResult",
+      "remediation": {
+        "kind": "lz-setting",
+        "name": "redeploy"
+      }
+    }
+  ]
+}

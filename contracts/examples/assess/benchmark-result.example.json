@@ -1,0 +1,57 @@
+{
+  "schema": "avd-benchmark-result/v1",
+  "id": "bm-20261028-multisession-density-e4sv5",
+  "date": "2026-10-28",
+  "source": "sandbox",
+  "tier": "synthetic",
+  "profile": {
+    "id": "multisession-density",
+    "version": "1.0.0",
+    "workloadClass": "medium",
+    "assessCommit": "cfcc3026b968c3c15a4150b8c7160891a138d3f0",
+    "benchmarkCommit": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "environment": {
+    "vmSku": "Standard_E4s_v5",
+    "vcpu": 4,
+    "memoryGiB": 32,
+    "osDiskType": "Premium_LRS",
+    "ephemeralOsDisk": false,
+    "encryptionAtHost": true,
+    "trustedLaunch": true,
+    "osImage": "win11-24h2-avd-m365",
+    "wdotProfile": "avd-ops-reviewed-v1",
+    "joinType": "entra-joined",
+    "intuneEnrolled": true,
+    "profileStorageSku": "Premium_ZRS",
+    "profileAuth": "entra-kerberos",
+    "smbChannelEncryption": "AES-128-GCM+AES-256-GCM",
+    "networkEgress": "nat-gateway",
+    "sampleHostsBand": "1-2",
+    "sampleSessionsBand": "10-25",
+    "windowHours": 2
+  },
+  "metrics": {
+    "sessionsPerVcpuTested": 4.0,
+    "cpuPct": { "p50": 58.2, "p90": 74.1, "p95": 78.6, "max": 86.0 },
+    "pqlPerCore": { "p50": 0.4, "p90": 1.1, "p95": 1.4 },
+    "availableMemoryMiB": { "p50": 11240, "p10": 8420, "min": 7680 },
+    "memoryPerSessionMiB": { "p50": 1180, "p90": 1420, "p95": 1510 },
+    "inputDelayMs": { "p50": 24, "p90": 52, "p95": 68, "p99": 94 }
+  },
+  "verdict": {
+    "experienceGate": "pass",
+    "claims": [
+      {
+        "claim": "ref:session-host-sizing#multisession-users-per-vcpu",
+        "observation": "obs:users-per-vcpu-adopted",
+        "verdict": "agrees"
+      },
+      {
+        "claim": "ref:session-host-sizing#multisession-vcpu-range",
+        "observation": "obs:sizing-floor-not-measured",
+        "verdict": "extends"
+      }
+    ]
+  }
+}
