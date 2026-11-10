@@ -598,14 +598,25 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
   ) {
     Get-ReportCheck (Save-Changed 'assessment.example.json' $Change) | Should -Contain $Check
   }
-  It 'the remediation plan example matches avd-remediation-plan/v1 (C24) with required plane' {
+  It 'the check catalog, assessment review, remediation plan, and benchmark result examples match C22, C23, C24 and C25' {
+    Test-Json -Path (Join-Path $script:root 'contracts/examples/checks/catalog.example.json') -SchemaFile (Join-Path $script:schemas 'check-catalog.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'review.example.json') -SchemaFile (Join-Path $script:schemas 'assessment-review.schema.json') | Should -BeTrue
     Test-Json -Path (Join-Path $script:ex 'plan.example.json') -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'benchmark-result.example.json') -SchemaFile (Join-Path $script:schemas 'benchmark-result.schema.json') | Should -BeTrue
     $bad = Save-Changed 'plan.example.json' { param($p) $p.items[0].PSObject.Properties.Remove('plane') }
     Test-Json -Path $bad -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') -ErrorAction SilentlyContinue | Should -BeFalse
   }
-  It 'contracts.md lists C19, C20, C21 and C24 as built, with their schemas' {
+  It 'contracts.md lists C19 to C25 as built, with their schemas' {
     $all = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw))
-    $want = @{ C19 = @('intake.schema.json'); C20 = @('assess-index.schema.json', 'assess-method.schema.json', 'assess-map.schema.json'); C21 = @('assessment.schema.json'); C24 = @('remediation-plan.schema.json') }
+    $want = @{
+      C19 = @('intake.schema.json')
+      C20 = @('assess-index.schema.json', 'assess-method.schema.json', 'assess-map.schema.json')
+      C21 = @('assessment.schema.json')
+      C22 = @('check-catalog.schema.json')
+      C23 = @('assessment-review.schema.json')
+      C24 = @('remediation-plan.schema.json')
+      C25 = @('benchmark-result.schema.json')
+    }
     foreach ($id in $want.Keys) {
       $c = @($all | Where-Object Id -eq $id)[0]
       $c.Built | Should -BeTrue -Because "$id has its schema and tests"
