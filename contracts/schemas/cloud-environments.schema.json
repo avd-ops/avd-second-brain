@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-cloud-environments/v1.json",
+  "title": "avd-cloud-environments/v1: cloud environment profiles and capability flags (cloud-environments.json)",
+  "description": "Contract C26. Authoritative map of sovereign and commercial cloud endpoints, Private DNS zones, supported regions, and capability flags for Azure Commercial + Microsoft 365 Commercial (commercial) and Azure US Government + Microsoft 365 GCC High (usgov). Consumed at build, deploy, collection, and assessment time across the avd-ops family.",
+  "type": "object",
+  "required": ["schema", "version", "environments", "clouds"],
+  "additionalProperties": false,
+  "$defs": {
+    "deprecated": {
+      "type": "object",
+      "description": "Marks an ID that a later major release may remove (docs/distribution-spec.md section 6): the release that first carried the mark and the ID that replaces it, if any. Readers keep using a deprecated ID until it is gone.",
+      "required": ["since"],
+      "additionalProperties": false,
+      "properties": {
+        "since": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" },
+        "replacedBy": { "type": ["string", "null"] }
+      }
+    },
+    "region": {
+      "type": "string",
+      "pattern": "^[a-z0-9]{2,40}$"
+    },
+    "avdEndpoints": {
+      "type": "object",
+      "required": ["rdwebUrl", "feedDiscoveryUrl", "brokerHost", "diagnosticsHost", "globalGatewayDns"],
+      "additionalProperties": false,
+      "properties": {
+        "rdwebUrl": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "feedDiscoveryUrl": { "type": "string", "pattern": "^https://[a-z0-9.-]+(/[A-Za-z0-9._/-]+)?$" },
+        "brokerHost": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "diagnosticsHost": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "globalGatewayDns": { "type": "string", "pattern": "^[a-z0-9.-]+$" }
+      }
+    },
+    "m365Endpoints": {
+      "type": "object",
+      "required": ["teamsAdminEnvironment", "exchangeEnvironmentName"],
+      "additionalProperties": false,
+      "properties": {
+        "teamsAdminEnvironment": { "enum": ["Commercial", "GCCHigh"] },
+        "exchangeEnvironmentName": { "enum": ["O365Default", "O365USGovGCCHigh"] }
+      }
+    },
+    "powerPlatformEndpoints": {
+      "type": "object",
+      "required": ["bapEndpoint", "pacCloud", "dataverseSuffixes"],
+      "additionalProperties": false,
+      "properties": {
+        "bapEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "pacCloud": { "enum": ["Public", "UsGovHigh"] },
+        "dataverseSuffixes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9.-]+$" }
+        }
+      }
+    },
+    "privateDnsZones": {
+      "type": "object",
+      "required": ["avdConnection", "avdDiscovery", "avdGlobal", "azureFiles", "azureBlob", "keyVault"],
+      "additionalProperties": false,
+      "properties": {
+        "avdConnection": { "type": "string", "pattern": "^privatelink\\.[a-z0-9.-]+$" },
+        "avdDiscovery": { "type": "string", "pattern": "^privatelink\\.[a-z0-9.-]+$" },
+        "avdGlobal": { "type": "string", "pattern": "^privatelink(-global)?\\.[a-z0-9.-]+$" },
+        "azureFiles": { "type": "string", "pattern": "^privatelink\\.[a-z0-9.-]+$" },
+        "azureBlob": { "type": "string", "pattern": "^privatelink\\.[a-z0-9.-]+$" },
+        "keyVault": { "type": "string", "pattern": "^privatelink\\.[a-z0-9.-]+$" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "multimediaRedirection",
+        "win365MicrosoftHostedNetwork",
+        "win365AzureNetworkConnection",
+        "win365CrossCloudAnc",
+        "win365Frontline",
+        "bastionDeveloperSku",
+        "entraKerberosAzureFiles",
+        "screenCaptureProtection",
+        "watermarking",
+        "udpShortpathPublicStun",
+        "confidentialVms"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "multimediaRedirection": { "type": "boolean" },
+        "win365MicrosoftHostedNetwork": { "type": "boolean" },
+        "win365AzureNetworkConnection": { "type": "boolean" },
+        "win365CrossCloudAnc": { "type": "boolean" },
+        "win365Frontline": { "type": "boolean" },
+        "bastionDeveloperSku": { "type": "boolean" },
+        "entraKerberosAzureFiles": { "type": "boolean" },
+        "screenCaptureProtection": { "type": "boolean" },
+        "watermarking": { "type": "boolean" },
+        "udpShortpathPublicStun": { "type": "boolean" },
+        "confidentialVms": { "type": "boolean" }
+      }
+    },
+    "cloudProfileBody": {
+      "type": "object",
+      "required": [
+        "displayName",
+        "azCloudName",
+        "psEnvironmentName",
+        "entraEnvironment",
+        "armEndpoint",
+        "loginEndpoint",
+        "graphEndpoint",
+        "storageEndpointSuffix",
+        "keyVaultDnsSuffix",
+        "logAnalyticsWorkspaceSuffix",
+        "logAnalyticsOdsSuffix",
+        "avd",
+        "m365",
+        "powerPlatform",
+        "privateDnsZones",
+        "defaultRegions",
+        "allowedRegions",
+        "capabilities"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "displayName": { "type": "string", "minLength": 3, "maxLength": 120 },
+        "azCloudName": { "enum": ["AzureCloud", "AzureUSGovernment"] },
+        "psEnvironmentName": { "enum": ["AzureCloud", "AzureUSGovernment"] },
+        "entraEnvironment": { "enum": ["Global", "USGov"] },
+        "armEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "loginEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "graphEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "storageEndpointSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "keyVaultDnsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "logAnalyticsWorkspaceSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "logAnalyticsOdsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "avd": { "$ref": "#/$defs/avdEndpoints" },
+        "m365": { "$ref": "#/$defs/m365Endpoints" },
+        "powerPlatform": { "$ref": "#/$defs/powerPlatformEndpoints" },
+        "privateDnsZones": { "$ref": "#/$defs/privateDnsZones" },
+        "defaultRegions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/region" }
+        },
+        "allowedRegions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/region" }
+        },
+        "capabilities": { "$ref": "#/$defs/capabilities" }
+      }
+    },
+    "environmentEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "displayName",
+        "azCloudName",
+        "psEnvironmentName",
+        "entraEnvironment",
+        "armEndpoint",
+        "loginEndpoint",
+        "graphEndpoint",
+        "storageEndpointSuffix",
+        "keyVaultDnsSuffix",
+        "logAnalyticsWorkspaceSuffix",
+        "logAnalyticsOdsSuffix",
+        "avd",
+        "m365",
+        "powerPlatform",
+        "privateDnsZones",
+        "defaultRegions",
+        "allowedRegions",
+        "capabilities"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "enum": ["commercial", "usgov"] },
+        "deprecated": { "$ref": "#/$defs/deprecated" },
+        "displayName": { "type": "string", "minLength": 3, "maxLength": 120 },
+        "azCloudName": { "enum": ["AzureCloud", "AzureUSGovernment"] },
+        "psEnvironmentName": { "enum": ["AzureCloud", "AzureUSGovernment"] },
+        "entraEnvironment": { "enum": ["Global", "USGov"] },
+        "armEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "loginEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "graphEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "storageEndpointSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "keyVaultDnsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "logAnalyticsWorkspaceSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "logAnalyticsOdsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "avd": { "$ref": "#/$defs/avdEndpoints" },
+        "m365": { "$ref": "#/$defs/m365Endpoints" },
+        "powerPlatform": { "$ref": "#/$defs/powerPlatformEndpoints" },
+        "privateDnsZones": { "$ref": "#/$defs/privateDnsZones" },
+        "defaultRegions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/region" }
+        },
+        "allowedRegions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/region" }
+        },
+        "capabilities": { "$ref": "#/$defs/capabilities" }
+      }
+    }
+  },
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema": { "const": "avd-cloud-environments/v1" },
+    "version": { "type": "integer", "minimum": 1 },
+    "environments": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/environmentEntry" }
+    },
+    "clouds": {
+      "type": "object",
+      "required": ["commercial", "usgov"],
+      "additionalProperties": false,
+      "properties": {
+        "commercial": { "$ref": "#/$defs/cloudProfileBody" },
+        "usgov": { "$ref": "#/$defs/cloudProfileBody" }
+      }
+    }
+  }
+}

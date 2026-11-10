@@ -172,6 +172,8 @@
   },
   "properties": {
     "schema": { "const": "avd-lifecycle-record/v1" },
+    "cloud": { "type": "string", "enum": ["commercial", "usgov"], "description": "Cloud environment (commercial or usgov)" },
+    "complianceProfile": { "type": "string", "enum": ["standard", "itar-cui"], "description": "Compliance profile (standard or itar-cui)" },
     "estate": { "type": "string", "pattern": "^est-[0-9a-f]{8}$" },
     "environment": { "type": "string", "pattern": "^env-[0-9a-f]{8}$", "description": "HMAC pseudonym over the environment's resource group or subscription, keyed with the estate's resources subkey (C11)" },
     "engagement": { "type": "string", "pattern": "^eng-[0-9]{4}-[0-9]{2}-[a-z0-9]{4}$" },
