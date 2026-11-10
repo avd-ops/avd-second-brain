@@ -191,7 +191,7 @@ Checked on 2026-10-20 and built on 2026-11-08 in [avd-swarm #62](https://github.
 
 ## Fan-out answers: split, fan out, verify, merge
 
-Mapped on 2026-10-20 from the common goal, split, fan-out workers, fresh-context verifier, merge and final-answer pattern onto avd-swarm (spec §4a, proposed) and the brain (operations-spec §4.4). General facts about multi-agent patterns belong to the [AI research knowledge base](https://github.com/nickprignano/ai-brain/tree/main/docs/knowledge); this keeps only how the AVD repos apply it.
+Mapped on 2026-10-20 from the common goal, split, fan-out workers, fresh-context verifier, merge and final-answer pattern onto avd-swarm (spec §4a, proposed) and the brain (operations-spec §4.4). General facts about multi-agent patterns belong to the [AI research knowledge base](https://github.com/nickprignano/2ndbrain/tree/main/docs/knowledge); this keeps only how the AVD repos apply it.
 
 - **A verifier is only fresh if its input is narrow.** Passing a worker's whole output (reasoning plus answer) to a second model lets the reasoning argue the verifier into agreeing. The AVD repos pass claims only: a value, its unit and the tool call IDs it cites. The swarm's claim check, its eval judge and the brain's Critic all see claims and evidence, never the reasoning that produced them.
 - **Most of the check is code, not a model.** A claim that reads one value from one tool output is checked by matching the value in that saved output, at no token cost; only an inference across several outputs needs a model verifier. That keeps the pattern affordable at one operator's volume.
