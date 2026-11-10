@@ -32,4 +32,4 @@ Chosen option: "Propose both for format v2", because every KB in the family writ
 ## More Information
 
 - Proposed to the family per [curation.md](../curation.md).
-- Accepted by the owner on 2026-10-21. Written up in ai-brain, which owns the family format, as [AI 0018](https://github.com/nickprignano/ai-brain/blob/main/docs/knowledge/decisions/0018-family-format-stronger-leak-check.md); nerdio-hcl and avd-liquidware adopt it from there.
+- Accepted by the owner on 2026-10-21. Written up in 2ndbrain, which owns the family format, as [2ndbrain 0018](https://github.com/nickprignano/2ndbrain/blob/main/docs/knowledge/decisions/0018-family-format-stronger-leak-check.md); nerdio-hcl and avd-liquidware adopt it from there.
