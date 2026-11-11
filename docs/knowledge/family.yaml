@@ -17,8 +17,8 @@ projects:
   repo: avd-ops/avd-second-brain
   kb_path: docs/knowledge
   role: member
-  focus: Azure Virtual Desktop itself, across its lifecycle (assess, inventory, deploy, operate), and the intelligence layer behind avd-swarm
-  owns: [Azure Virtual Desktop platform, FSLogix, session host images in general, the AVD landing zone and its operations]
+  focus: Desktop DevOps intelligence across Azure Virtual Desktop, Windows 365 and Microsoft Intune (assess, inventory, deploy, operate), and the memory layer behind avd-swarm
+  owns: [Azure Virtual Desktop platform, Windows 365 Cloud PCs, Intune policy-as-code and assignment filters, FSLogix, session host and Cloud PC images, the AVD landing zone and its operations, the contracts between the AVD repos]
   format_version: 1
   claude_project: AVD
   builds_in: [avd-landing-zone, avd-entra, avd-intune, avd-m365, avd-azure, avd-power-platform, avd-swarm, avd-second-brain, avd-current-state, avd-liquidware deployment tooling, avd-ops]
