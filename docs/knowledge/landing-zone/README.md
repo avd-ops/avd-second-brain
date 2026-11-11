@@ -20,7 +20,7 @@ sources:
 
 How an AVD landing zone gets built and kept healthy with Azure-native tooling: Bicep and Azure Verified Modules, networking and private endpoints, vCPU quota, resource providers, and running every step from Azure Cloud Shell. Each rule below came out of a real run of [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) and links the lesson that holds the detail ([decision 0008](../decisions/0008-learned-knowledge-stays-where-it-happened.md)). The exact errors are in [known errors](../troubleshooting/README.md).
 
-The landing zone's scope is Entra ID only, greenfield and private by default ([avd-landing-zone decision 0001](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0001-cloud-native-scope.md)).
+The landing zone's scope is Entra ID only, greenfield and private by default ([avd-landing-zone decision 0001](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0001-cloud-native-scope.md)), with sovereign support for Azure US Government and Microsoft 365 GCC High (`cloud = 'usgov'`, `complianceProfile = 'itar-cui'`) documented in [Azure US Government and GCC High](usgov-and-gcc-high.md).
 
 ## Orchestrating the five control planes
 
