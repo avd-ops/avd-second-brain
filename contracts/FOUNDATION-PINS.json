@@ -1,7 +1,7 @@
 {
   "description": "Foundation contracts (C11, C15, C17, C19, C20 with the assess map, C21, C22, C23, C24, C25, C26) vendored from avd-assess, their authority since decision 0021. Each must be byte-identical to the file at assessCommit; tests/Connectors.Tests.ps1 checks the hashes. To update: copy the files from avd-assess at a new commit, then update assessCommit and the hashes in the same PR. The other files in contracts/ are this repo's own.",
   "source": "https://github.com/avd-ops/avd-assess",
-  "assessCommit": "ef8a99ed5d5cdef0dc663c8b22e2cac1b8006788",
+  "assessCommit": "bd2a2034a5f9fad2c4cf9bee861c58d064cc1432",
   "files": {
     "cloud-environments.json": "ad6a49356e3d61c2fbcec7a5fd305fc319a99ce6fd109e3885b34880d9796c39",
     "examples/assess/assessment.example.json": "5b1e51c559ca4634154e0eb22314d2f8151a1e2d3fa4eae13e7a640ec47cd8b4",
@@ -16,7 +16,7 @@
     "examples/run-record/cost.example.json": "a459dcea4ac71e982208e08c55a8bcd8331d5d1908fbf151d0ef24fec803c691",
     "examples/run-record/journal.example.jsonl": "426c82a90e99d43235dd1c42bb14e9643d1772c0459b9388f0860fe050435902",
     "examples/run-record/run.example.json": "8cf91d7332883a6733bcedcbab72b347e51bd0917402f86fe68bc7244244bebe",
-    "fact-register.json": "52a12178817e4189c19329c3cf9b4b3f3ebdd8e87c6e5ec72d54c26b6d1a2651",
+    "fact-register.json": "23f8fa464c3bde50cb0c7fed76cb2a9677169c1201cb0f92c6c70b5409fdcd6e",
     "run-use-cases.json": "e9d981d5584df77d3d806dcb248b0a1159c250af8a349a081288ad0e29ac6714",
     "schemas/assess-index.schema.json": "4e5243ba2c9ae4751485fbcb99b64781d7284c08b1f280f47b3b70603da17912",
     "schemas/assess-map.schema.json": "013ae66e3eb255cf33f08df4b7ea86d8a80debd2930ef3eb6d96ef3f2451ce72",
@@ -32,7 +32,15 @@
     "schemas/remediation-plan.schema.json": "e6eac145014877abffe652d9373972427d64d24f346b27dd37a711e98fba6ed7",
     "schemas/run-cost.schema.json": "0dcbc29ad6e91371fe203628f2768f88138a5f5d48a27c0c170850389cc69f7d",
     "schemas/run-journal.schema.json": "08108ab95806e1cba0090d256dbd5e7128b0c68c4cd126f8553cfdd2221860b6",
-    "schemas/run-record.schema.json": "8f9d0b26c4813c9db9c1dd420330c100ed087313e5d11d32a88181c884f2ffd9"
+    "schemas/run-record.schema.json": "8f9d0b26c4813c9db9c1dd420330c100ed087313e5d11d32a88181c884f2ffd9",
+    "schemas/measured-usage.schema.json": "b8aa9dea2e7c8907dbf91485673a51befb7e6ac2335b8fd7053ae9395bd5fcee",
+    "schemas/source-inventory.schema.json": "aa66560873462d5411ed9fd9408dfd7c45046dd1af69764db7319440b6c583ae",
+    "schemas/wave-plan.schema.json": "c45ba18fb5f0e1ae421cd31261198322c6426d70b76cde25d95a6f9ae1ccb8ab",
+    "schemas/verify-report.schema.json": "d35e16d8c7fd95daadbab58a34d9591773adc176e14331e583200db83d49bd4f",
+    "examples/assess/measured-usage.example.json": "7aeced5238d952d00352566205aabbd1f9e952547baafaf1c50a509cf02f9bdf",
+    "examples/assess/source-inventory.example.json": "4f59c8fc6850b522d68858218d7bf618c43ca1f63878e94aec75da31be2973e4",
+    "examples/assess/wave-plan.example.json": "3721c4b7e38a65336f8fadf786d35cb1bdbffd91076a84b46efa82992bfb70e5",
+    "examples/assess/verify-report.example.json": "d7d2b5dd2a2768a669fe95a5fdac89f5885c3101bd5ae4b98ed50abcfb64fa1f"
   },
-  "commit": "ef8a99ed5d5cdef0dc663c8b22e2cac1b8006788"
+  "commit": "bd2a2034a5f9fad2c4cf9bee861c58d064cc1432"
 }

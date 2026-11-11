@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-source-inventory/v1.json",
+  "title": "avd-source-inventory/v1: pseudonymous inventory of brownfield AVD, RDS, or third-party VDI source pools",
+  "description": "Foundation contract for non-AVD and brownfield source pools and collections. Holds only pseudonyms, counts, enums, and technical capabilities; never holds names, domains, IPs, or IDs.",
+  "type": "object",
+  "required": [
+    "schema",
+    "estate",
+    "generatedUtc",
+    "producer",
+    "sourcePools"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "region": {
+      "type": "string",
+      "pattern": "^([a-z0-9]{2,40}|on-premises)$"
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "avd-source-inventory/v1"
+    },
+    "estate": {
+      "type": "string",
+      "pattern": "^est-[0-9a-f]{8}$"
+    },
+    "generatedUtc": {
+      "$ref": "#/$defs/utc"
+    },
+    "producer": {
+      "type": "object",
+      "required": ["name", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{2,64}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "sourcePools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "platform",
+          "location",
+          "poolKind",
+          "deliveryKind",
+          "identityMode",
+          "onPremisesSidSynced",
+          "profileFormat",
+          "oneDriveKfmEnabled",
+          "sessionHostCount",
+          "assignedUserCount",
+          "publishedAppCount",
+          "compatibleWithLandingZoneInPlace"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(hp|src)-[0-9a-f]{8}$"
+          },
+          "platform": {
+            "enum": ["avd", "rds", "third-party-vdi"]
+          },
+          "location": {
+            "$ref": "#/$defs/region"
+          },
+          "poolKind": {
+            "enum": ["Pooled", "Personal"]
+          },
+          "deliveryKind": {
+            "enum": ["Desktop", "RemoteApp", "Both"]
+          },
+          "identityMode": {
+            "enum": ["entra-only", "hybrid-entra", "ad-ds", "entra-ds"]
+          },
+          "onPremisesSidSynced": {
+            "type": "boolean",
+            "description": "Whether users have onPremisesSecurityIdentifier synced to Entra ID for Entra Kerberos SMB access"
+          },
+          "profileFormat": {
+            "enum": ["fslogix-vhdx", "rds-upd", "roaming", "vdi-container", "local-only"]
+          },
+          "oneDriveKfmEnabled": {
+            "type": "boolean"
+          },
+          "sessionHostCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "assignedUserCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "publishedAppCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "compatibleWithLandingZoneInPlace": {
+            "type": "boolean",
+            "description": "True only when the pool is already an Entra-only avd-landing-zone deployment eligible for in-place parameter update and host rotation"
+          }
+        }
+      }
+    }
+  }
+}

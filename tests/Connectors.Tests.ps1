@@ -308,7 +308,7 @@ Describe 'Fact register (C15) and target-state manifest (C14)' {
   }
   It 'puts every C12 group measure, the hourly series and the app catalog in the group-behavior class' {
     $c12 = @($script:register.facts | Where-Object { $_.id -like 'c12.group.*' })
-    $behavior = @($c12 | Where-Object { $_.id -notin 'c12.group.users', 'c12.group.concurrency.peak', 'c12.group.perHost.peakSessionsPerHost', 'c12.group.apps.unknown', 'c12.group.scaling.failedEvaluations' })
+    $behavior = @($c12 | Where-Object { $_.id -notin 'c12.group.users', 'c12.group.concurrency.peak', 'c12.group.perHost.peakSessionsPerHost', 'c12.group.apps.unknown', 'c12.group.scaling.failedEvaluations', 'c12.group.perUser.gpuRequired', 'c12.group.perUser.needsLocalAdmin', 'c12.group.sharedBackendIds' })
     $behavior.Count | Should -BeGreaterThan 10
     foreach ($f in $behavior) { $f.privacy | Should -Be 'group-behavior' -Because "$($f.id) describes a group's behavior" }
     @($script:register.facts | Where-Object { $_.privacy -eq 'group-behavior' -and $_.id -notlike 'c12.group.*' }) | Should -BeNullOrEmpty
@@ -598,16 +598,20 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
   ) {
     Get-ReportCheck (Save-Changed 'assessment.example.json' $Change) | Should -Contain $Check
   }
-  It 'the check catalog, assessment review, remediation plan, benchmark result, and cloud environments match C22, C23, C24, C25 and C26' {
+  It 'the check catalog, assessment review, remediation plan, benchmark result, cloud environments, measured usage, source inventory, wave plan, and verify report match C22 to C30' {
     Test-Json -Path (Join-Path $script:root 'contracts/examples/checks/catalog.example.json') -SchemaFile (Join-Path $script:schemas 'check-catalog.schema.json') | Should -BeTrue
     Test-Json -Path (Join-Path $script:ex 'review.example.json') -SchemaFile (Join-Path $script:schemas 'assessment-review.schema.json') | Should -BeTrue
     Test-Json -Path (Join-Path $script:ex 'plan.example.json') -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') | Should -BeTrue
     Test-Json -Path (Join-Path $script:ex 'benchmark-result.example.json') -SchemaFile (Join-Path $script:schemas 'benchmark-result.schema.json') | Should -BeTrue
     Test-Json -Path (Join-Path $script:root 'contracts/cloud-environments.json') -SchemaFile (Join-Path $script:schemas 'cloud-environments.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'measured-usage.example.json') -SchemaFile (Join-Path $script:schemas 'measured-usage.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'source-inventory.example.json') -SchemaFile (Join-Path $script:schemas 'source-inventory.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'wave-plan.example.json') -SchemaFile (Join-Path $script:schemas 'wave-plan.schema.json') | Should -BeTrue
+    Test-Json -Path (Join-Path $script:ex 'verify-report.example.json') -SchemaFile (Join-Path $script:schemas 'verify-report.schema.json') | Should -BeTrue
     $bad = Save-Changed 'plan.example.json' { param($p) $p.items[0].PSObject.Properties.Remove('plane') }
     Test-Json -Path $bad -SchemaFile (Join-Path $script:schemas 'remediation-plan.schema.json') -ErrorAction SilentlyContinue | Should -BeFalse
   }
-  It 'contracts.md lists C19 to C26 as built, with their schemas' {
+  It 'contracts.md lists C19 to C30 as built, with their schemas' {
     $all = @(Get-DocContract -Text (Get-Content (Join-Path $script:root 'docs/contracts.md') -Raw))
     $want = @{
       C19 = @('intake.schema.json')
@@ -618,6 +622,10 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
       C24 = @('remediation-plan.schema.json')
       C25 = @('benchmark-result.schema.json')
       C26 = @('cloud-environments.schema.json')
+      C27 = @('measured-usage.schema.json')
+      C28 = @('source-inventory.schema.json')
+      C29 = @('wave-plan.schema.json')
+      C30 = @('verify-report.schema.json')
     }
     foreach ($id in $want.Keys) {
       $c = @($all | Where-Object Id -eq $id)[0]
