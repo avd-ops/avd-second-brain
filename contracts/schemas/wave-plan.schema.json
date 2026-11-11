@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-wave-plan/v1.json",
+  "title": "avd-wave-plan/v1: pseudonymous migration waves with user-selectable constraint factors",
+  "description": "Foundation contract for migration wave scheduling and profile transition path selection.",
+  "type": "object",
+  "required": [
+    "schema",
+    "estate",
+    "engagement",
+    "generatedUtc",
+    "manifestSha256",
+    "constraints",
+    "waves"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "factorMode": {
+      "enum": ["enforce", "warn", "off"]
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "avd-wave-plan/v1"
+    },
+    "estate": {
+      "type": "string",
+      "pattern": "^est-[0-9a-f]{8}$"
+    },
+    "engagement": {
+      "type": "string",
+      "pattern": "^eng-[0-9]{4}-[0-9]{2}-[0-9a-f]{4}$"
+    },
+    "generatedUtc": {
+      "$ref": "#/$defs/utc"
+    },
+    "manifestSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["affinity", "bandwidth", "capacity", "stampReady"],
+      "additionalProperties": false,
+      "properties": {
+        "affinity": { "$ref": "#/$defs/factorMode" },
+        "bandwidth": { "$ref": "#/$defs/factorMode" },
+        "capacity": { "$ref": "#/$defs/factorMode" },
+        "stampReady": { "$ref": "#/$defs/factorMode" }
+      }
+    },
+    "waves": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "ring",
+          "stampId",
+          "targetPoolId",
+          "sourcePoolId",
+          "groupIds",
+          "userCount",
+          "profilePath",
+          "estimatedDeltaSyncHours",
+          "status",
+          "warnings"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^wave-[0-9]{2,3}$" },
+          "ring": { "enum": ["canary", "bulk", "remediated"] },
+          "stampId": { "type": "string", "pattern": "^stamp-[0-9]{2,3}$" },
+          "targetPoolId": { "type": "string", "pattern": "^tp-[0-9]{2,3}$" },
+          "sourcePoolId": { "type": "string", "pattern": "^(hp|src)-[0-9a-f]{8}$" },
+          "groupIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^grp-[0-9]{2,4}$" }
+          },
+          "userCount": { "type": "integer", "minimum": 1 },
+          "profilePath": {
+            "enum": [
+              "path-1-fresh-kfm",
+              "path-2-azcopy-sid-guard",
+              "path-2-azcopy-delta",
+              "path-3-profile-transform",
+              "path-3-transform"
+            ]
+          },
+          "estimatedDeltaSyncHours": { "type": "number", "minimum": 0 },
+          "status": {
+            "enum": [
+              "planned",
+              "waiting-stamp-readiness",
+              "ready-to-cut-over",
+              "cut-over-pending-verify",
+              "verified-closed",
+              "rolled-back"
+            ]
+          },
+          "warnings": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 200 }
+          }
+        }
+      }
+    }
+  }
+}

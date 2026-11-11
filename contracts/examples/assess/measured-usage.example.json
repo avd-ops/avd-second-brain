@@ -1,0 +1,44 @@
+{
+  "schema": "avd-measured-usage/v1",
+  "estate": "est-3fa2c1d0",
+  "generatedUtc": "2026-10-27T12:00:00Z",
+  "tier": "tier-2-insights",
+  "producer": {
+    "name": "Export-AvdInsightsUsage.ps1",
+    "version": "1.0.0"
+  },
+  "measurementGate": {
+    "windowStart": "2026-10-01",
+    "windowEnd": "2026-10-21",
+    "daysObserved": 21,
+    "coveragePercent": 96.5,
+    "peakIncluded": true,
+    "passed": true
+  },
+  "groups": [
+    {
+      "id": "grp-01",
+      "sourcePoolId": "hp-89ab12cd",
+      "userCount": 150,
+      "peakConcurrency": 123,
+      "hourlyConcurrency": [
+        0.02, 0.01, 0.01, 0.01, 0.02, 0.05, 0.15, 0.45,
+        0.82, 0.95, 1.0, 0.96, 0.85, 0.94, 0.98, 0.92,
+        0.75, 0.4, 0.18, 0.08, 0.05, 0.03, 0.02, 0.02
+      ],
+      "cpuPerUserCores": { "p50": 0.35, "p95": 0.85 },
+      "memoryPerUserGiB": { "p50": 2.4, "p95": 4.2 },
+      "steadyStateIopsPerUser": { "p50": 8.0, "p95": 18.0 },
+      "logonStormIopsPerUser": { "p50": 35.0, "p95": 65.0 },
+      "profileSizeGiB": { "p50": 6.6, "p95": 12.0 },
+      "dailyProfileChurnPercent": 8.0,
+      "logonDurationSeconds": { "p50": 14.0, "p95": 26.0 },
+      "gpuRequired": false,
+      "needsLocalAdmin": false,
+      "rttMsByRegion": {
+        "eastus2": { "p50": 22.0, "p95": 36.0 }
+      },
+      "sharedBackendIds": ["dep-01"]
+    }
+  ]
+}

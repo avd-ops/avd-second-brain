@@ -1,0 +1,28 @@
+{
+  "schema": "avd-wave-plan/v1",
+  "estate": "est-3fa2c1d0",
+  "engagement": "eng-2026-10-a1b2",
+  "generatedUtc": "2026-10-27T12:00:00Z",
+  "manifestSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "constraints": {
+    "affinity": "enforce",
+    "bandwidth": "enforce",
+    "capacity": "enforce",
+    "stampReady": "enforce"
+  },
+  "waves": [
+    {
+      "id": "wave-00",
+      "ring": "canary",
+      "stampId": "stamp-01",
+      "targetPoolId": "tp-01",
+      "sourcePoolId": "hp-89ab12cd",
+      "groupIds": ["grp-01"],
+      "userCount": 15,
+      "profilePath": "path-2-azcopy-sid-guard",
+      "estimatedDeltaSyncHours": 0.45,
+      "status": "planned",
+      "warnings": []
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assess.avd-ops.dev/schemas/avd-verify-report/v1.json",
+  "title": "avd-verify-report/v1: before-and-after parity evaluation and dynamic stamp recalibration",
+  "description": "Foundation contract for post-wave parity evaluation against baselines.yaml, dynamic right-sizing recalibration (>15% drift), and subsequent wave gating.",
+  "type": "object",
+  "required": [
+    "schema",
+    "estate",
+    "engagement",
+    "wave",
+    "generatedUtc",
+    "overallVerdict",
+    "gateWaveNext",
+    "recalibrations",
+    "pools"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "avd-verify-report/v1"
+    },
+    "estate": {
+      "type": "string",
+      "pattern": "^est-[0-9a-f]{8}$"
+    },
+    "engagement": {
+      "type": "string",
+      "pattern": "^eng-[0-9]{4}-[0-9]{2}-[0-9a-f]{4}$"
+    },
+    "wave": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "generatedUtc": {
+      "$ref": "#/$defs/utc"
+    },
+    "overallVerdict": {
+      "enum": ["pass", "recalibrate", "hold-regression"]
+    },
+    "gateWaveNext": {
+      "enum": ["proceed", "proceed-with-recalibrated-stamps", "hold"]
+    },
+    "recalibrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "personaId",
+          "tier",
+          "vmSize",
+          "predictedSessionsPerHost",
+          "recalibratedSessionsPerHost",
+          "utilizationDriftRatio",
+          "boundBy",
+          "affectedStamps",
+          "affectedTargetPools",
+          "claims"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "personaId": { "type": "string", "pattern": "^[a-z0-9-]{2,40}$" },
+          "tier": { "enum": ["light", "medium", "heavy", "power", "gpu"] },
+          "vmSize": { "type": "string", "pattern": "^Standard_[A-Za-z0-9_]{1,40}$" },
+          "predictedSessionsPerHost": { "type": "integer", "minimum": 1 },
+          "recalibratedSessionsPerHost": { "type": "integer", "minimum": 1 },
+          "utilizationDriftRatio": { "type": "number", "minimum": 0 },
+          "boundBy": { "enum": ["cpu", "memory", "guidance"] },
+          "affectedStamps": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^stamp-[0-9]{2,3}$" }
+          },
+          "affectedTargetPools": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^tp-[0-9]{2,3}$" }
+          },
+          "claims": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "pools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "targetPoolId",
+          "stampId",
+          "sourcePoolId",
+          "personaId",
+          "tier",
+          "vmSize",
+          "hosts",
+          "predictedSessionsPerHost",
+          "peakSessionsPerHost",
+          "beforeLogonP95Seconds",
+          "afterLogonP95Seconds",
+          "afterRttP95Ms",
+          "p95CpuPercent",
+          "p95MemoryPercent",
+          "cpuBand",
+          "memoryBand",
+          "experiencePass",
+          "utilizationDriftRatio",
+          "verdict",
+          "reasons",
+          "claims"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "targetPoolId": { "type": "string", "pattern": "^tp-[0-9]{2,3}$" },
+          "stampId": { "type": "string", "pattern": "^stamp-[0-9]{2,3}$" },
+          "sourcePoolId": { "type": "string", "pattern": "^(hp|src)-[0-9a-f]{8}$" },
+          "personaId": { "type": "string", "pattern": "^[a-z0-9-]{2,40}$" },
+          "tier": { "enum": ["light", "medium", "heavy", "power", "gpu"] },
+          "vmSize": { "type": "string", "pattern": "^Standard_[A-Za-z0-9_]{1,40}$" },
+          "hosts": { "type": "integer", "minimum": 1 },
+          "predictedSessionsPerHost": { "type": "integer", "minimum": 1 },
+          "peakSessionsPerHost": { "type": "number", "minimum": 0 },
+          "beforeLogonP95Seconds": { "type": "number", "minimum": 0 },
+          "afterLogonP95Seconds": { "type": "number", "minimum": 0 },
+          "afterRttP95Ms": { "type": "number", "minimum": 0 },
+          "p95CpuPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "p95MemoryPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "cpuBand": { "enum": ["under", "good", "watch", "over"] },
+          "memoryBand": { "enum": ["under", "good", "over"] },
+          "experiencePass": { "type": "boolean" },
+          "utilizationDriftRatio": { "type": "number", "minimum": 0 },
+          "verdict": { "enum": ["pass", "recalibrate", "hold-regression"] },
+          "reasons": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 200 }
+          },
+          "claims": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
