@@ -64,6 +64,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0024. The brain is the estate brain: why, RAID, memory, guidance and the KB plumbing](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md): accepted
 - [0026. Runs check and clean up before they spend, and the setup is the desired state](docs/knowledge/decisions/0026-runs-check-and-clean-before-they-spend.md): accepted
 - [0027. Desktop DevOps across AVD, Windows 365, and Microsoft Intune](docs/knowledge/decisions/0027-desktop-devops-across-avd-win365-and-intune.md): accepted
+- [0028. Position Terraform (avd-hcl) as the enterprise IaC option alongside Bicep](docs/knowledge/decisions/0028-terraform-as-enterprise-iac-option.md): proposed
 
 ## Related knowledge bases
 
