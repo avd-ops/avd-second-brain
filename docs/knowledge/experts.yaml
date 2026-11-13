@@ -944,6 +944,34 @@ experts:
   notes: >-
     Cloud-native AVD with Entra Kerberos and FSLogix, deployed by IaC, plus landing zone Bicep repos.
     The GitHub account is the feed; no blog feed was found and the post is the only AVD one seen.
+- id: benny-tritsch
+  name: Dr. Bernhard "Benny" Tritsch (EUC Score)
+  affiliation: independent
+  status: watch
+  found_via:
+  - owner nomination
+  links:
+    blog: https://eucscore.com/freeware/
+  evidence:
+  - https://eucscore.com/freeware/
+  - https://drtritsch.com/
+  gates:
+    original: true
+    recent: true
+    feed: false
+    identity: true
+  scores:
+    relevance: 2
+    depth: 3
+    recency: 3
+    track_record: 3
+    feedability: 0
+  reviewed: '2026-11-13'
+  notes: >-
+    Creator of the EUC Score methodology and freeware toolset (Simload Runner, Data Miner) for
+    measuring remote user experience and multi-session VDI/AVD workloads. Placed on watch because
+    eucscore.com and drtritsch.com do not expose a verified RSS/Atom feed or public GitHub repo;
+    useful as prior art for persona calibration and optional public-result lab comparisons.
 # --- Declined ------------------------------------------------------------------------------
 - id: dane-young
   name: Dane Young
