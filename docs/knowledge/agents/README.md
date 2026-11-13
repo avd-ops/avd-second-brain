@@ -70,7 +70,7 @@ Every AVD repo carries the same three files so any coding agent can pick up the 
 - **Claude Code reads CLAUDE.md, not AGENTS.md.** Each CLAUDE.md starts with `@AGENTS.md`, an import, and keeps the repo's checks and lessons below it.
 - **Gemini CLI reads GEMINI.md by default** and supports `@./file.md` imports in it ([memport](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/memport.md)), which detect circular imports. GEMINI.md holds only `@./AGENTS.md`; AGENTS.md tells the agent to read CLAUDE.md next, so no file is imported twice. Its `context.fileName` setting can name AGENTS.md instead.
 - **Hooks are Claude Code only.** The SessionStart handoff list and the Stop knowledge check don't run under other agents; AGENTS.md tells them to run the same scripts by hand.
-- **The owner's private context** goes in a private repo only, never in a public AGENTS.md.
+- **Operator- or environment-specific context** stays out of public AGENTS.md files.
 
 ### Outside coding agents on a public repo (2026-10-22)
 

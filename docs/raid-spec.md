@@ -151,4 +151,4 @@ Names come back only in the vault's own Markdown through `ownerKey` and the peop
 | R3 | Default review cadence | Monthly, plus event-based |
 | R4 | Can the brain mark an action `done-verified` from a C10 outcome without a person? | No: it proposes, a person keeps it |
 | R5 | A GitHub issues view of actions in the vault repo | Later, one-way, optional |
-| R6 | Row IDs for crosswalks: a GUID per row, or a ULID? | ULID (`uid`), because a GUID per row trips every family leak check; the private project ledger uses the same format |
+| R6 | Row IDs for crosswalks: a GUID per row, or a ULID? | ULID (`uid`), because a GUID per row trips every family leak check; maintainer ledgers use the same format |

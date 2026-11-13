@@ -21,8 +21,8 @@ Decision 0001 made this repo the meeting point for the whole AVD lifecycle. It g
 Chosen option: "Narrow the repo to the estate brain and the KB plumbing" (owner, 2026-10-20, on the [restructure proposal](../../restructure-proposal.md) and its defaults), because each piece then lives with the repo that owns its job, and the foundation never has a reason to read the brain.
 
 - **The brain keeps five jobs.** The why of each environment (C18, decision 0020). The living RAID log and the action and decision tracker for each operated estate (C25, decision 0022). The estate's memory: the vault, filed C11 and C12 facts, and C21 reports. Fail-open guidance on top of the foundation: calibration, runbooks, playbooks and the app catalog. And the knowledge base plumbing: the family KB tooling, sweeps, curator, leak checks, kb-capture and handoffs, the decisions that govern them, and the AVD knowledge base they maintain.
-- **Moves.** The foundation contracts go to avd-assess (decision 0021), and so do C22 to C24, the sizing prior (avd-assess `baselines.yaml`), and the avd-assess spec. Docs consistency and C13 (decision 0004) stay here as part of the sweep plumbing; the handbook (`wiki/`) is retired, because avd-ops holds each repo's page (owner, 2026-10-21). C16 goes to avd-liquidware. The migration factory's own stage rules (delivery and quality gate) go to the private assessment factory repo. The harvest, engagement records, C3, C5 and C6 stay, because they feed the catalog and calibration.
-- **The project's own working log is private.** That covers its risks, open actions, PR dependencies and what waits on the owner. Public docs keep the settled outcome. Decision history stays public.
+- **Moves.** The foundation contracts go to avd-assess (decision 0021), and so do C22 to C24, the sizing prior (avd-assess `baselines.yaml`), and the avd-assess spec. Docs consistency and C13 (decision 0004) stay here as part of the sweep plumbing; the handbook (`wiki/`) is retired, because avd-ops holds each repo's page (owner, 2026-10-21). C16 goes to avd-liquidware. Stage rules (delivery and quality gate) are out of scope for this repo. The harvest, engagement records, C3, C5 and C6 stay, because they feed the catalog and calibration.
+- **Maintainer working logs stay outside this public repository.** That covers risks, open actions, PR dependencies and what waits on the owner. Public docs keep the settled outcome. Decision history stays public.
 - **How things move.** Each move is copied to its new home and merged there first. It is then replaced here by a stub that links to it, so the last copy is never deleted. Pins move in the same PR.
 - This decision narrows 0001. The other decisions stand: 0003, 0005 as narrowed by 0021, 0006 to 0015, 0019 to 0023.
 
@@ -31,9 +31,8 @@ Chosen option: "Narrow the repo to the estate brain and the KB plumbing" (owner,
 - Good, because the repo says one thing: what an estate is for, what went into it and what is open on it.
 - Good, because the foundation pair has nothing in the brain that it could come to depend on.
 - Bad, because readers of the old paths follow a stub for a while, and pinned consumers need a bump.
-- Neutral: C14 stays here until the factory producer is built (gray area G1). `knowledge/` is renamed `guidance/` last, if at all (G9).
+- Neutral: C14 stays here until a producer is built (gray area G1). `knowledge/` is renamed `guidance/` last, if at all (G9).
 
 ## More Information
 
 - The audit, the gray areas G1 to G9 with their defaults, and the move steps R1 to R7: [docs/restructure-proposal.md](../../restructure-proposal.md).
-- Decision 0018 (PR #41, where the public family ends) is on the private side. It closes unmerged, and its substance goes to the private log (G8).

@@ -277,48 +277,6 @@ kb_page = "assessment/README.md"
 # Two sources per sibling, required by validate.py: its decisions, and everything else in its KB.
 
 [[source]]
-name = "Nerdio HCL kit KB: decisions"
-kind = "github_commits"
-repo = "nickprignano/nerdio-hcl"
-path = "docs/knowledge/decisions"
-kb_page = "curation.md"
-
-[[source]]
-name = "Nerdio HCL kit KB: changes"
-kind = "github_commits"
-repo = "nickprignano/nerdio-hcl"
-path = "docs/knowledge"
-kb_page = "curation.md"
-
-[[source]]
-name = "2ndbrain format: decisions"
-kind = "github_commits"
-repo = "nickprignano/2ndbrain"
-path = "docs/knowledge/decisions"
-kb_page = "curation.md"
-
-[[source]]
-name = "2ndbrain format: changes"
-kind = "github_commits"
-repo = "nickprignano/2ndbrain"
-path = "docs/knowledge"
-kb_page = "curation.md"
-
-[[source]]
-name = "Liquidware KB: decisions"
-kind = "github_commits"
-repo = "nickprignano/liquidware-ninja"
-path = "docs/knowledge/decisions"
-kb_page = "curation.md"
-
-[[source]]
-name = "Liquidware KB: changes"
-kind = "github_commits"
-repo = "nickprignano/liquidware-ninja"
-path = "docs/knowledge"
-kb_page = "curation.md"
-
-[[source]]
 name = "avd-ops KB: decisions"
 kind = "github_commits"
 repo = "avd-ops/avd-ops"

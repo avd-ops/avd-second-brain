@@ -36,12 +36,8 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | [agents/](agents/README.md) | How the AVD repos use Claude: the brain's agents, avd-swarm's agents, model access and their identities | partial |
 | [cost/](cost/README.md) | Estimating, pricing and capping AVD and sandbox spend: the retail price API, auto shutdown and run-cost evidence | partial |
 | [microsoft/drafts/](microsoft/drafts/README.md) | Where an upstream issue, docs fix or pull request is drafted and reviewed before a person files it | plan |
-| [microsoft/study-guide/](microsoft/study-guide/README.md) | A free, public study guide for the Azure Virtual Desktop Specialty (AZ-140) and Azure Administrator (AZ-104) exams | verified |
-| [microsoft/study-guide/az-104.md](microsoft/study-guide/az-104.md) | Original notes, traps and practice questions for AZ-104, Microsoft Azure Administrator | verified |
-| [microsoft/study-guide/az-140.md](microsoft/study-guide/az-140.md) | Original notes, traps and practice questions for AZ-140, Configuring and Operating Microsoft Azure Virtual Desktop | verified |
 | [microsoft/upstream-contributions.md](microsoft/upstream-contributions.md) | Gaps, API asks and doc fixes we could raise with Microsoft, with evidence | verified |
 | [troubleshooting/](troubleshooting/README.md) | Errors hit deploying and running AVD: symptom, cause, fix and source | verified |
-| [landing-zone/terraform-port-plan.md](landing-zone/terraform-port-plan.md) | Plan to port nerdio-hcl's approach to Terraform that deploys and operates AVD directly, with no Nerdio Manager in the path; awaits the owner's yes | plan |
 | [roadmap.md](roadmap.md) | Settled: this KB is on the family format; open work is tracked outside the public repo | plan |
 | [curation.md](curation.md) | How the KB stays current: the weekly digest, the prior-art check, the feedback loop, the freshness check and family alignment | verified |
 | [experts.md](experts.md) | How we choose which AVD, FSLogix and Entra experts the KB follows: the method, the scores and the list | verified |
@@ -53,10 +49,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 <!-- BEGIN GENERATED: family (from family.yaml; run scripts/kb/build.py) -->
 | Knowledge base | Role | Focus | Source of truth for |
 |---|---|---|---|
-| [2ndbrain](https://github.com/nickprignano/2ndbrain/tree/main/docs/knowledge) | reference | The template that owns the family knowledge base format | the family knowledge base format; its scripts and schemas |
 | [avd-ops](https://github.com/avd-ops/avd-ops/tree/main/docs/knowledge) | member | The front door for the AVD repos: avd-ops.dev, onboarding and user docs | onboarding and user-facing docs for the AVD repos; the avd-ops.dev site and design system; the list of family repos (repos.json) |
-| [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge) | member | Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer | Nerdio Manager; the nerdio/nme provider; AVD and FSLogix for this kit; this kit's Terraform and Packer; setup chatbot and KB format |
-| [Liquidware](https://github.com/nickprignano/liquidware-ninja/tree/main/docs/knowledge) | member | Liquidware products across virtual and physical desktops (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL) | Liquidware products (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL); the Stratusphere API and SpotCheck methodology; how they fit with AVD, Citrix, Horizon and FSLogix, and the avd-liquidware toolkit |
 <!-- END GENERATED: family -->
 
 When a fact belongs to a sibling's topic, link to their page instead of copying it. When we learn
@@ -69,9 +62,7 @@ Work in another project's lane is referred to that project, not built here, and 
 before anything near it is researched here ([decision 0012](decisions/0012-family-format-project-lanes.md)).
 
 <!-- BEGIN GENERATED: lanes (from family.yaml; run scripts/kb/build.py) -->
-- Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
-- Nerdio Manager, its provider and scripted actions: [Nerdio HCL kit](https://github.com/nickprignano/nerdio-hcl/tree/main/docs/knowledge), the Nerdio Claude project
-- Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project: [Liquidware](https://github.com/nickprignano/liquidware-ninja/tree/main/docs/knowledge), the Liquidware Claude project
+
 <!-- END GENERATED: lanes -->
 
 ## Before you build something

@@ -21,26 +21,7 @@ projects:
   owns: [Azure Virtual Desktop platform, Windows 365 Cloud PCs, Intune policy-as-code and assignment filters, FSLogix, session host and Cloud PC images, the AVD landing zone and its operations, the contracts between the AVD repos]
   format_version: 1
   claude_project: AVD
-  builds_in: [avd-landing-zone, avd-entra, avd-intune, avd-m365, avd-azure, avd-power-platform, avd-swarm, avd-second-brain, avd-current-state, avd-liquidware deployment tooling, avd-ops]
-  not_here:
-  - topic: Terraform, Packer, OpenTofu or any other HCL. The AVD repos use Bicep, PowerShell and native Azure, Entra and Microsoft 365 tooling only
-    owner: nerdio-hcl
-    keywords: [terraform, packer, opentofu, hcl, tfvars, azurerm provider]
-    files: ['*.tf', '*.tfvars', '*.tf.json', '*.hcl', '*.pkr.json']
-  - topic: Nerdio Manager, its provider and scripted actions
-    owner: nerdio-hcl
-    keywords: [nerdio, nme]
-  - topic: Liquidware products (ProfileUnity, FlexApp, Stratusphere, CommandCTRL). Their deployment tooling is built in avd-liquidware, never in avd-landing-zone; real-user assessments stay in the Liquidware project
-    owner: liquidware
-    keywords: [liquidware, profileunity, flexapp, stratusphere, commandctrl]
-- id: 2ndbrain
-  name: 2ndbrain
-  repo: nickprignano/2ndbrain
-  kb_path: docs/knowledge
-  role: reference
-  focus: The template that owns the family knowledge base format
-  owns: [the family knowledge base format, its scripts and schemas]
-  format_version: 1
+  builds_in: [avd-landing-zone, avd-entra, avd-intune, avd-m365, avd-azure, avd-power-platform, avd-swarm, avd-second-brain, avd-current-state, avd-liquidware, avd-servicenow, avd-ops]
 - id: avd-ops
   name: avd-ops
   repo: avd-ops/avd-ops
@@ -50,25 +31,3 @@ projects:
   owns: [onboarding and user-facing docs for the AVD repos, the avd-ops.dev site and design system,
     the list of family repos (repos.json)]
   format_version: 1
-- id: nerdio-hcl
-  name: Nerdio HCL kit
-  repo: nickprignano/nerdio-hcl
-  kb_path: docs/knowledge
-  role: member
-  focus: 'Related project, separate from avd-ops: Nerdio Manager on Azure Virtual Desktop, deployed with Terraform and Packer'
-  owns: [Nerdio Manager, the nerdio/nme provider, AVD and FSLogix for this kit, this kit's Terraform
-    and Packer, setup chatbot and KB format]
-  format_version: 1
-  claude_project: Nerdio
-- id: liquidware
-  name: Liquidware
-  repo: nickprignano/liquidware-ninja
-  kb_path: docs/knowledge
-  role: member
-  focus: Liquidware products across virtual and physical desktops (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL)
-  # Its own row also names a private toolkit repo, which this public KB leaves out.
-  owns: ['Liquidware products (Stratusphere UX, ProfileUnity, FlexApp, CommandCTRL)', the Stratusphere
-      API and SpotCheck methodology, 'how they fit with AVD, Citrix, Horizon and FSLogix, and the avd-liquidware
-      toolkit']
-  format_version: 1
-  claude_project: Liquidware

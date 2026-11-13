@@ -3,14 +3,14 @@
   "sources": [
     {
       "name": "avd-liquidware",
-      "url": "https://github.com/nickprignano/avd-liquidware",
+      "url": "https://github.com/avd-ops/avd-liquidware",
       "ref": "main",
-      "stage": "Deploy Liquidware products in Azure: the Stratusphere UX instrument (moving from the assessment project), and the optional ProfileUnity, FlexApp and CommandCTRL tier",
+      "stage": "Deploy Liquidware products in Azure: the Stratusphere UX instrument, and the optional ProfileUnity, FlexApp and CommandCTRL tier",
       "index": [
         "docs"
       ],
       "feeds": [
-        "Stratusphere instrument outputs to the assessment project (contracts C16, proposed)",
+        "Stratusphere instrument outputs to an external assessment consumer (contracts C16, proposed)",
         "Liquidware facts (liquidware.* in the fact register, proposed)",
         "Lessons and decisions (searched in place)"
       ],
@@ -18,7 +18,7 @@
         "The liquidware block of avd-target-state/v1 (contracts C14), when its tier is built"
       ],
       "readme": {
-        "stage": "The Stratusphere instrument (moving from the assessment project) and the optional ProfileUnity tier",
+        "stage": "The Stratusphere instrument and the optional ProfileUnity tier",
         "gives": "Lessons; Liquidware facts once built",
         "takes": "The manifest's `liquidware` block, later"
       }

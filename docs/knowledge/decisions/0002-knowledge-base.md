@@ -35,5 +35,5 @@ Chosen option: "Reviewed knowledge in Git, as JSON validated by JSON Schemas, gu
 
 ## More Information
 
-- **Origin:** the assessment project's decision 0002, moved here with the knowledge base ([0001](0001-one-brain-for-the-avd-lifecycle.md)). "The factory spec" is the assessment project's `docs/factory-spec.md`.
+- **Origin:** moved here with the knowledge base ([0001](0001-one-brain-for-the-avd-lifecycle.md)).
 - Accepted by the owner on 2026-10-18, when the family knowledge base was set up. Moved here from `docs/decisions/` and converted to MADR 4; the decision itself is unchanged.
