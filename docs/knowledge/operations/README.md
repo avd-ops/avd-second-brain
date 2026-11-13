@@ -3,7 +3,7 @@ title: "Operating an estate"
 summary: "Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate"
 topic: operations
 status: partial
-last_reviewed: 2026-11-09
+last_reviewed: 2026-11-13
 ---
 
 # Operating an estate
@@ -159,3 +159,12 @@ Built and tested in [avd-servicenow](https://github.com/avd-ops/avd-servicenow) 
 - **Co-signed Change-Gate without gate bypass (`C1`) and `V1-4` ticket provenance (`C2`).** ServiceNow Change approval (`approval=approved`) is a human co-signature on the GitHub Environment `approve` gate, never a bypass: `avd-swarm` still verifies its deterministic policy gate, kill switch (`flag.py`), `u_plan_sha256`, and live Azure pre-flight `u_estate_state_hash` before acquiring a short-lived write token. Inbound ServiceNow incidents enqueue only a ticket reference on the alert Storage Queue with `threadStartedBy: 'alert'`, scrubbed through `redactText` and Prompt Shields (`shield.py`), so gate rule `V1-4` forbids untrusted ticket prose from acting as the sole evidence for any write plan.
 - **PDI sign-in redirect URLs and HTTP `200 OK` hibernation HTML (`M2`, [lesson 0001](https://github.com/avd-ops/avd-servicenow/blob/main/docs/lessons/0001-pdi-hibernation-url-normalization-and-wp5-adapter-schema.md)).** Operators copying a newly provisioned PDI URL from a browser tab often paste `https://<instance>.service-now.com/login_redirect.do?sysparm_stack=no`, and hibernating or unauthenticated ServiceNow PDIs return HTTP `200 OK` with an HTML page (`<!DOCTYPE html>...Instance Hibernating` or `login_redirect.do`) on `/api/now/*` REST endpoints. `normalizeInstanceUrl` strips any path/query/fragment to `new URL(raw).origin`, and `parseSnowJsonResponse` checks `Content-Type` and leading `<html`/`<!doctype` before `JSON.parse` so hibernation is reported clearly.
 - **`avd-swarm` WP5 `check_adapters.py` YAML and kill-switch invariants ([lesson 0001](https://github.com/avd-ops/avd-servicenow/blob/main/docs/lessons/0001-pdi-hibernation-url-normalization-and-wp5-adapter-schema.md)).** `avd-swarm/scripts/check_adapters.py` requires both `adapters/<name>/adapter.yml` and `adapters/<name>/README.md`, splits unquoted YAML scalars on `: ` unless quoted, and checks `switch` keys against exact `gateway/avd_gateway/flag.py` `POSITIONS` plus `residual` (`run`, `halt-actions`, `halt-agents`, `halt-all`, `residual`).
+
+## Lightweight daily inventory snapshots
+
+Learned building `-Mode Summary` / `-Light` in [avd-current-state](https://github.com/avd-ops/avd-current-state) (`lib/AvdSummary.psm1`, [PR #90](https://github.com/avd-ops/avd-current-state/pull/90)) on 2026-11-13:
+
+- **PowerShell unary-comma array returns (`return , $rows`) inside a scriptblock called as `@(& $fn)` double-wrap arrays.** When `$rows` is empty (`@()`), `@(& $fn)` produces a one-element array whose sole element is `@()`, causing `foreach` to iterate once over an empty array (reporting `1 host pool(s)` on a torn-down subscription) and causing `$row.count` to read the inner array's `.Count` property instead of the Resource Graph `count` field. Calling a helper function that returns `$rows` directly keeps empty results empty (`0` iterations).
+- **Support both `Az.Accounts` (`Invoke-AzRestMethod`) and `az rest` for scheduled GitHub Actions snapshots.** Workflows authenticated via `azure/login` without `enable-AzPSSession: true` have an active `az` CLI session rather than an `Az.Accounts` context; falling back to `az account list` and `az rest` in `-Mode Summary` / `-Light` avoids interactive login prompts or `PSGallery` installs while keeping `Invoke-AzRestMethod` as the primary path for `Az.Accounts` callers and offline `tests/fakes` runs.
+- **Scrub secrets and reject unredacted GUIDs by default in summary outputs.** Running `Get-RebuildSecretFinding` plus a GUID pattern check on the serialized JSON before writing `<stamp>-inventory.json` and `<stamp>-inventory.md` ensures zero raw subscription IDs, tenant IDs, or tokens land in scheduled vault commits unless `-IncludeIds` is explicitly requested.
+
