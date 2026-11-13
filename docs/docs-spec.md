@@ -177,5 +177,5 @@ Nothing here creates an Azure resource. A later GitHub Pages site for `wiki/` is
 
 - **DQ1.** Should the per-repo changelog start at the next merged PR, or be backfilled from merged PR titles? Default: start at the next PR, with one "Earlier history: see merged pull requests" line.
 - **DQ2.** Should `wiki/` also be published as a site (GitHub Pages from this repo, free now that it is public)? Default: not in D0; GitHub renders `wiki/` already.
-- **DQ3.** Should the assessment project's factory docs be in scope from D0, or after its phase 1? Default: from D0 for D1–D3 only.
+- **DQ3.** Should external assessment docs be in scope from D0, or after phase 1? Default: out of scope for D0.
 - **DQ4.** Until avd-swarm's Scribe exists (D1), the findings issues are fixed by hand or in a Claude Code session. Is that acceptable for the first weeks? Default: yes.

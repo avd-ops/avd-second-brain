@@ -8,7 +8,7 @@ decision-makers: [owner]
 
 ## Context and Problem Statement
 
-The sandboxes are paid for out of pocket. Teardown stops most of the bill, but not all of it.
+Test sandboxes incur real Azure charges. Teardown stops most of the bill, but not all of it.
 The demo host pool isn't covered by the landing zone's auto shutdown. A NAT Gateway, a Premium
 file share, Bastion, a Stratusphere Hub with its Marketplace meter, and Defender plans bill
 whether anyone is using them or not. Some charges are outside any resource group: Microsoft 365

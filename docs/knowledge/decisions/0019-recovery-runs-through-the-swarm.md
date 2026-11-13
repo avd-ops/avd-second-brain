@@ -31,7 +31,7 @@ Chosen option: "The landing zone owns recovery, avd-swarm runs it, the brain jud
 - Good, because recovery gets the same evidence, approvals and teardown as any other change, and its results reach the brain as outcomes (C10), counts (C8) and the landing zone's run record (C17, use case `recovery`), with no contract change.
 - Good, because the brain can say, with citations, whether an estate is recoverable today, not just whether it was designed to be.
 - Bad, because failover needs a swarm identity that writes role assignments (application group assignments are Azure role assignments), which the operations spec's guardrails rule out today. avd-swarm proposes an ABAC-conditioned exception limited to one role, named groups and named application groups; it waits on the owner.
-- Bad, because nothing is testable in the project's sandbox beyond one region until its region policy changes.
+- Bad, because multi-region failover cannot be tested in a single-region sandbox subscription without a policy exception.
 
 ## More Information
 

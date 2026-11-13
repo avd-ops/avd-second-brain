@@ -16,7 +16,7 @@
       "evidence": [
         { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "works", "summary": "Shared computer activation; supported editions on multi-session", "date": "2026-10-16" }
       ],
-      "reviewedBy": "nickprignano",
+      "reviewedBy": "avd-ops-maintainers",
       "lastVerified": "2026-10-16"
     },
     {
@@ -34,7 +34,7 @@
       "evidence": [
         { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/teams-on-avd", "outcome": "works", "summary": "Per-machine install required on pooled hosts; media optimization", "date": "2026-10-16" }
       ],
-      "reviewedBy": "nickprignano",
+      "reviewedBy": "avd-ops-maintainers",
       "lastVerified": "2026-10-16"
     },
     {
@@ -52,7 +52,7 @@
       "evidence": [
         { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "works", "summary": "Per-machine install on the image", "date": "2026-10-16" }
       ],
-      "reviewedBy": "nickprignano",
+      "reviewedBy": "avd-ops-maintainers",
       "lastVerified": "2026-10-16"
     },
     {
@@ -70,7 +70,7 @@
       "evidence": [
         { "kind": "doc", "ref": "https://learn.microsoft.com/azure/virtual-desktop/install-office-on-wvd-master-image", "outcome": "blocked", "summary": "Azure Virtual Desktop doesn't support Skype for Business", "date": "2026-10-16" }
       ],
-      "reviewedBy": "nickprignano",
+      "reviewedBy": "avd-ops-maintainers",
       "lastVerified": "2026-10-16"
     }
   ]

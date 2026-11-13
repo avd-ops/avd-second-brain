@@ -19,6 +19,6 @@ What came out of it is recorded in the decisions:
 [0015](decisions/0015-family-format-github-work-conventions.md). How the KB is kept current
 is in [curation.md](curation.md).
 
-Open work (pages still to get upstream links, family proposals waiting on the other KBs) belongs
-in the project's private log, not here
+Open work (pages still to get upstream links, family proposals waiting on the other KBs) is not
+tracked in this public repository
 ([decision 0024](decisions/0024-the-brain-is-the-estate-brain.md)).

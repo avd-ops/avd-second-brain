@@ -1,10 +1,10 @@
-﻿<#
+<#
 .SYNOPSIS
   Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations.
   Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.
 
 .DESCRIPTION
-  The evidence comes from the factory's verify stage (the assessment project) or from the
+  The evidence comes from an assessment verify stage or from the
   landing zone's operations brain (avd-landing-zone), in the format of
   contracts/schemas/sizing-evidence.schema.json. Each host pool becomes one observation:
   predicted sessions per host against sessions per host extrapolated to the target utilization
