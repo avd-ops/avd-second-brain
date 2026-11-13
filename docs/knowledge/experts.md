@@ -15,7 +15,7 @@ list is chosen, so anyone can check it, re-run it or challenge it. The data is i
 every KB of the family; each KB scores people against its own topic.
 
 <!-- BEGIN GENERATED: experts-balance (from experts.yaml; run scripts/kb/build.py) -->
-Last scored 2026-10-18: 14 tracked (4 other-vendor, 4 unknown, 3 independent, 2 microsoft, 1 partner), 17 on the watch list, 4 declined, 0 nominated and waiting to be scored.
+Last scored 2026-10-18: 14 tracked (4 other-vendor, 4 unknown, 3 independent, 2 microsoft, 1 partner), 18 on the watch list, 4 declined, 0 nominated and waiting to be scored.
 <!-- END GENERATED: experts-balance -->
 
 ## The method
@@ -118,6 +118,7 @@ ask to be removed by opening an issue.
 <!-- BEGIN GENERATED: experts-watch (from experts.yaml; run scripts/kb/build.py) -->
 | Name | Affiliation | Links | Score (rel/depth/recency/record/feed) | Latest AVD post | Notes |
 |---|---|---|---|---|---|
+| Dr. Bernhard "Benny" Tritsch (EUC Score) | independent | [blog](https://eucscore.com/freeware/) | 11 (2/3/3/3/0) | none found | Fails: feed. Creator of the EUC Score methodology and freeware toolset (Simload Runner, Data Miner) for measuring remote user experience and multi-session VDI/AVD workloads. Placed on watch because eucscore.com and drtritsch.com do not expose a verified RSS/Atom feed or public GitHub repo; useful as prior art for persona calibration and optional public-result lab comparisons. |
 | Alex ter Neuzen | unknown | [blog](https://www.gettothe.cloud/), [GitHub](https://github.com/GetToThe-Cloud) | 9 (1/3/3/1/1) | [2026-09-24](https://www.gettothe.cloud/azure-virtual-desktop-sessionhost-monitoring-2-0/) | Deep AVD monitoring work, but one post in ten is AVD; the rest is Azure Local. Re-score if AVD on Azure Local becomes a regular topic. |
 | Johan Vanneuville | partner | [blog](https://johanvanneuville.com/) | 9 (2/2/1/2/2) | [2026-03-02](https://johanvanneuville.com/avd/get-avd-hosts-outbound-internet-access-in-2026-using-a-nat-gateway/) | Nerdio NVP. Half the feed is AVD-general (networking, managed identities, ephemeral disks), the rest Nerdio; last AVD-general post was March 2026. |
 | Marius Sandbu | unknown | [blog](https://msandbu.org/) | 9 (1/3/1/3/1) | [2026-10-16](https://msandbu.org/getting-started-with-azure-sre-agent-and-some-success-stories/) | Writes on Azure, security and AI now; his latest post uses an AVD and FSLogix outage as an SRE agent example. Only the blog is watched. |
