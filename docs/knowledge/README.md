@@ -27,6 +27,7 @@ The engine's data (app catalog, rules, sizing calibration) is a separate layer i
 | Page | What's in it | Status |
 |---|---|---|
 | [landing-zone/](landing-zone/README.md) | Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell | verified |
+| [landing-zone/avd-hybrid-arc.md](landing-zone/avd-hybrid-arc.md) | Platform-agnostic architecture, OS/identity constraints, networking, storage, and Arc onboarding learnings for running AVD Hybrid session hosts on non-Azure clouds and on-premises hypervisors | verified |
 | [landing-zone/usgov-and-gcc-high.md](landing-zone/usgov-and-gcc-high.md) | Sovereign cloud endpoints, Private DNS zones, ITAR/CUI redirection defaults, workload placement, and CI verification for Azure US Government and Microsoft 365 GCC High | verified |
 | [identity/](identity/README.md) | Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities | partial |
 | [fslogix/](fslogix/README.md) | FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks | verified |
