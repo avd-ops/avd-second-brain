@@ -289,3 +289,23 @@ kind = "github_commits"
 repo = "avd-ops/avd-ops"
 path = "docs/knowledge"
 kb_page = "curation.md"
+
+# --- EUCPilots (app lifecycle and golden image tooling) ------------------------
+
+[[source]]
+name = "EUCPilots Evergreen: releases"
+kind = "github_releases"
+repo = "EUCPilots/evergreen-module"
+kb_page = "images/README.md"
+
+[[source]]
+name = "EUCPilots VcRedist: releases"
+kind = "github_releases"
+repo = "EUCPilots/vcredist"
+kb_page = "images/README.md"
+
+[[source]]
+name = "EUCPilots evergreen-packages: changes"
+kind = "github_commits"
+repo = "EUCPilots/evergreen-packages"
+kb_page = "images/README.md"
