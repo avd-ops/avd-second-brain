@@ -5,11 +5,11 @@ Part of [avd-ops](https://avd-ops.dev/), the open toolkit for Azure Virtual Desk
 The estate brain for **Azure Virtual Desktop**: it understands why each AVD environment is built and performs the way it does, and keeps its living RAID log. It records each environment's use cases and the decisions made building, configuring, expanding, contracting and fixing it, from its birth (decision 0020, [PR #45](https://github.com/avd-ops/avd-second-brain/pull/45)). It also tracks the risks, assumptions, issues, dependencies and actions that are open on it. It sits on top of the foundation (avd-assess, avd-current-state, avd-landing-zone), which works without it, and [avd-swarm](https://github.com/avd-ops/avd-swarm) acts on what it proposes. Scope: [decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md).
 
 > [!WARNING]
-> **Personal project. Research and learning only. Not for production. No warranty.**
+> **Community research project. Use at your own risk. No warranty.**
 >
 > - This is my own personal project, built on my own time **for research and learning**. It is **not affiliated with, endorsed by or supported by my employer**, and it does not represent my employer's views, products or guidance.
 > - It is **not affiliated with or endorsed by Liquidware** or Microsoft. Stratusphere, Azure Virtual Desktop, Entra and FSLogix are trademarks of their owners.
-> - **Do not run it in production** or rely on it for decisions about estates that matter without checking the evidence yourself. Test the scripts in a lab first.
+> - Test it first in a dedicated lab subscription and tenant before using it in production; you are responsible for reviewing the code and validating it for your environment.
 > - It is provided **"as is", without warranty of any kind**, under the [MIT License](LICENSE). You use it at your own risk. You are responsible for reviewing the code before you run it.
 > - **Contributions and forks are welcome and encouraged.** See [Contributing](#contributing).
 
@@ -38,7 +38,7 @@ Front door: [avd-ops](https://github.com/avd-ops/avd-ops#readme) ([repo page](ht
 | **Family knowledge base** (`docs/knowledge/`, `scripts/kb/`) | Topic pages, decision records (MADR 4), known errors, upstream asks, sources and experts, and the tooling that keeps them current. One of the sibling knowledge bases that share a format | [docs/knowledge/README.md](docs/knowledge/README.md), [guardrails](docs/guardrails.md) | Built |
 | **Docs consistency** | The check every repo calls, as part of the sweep plumbing (the handbook is retired; avd-ops holds each repo's page) | [docs-spec.md](docs/docs-spec.md), [red team](docs/docs-redteam.md) | Built; stays ([decision 0024](docs/knowledge/decisions/0024-the-brain-is-the-estate-brain.md)) |
 
-**Build order with avd-swarm** (second red team AX-15, [avd-swarm spec §9a](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
+**Build order with avd-swarm** (second red team AX-15, [avd-swarm spec Â§9a](https://github.com/avd-ops/avd-swarm/blob/main/docs/spec.md#9a-build-order-proposed-2026-10-19-after-the-second-red-team)): the S1a spike, then the operations brain's Tier 1 beside avd-swarm's read-only agents, linked only by the Concierge as a read tool, then avd-swarm's first two write actions. **Everything after that (brain proposals through C9, the C8 and C10 feeds, Tiers 2 and 3, self-healing and the other standing exceptions, the judge machinery) is designed, not scheduled.** Don't build it from the specs until those three steps are done and the owner says so.
 
 ## Quick start
 
