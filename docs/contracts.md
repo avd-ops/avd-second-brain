@@ -181,6 +181,7 @@ How the brain asks avd-swarm to run one of its playbooks for one episode. A prop
 - **The Critic's output travels as claims,** never as the Diagnose agent's reasoning, and the approver sees a dissent beside the plan.
 - **An `agentClassified` episode** always needs a person's approval of that run and is never eligible for a standing exception.
 - **Transport and identity are open** (second red team AX-8). Default: the brain's in-tenant runtime calls avd-swarm's `propose_playbook_run` function with its own managed identity, through an app role that allows submitting proposals and nothing else; it never writes avd-swarm's plan store. Built after avd-swarm's v1, with its own red team pass.
+- **External CUA executor (`external-executor` / `cua`) proposals (`avd-ops` ADR 0022):** When a task has no API path, a `C9` proposal may target an `external-executor` (`cua`) plan against either Windows 365 for Agents (PAYGO) or an `avd-landing-zone` isolated host pool, carrying bounded task intent, a wall-clock/token cap, and `dataLossGuard` under the same GitHub Environment approval and kill switch.
 - At `halt-actions` and above the brain sends no proposals (C10).
 
 ## C10. Action outcomes and switch position (specified)
@@ -210,6 +211,7 @@ What avd-swarm tells the brain about what happened, so episodes close with an ou
 | `why` | When the plan carries one (avd-swarm decision 0007, "every plan says why"): its lifecycle `kind` (C18's event kinds: build, configure, expand, contract, fix, recover, retire), its `useCases` (`uc-NN`) and its `decision` (`dec-NNNN`), IDs and fixed words only, so the brain can tie the outcome to C18's lifecycle record |
 | `times` | Proposed, approved, started, verified |
 | `compliance` | Counts per Defender for Cloud control: fixes, regressions and exemptions apart; Microsoft's public control and recommendation names; regressions as `(control, target pseudonym)` |
+| `executorEvidence` | Optional for `external-executor` (`cua`) plans (`avd-ops` ADR 0022): `{ executorKind, backendSurface, status, stepCount, artifactHashes }` — redacted and hashed only, never raw screenshots, keystrokes, or PII |
 
 It stays in the adopter's tenant (operations memory, architecture §3); it never reaches this repo except as C8 counts through a harvest.
 
