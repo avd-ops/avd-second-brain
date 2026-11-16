@@ -25,7 +25,7 @@ The estate brain for **Azure Virtual Desktop**: it understands why each AVD envi
 | [avd-swarm](https://github.com/avd-ops/avd-swarm) | Act and control (agents, approvals, the executor, the kill switch) | Insights and grading (C8), action outcomes and the kill switch position (C10), lessons and decisions | Playbook run proposals (C9), docs findings (C13), the knowledge base at a pinned commit (C6) |
 <!-- generated:connections end -->
 
-Assessment and design run in a separate project that isn't connected here; it gives the brain engagement harvests, measured sizing, forensic facts (C12) and target-state manifests (C14, as buckets), and takes the catalog, rules, calibration and the fact register (C15). The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [docs/contracts.md](docs/contracts.md).
+Front door: [avd-ops](https://github.com/avd-ops/avd-ops#readme) ([repo page](https://avd-ops.dev/docs/repos/avd-second-brain.html)). Standards and schemas: [avd-assess](https://github.com/avd-ops/avd-assess#readme). Assessment and design run in a separate project that isn't connected here; it gives the brain engagement harvests, measured sizing, forensic facts (C12) and target-state manifests (C14, as buckets), and takes the catalog, rules, calibration and the fact register (C15). The full design: [docs/architecture.md](docs/architecture.md). The interfaces: [docs/contracts.md](docs/contracts.md).
 
 ## What's here
 
