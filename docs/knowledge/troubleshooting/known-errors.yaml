@@ -834,3 +834,40 @@ errors:
   source: https://github.com/avd-ops/avd-networking/pull/2
   status: verified
   added: '2026-11-15'
+- id: avd-rdagent-unhealthy-status
+  symptom: Session host reports Unavailable or NeedsAssistance in WVDAgentHealthStatus (unhealthyHosts > 0)
+  cause: RDAgentBootLoader or the AVD side-by-side stack is stopped, out of date, or failing a host health check
+    while the VM is running
+  fix: Confirm the VM is not deallocated, drain the host if needed, restart RDAgentBootLoader, and inspect the
+    failing health check in WVDAgentHealthStatus
+  source: https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-agent
+  status: unverified
+  added: '2026-11-17'
+- id: avd-rdagent-url-check-failed
+  symptom: Session host fails UrlsAccessibleCheck in WVDAgentHealthStatus and stops accepting new sessions
+  cause: Outbound HTTPS to required Azure Virtual Desktop service FQDNs is blocked by NSG, Azure Firewall, or proxy
+  fix: Allow the required AVD service tags and FQDNs on the host subnet firewall/NSG and verify TLS inspection bypass
+  source: https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-agent
+  status: unverified
+  added: '2026-11-17'
+- id: avd-connection-failed-monitor
+  symptom: WVDConnections or WVDErrors shows elevated failed connections or sign-ins (connectionErrors > 0)
+  cause: Gateway/broker handshake failure, session host unavailable, or Entra/FSLogix logon failure during session setup
+  fix: Correlate WVDErrors errorCode and ActivityId with session host health and Entra sign-in logs before acting
+  source: https://learn.microsoft.com/azure/virtual-desktop/troubleshoot-azure-monitor
+  status: unverified
+  added: '2026-11-17'
+- id: avd-idle-host-cost-tail
+  symptom: Session hosts remain running with zero active sessions (idleHosts > 0), creating an unbudgeted cost tail
+  cause: Scaling plan ramp-down or off-peak threshold is not deallocating empty hosts, or drain/logoff timers stall
+  fix: Check scaling plan schedule, minimum host percentage, and force-logoff settings; deallocate verified empty hosts
+  source: https://learn.microsoft.com/azure/virtual-desktop/autoscale-scaling-plan
+  status: unverified
+  added: '2026-11-17'
+- id: intune-unfiltered-all-devices-policy
+  symptom: Intune policy-drift check reports unfiltered All-Devices policies or missing platform assignment filters
+  cause: Policies targeted to All Devices without an AVD or Cloud PC assignment filter apply across unintended endpoints
+  fix: Scope the policy with an Intune assignment filter (e.g. model or OS SKU) and exclude non-target device groups
+  source: https://learn.microsoft.com/mem/intune/fundamentals/filters
+  status: unverified
+  added: '2026-11-17'
