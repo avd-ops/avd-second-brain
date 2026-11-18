@@ -893,3 +893,31 @@ errors:
   applies_to: AVD and Windows 365 (Teams VDI 2.0 / SlimCore)
   status: verified
   added: '2026-11-18'
+- id: retail-price-cache-breaks-offline-scenarios
+  symptom: Get-AvdRetailPrice Pester tests and OfflineScenarios pricing/prices-down steps fail after adding in-session, disk cache, or snapshot fallback
+  cause: Tests and offline scenarios mutate mock flags (ipMeterRenamed, pricesDown) between calls in one pwsh process, hitting cached prices or snapshot fallback instead of invoking the mock; empty page responses also poisoned the cache
+  fix: Skip caching empty page responses, keep dedicated cache/fallback tests in RetailPrice.Tests.ps1, and set AVDLZ_RETAIL_PRICE_CACHE=off and AVDLZ_RETAIL_PRICE_FALLBACK=off in mock-mutating test harnesses
+  source: https://github.com/avd-ops/avd-landing-zone/pull/179
+  status: verified
+  added: '2026-11-18'
+- id: dependabot-kb-auto-merge-conflict
+  symptom: Dependabot PRs touching .github/workflows/ never auto-merge even when all checks pass
+  cause: kb-auto-merge.yml explicitly turns auto-merge off on workflow/code paths, and repos may have allow_auto_merge or can_approve_pull_request_reviews disabled
+  fix: Exempt dependabot[bot] in kb-auto-merge.yml, add dependabot-auto-merge.yml for semver-minor/patch (except repos whose W3 rule forbids pull_request_target), group minor/patch updates in dependabot.yml, and enable allow_auto_merge and can_approve_pull_request_reviews in repo settings
+  source: https://github.com/avd-ops/avd-landing-zone/pull/182
+  status: verified
+  added: '2026-11-18'
+- id: kb-capture-rerun-stale-pr-body
+  symptom: kb-capture fails with "Labelled no-kb but the PR body has no 'No KB entry:' line" even after editing the PR body
+  cause: gh run rerun replays the original webhook payload from before the PR body was edited
+  fix: Trigger a fresh pull_request webhook by re-applying the no-kb label or pushing an empty commit instead of using gh run rerun
+  source: https://github.com/avd-ops/avd-azure/pull/16
+  status: verified
+  added: '2026-11-18'
+- id: gitleaks-s3key-false-positive
+  symptom: gitleaks secret-scan fails with generic-api-key on documentation JSON containing an S3Key filename example
+  cause: The generic-api-key rule matches key-like property names (S3Key) paired with hyphenated filenames such as avd-win11-24h2-ent.vhd
+  fix: Allowlist the specific false-positive example regex in .gitleaks.toml
+  source: https://github.com/avd-ops/avd-aws/pull/1
+  status: verified
+  added: '2026-11-18'
