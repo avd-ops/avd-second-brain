@@ -871,3 +871,17 @@ errors:
   source: https://learn.microsoft.com/mem/intune/fundamentals/filters
   status: unverified
   added: '2026-11-17'
+- id: containerapp-easy-auth-signin-loop
+  symptom: Azure Container Apps Easy Auth cycles back to the Entra ID login prompt immediately after sign-in when tokenStore is disabled
+  cause: Setting clientSecretSettingName (such as override-use-mi-fic-assertion-clientid) triggers a token-endpoint code exchange instead of validating id_token directly
+  fix: Omit clientSecretSettingName from authConfigs registration when tokenStore.enabled is false and enableIdTokenIssuance is true on the Entra app
+  source: https://github.com/avd-ops/avd-swarm/pull/149
+  status: verified
+  added: '2026-11-17'
+- id: codeload-tarball-full-sha-required
+  symptom: Container startup fails with HTTP Error 404 Not Found fetching https://codeload.github.com/<owner>/<repo>/tar.gz/<sha>
+  cause: GitHub codeload tarball URLs reject abbreviated 12-character commit SHAs and require a branch, tag, or full 40-character SHA
+  fix: Pass the full 40-character commit SHA (git rev-parse) to swarmCommit when using the tarball runtime
+  source: troubleshooting/README.md
+  status: verified
+  added: '2026-11-17'
