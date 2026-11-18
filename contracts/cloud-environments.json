@@ -12,6 +12,7 @@
       "armEndpoint": "https://management.azure.com",
       "loginEndpoint": "https://login.microsoftonline.com",
       "graphEndpoint": "https://graph.microsoft.com",
+      "oidcAudience": "api://AzureADTokenExchange",
       "storageEndpointSuffix": "core.windows.net",
       "keyVaultDnsSuffix": "vault.azure.net",
       "logAnalyticsWorkspaceSuffix": "opinsights.azure.com",
@@ -29,6 +30,8 @@
       },
       "powerPlatform": {
         "bapEndpoint": "https://api.bap.microsoft.com",
+        "flowEndpoint": "https://flow.microsoft.com",
+        "powerPlatformSuffix": "powerplatform.com",
         "pacCloud": "Public",
         "dataverseSuffixes": [
           "crm.dynamics.com",
@@ -88,6 +91,7 @@
       "armEndpoint": "https://management.usgovcloudapi.net",
       "loginEndpoint": "https://login.microsoftonline.us",
       "graphEndpoint": "https://graph.microsoft.us",
+      "oidcAudience": "api://AzureADTokenExchangeUSGov",
       "storageEndpointSuffix": "core.usgovcloudapi.net",
       "keyVaultDnsSuffix": "vault.usgovcloudapi.net",
       "logAnalyticsWorkspaceSuffix": "opinsights.azure.us",
@@ -105,9 +109,11 @@
       },
       "powerPlatform": {
         "bapEndpoint": "https://high.api.bap.microsoft.us",
+        "flowEndpoint": "https://high.flow.microsoft.us",
+        "powerPlatformSuffix": "High.powerplatform.us",
         "pacCloud": "UsGovHigh",
         "dataverseSuffixes": [
-          "crm9.dynamics.com"
+          "crm.microsoftdynamics.us"
         ]
       },
       "privateDnsZones": {
@@ -151,6 +157,7 @@
       "armEndpoint": "https://management.azure.com",
       "loginEndpoint": "https://login.microsoftonline.com",
       "graphEndpoint": "https://graph.microsoft.com",
+      "oidcAudience": "api://AzureADTokenExchange",
       "storageEndpointSuffix": "core.windows.net",
       "keyVaultDnsSuffix": "vault.azure.net",
       "logAnalyticsWorkspaceSuffix": "opinsights.azure.com",
@@ -168,6 +175,8 @@
       },
       "powerPlatform": {
         "bapEndpoint": "https://api.bap.microsoft.com",
+        "flowEndpoint": "https://flow.microsoft.com",
+        "powerPlatformSuffix": "powerplatform.com",
         "pacCloud": "Public",
         "dataverseSuffixes": [
           "crm.dynamics.com",
@@ -226,6 +235,7 @@
       "armEndpoint": "https://management.usgovcloudapi.net",
       "loginEndpoint": "https://login.microsoftonline.us",
       "graphEndpoint": "https://graph.microsoft.us",
+      "oidcAudience": "api://AzureADTokenExchangeUSGov",
       "storageEndpointSuffix": "core.usgovcloudapi.net",
       "keyVaultDnsSuffix": "vault.usgovcloudapi.net",
       "logAnalyticsWorkspaceSuffix": "opinsights.azure.us",
@@ -243,9 +253,11 @@
       },
       "powerPlatform": {
         "bapEndpoint": "https://high.api.bap.microsoft.us",
+        "flowEndpoint": "https://high.flow.microsoft.us",
+        "powerPlatformSuffix": "High.powerplatform.us",
         "pacCloud": "UsGovHigh",
         "dataverseSuffixes": [
-          "crm9.dynamics.com"
+          "crm.microsoftdynamics.us"
         ]
       },
       "privateDnsZones": {
