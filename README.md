@@ -20,7 +20,7 @@ The estate brain for **Azure Virtual Desktop**: it understands why each AVD envi
 | Repo | Lifecycle stage | Gives the brain | Takes from the brain |
 |---|---|---|---|
 | [avd-liquidware](https://github.com/avd-ops/avd-liquidware) | The Stratusphere instrument and the optional ProfileUnity tier | Lessons; Liquidware facts once built | The manifest's `liquidware` block, later |
-| [avd-current-state](https://github.com/avd-ops/avd-current-state) | Inventory and validate (collector, validator) | Evidence packages, ingested into a customer's estate vault; the redacted facts snapshot (C11) | The fact register (C15), for manifest coverage |
+| [avd-current-state](https://github.com/avd-ops/avd-current-state) | Inventory and validate (collector, validator) | Evidence packages, ingested into an adopter's estate vault; the redacted facts snapshot (C11) | The fact register (C15), for manifest coverage |
 | [avd-landing-zone](https://github.com/avd-ops/avd-landing-zone) | Deploy and operate (landing zone, operations brain) | Lessons, decisions, day-2 sizing evidence | Workload tiers, calibration, catalog, shared runbooks, target-state manifests (C14) |
 | [avd-swarm](https://github.com/avd-ops/avd-swarm) | Act and control (agents, approvals, the executor, the kill switch) | Insights and grading (C8), action outcomes and the kill switch position (C10), lessons and decisions | Playbook run proposals (C9), docs findings (C13), the knowledge base at a pinned commit (C6) |
 <!-- generated:connections end -->
@@ -79,7 +79,7 @@ Each links its reference page, generated from the script's own help.
 | Script | What it does |
 |---|---|
 | [`scripts/Find-BrainKnowledge.ps1`](docs/reference/scripts-Find-BrainKnowledge.md) | Asks the second brain: search its knowledge and the connected repos, resolve an inventory app name, or show the sizing calibration. |
-| [`scripts/Get-VaultHarvest.ps1`](docs/reference/scripts-Get-VaultHarvest.md) | Proposes what a customer vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates. |
+| [`scripts/Get-VaultHarvest.ps1`](docs/reference/scripts-Get-VaultHarvest.md) | Proposes what an adopter vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates. |
 | [`scripts/Import-CurrentStateFacts.ps1`](docs/reference/scripts-Import-CurrentStateFacts.md) | Checks a redacted current-state snapshot (contract C11, avd-current-state-facts/v1) and files it in the estate vault's facts store. |
 | [`scripts/Import-SizingEvidence.ps1`](docs/reference/scripts-Import-SizingEvidence.md) | Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations. |
 | [`scripts/Sync-BrainSources.ps1`](docs/reference/scripts-Sync-BrainSources.md) | Checks out the connected repositories (sources/sources.json) so the brain can search their lessons and decisions. |
