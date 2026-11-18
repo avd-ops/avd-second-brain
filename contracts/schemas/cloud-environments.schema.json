@@ -48,6 +48,8 @@
       "additionalProperties": false,
       "properties": {
         "bapEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "flowEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "powerPlatformSuffix": { "type": "string", "pattern": "^[A-Za-z0-9.-]+$" },
         "pacCloud": { "enum": ["Public", "UsGovHigh"] },
         "dataverseSuffixes": {
           "type": "array",
@@ -131,6 +133,7 @@
         "armEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
         "loginEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
         "graphEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "oidcAudience": { "type": "string", "pattern": "^api://[A-Za-z0-9.-]+$" },
         "storageEndpointSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
         "keyVaultDnsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
         "logAnalyticsWorkspaceSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
@@ -188,6 +191,7 @@
         "armEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
         "loginEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
         "graphEndpoint": { "type": "string", "pattern": "^https://[a-z0-9.-]+$" },
+        "oidcAudience": { "type": "string", "pattern": "^api://[A-Za-z0-9.-]+$" },
         "storageEndpointSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
         "keyVaultDnsSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
         "logAnalyticsWorkspaceSuffix": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
