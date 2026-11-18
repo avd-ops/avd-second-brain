@@ -35,9 +35,10 @@ those points together and puts the team's own knowledge next to them.
 
 - **Plain Markdown in Git.** Readable on GitHub, in any editor, and as an
   [Obsidian](https://obsidian.md) vault. History, review and blame come from Git.
-- **Its own private repository.** The vault holds subscription IDs, resource names and
-  findings, so it is kept apart from this public repository. One vault per organization or
-  customer.
+- **In your private companion repository.** The vault holds subscription IDs, resource names and
+  findings, so it stays in a private repository apart from this public repo—by default under
+  `vault/` in your single private companion repo (`avd-private`, see
+  [private-companion-repo](https://github.com/avd-ops/avd-ops/blob/main/docs/private-companion-repo.md)).
 - **Condensed evidence only.** Raw evidence packages stay where they are. The vault keeps
   the facts that matter for history: host pools, session host health, resource IDs, dataset
   counts and every validator result.
@@ -54,17 +55,17 @@ those points together and puts the team's own knowledge next to them.
 ## Set up
 
 ```powershell
-# 1. Create the vault in its own folder, then make it a private Git repository
-.\vault\avd_second_brain.ps1 -BrainPath ..\avd-brain -Init
-git -C ..\avd-brain init
+# 1. Initialize the vault inside your single private companion repo (avd-private/vault)
+.\vault\avd_second_brain.ps1 -BrainPath ..\avd-private\vault -Init
+git -C ..\avd-private init   # skip if avd-private is already initialized
 
 # 2. Ingest evidence: a package folder, a ZIP, or a folder full of either
-.\vault\avd_second_brain.ps1 -BrainPath ..\avd-brain -PackagePath ..\avd-current-state\avd-current-state-20261015T091500
-.\vault\avd_second_brain.ps1 -BrainPath ..\avd-brain -PackagePath D:\Assessments
+.\vault\avd_second_brain.ps1 -BrainPath ..\avd-private\vault -PackagePath ..\avd-current-state\avd-current-state-20261015T091500
+.\vault\avd_second_brain.ps1 -BrainPath ..\avd-private\vault -PackagePath D:\Assessments
 
 # 3. Review and commit
-git -C ..\avd-brain add -A
-git -C ..\avd-brain commit -m "Ingest October evidence"
+git -C ..\avd-private add vault/
+git -C ..\avd-private commit -m "Ingest October evidence"
 ```
 
 Running `-Init` again against an existing vault adds any new template files and never
