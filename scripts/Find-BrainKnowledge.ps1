@@ -6,7 +6,7 @@
 .DESCRIPTION
   -Query searches the app catalog, the engine rules, the shared runbooks and docs here, the
   connected repos' lessons and decisions once ./scripts/Sync-BrainSources.ps1 has checked them out,
-  and, with -VaultPath, a customer vault's decisions, runbooks and lessons. Each hit prints with
+  and, with -VaultPath, an adopter vault's decisions, runbooks and lessons. Each hit prints with
   the path to cite. -App resolves one raw inventory name (as Stratusphere
   reports it) to a catalog entry, or says it is unknown and belongs on the app test plan.
   -Calibration prints the sizing calibration factors per tier and VM family, computed from the
@@ -32,7 +32,7 @@ param(
   [Parameter(Mandatory, ParameterSetName = 'Calibration')] [switch] $Calibration,
   # How many hits to print.
   [Parameter(ParameterSetName = 'Query')] [int] $Top = 10,
-  # A customer vault to search as well.
+  # An adopter vault to search as well.
   [Parameter(ParameterSetName = 'Query')] [string] $VaultPath,
   # Where Sync-BrainSources.ps1 checked out the connected repos.
   [Parameter(ParameterSetName = 'Query')] [string] $SourcesRoot = (Join-Path (Split-Path $PSScriptRoot -Parent) '.sources'),

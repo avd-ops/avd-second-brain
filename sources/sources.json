@@ -32,7 +32,7 @@
         "README.md"
       ],
       "feeds": [
-        "Evidence packages (collector and validator) into a customer vault (vault/avd_second_brain.ps1, contracts C1)",
+        "Evidence packages (collector and validator) into an adopter vault (vault/avd_second_brain.ps1, contracts C1)",
         "avd-current-state-facts/v1: the redacted facts snapshot the brain's agents read (contracts C11)"
       ],
       "reads": [
@@ -40,7 +40,7 @@
       ],
       "readme": {
         "stage": "Inventory and validate (collector, validator)",
-        "gives": "Evidence packages, ingested into a customer's estate vault; the redacted facts snapshot (C11)",
+        "gives": "Evidence packages, ingested into an adopter's estate vault; the redacted facts snapshot (C11)",
         "takes": "The fact register (C15), for manifest coverage"
       }
     },

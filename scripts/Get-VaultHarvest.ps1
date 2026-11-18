@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Proposes what a customer vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates.
+  Proposes what an adopter vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates.
   Personal project, not for production use. Provided as is, without warranty of any kind (MIT License, see LICENSE). Not affiliated with the author's employer, with Liquidware or with Microsoft.
 
 .DESCRIPTION
@@ -32,7 +32,7 @@ $h = Get-VaultHarvest -VaultPath $VaultPath
 if ($Json) { $h | ConvertTo-Json -Depth 6; return }
 
 $fmt = { param($map) if ($map.Count) { ($map.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name) $($_.Value)" }) -join ', ' } else { '-' } }
-Write-Host "Vault harvest proposal ($($h.Environments) environments). Generalized only; review before it leaves the customer." -ForegroundColor Cyan
+Write-Host "Vault harvest proposal ($($h.Environments) environments). Generalized only; review before it leaves the adopter." -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Estate (for the engagement record):'
 Write-Host "  session hosts      $($h.Estate.sessionHostsBucket)"

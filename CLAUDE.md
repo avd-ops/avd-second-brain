@@ -21,7 +21,7 @@ pwsh -c "./scripts/Test-KbLeaks.ps1"
 ```
 
 ## Rules
-- **Three layers, three kinds of data** (`docs/architecture.md` §3). `knowledge/` holds generalized knowledge only; estate vaults (built by `vault/avd_second_brain.ps1`) hold one customer's tenant data and live in that customer's private repo; never copy vault or engagement content into this repo, an issue or a PR.
+- **Three layers, three kinds of data** (`docs/architecture.md` §3). `knowledge/` holds generalized knowledge only; estate vaults (built by `vault/avd_second_brain.ps1`) hold one adopter's tenant data and live in that adopter's private repo; never copy vault or engagement content into this repo, an issue or a PR.
 - **Knowledge changes only by a PR a person merges**, normally a harvest (`.claude/skills/harvest`). Run `scripts/Test-Knowledge.ps1` first; a `sensitive:*` finding means customer data got through: remove it, never loosen the pattern to pass.
 - **A model never decides.** It may normalize names and draft text; verdicts need evidence, rule changes need a reason and a history entry.
 - **The brain thinks, avd-swarm acts, and they change together** (decision 0003). The brain never holds a write credential; every change to an estate goes through avd-swarm's approval and its one kill switch. A change here to a contract (C8–C15), a playbook's shape, an agent's role, grading, models or identity comes with the matching avd-swarm PR, and each links the other.
