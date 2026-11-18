@@ -37,7 +37,7 @@ Keeping a tenant second brain and Log Analytics (`WVD*` / AVD Insights) retrieva
 ## Capping
 
 - One auto-shutdown runbook, started both by a schedule and by the budget ([avd-landing-zone decision 0011](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/decisions/0011-auto-shutdown.md)). *Unverified:* no lesson yet records the budget trigger in a real run.
-- The landing zone's budget lives and dies with it: `Remove-AvdDemo.ps1 -IncludeLandingZone` deletes `budget-<prefix>-<environment>`, so a torn-down sandbox subscription has no spend alert at all ([Remove-AvdDemo.ps1](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/ops/Remove-AvdDemo.ps1)). Give a sandbox subscription a standing budget of its own that no teardown touches, and have the daily spend check flag a subscription without one.
+- The landing zone's budget lives and dies with it: `Remove-AvdDemo.ps1 -IncludeLandingZone` deletes `budget-<prefix>-<environment>`, so a torn-down sandbox subscription has no spend alert at all ([Remove-AvdDemo.ps1](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/ops/Remove-AvdDemo.ps1)). Run [Set-AvdSpendBudget.ps1](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/ops/Set-AvdSpendBudget.ps1) to create a standing subscription-level budget that `Remove-AvdDemo.ps1` never deletes, and have the daily spend check flag a subscription without one.
 
 ## Sandbox runs
 
