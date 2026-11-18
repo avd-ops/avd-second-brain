@@ -626,6 +626,7 @@ Describe 'C19 to C21: intake, the assessment method and its report' {
       C28 = @('source-inventory.schema.json')
       C29 = @('wave-plan.schema.json')
       C30 = @('verify-report.schema.json')
+      C31 = @('networking-outputs.schema.json')
     }
     foreach ($id in $want.Keys) {
       $c = @($all | Where-Object Id -eq $id)[0]

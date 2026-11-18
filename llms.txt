@@ -13,6 +13,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 
 - [Knowledge base](docs/knowledge/README.md): What this knowledge base is, how it's organized, and how to add to it safely (status: verified)
 - [Landing zone](docs/knowledge/landing-zone/README.md): Bicep, networking, policy, quotas and resource providers for an AVD landing zone, and running it all from Cloud Shell (status: verified)
+- [AVD Hybrid and Azure Arc](docs/knowledge/landing-zone/avd-hybrid-arc.md): Platform-agnostic architecture, OS/identity constraints, networking, storage, and Arc onboarding learnings for running AVD Hybrid session hosts on non-Azure clouds and on-premises hypervisors (status: verified)
 - [Azure US Government and GCC High](docs/knowledge/landing-zone/usgov-and-gcc-high.md): Sovereign cloud endpoints, Private DNS zones, ITAR/CUI redirection defaults, workload placement, and CI verification for Azure US Government and Microsoft 365 GCC High (status: verified)
 - [Identity and Entra](docs/knowledge/identity/README.md): Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities (status: partial)
 - [FSLogix profiles](docs/knowledge/fslogix/README.md): FSLogix profile containers on Azure Files with Entra Kerberos: share setup, SMB settings, permissions and what breaks (status: verified)
@@ -65,6 +66,7 @@ contribute, open a KB feedback or known-error issue; changes land only through r
 - [0026. Runs check and clean up before they spend, and the setup is the desired state](docs/knowledge/decisions/0026-runs-check-and-clean-before-they-spend.md): accepted
 - [0027. Desktop DevOps across AVD, Windows 365, and Microsoft Intune](docs/knowledge/decisions/0027-desktop-devops-across-avd-win365-and-intune.md): accepted
 - [0028. Position Terraform (avd-hcl) as the enterprise IaC option alongside Bicep](docs/knowledge/decisions/0028-terraform-as-enterprise-iac-option.md): proposed
+- [0029. Open-source Linux Hub NVA option for lab and sandbox egress](docs/knowledge/decisions/0029-open-source-hub-nva-lab-option.md): accepted
 
 ## Related knowledge bases
 
