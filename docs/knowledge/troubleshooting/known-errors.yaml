@@ -871,6 +871,7 @@ errors:
   source: https://learn.microsoft.com/mem/intune/fundamentals/filters
   status: unverified
   added: '2026-11-17'
+<<<<<<< HEAD
 - id: containerapp-easy-auth-signin-loop
   symptom: Azure Container Apps Easy Auth cycles back to the Entra ID login prompt immediately after sign-in when tokenStore is disabled
   cause: Setting clientSecretSettingName (such as override-use-mi-fic-assertion-clientid) triggers a token-endpoint code exchange instead of validating id_token directly
@@ -885,3 +886,13 @@ errors:
   source: troubleshooting/README.md
   status: verified
   added: '2026-11-17'
+=======
+- id: teams-vdi-unable-to-optimize-slimcore
+  symptom: "Microsoft Teams on AVD or Windows 365 shows \"We're unable to optimize your virtual desktop\" or \"SlimCore Media Not Connected\" (vdi_debug.txt loadErrc/deployErrc 16389, 16002, 24018, 24035)"
+  cause: Teams cannot attach to the local SlimCore VDI media engine due to an outdated Windows App, web browser client usage, BlockNonAdminUserInstall/WDAC blocking Microsoft.Teams.SlimCoreVdiHost MSIX staging (16389), or missing HKLM\SOFTWARE\Microsoft\Teams\IsWVDEnvironment=1 on custom images
+  fix: Update native Windows App (avoid browser), allow Windows App background run, allowlist Microsoft.Teams.SlimCoreVdiHost MSIX past BlockNonAdminUserInstall/WDAC, verify IsWVDEnvironment=1 on hosts and MsTeamsPluginAvd.dll in local msrdc.exe, and quit/relaunch Teams
+  source: https://learn.microsoft.com/microsoftteams/vdi-2-troubleshooting
+  applies_to: AVD and Windows 365 (Teams VDI 2.0 / SlimCore)
+  status: verified
+  added: '2026-11-18'
+>>>>>>> origin/main

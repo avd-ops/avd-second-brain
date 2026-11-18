@@ -39,4 +39,5 @@ under More Information, and decisions shared with a sibling KB say "Also recorde
 | [0026](0026-runs-check-and-clean-before-they-spend.md) | Runs check and clean up before they spend, and the setup is the desired state | Accepted |
 | [0027](0027-desktop-devops-across-avd-win365-and-intune.md) | Desktop DevOps across AVD, Windows 365, and Microsoft Intune | Accepted |
 | [0028](0028-terraform-as-enterprise-iac-option.md) | Position Terraform (avd-hcl) as the enterprise IaC option alongside Bicep | Proposed |
+| [0029](0029-open-source-hub-nva-lab-option.md) | Open-source Linux Hub NVA option for lab and sandbox egress | Accepted |
 <!-- END GENERATED: decision-index -->
