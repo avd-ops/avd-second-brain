@@ -3,7 +3,7 @@ title: "Identity and Entra"
 summary: "Entra ID joined hosts, Entra Kerberos, Microsoft Graph sign-in for operators, unattended read identities, and agent identities"
 topic: identity
 status: partial
-last_reviewed: 2026-10-28
+last_reviewed: 2026-11-20
 ---
 
 # Identity and Entra
@@ -36,6 +36,11 @@ Identity for AVD on Entra ID: Entra-joined session hosts, Entra Kerberos for pro
 ## Cleaning up identities
 
 - Delete the hosts' Entra ID and Intune device records before the Azure resources whose names they come from, so a failed cleanup can run again ([lesson 0029](https://github.com/avd-ops/avd-landing-zone/blob/master/docs/lessons/0029-device-cleanup-rerun.md)).
+
+## Time synchronization and clock skew
+
+- Active Directory / hybrid-joined session hosts should follow the AD DS time hierarchy (`NT5DS`) rather than `time.windows.com` or host-only sync; Entra-joined hosts can use Azure host time (`VMICTimeProvider`) to avoid outbound public NTP traffic, or explicit `NTP` ([Time sync for Windows VMs in Azure](https://learn.microsoft.com/azure/virtual-machines/windows/time-sync)).
+- Kerberos tolerates up to 5 minutes of clock skew by default between client and domain controller (`KRB_AP_ERR_SKEW` beyond that); keep `W32Time` running on every session host ([Maximum tolerance for computer clock synchronization](https://learn.microsoft.com/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/maximum-tolerance-for-computer-clock-synchronization)).
 
 ## Agent identities
 
