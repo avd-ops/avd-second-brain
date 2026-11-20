@@ -79,6 +79,7 @@ Each links its reference page, generated from the script's own help.
 | Script | What it does |
 |---|---|
 | [`scripts/Find-BrainKnowledge.ps1`](docs/reference/scripts-Find-BrainKnowledge.md) | Asks the second brain: search its knowledge and the connected repos, resolve an inventory app name, or show the sizing calibration. |
+| [`scripts/Get-RunbookCoverage.ps1`](docs/reference/scripts-Get-RunbookCoverage.md) | Reports avd-current-state validator checks covered or uncovered by knowledge/runbooks/*.md, and optionally generates draft runbook stubs. |
 | [`scripts/Get-VaultHarvest.ps1`](docs/reference/scripts-Get-VaultHarvest.md) | Proposes what an adopter vault may contribute to the knowledge base: generalized estate facts, recurring findings, and runbook and lesson candidates. |
 | [`scripts/Import-CurrentStateFacts.ps1`](docs/reference/scripts-Import-CurrentStateFacts.md) | Checks a redacted current-state snapshot (contract C11, avd-current-state-facts/v1) and files it in the estate vault's facts store. |
 | [`scripts/Import-SizingEvidence.ps1`](docs/reference/scripts-Import-SizingEvidence.md) | Turns measured host pool utilization (contract avd-sizing-evidence/v1) into sizing calibration observations. |
