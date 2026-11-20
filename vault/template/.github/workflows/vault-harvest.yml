@@ -1,0 +1,32 @@
+name: vault-harvest
+
+# Runs in an adopter's private estate vault repo to surface verified runbooks and lessons
+# ready to be generalized and proposed back to avd-second-brain.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'runbooks/**'
+      - 'lessons/**'
+
+permissions:
+  contents: read
+
+jobs:
+  harvest-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: vault
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: avd-ops/avd-second-brain
+          path: avd-second-brain
+      - name: List harvest candidates
+        shell: pwsh
+        run: |
+          Set-Location avd-second-brain
+          ./scripts/Get-VaultHarvest.ps1 -VaultPath ../vault
