@@ -10,5 +10,9 @@ Runbooks that hold for any AVD estate, harvested from adopter vaults once a pers
 | [Recover an unhealthy or drained session host](recover-unhealthy-session-host.md) | `draft` | `Session host status`, `Agent heartbeat`, `Drain mode` |
 | [Fix FSLogix profile storage auth and TLS posture](fix-fslogix-storage-auth.md) | `draft` | `Identity-based auth`, `SMB share RBAC`, `Minimum TLS version` |
 | [Fix scaling plan assignment and AVD power management role](fix-scaling-plan-power-role.md) | `draft` | `Scaling plan`, `Power role sufficiency`, `AVD power management role` |
+| [Fix Entra VM login RBAC, Conditional Access, and Kerberos posture](fix-entra-kerberos-and-ca.md) | `draft` | `Entra groups, Conditional Access and Kerberos posture`, `Entra VM login role` |
+| [Fix Intune multi-session MDM enrollment and compliance posture](fix-intune-multisession-enrollment.md) | `draft` | `Intune MDM readiness`, `Intune multi-session enrollment and compliance posture` |
+| [Fix OneDrive KFM, Shared Computer Activation, and Teams VDI policies](fix-onedrive-and-teams-vdi.md) | `draft` | `M365 Apps and OneDrive VDI readiness`, `OneDrive KFM, Shared Computer Activation and Teams VDI policies` |
+| [Fix host pool diagnostic settings and AVD required egress](fix-host-pool-diagnostics-and-endpoints.md) | `draft` | `Host pool diagnostics`, `AVD required endpoints`, `NSG egress to AVD` |
 
 All entries above are initial `draft` templates mapped to `avd-current-state` check names; promote each to `verified` after confirming in a real run (`scripts/Get-VaultHarvest.ps1` lists verified vault candidates).
