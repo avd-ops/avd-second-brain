@@ -3,7 +3,7 @@ title: "Golden images"
 summary: "Golden images for session hosts: Azure Image Builder, the Windows Desktop Optimization Tool, the gallery and promotion"
 topic: images
 status: partial
-last_reviewed: 2026-10-28
+last_reviewed: 2026-11-20
 ---
 
 # Golden images
@@ -31,3 +31,8 @@ Building and rotating golden images for AVD session hosts with Azure Image Build
 - A rotation must deploy the new hosts with the settings the landing zone was last deployed with, not the parameter file's defaults: the rotation reads them from the last succeeded subscription deployment record (`properties.parameters`) and passes them to `deploy.sh` as flags.
 - A pool whose hosts run different images is mid-rotation or has drifted (marketplace `latest` resolves to a new build each time a host is added). avd-current-state's validator reports image consistency per pool ([avd-current-state #17](https://github.com/avd-ops/avd-current-state/pull/17), draft).
 - Multi-region: Microsoft's multiregion guide replicates the gallery image to both regions so both pools deploy the same version ([multiregion BCDR](https://learn.microsoft.com/azure/architecture/example-scenario/azure-virtual-desktop/azure-virtual-desktop-multi-region-bcdr)); a second-region pool should rotate after the primary, from the same version.
+
+## Time zones and time sync
+
+- **Time zone redirection:** Golden images enable `HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\fEnableTimeZoneRedirection = 1` ([Enable-TimeZoneRedirection.ps1](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/image/Enable-TimeZoneRedirection.ps1), validated by [Test-GoldenImage.ps1](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/image/Test-GoldenImage.ps1)) so pooled sessions reflect the connecting client's local time zone (`avd-assess` [`protocol.timezone-redirection`](https://github.com/avd-ops/avd-assess/blob/main/dimensions.yaml)).
+- **`W32Time` protection:** `W32Time` stays in [protected-services.json](https://github.com/avd-ops/avd-landing-zone/blob/master/scripts/image/protected-services.json) (`Skip` in the WDOT profile) and is verified not `Disabled` at image validation (`avd-assess` [`images.time-sync`](https://github.com/avd-ops/avd-assess/blob/main/dimensions.yaml)).

@@ -3,7 +3,7 @@ title: "Operating an estate"
 summary: "Day-2 operations: detections, playbooks, episodes, and the handoff to avd-swarm for anything that changes an estate"
 topic: operations
 status: partial
-last_reviewed: 2026-11-13
+last_reviewed: 2026-11-20
 ---
 
 # Operating an estate
@@ -148,6 +148,11 @@ Specified in [decision 0027](../decisions/0027-desktop-devops-across-avd-win365-
   - **Windows 365 Frontline:** shift-worker (`<= 1:3` concurrency) or intermittent dedicated Cloud PCs (`Shared` mode for non-persistent task workers) without managing AVD host pools.
 - **Intune policy-as-code and platform assignment filters.** Every Intune Settings Catalog policy, compliance policy, and security baseline in [avd-intune](https://github.com/avd-ops/avd-intune) attaches an explicit platform assignment filter (`avd-multisession`, `avd-personal`, `win365-cloudpc`, `physical-desktop`) rather than unfiltered "All Devices" assignments ([Intune assignment filters](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/filters), [multi-session Settings Catalog](https://learn.microsoft.com/en-us/mem/intune/fundamentals/azure-virtual-desktop-multi-session)). When `avd-current-state` detects live tenant drift (`c11.intune.unfilteredAllDevicesPolicies > 0` or missing baseline profiles), the brain proposes a Git PR against `avd-intune` rather than a portal edit.
 - **Windows 365 Cloud PC lifecycle and `dataLossGuard`.** Windows 365 provisioning policies, user settings (`localAdminEnabled: false`, restore point cadence), and Azure Network Connections (ANCs) are collected read-only by `avd-current-state` (`GET /v1.0/deviceManagement/virtualEndpoint/*`) and deployed declaratively by `avd-intune -IncludeWin365` ([cloudPC Graph resource](https://learn.microsoft.com/en-us/graph/api/resources/cloudpc?view=graph-rest-1.0)). Any destructive action (`reprovision`, `deprovision`, or session-host replacement) in a C9 proposal carries `dataLossGuard` (`restorePointVerified`, `restorePointAgeHours`, `discardLastCopyApproved`) so `avd-swarm`'s gate enforces [decision 0016](../decisions/0016-never-delete-the-last-copy.md).
+
+## Time zones and schedules
+
+- **IANA vs. Windows time zone IDs:** `intake.workingHours.timeZone` (C19) uses an IANA time zone name (for example `America/Chicago`), while AVD scaling plans, Logic App auto-shutdown schedules, and `target-state` (C14) use Windows time zone IDs (for example `Central Standard Time`). `avd-landing-zone`'s `AvdTargetState.psm1` refuses deployment when the target-state manifest's `scaling.timeZone` disagrees with the parameter file (`autoShutdownTimeZone`, else `scalingTimeZone`, else `UTC`).
+- **Scheduled agent updates and `W32Time`:** AVD scheduled agent update windows run for two hours in a set time zone or each host's local time ([avd-scheduled-agent-updates](https://learn.microsoft.com/azure/virtual-desktop/scheduled-agent-updates)). Keep `W32Time` running (`w32tm /query /status` and `w32tm /query /source`) so host logs, autoscale transitions, and authentication timestamps stay aligned.
 
 ## ITSM, CMDB, and Change-Gate integration (`avd-servicenow`)
 

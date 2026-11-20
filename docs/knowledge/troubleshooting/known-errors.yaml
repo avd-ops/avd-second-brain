@@ -921,3 +921,27 @@ errors:
   source: https://github.com/avd-ops/avd-aws/pull/1
   status: verified
   added: '2026-11-18'
+- id: avd-timezone-redirection-missing
+  symptom: AVD user sessions display the session host or Azure datacenter time zone (typically UTC) instead of the connecting user's local time zone
+  cause: HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\fEnableTimeZoneRedirection is not set to 1 on the session host or client-side time zone redirection is disabled
+  fix: Enable fEnableTimeZoneRedirection = 1 in the golden image or GPO/Intune ADMX_TerminalServer policy and confirm time zone redirection is enabled in the client
+  source: https://learn.microsoft.com/windows/client-management/mdm/policy-csp-admx-terminalserver
+  applies_to: AVD pooled and multi-session hosts
+  status: verified
+  added: '2026-11-20'
+- id: w32time-clock-skew-auth-failure
+  symptom: Kerberos authentication fails with KRB_AP_ERR_SKEW or Entra/WAM token requests fail on session hosts due to clock drift
+  cause: W32Time service is stopped/disabled or host clock drifted more than 5 minutes from the domain controller (NT5DS) or Azure host/NTP time source
+  fix: Ensure W32Time is running (Skip in WDOT), verify w32tm /query /source (NT5DS for AD-joined, VMICTimeProvider or NTP for Entra-joined), and run w32tm /resync
+  source: https://learn.microsoft.com/azure/virtual-machines/windows/time-sync
+  applies_to: AVD session hosts and Windows 365 Cloud PCs
+  status: unverified
+  added: '2026-11-20'
+- id: avd-schedule-timezone-mismatch
+  symptom: Autoscale ramp-up/down or auto-shutdown runs at the wrong hour, or ConvertFrom-AvdTargetState.ps1 refuses deployment due to a time zone mismatch
+  cause: scalingTimeZone or autoShutdownTimeZone in Bicep parameters uses UTC or a different Windows time zone ID than the target-state manifest, or uses a fixed offset instead of a DST-aware Windows time zone ID
+  fix: Align autoShutdownTimeZone and scalingTimeZone in the parameter file with the manifest's DST-aware Windows time zone ID (mapped from IANA intake.workingHours.timeZone)
+  source: operations/README.md
+  applies_to: avd-landing-zone scaling plans and auto-shutdown schedules
+  status: verified
+  added: '2026-11-20'
