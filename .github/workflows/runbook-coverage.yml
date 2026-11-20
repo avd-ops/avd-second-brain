@@ -1,0 +1,62 @@
+name: runbook-coverage
+
+# Weekly check comparing avd-current-state validator checks against knowledge/runbooks/*.md.
+# Opens a draft PR with up to 5 status: draft runbook stubs when uncovered checks are found.
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: runbook-coverage
+  cancel-in-progress: false
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: avd-second-brain
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: avd-ops/avd-current-state
+          path: avd-current-state
+          sparse-checkout: |
+            avd_deployment_validator.ps1
+          sparse-checkout-cone-mode: false
+      - name: Generate draft runbook stubs
+        id: cov
+        shell: pwsh
+        run: |
+          Set-Location avd-second-brain
+          ./scripts/Get-RunbookCoverage.ps1 -ValidatorPath ../avd-current-state/avd_deployment_validator.ps1 -WriteDrafts -MaxDrafts 5
+          ./scripts/Test-Knowledge.ps1
+          ./scripts/Test-KbLeaks.ps1
+          $changed = git status --porcelain knowledge/runbooks/
+          if ($changed) {
+            "changed=true" >> $env:GITHUB_OUTPUT
+          } else {
+            "changed=false" >> $env:GITHUB_OUTPUT
+          }
+      - name: Open PR for draft runbooks
+        if: steps.cov.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd avd-second-brain
+          BRANCH="chore/runbook-coverage-$(date -u +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add knowledge/runbooks/
+          git commit -m "docs(runbooks): draft stubs for uncovered validator checks"
+          git push --force-with-lease origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "docs(runbooks): draft stubs for uncovered validator checks" \
+            --body "Auto-generated \`status: draft\` runbook stubs for uncovered \`avd-current-state\` validator checks via \`scripts/Get-RunbookCoverage.ps1\`. Review and complete the steps before merging."

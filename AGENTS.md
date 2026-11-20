@@ -50,6 +50,9 @@ These hold in every AVD repo. The repo's own rules below and in CLAUDE.md add to
   a guard (a test or a check), and record the lesson.
 - **Write down what you learn** in the knowledge base this repo uses, in the same PR, or say why
   not (`no-kb` label and a `No KB entry: <reason>` line where the repo asks for it).
+- **Keep runbooks and walkthroughs in step.** Any PR adding a new validator check (`avd-current-state`)
+  or CLI/portal entry point should update or draft its remediation runbook (`knowledge/runbooks/`) or
+  getting-started walkthrough (`avd-ops/docs/knowledge/getting-started/`), or queue an issue for it.
 - **Hooks are Claude Code's; the steps are everyone's.** If `.claude/settings.json` wires hooks
   (open `handoff` issues at the start, the knowledge check at the end), other agents run the same
   scripts by hand.
