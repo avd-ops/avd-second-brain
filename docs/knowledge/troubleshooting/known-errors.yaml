@@ -945,3 +945,11 @@ errors:
   applies_to: avd-landing-zone scaling plans and auto-shutdown schedules
   status: verified
   added: '2026-11-20'
+- id: cross-tenant-subscription-policy-and-mca-limit
+  symptom: '`PUT /providers/Microsoft.Subscription/aliases/<name>` with `additionalProperties.subscriptionTenantId` fails with `SubscriptionCreationInGivenTenantNotAllowed` (`blockSubscriptionsLeavingTenant` / `blockSubscriptionsIntoTenant`), `UserNotAuthorized` on `policies/default`, or `NotAllowed` (`SubscriptionCountReachedLimit`)'
+  cause: Both source and destination Entra tenants enforce default subscription directory policies unless the caller is in `exemptedPrincipals` (requiring `User Access Administrator` at root `/` via `elevateAccess` and top-level JSON fields on `PUT`), and MCA billing accounts enforce a default subscription count cap
+  fix: Elevate access via `POST /providers/Microsoft.Authorization/elevateAccess` in both tenants, add each tenant's caller object ID to `exemptedPrincipals` using top-level keys on `PUT /providers/Microsoft.Subscription/policies/default`, and either request a cap increase for `SubscriptionCountReachedLimit` or transfer an empty subscription with `changeTenantRequest` + `acceptChangeTenant`
+  source: operations/cross-tenant-subscription-creation-and-transfer.md
+  applies_to: Azure MCA cross-tenant subscription provisioning
+  status: verified
+  added: '2026-11-25'
